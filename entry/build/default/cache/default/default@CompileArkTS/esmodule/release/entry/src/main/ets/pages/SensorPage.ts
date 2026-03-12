@@ -23,10 +23,10 @@ import type { AccelerometerData, GyroscopeData, LightData, ProximityData, Magnet
 import hilog from "@ohos:hilog";
 const TAG = 'SensorPage';
 class SensorPage extends ViewPU {
-    constructor(j29, k29, l29, m29 = -1, n29 = undefined, o29) {
-        super(j29, l29, m29, o29);
-        if (typeof n29 === "function") {
-            this.paramsGenerator_ = n29;
+    constructor(m42, n42, o42, p42 = -1, q42 = undefined, r42) {
+        super(m42, o42, p42, r42);
+        if (typeof q42 === "function") {
+            this.paramsGenerator_ = q42;
         }
         this.__accelerometerData = new ObservedPropertyObjectPU(null, this, "accelerometerData");
         this.__gyroscopeData = new ObservedPropertyObjectPU(null, this, "gyroscopeData");
@@ -40,62 +40,62 @@ class SensorPage extends ViewPU {
         this.__hasProximity = new ObservedPropertySimplePU(false, this, "hasProximity");
         this.__hasMagneticField = new ObservedPropertySimplePU(false, this, "hasMagneticField");
         this.__hasOrientation = new ObservedPropertySimplePU(false, this, "hasOrientation");
-        this.setInitiallyProvidedValue(k29);
+        this.setInitiallyProvidedValue(n42);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(i29: SensorPage_Params) {
-        if (i29.accelerometerData !== undefined) {
-            this.accelerometerData = i29.accelerometerData;
+    setInitiallyProvidedValue(l42: SensorPage_Params) {
+        if (l42.accelerometerData !== undefined) {
+            this.accelerometerData = l42.accelerometerData;
         }
-        if (i29.gyroscopeData !== undefined) {
-            this.gyroscopeData = i29.gyroscopeData;
+        if (l42.gyroscopeData !== undefined) {
+            this.gyroscopeData = l42.gyroscopeData;
         }
-        if (i29.lightData !== undefined) {
-            this.lightData = i29.lightData;
+        if (l42.lightData !== undefined) {
+            this.lightData = l42.lightData;
         }
-        if (i29.proximityData !== undefined) {
-            this.proximityData = i29.proximityData;
+        if (l42.proximityData !== undefined) {
+            this.proximityData = l42.proximityData;
         }
-        if (i29.magneticFieldData !== undefined) {
-            this.magneticFieldData = i29.magneticFieldData;
+        if (l42.magneticFieldData !== undefined) {
+            this.magneticFieldData = l42.magneticFieldData;
         }
-        if (i29.orientationData !== undefined) {
-            this.orientationData = i29.orientationData;
+        if (l42.orientationData !== undefined) {
+            this.orientationData = l42.orientationData;
         }
-        if (i29.hasAccelerometer !== undefined) {
-            this.hasAccelerometer = i29.hasAccelerometer;
+        if (l42.hasAccelerometer !== undefined) {
+            this.hasAccelerometer = l42.hasAccelerometer;
         }
-        if (i29.hasGyroscope !== undefined) {
-            this.hasGyroscope = i29.hasGyroscope;
+        if (l42.hasGyroscope !== undefined) {
+            this.hasGyroscope = l42.hasGyroscope;
         }
-        if (i29.hasLight !== undefined) {
-            this.hasLight = i29.hasLight;
+        if (l42.hasLight !== undefined) {
+            this.hasLight = l42.hasLight;
         }
-        if (i29.hasProximity !== undefined) {
-            this.hasProximity = i29.hasProximity;
+        if (l42.hasProximity !== undefined) {
+            this.hasProximity = l42.hasProximity;
         }
-        if (i29.hasMagneticField !== undefined) {
-            this.hasMagneticField = i29.hasMagneticField;
+        if (l42.hasMagneticField !== undefined) {
+            this.hasMagneticField = l42.hasMagneticField;
         }
-        if (i29.hasOrientation !== undefined) {
-            this.hasOrientation = i29.hasOrientation;
+        if (l42.hasOrientation !== undefined) {
+            this.hasOrientation = l42.hasOrientation;
         }
     }
-    updateStateVars(h29: SensorPage_Params) {
+    updateStateVars(k42: SensorPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(g29) {
-        this.__accelerometerData.purgeDependencyOnElmtId(g29);
-        this.__gyroscopeData.purgeDependencyOnElmtId(g29);
-        this.__lightData.purgeDependencyOnElmtId(g29);
-        this.__proximityData.purgeDependencyOnElmtId(g29);
-        this.__magneticFieldData.purgeDependencyOnElmtId(g29);
-        this.__orientationData.purgeDependencyOnElmtId(g29);
-        this.__hasAccelerometer.purgeDependencyOnElmtId(g29);
-        this.__hasGyroscope.purgeDependencyOnElmtId(g29);
-        this.__hasLight.purgeDependencyOnElmtId(g29);
-        this.__hasProximity.purgeDependencyOnElmtId(g29);
-        this.__hasMagneticField.purgeDependencyOnElmtId(g29);
-        this.__hasOrientation.purgeDependencyOnElmtId(g29);
+    purgeVariableDependenciesOnElmtId(j42) {
+        this.__accelerometerData.purgeDependencyOnElmtId(j42);
+        this.__gyroscopeData.purgeDependencyOnElmtId(j42);
+        this.__lightData.purgeDependencyOnElmtId(j42);
+        this.__proximityData.purgeDependencyOnElmtId(j42);
+        this.__magneticFieldData.purgeDependencyOnElmtId(j42);
+        this.__orientationData.purgeDependencyOnElmtId(j42);
+        this.__hasAccelerometer.purgeDependencyOnElmtId(j42);
+        this.__hasGyroscope.purgeDependencyOnElmtId(j42);
+        this.__hasLight.purgeDependencyOnElmtId(j42);
+        this.__hasProximity.purgeDependencyOnElmtId(j42);
+        this.__hasMagneticField.purgeDependencyOnElmtId(j42);
+        this.__hasOrientation.purgeDependencyOnElmtId(j42);
     }
     aboutToBeDeleted() {
         this.__accelerometerData.aboutToBeDeleted();
@@ -117,85 +117,85 @@ class SensorPage extends ViewPU {
     get accelerometerData() {
         return this.__accelerometerData.get();
     }
-    set accelerometerData(f29: AccelerometerData | null) {
-        this.__accelerometerData.set(f29);
+    set accelerometerData(i42: AccelerometerData | null) {
+        this.__accelerometerData.set(i42);
     }
     private __gyroscopeData: ObservedPropertyObjectPU<GyroscopeData | null>;
     get gyroscopeData() {
         return this.__gyroscopeData.get();
     }
-    set gyroscopeData(e29: GyroscopeData | null) {
-        this.__gyroscopeData.set(e29);
+    set gyroscopeData(h42: GyroscopeData | null) {
+        this.__gyroscopeData.set(h42);
     }
     private __lightData: ObservedPropertyObjectPU<LightData | null>;
     get lightData() {
         return this.__lightData.get();
     }
-    set lightData(d29: LightData | null) {
-        this.__lightData.set(d29);
+    set lightData(g42: LightData | null) {
+        this.__lightData.set(g42);
     }
     private __proximityData: ObservedPropertyObjectPU<ProximityData | null>;
     get proximityData() {
         return this.__proximityData.get();
     }
-    set proximityData(c29: ProximityData | null) {
-        this.__proximityData.set(c29);
+    set proximityData(f42: ProximityData | null) {
+        this.__proximityData.set(f42);
     }
     private __magneticFieldData: ObservedPropertyObjectPU<MagneticFieldData | null>;
     get magneticFieldData() {
         return this.__magneticFieldData.get();
     }
-    set magneticFieldData(b29: MagneticFieldData | null) {
-        this.__magneticFieldData.set(b29);
+    set magneticFieldData(e42: MagneticFieldData | null) {
+        this.__magneticFieldData.set(e42);
     }
     private __orientationData: ObservedPropertyObjectPU<OrientationData | null>;
     get orientationData() {
         return this.__orientationData.get();
     }
-    set orientationData(a29: OrientationData | null) {
-        this.__orientationData.set(a29);
+    set orientationData(d42: OrientationData | null) {
+        this.__orientationData.set(d42);
     }
     private __hasAccelerometer: ObservedPropertySimplePU<boolean>;
     get hasAccelerometer() {
         return this.__hasAccelerometer.get();
     }
-    set hasAccelerometer(z28: boolean) {
-        this.__hasAccelerometer.set(z28);
+    set hasAccelerometer(c42: boolean) {
+        this.__hasAccelerometer.set(c42);
     }
     private __hasGyroscope: ObservedPropertySimplePU<boolean>;
     get hasGyroscope() {
         return this.__hasGyroscope.get();
     }
-    set hasGyroscope(y28: boolean) {
-        this.__hasGyroscope.set(y28);
+    set hasGyroscope(b42: boolean) {
+        this.__hasGyroscope.set(b42);
     }
     private __hasLight: ObservedPropertySimplePU<boolean>;
     get hasLight() {
         return this.__hasLight.get();
     }
-    set hasLight(x28: boolean) {
-        this.__hasLight.set(x28);
+    set hasLight(a42: boolean) {
+        this.__hasLight.set(a42);
     }
     private __hasProximity: ObservedPropertySimplePU<boolean>;
     get hasProximity() {
         return this.__hasProximity.get();
     }
-    set hasProximity(w28: boolean) {
-        this.__hasProximity.set(w28);
+    set hasProximity(z41: boolean) {
+        this.__hasProximity.set(z41);
     }
     private __hasMagneticField: ObservedPropertySimplePU<boolean>;
     get hasMagneticField() {
         return this.__hasMagneticField.get();
     }
-    set hasMagneticField(v28: boolean) {
-        this.__hasMagneticField.set(v28);
+    set hasMagneticField(y41: boolean) {
+        this.__hasMagneticField.set(y41);
     }
     private __hasOrientation: ObservedPropertySimplePU<boolean>;
     get hasOrientation() {
         return this.__hasOrientation.get();
     }
-    set hasOrientation(u28: boolean) {
-        this.__hasOrientation.set(u28);
+    set hasOrientation(x41: boolean) {
+        this.__hasOrientation.set(x41);
     }
     aboutToAppear() {
         hilog.info(0x0000, TAG, 'SensorPage aboutToAppear');
@@ -224,69 +224,69 @@ class SensorPage extends ViewPU {
     }
     trySubscribeSensors() {
         try {
-            SensorUtil.subscribeAccelerometer((t28) => {
-                this.accelerometerData = t28;
+            SensorUtil.subscribeAccelerometer((w41) => {
+                this.accelerometerData = w41;
                 this.hasAccelerometer = true;
             });
             this.hasAccelerometer = true;
         }
-        catch (s28) {
+        catch (v41) {
             hilog.warn(0x0000, TAG, 'Accelerometer not available');
         }
         try {
-            SensorUtil.subscribeGyroscope((r28) => {
-                this.gyroscopeData = r28;
+            SensorUtil.subscribeGyroscope((u41) => {
+                this.gyroscopeData = u41;
                 this.hasGyroscope = true;
             });
             this.hasGyroscope = true;
         }
-        catch (q28) {
+        catch (t41) {
             hilog.warn(0x0000, TAG, 'Gyroscope not available');
         }
         try {
-            SensorUtil.subscribeLight((p28) => {
-                this.lightData = p28;
+            SensorUtil.subscribeLight((s41) => {
+                this.lightData = s41;
                 this.hasLight = true;
             });
             this.hasLight = true;
         }
-        catch (o28) {
+        catch (r41) {
             hilog.warn(0x0000, TAG, 'Light sensor not available');
         }
         try {
-            SensorUtil.subscribeProximity((n28) => {
-                this.proximityData = n28;
+            SensorUtil.subscribeProximity((q41) => {
+                this.proximityData = q41;
                 this.hasProximity = true;
             });
             this.hasProximity = true;
         }
-        catch (m28) {
+        catch (p41) {
             hilog.warn(0x0000, TAG, 'Proximity sensor not available');
         }
         try {
-            SensorUtil.subscribeMagneticField((l28) => {
-                this.magneticFieldData = l28;
+            SensorUtil.subscribeMagneticField((o41) => {
+                this.magneticFieldData = o41;
                 this.hasMagneticField = true;
             });
             this.hasMagneticField = true;
         }
-        catch (k28) {
+        catch (n41) {
             hilog.warn(0x0000, TAG, 'Magnetic field sensor not available');
         }
         try {
-            SensorUtil.subscribeOrientation((j28) => {
-                this.orientationData = j28;
+            SensorUtil.subscribeOrientation((m41) => {
+                this.orientationData = m41;
                 this.hasOrientation = true;
             });
             this.hasOrientation = true;
         }
-        catch (i28) {
+        catch (l41) {
             hilog.warn(0x0000, TAG, 'Orientation sensor not available');
         }
     }
-    DataDescription(e28: string, f28 = null) {
-        this.observeComponentCreation2((g28, h28) => {
-            Text.create(e28);
+    DataDescription(h41: string, i41 = null) {
+        this.observeComponentCreation2((j41, k41) => {
+            Text.create(h41);
             Text.fontSize(12);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ top: 4, bottom: 8 });
@@ -295,18 +295,18 @@ class SensorPage extends ViewPU {
         Text.pop();
     }
     initialRender() {
-        this.observeComponentCreation2((c28, d28) => {
+        this.observeComponentCreation2((f41, g41) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((a28, b28) => {
+        this.observeComponentCreation2((d41, e41) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((y27, z27) => {
+        this.observeComponentCreation2((b41, c41) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -315,7 +315,7 @@ class SensorPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((w27, x27) => {
+        this.observeComponentCreation2((z40, a41) => {
             Text.create('传感器');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
@@ -324,61 +324,61 @@ class SensorPage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((u27, v27) => {
+        this.observeComponentCreation2((x40, y40) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((s27, t27) => {
+        this.observeComponentCreation2((v40, w40) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((y26, z26) => {
+        this.observeComponentCreation2((b40, c40) => {
             If.create();
             if (this.hasAccelerometer) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((o27, p27) => {
-                            if (p27) {
-                                let q27 = new SectionHeader(this, { title: '加速度传感器' }, undefined, o27, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 157, col: 13 });
-                                ViewPU.create(q27);
-                                let r27 = () => {
+                        this.observeComponentCreation2((r40, s40) => {
+                            if (s40) {
+                                let t40 = new SectionHeader(this, { title: '加速度传感器' }, undefined, r40, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 157, col: 13 });
+                                ViewPU.create(t40);
+                                let u40 = () => {
                                     return {
                                         title: '加速度传感器'
                                     };
                                 };
-                                q27.paramsGenerator_ = r27;
+                                t40.paramsGenerator_ = u40;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(o27, {
+                                this.updateStateVarsOfChildByElmtId(r40, {
                                     title: '加速度传感器'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。用于检测设备的运动状态、倾斜角度等。');
-                    this.observeComponentCreation2((a27, b27) => {
+                    this.observeComponentCreation2((d40, e40) => {
                         If.create();
                         if (this.accelerometerData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((k27, l27) => {
-                                        if (l27) {
-                                            let m27 = new InfoCard(this, {
+                                    this.observeComponentCreation2((n40, o40) => {
+                                        if (o40) {
+                                            let p40 = new InfoCard(this, {
                                                 title: 'X 轴',
                                                 value: `${this.accelerometerData.x.toFixed(2)} m/s²`
-                                            }, undefined, k27, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 161, col: 15 });
-                                            ViewPU.create(m27);
-                                            let n27 = () => {
+                                            }, undefined, n40, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 161, col: 15 });
+                                            ViewPU.create(p40);
+                                            let q40 = () => {
                                                 return {
                                                     title: 'X 轴',
                                                     value: `${this.accelerometerData.x.toFixed(2)} m/s²`
                                                 };
                                             };
-                                            m27.paramsGenerator_ = n27;
+                                            p40.paramsGenerator_ = q40;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(k27, {
+                                            this.updateStateVarsOfChildByElmtId(n40, {
                                                 title: 'X 轴',
                                                 value: `${this.accelerometerData.x.toFixed(2)} m/s²`
                                             });
@@ -386,23 +386,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((g27, h27) => {
-                                        if (h27) {
-                                            let i27 = new InfoCard(this, {
+                                    this.observeComponentCreation2((j40, k40) => {
+                                        if (k40) {
+                                            let l40 = new InfoCard(this, {
                                                 title: 'Y 轴',
                                                 value: `${this.accelerometerData.y.toFixed(2)} m/s²`
-                                            }, undefined, g27, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 166, col: 15 });
-                                            ViewPU.create(i27);
-                                            let j27 = () => {
+                                            }, undefined, j40, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 166, col: 15 });
+                                            ViewPU.create(l40);
+                                            let m40 = () => {
                                                 return {
                                                     title: 'Y 轴',
                                                     value: `${this.accelerometerData.y.toFixed(2)} m/s²`
                                                 };
                                             };
-                                            i27.paramsGenerator_ = j27;
+                                            l40.paramsGenerator_ = m40;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(g27, {
+                                            this.updateStateVarsOfChildByElmtId(j40, {
                                                 title: 'Y 轴',
                                                 value: `${this.accelerometerData.y.toFixed(2)} m/s²`
                                             });
@@ -410,23 +410,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((c27, d27) => {
-                                        if (d27) {
-                                            let e27 = new InfoCard(this, {
+                                    this.observeComponentCreation2((f40, g40) => {
+                                        if (g40) {
+                                            let h40 = new InfoCard(this, {
                                                 title: 'Z 轴',
                                                 value: `${this.accelerometerData.z.toFixed(2)} m/s²`
-                                            }, undefined, c27, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 171, col: 15 });
-                                            ViewPU.create(e27);
-                                            let f27 = () => {
+                                            }, undefined, f40, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 171, col: 15 });
+                                            ViewPU.create(h40);
+                                            let i40 = () => {
                                                 return {
                                                     title: 'Z 轴',
                                                     value: `${this.accelerometerData.z.toFixed(2)} m/s²`
                                                 };
                                             };
-                                            e27.paramsGenerator_ = f27;
+                                            h40.paramsGenerator_ = i40;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(c27, {
+                                            this.updateStateVarsOfChildByElmtId(f40, {
                                                 title: 'Z 轴',
                                                 value: `${this.accelerometerData.z.toFixed(2)} m/s²`
                                             });
@@ -449,52 +449,52 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((e26, f26) => {
+        this.observeComponentCreation2((h39, i39) => {
             If.create();
             if (this.hasGyroscope) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((u26, v26) => {
-                            if (v26) {
-                                let w26 = new SectionHeader(this, { title: '陀螺仪' }, undefined, u26, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 180, col: 13 });
-                                ViewPU.create(w26);
-                                let x26 = () => {
+                        this.observeComponentCreation2((x39, y39) => {
+                            if (y39) {
+                                let z39 = new SectionHeader(this, { title: '陀螺仪' }, undefined, x39, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 180, col: 13 });
+                                ViewPU.create(z39);
+                                let a40 = () => {
                                     return {
                                         title: '陀螺仪'
                                     };
                                 };
-                                w26.paramsGenerator_ = x26;
+                                z39.paramsGenerator_ = a40;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(u26, {
+                                this.updateStateVarsOfChildByElmtId(x39, {
                                     title: '陀螺仪'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。用于检测设备的旋转、转向等动作。');
-                    this.observeComponentCreation2((g26, h26) => {
+                    this.observeComponentCreation2((j39, k39) => {
                         If.create();
                         if (this.gyroscopeData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((q26, r26) => {
-                                        if (r26) {
-                                            let s26 = new InfoCard(this, {
+                                    this.observeComponentCreation2((t39, u39) => {
+                                        if (u39) {
+                                            let v39 = new InfoCard(this, {
                                                 title: 'X 轴角速度',
                                                 value: `${this.gyroscopeData.x.toFixed(2)} rad/s`
-                                            }, undefined, q26, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 184, col: 15 });
-                                            ViewPU.create(s26);
-                                            let t26 = () => {
+                                            }, undefined, t39, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 184, col: 15 });
+                                            ViewPU.create(v39);
+                                            let w39 = () => {
                                                 return {
                                                     title: 'X 轴角速度',
                                                     value: `${this.gyroscopeData.x.toFixed(2)} rad/s`
                                                 };
                                             };
-                                            s26.paramsGenerator_ = t26;
+                                            v39.paramsGenerator_ = w39;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(q26, {
+                                            this.updateStateVarsOfChildByElmtId(t39, {
                                                 title: 'X 轴角速度',
                                                 value: `${this.gyroscopeData.x.toFixed(2)} rad/s`
                                             });
@@ -502,23 +502,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((m26, n26) => {
-                                        if (n26) {
-                                            let o26 = new InfoCard(this, {
+                                    this.observeComponentCreation2((p39, q39) => {
+                                        if (q39) {
+                                            let r39 = new InfoCard(this, {
                                                 title: 'Y 轴角速度',
                                                 value: `${this.gyroscopeData.y.toFixed(2)} rad/s`
-                                            }, undefined, m26, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 189, col: 15 });
-                                            ViewPU.create(o26);
-                                            let p26 = () => {
+                                            }, undefined, p39, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 189, col: 15 });
+                                            ViewPU.create(r39);
+                                            let s39 = () => {
                                                 return {
                                                     title: 'Y 轴角速度',
                                                     value: `${this.gyroscopeData.y.toFixed(2)} rad/s`
                                                 };
                                             };
-                                            o26.paramsGenerator_ = p26;
+                                            r39.paramsGenerator_ = s39;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(m26, {
+                                            this.updateStateVarsOfChildByElmtId(p39, {
                                                 title: 'Y 轴角速度',
                                                 value: `${this.gyroscopeData.y.toFixed(2)} rad/s`
                                             });
@@ -526,23 +526,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((i26, j26) => {
-                                        if (j26) {
-                                            let k26 = new InfoCard(this, {
+                                    this.observeComponentCreation2((l39, m39) => {
+                                        if (m39) {
+                                            let n39 = new InfoCard(this, {
                                                 title: 'Z 轴角速度',
                                                 value: `${this.gyroscopeData.z.toFixed(2)} rad/s`
-                                            }, undefined, i26, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 194, col: 15 });
-                                            ViewPU.create(k26);
-                                            let l26 = () => {
+                                            }, undefined, l39, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 194, col: 15 });
+                                            ViewPU.create(n39);
+                                            let o39 = () => {
                                                 return {
                                                     title: 'Z 轴角速度',
                                                     value: `${this.gyroscopeData.z.toFixed(2)} rad/s`
                                                 };
                                             };
-                                            k26.paramsGenerator_ = l26;
+                                            n39.paramsGenerator_ = o39;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(i26, {
+                                            this.updateStateVarsOfChildByElmtId(l39, {
                                                 title: 'Z 轴角速度',
                                                 value: `${this.gyroscopeData.z.toFixed(2)} rad/s`
                                             });
@@ -565,52 +565,52 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((s25, t25) => {
+        this.observeComponentCreation2((v38, w38) => {
             If.create();
             if (this.hasLight) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((a26, b26) => {
-                            if (b26) {
-                                let c26 = new SectionHeader(this, { title: '光线传感器' }, undefined, a26, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 203, col: 13 });
-                                ViewPU.create(c26);
-                                let d26 = () => {
+                        this.observeComponentCreation2((d39, e39) => {
+                            if (e39) {
+                                let f39 = new SectionHeader(this, { title: '光线传感器' }, undefined, d39, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 203, col: 13 });
+                                ViewPU.create(f39);
+                                let g39 = () => {
                                     return {
                                         title: '光线传感器'
                                     };
                                 };
-                                c26.paramsGenerator_ = d26;
+                                f39.paramsGenerator_ = g39;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(a26, {
+                                this.updateStateVarsOfChildByElmtId(d39, {
                                     title: '光线传感器'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量环境光强度，单位 lux。用于自动调节屏幕亮度、切换暗黑模式等。');
-                    this.observeComponentCreation2((u25, v25) => {
+                    this.observeComponentCreation2((x38, y38) => {
                         If.create();
                         if (this.lightData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((w25, x25) => {
-                                        if (x25) {
-                                            let y25 = new InfoCard(this, {
+                                    this.observeComponentCreation2((z38, a39) => {
+                                        if (a39) {
+                                            let b39 = new InfoCard(this, {
                                                 title: '光强度',
                                                 value: `${this.lightData.intensity.toFixed(0)} lux`
-                                            }, undefined, w25, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 207, col: 15 });
-                                            ViewPU.create(y25);
-                                            let z25 = () => {
+                                            }, undefined, z38, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 207, col: 15 });
+                                            ViewPU.create(b39);
+                                            let c39 = () => {
                                                 return {
                                                     title: '光强度',
                                                     value: `${this.lightData.intensity.toFixed(0)} lux`
                                                 };
                                             };
-                                            y25.paramsGenerator_ = z25;
+                                            b39.paramsGenerator_ = c39;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(w25, {
+                                            this.updateStateVarsOfChildByElmtId(z38, {
                                                 title: '光强度',
                                                 value: `${this.lightData.intensity.toFixed(0)} lux`
                                             });
@@ -633,52 +633,52 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((g25, h25) => {
+        this.observeComponentCreation2((j38, k38) => {
             If.create();
             if (this.hasProximity) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((o25, p25) => {
-                            if (p25) {
-                                let q25 = new SectionHeader(this, { title: '距离传感器' }, undefined, o25, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 216, col: 13 });
-                                ViewPU.create(q25);
-                                let r25 = () => {
+                        this.observeComponentCreation2((r38, s38) => {
+                            if (s38) {
+                                let t38 = new SectionHeader(this, { title: '距离传感器' }, undefined, r38, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 216, col: 13 });
+                                ViewPU.create(t38);
+                                let u38 = () => {
                                     return {
                                         title: '距离传感器'
                                     };
                                 };
-                                q25.paramsGenerator_ = r25;
+                                t38.paramsGenerator_ = u38;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(o25, {
+                                this.updateStateVarsOfChildByElmtId(r38, {
                                     title: '距离传感器'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量设备与遮挡物之间的距离，单位 cm。用于通话时自动息屏、接近检测等。');
-                    this.observeComponentCreation2((i25, j25) => {
+                    this.observeComponentCreation2((l38, m38) => {
                         If.create();
                         if (this.proximityData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((k25, l25) => {
-                                        if (l25) {
-                                            let m25 = new InfoCard(this, {
+                                    this.observeComponentCreation2((n38, o38) => {
+                                        if (o38) {
+                                            let p38 = new InfoCard(this, {
                                                 title: '距离',
                                                 value: `${this.proximityData.distance.toFixed(0)} cm`
-                                            }, undefined, k25, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 220, col: 15 });
-                                            ViewPU.create(m25);
-                                            let n25 = () => {
+                                            }, undefined, n38, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 220, col: 15 });
+                                            ViewPU.create(p38);
+                                            let q38 = () => {
                                                 return {
                                                     title: '距离',
                                                     value: `${this.proximityData.distance.toFixed(0)} cm`
                                                 };
                                             };
-                                            m25.paramsGenerator_ = n25;
+                                            p38.paramsGenerator_ = q38;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(k25, {
+                                            this.updateStateVarsOfChildByElmtId(n38, {
                                                 title: '距离',
                                                 value: `${this.proximityData.distance.toFixed(0)} cm`
                                             });
@@ -701,52 +701,52 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((m24, n24) => {
+        this.observeComponentCreation2((p37, q37) => {
             If.create();
             if (this.hasMagneticField) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((c25, d25) => {
-                            if (d25) {
-                                let e25 = new SectionHeader(this, { title: '磁场传感器' }, undefined, c25, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 229, col: 13 });
-                                ViewPU.create(e25);
-                                let f25 = () => {
+                        this.observeComponentCreation2((f38, g38) => {
+                            if (g38) {
+                                let h38 = new SectionHeader(this, { title: '磁场传感器' }, undefined, f38, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 229, col: 13 });
+                                ViewPU.create(h38);
+                                let i38 = () => {
                                     return {
                                         title: '磁场传感器'
                                     };
                                 };
-                                e25.paramsGenerator_ = f25;
+                                h38.paramsGenerator_ = i38;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(c25, {
+                                this.updateStateVarsOfChildByElmtId(f38, {
                                     title: '磁场传感器'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量设备周围的磁场强度，单位 μT。用于电子罗盘、方向检测等。');
-                    this.observeComponentCreation2((o24, p24) => {
+                    this.observeComponentCreation2((r37, s37) => {
                         If.create();
                         if (this.magneticFieldData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((y24, z24) => {
-                                        if (z24) {
-                                            let a25 = new InfoCard(this, {
+                                    this.observeComponentCreation2((b38, c38) => {
+                                        if (c38) {
+                                            let d38 = new InfoCard(this, {
                                                 title: 'X 轴磁场',
                                                 value: `${this.magneticFieldData.x.toFixed(2)} μT`
-                                            }, undefined, y24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 233, col: 15 });
-                                            ViewPU.create(a25);
-                                            let b25 = () => {
+                                            }, undefined, b38, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 233, col: 15 });
+                                            ViewPU.create(d38);
+                                            let e38 = () => {
                                                 return {
                                                     title: 'X 轴磁场',
                                                     value: `${this.magneticFieldData.x.toFixed(2)} μT`
                                                 };
                                             };
-                                            a25.paramsGenerator_ = b25;
+                                            d38.paramsGenerator_ = e38;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(y24, {
+                                            this.updateStateVarsOfChildByElmtId(b38, {
                                                 title: 'X 轴磁场',
                                                 value: `${this.magneticFieldData.x.toFixed(2)} μT`
                                             });
@@ -754,23 +754,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((u24, v24) => {
-                                        if (v24) {
-                                            let w24 = new InfoCard(this, {
+                                    this.observeComponentCreation2((x37, y37) => {
+                                        if (y37) {
+                                            let z37 = new InfoCard(this, {
                                                 title: 'Y 轴磁场',
                                                 value: `${this.magneticFieldData.y.toFixed(2)} μT`
-                                            }, undefined, u24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 238, col: 15 });
-                                            ViewPU.create(w24);
-                                            let x24 = () => {
+                                            }, undefined, x37, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 238, col: 15 });
+                                            ViewPU.create(z37);
+                                            let a38 = () => {
                                                 return {
                                                     title: 'Y 轴磁场',
                                                     value: `${this.magneticFieldData.y.toFixed(2)} μT`
                                                 };
                                             };
-                                            w24.paramsGenerator_ = x24;
+                                            z37.paramsGenerator_ = a38;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(u24, {
+                                            this.updateStateVarsOfChildByElmtId(x37, {
                                                 title: 'Y 轴磁场',
                                                 value: `${this.magneticFieldData.y.toFixed(2)} μT`
                                             });
@@ -778,23 +778,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((q24, r24) => {
-                                        if (r24) {
-                                            let s24 = new InfoCard(this, {
+                                    this.observeComponentCreation2((t37, u37) => {
+                                        if (u37) {
+                                            let v37 = new InfoCard(this, {
                                                 title: 'Z 轴磁场',
                                                 value: `${this.magneticFieldData.z.toFixed(2)} μT`
-                                            }, undefined, q24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 243, col: 15 });
-                                            ViewPU.create(s24);
-                                            let t24 = () => {
+                                            }, undefined, t37, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 243, col: 15 });
+                                            ViewPU.create(v37);
+                                            let w37 = () => {
                                                 return {
                                                     title: 'Z 轴磁场',
                                                     value: `${this.magneticFieldData.z.toFixed(2)} μT`
                                                 };
                                             };
-                                            s24.paramsGenerator_ = t24;
+                                            v37.paramsGenerator_ = w37;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(q24, {
+                                            this.updateStateVarsOfChildByElmtId(t37, {
                                                 title: 'Z 轴磁场',
                                                 value: `${this.magneticFieldData.z.toFixed(2)} μT`
                                             });
@@ -817,52 +817,52 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((s23, t23) => {
+        this.observeComponentCreation2((v36, w36) => {
             If.create();
             if (this.hasOrientation) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     {
-                        this.observeComponentCreation2((i24, j24) => {
-                            if (j24) {
-                                let k24 = new SectionHeader(this, { title: '方向传感器' }, undefined, i24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 252, col: 13 });
-                                ViewPU.create(k24);
-                                let l24 = () => {
+                        this.observeComponentCreation2((l37, m37) => {
+                            if (m37) {
+                                let n37 = new SectionHeader(this, { title: '方向传感器' }, undefined, l37, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 252, col: 13 });
+                                ViewPU.create(n37);
+                                let o37 = () => {
                                     return {
                                         title: '方向传感器'
                                     };
                                 };
-                                k24.paramsGenerator_ = l24;
+                                n37.paramsGenerator_ = o37;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(i24, {
+                                this.updateStateVarsOfChildByElmtId(l37, {
                                     title: '方向传感器'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('测量设备的方位角度。Alpha: 方位角(0-360°)，Beta: 俯仰角(-180-180°)，Gamma: 翻滚角(-90-90°)。');
-                    this.observeComponentCreation2((u23, v23) => {
+                    this.observeComponentCreation2((x36, y36) => {
                         If.create();
                         if (this.orientationData) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((e24, f24) => {
-                                        if (f24) {
-                                            let g24 = new InfoCard(this, {
+                                    this.observeComponentCreation2((h37, i37) => {
+                                        if (i37) {
+                                            let j37 = new InfoCard(this, {
                                                 title: '方位角 (Alpha)',
                                                 value: `${this.orientationData.alpha.toFixed(1)}°`
-                                            }, undefined, e24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 256, col: 15 });
-                                            ViewPU.create(g24);
-                                            let h24 = () => {
+                                            }, undefined, h37, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 256, col: 15 });
+                                            ViewPU.create(j37);
+                                            let k37 = () => {
                                                 return {
                                                     title: '方位角 (Alpha)',
                                                     value: `${this.orientationData.alpha.toFixed(1)}°`
                                                 };
                                             };
-                                            g24.paramsGenerator_ = h24;
+                                            j37.paramsGenerator_ = k37;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(e24, {
+                                            this.updateStateVarsOfChildByElmtId(h37, {
                                                 title: '方位角 (Alpha)',
                                                 value: `${this.orientationData.alpha.toFixed(1)}°`
                                             });
@@ -870,23 +870,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((a24, b24) => {
-                                        if (b24) {
-                                            let c24 = new InfoCard(this, {
+                                    this.observeComponentCreation2((d37, e37) => {
+                                        if (e37) {
+                                            let f37 = new InfoCard(this, {
                                                 title: '俯仰角 (Beta)',
                                                 value: `${this.orientationData.beta.toFixed(1)}°`
-                                            }, undefined, a24, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 261, col: 15 });
-                                            ViewPU.create(c24);
-                                            let d24 = () => {
+                                            }, undefined, d37, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 261, col: 15 });
+                                            ViewPU.create(f37);
+                                            let g37 = () => {
                                                 return {
                                                     title: '俯仰角 (Beta)',
                                                     value: `${this.orientationData.beta.toFixed(1)}°`
                                                 };
                                             };
-                                            c24.paramsGenerator_ = d24;
+                                            f37.paramsGenerator_ = g37;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(a24, {
+                                            this.updateStateVarsOfChildByElmtId(d37, {
                                                 title: '俯仰角 (Beta)',
                                                 value: `${this.orientationData.beta.toFixed(1)}°`
                                             });
@@ -894,23 +894,23 @@ class SensorPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((w23, x23) => {
-                                        if (x23) {
-                                            let y23 = new InfoCard(this, {
+                                    this.observeComponentCreation2((z36, a37) => {
+                                        if (a37) {
+                                            let b37 = new InfoCard(this, {
                                                 title: '翻滚角 (Gamma)',
                                                 value: `${this.orientationData.gamma.toFixed(1)}°`
-                                            }, undefined, w23, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 266, col: 15 });
-                                            ViewPU.create(y23);
-                                            let z23 = () => {
+                                            }, undefined, z36, () => { }, { page: "entry/src/main/ets/pages/SensorPage.ets", line: 266, col: 15 });
+                                            ViewPU.create(b37);
+                                            let c37 = () => {
                                                 return {
                                                     title: '翻滚角 (Gamma)',
                                                     value: `${this.orientationData.gamma.toFixed(1)}°`
                                                 };
                                             };
-                                            y23.paramsGenerator_ = z23;
+                                            b37.paramsGenerator_ = c37;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(w23, {
+                                            this.updateStateVarsOfChildByElmtId(z36, {
                                                 title: '翻滚角 (Gamma)',
                                                 value: `${this.orientationData.gamma.toFixed(1)}°`
                                             });
@@ -933,12 +933,12 @@ class SensorPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((k23, l23) => {
+        this.observeComponentCreation2((n36, o36) => {
             If.create();
             if (!this.hasAccelerometer && !this.hasGyroscope && !this.hasLight &&
                 !this.hasProximity && !this.hasMagneticField && !this.hasOrientation) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((q23, r23) => {
+                    this.observeComponentCreation2((t36, u36) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(24);
@@ -946,14 +946,14 @@ class SensorPage extends ViewPU {
                         Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((o23, p23) => {
+                    this.observeComponentCreation2((r36, s36) => {
                         Text.create('未检测到传感器');
                         Text.fontSize(18);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Text.margin(24);
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((m23, n23) => {
+                    this.observeComponentCreation2((p36, q36) => {
                         Text.create('该设备可能没有可用的传感器或传感器权限未开启');
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });

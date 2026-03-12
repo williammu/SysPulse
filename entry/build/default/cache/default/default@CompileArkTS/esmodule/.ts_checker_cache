@@ -35,7 +35,8 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
       ],
       "error": false
     },
@@ -679,7 +680,8 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
       ],
       "error": false
     },
@@ -1699,7 +1701,7 @@
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets": {
-      "mtimeMs": 1773302852767.0808,
+      "mtimeMs": 1773308769356.4539,
       "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
@@ -1764,7 +1766,7 @@
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets": {
-      "mtimeMs": 1773303776627.061,
+      "mtimeMs": 1773304979803.0774,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
@@ -1782,7 +1784,7 @@
       ]
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets": {
-      "mtimeMs": 1773296145640.0996,
+      "mtimeMs": 1773308412073.7341,
       "children": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
@@ -1796,17 +1798,18 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets"
       ],
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets": {
-      "mtimeMs": 1773303603981.2148,
+      "mtimeMs": 1773307934108.6533,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SimpleChart.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
@@ -1814,11 +1817,12 @@
       "parent": [],
       "error": true,
       "errorCodes": [
+        28040,
         28007
       ]
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts": {
-      "mtimeMs": 1773293047206.7153,
+      "mtimeMs": 1773308389711.2803,
       "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets"
@@ -1837,18 +1841,19 @@
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets": {
-      "mtimeMs": 1773303603931.462,
+      "mtimeMs": 1773309113722.602,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
       ],
       "parent": [],
       "error": true,
       "errorCodes": [
+        28040,
         28007
       ]
     },
@@ -2493,16 +2498,18 @@
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets": {
-      "mtimeMs": 1773303603922.232,
+      "mtimeMs": 1773308872985.2012,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
       ],
       "parent": [],
       "error": true,
       "errorCodes": [
+        28040,
         28007
       ]
     },
@@ -2530,6 +2537,46 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets"
       ],
       "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets": {
+      "mtimeMs": 1773307855954.3733,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets"
+      ],
+      "error": false,
+      "errorCodes": [
+        2416,
+        2345
+      ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets": {
+      "mtimeMs": 1773307883570.0068,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
+      ],
+      "error": false,
+      "errorCodes": [
+        40,
+        43,
+        38
+      ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets": {
+      "mtimeMs": 1773307909964.5786,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
+      ],
+      "parent": [],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
     }
   }
 }

@@ -7,37 +7,37 @@ import router from "@ohos:router";
 import { InfoCard } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoCard";
 import { SectionHeader } from "@bundle:com.huawei.sysinfo/entry/ets/components/SectionHeader";
 class CameraPage extends ViewPU {
-    constructor(r6, s6, t6, u6 = -1, v6 = undefined, w6) {
-        super(r6, t6, u6, w6);
-        if (typeof v6 === "function") {
-            this.paramsGenerator_ = v6;
+    constructor(h10, i10, j10, k10 = -1, l10 = undefined, m10) {
+        super(h10, j10, k10, m10);
+        if (typeof l10 === "function") {
+            this.paramsGenerator_ = l10;
         }
-        this.setInitiallyProvidedValue(s6);
+        this.setInitiallyProvidedValue(i10);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(q6: CameraPage_Params) {
+    setInitiallyProvidedValue(g10: CameraPage_Params) {
     }
-    updateStateVars(p6: CameraPage_Params) {
+    updateStateVars(f10: CameraPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(o6) {
+    purgeVariableDependenciesOnElmtId(e10) {
     }
     aboutToBeDeleted() {
         SubscriberManager.Get().delete(this.id__());
         this.aboutToBeDeletedInternal();
     }
     initialRender() {
-        this.observeComponentCreation2((m6, n6) => {
+        this.observeComponentCreation2((c10, d10) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((k6, l6) => {
+        this.observeComponentCreation2((a10, b10) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((i6, j6) => {
+        this.observeComponentCreation2((y9, z9) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -46,7 +46,7 @@ class CameraPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((g6, h6) => {
+        this.observeComponentCreation2((w9, x9) => {
             Text.create('摄像头');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
@@ -55,52 +55,52 @@ class CameraPage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((e6, f6) => {
+        this.observeComponentCreation2((u9, v9) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((c6, d6) => {
+        this.observeComponentCreation2((s9, t9) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
         {
-            this.observeComponentCreation2((y5, z5) => {
-                if (z5) {
-                    let a6 = new SectionHeader(this, { title: '状态' }, undefined, y5, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 29, col: 11 });
-                    ViewPU.create(a6);
-                    let b6 = () => {
+            this.observeComponentCreation2((o9, p9) => {
+                if (p9) {
+                    let q9 = new SectionHeader(this, { title: '状态' }, undefined, o9, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 29, col: 11 });
+                    ViewPU.create(q9);
+                    let r9 = () => {
                         return {
                             title: '状态'
                         };
                     };
-                    a6.paramsGenerator_ = b6;
+                    q9.paramsGenerator_ = r9;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(y5, {
+                    this.updateStateVarsOfChildByElmtId(o9, {
                         title: '状态'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((u5, v5) => {
-                if (v5) {
-                    let w5 = new InfoCard(this, {
+            this.observeComponentCreation2((k9, l9) => {
+                if (l9) {
+                    let m9 = new InfoCard(this, {
                         title: '摄像头信息',
                         value: '暂未获取'
-                    }, undefined, u5, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 31, col: 11 });
-                    ViewPU.create(w5);
-                    let x5 = () => {
+                    }, undefined, k9, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 31, col: 11 });
+                    ViewPU.create(m9);
+                    let n9 = () => {
                         return {
                             title: '摄像头信息',
                             value: '暂未获取'
                         };
                     };
-                    w5.paramsGenerator_ = x5;
+                    m9.paramsGenerator_ = n9;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(u5, {
+                    this.updateStateVarsOfChildByElmtId(k9, {
                         title: '摄像头信息',
                         value: '暂未获取'
                     });
@@ -108,42 +108,42 @@ class CameraPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((q5, r5) => {
-                if (r5) {
-                    let s5 = new SectionHeader(this, { title: '说明' }, undefined, q5, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 36, col: 11 });
-                    ViewPU.create(s5);
-                    let t5 = () => {
+            this.observeComponentCreation2((g9, h9) => {
+                if (h9) {
+                    let i9 = new SectionHeader(this, { title: '说明' }, undefined, g9, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 36, col: 11 });
+                    ViewPU.create(i9);
+                    let j9 = () => {
                         return {
                             title: '说明'
                         };
                     };
-                    s5.paramsGenerator_ = t5;
+                    i9.paramsGenerator_ = j9;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(q5, {
+                    this.updateStateVarsOfChildByElmtId(g9, {
                         title: '说明'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((m5, n5) => {
-                if (n5) {
-                    let o5 = new InfoCard(this, {
+            this.observeComponentCreation2((c9, d9) => {
+                if (d9) {
+                    let e9 = new InfoCard(this, {
                         title: 'API 限制',
                         value: 'HarmonyOS NEXT 暂未提供获取摄像头详细信息的公开 API'
-                    }, undefined, m5, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 38, col: 11 });
-                    ViewPU.create(o5);
-                    let p5 = () => {
+                    }, undefined, c9, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 38, col: 11 });
+                    ViewPU.create(e9);
+                    let f9 = () => {
                         return {
                             title: 'API 限制',
                             value: 'HarmonyOS NEXT 暂未提供获取摄像头详细信息的公开 API'
                         };
                     };
-                    o5.paramsGenerator_ = p5;
+                    e9.paramsGenerator_ = f9;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(m5, {
+                    this.updateStateVarsOfChildByElmtId(c9, {
                         title: 'API 限制',
                         value: 'HarmonyOS NEXT 暂未提供获取摄像头详细信息的公开 API'
                     });
@@ -151,23 +151,23 @@ class CameraPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((i5, j5) => {
-                if (j5) {
-                    let k5 = new InfoCard(this, {
+            this.observeComponentCreation2((y8, z8) => {
+                if (z8) {
+                    let a9 = new InfoCard(this, {
                         title: '备注',
                         value: '如需获取摄像头信息，需要申请系统权限或使用私有 API'
-                    }, undefined, i5, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 43, col: 11 });
-                    ViewPU.create(k5);
-                    let l5 = () => {
+                    }, undefined, y8, () => { }, { page: "entry/src/main/ets/pages/CameraPage.ets", line: 43, col: 11 });
+                    ViewPU.create(a9);
+                    let b9 = () => {
                         return {
                             title: '备注',
                             value: '如需获取摄像头信息，需要申请系统权限或使用私有 API'
                         };
                     };
-                    k5.paramsGenerator_ = l5;
+                    a9.paramsGenerator_ = b9;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(i5, {
+                    this.updateStateVarsOfChildByElmtId(y8, {
                         title: '备注',
                         value: '如需获取摄像头信息，需要申请系统权限或使用私有 API'
                     });

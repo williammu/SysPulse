@@ -1,7 +1,7 @@
 import router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
-import { SectionHeader } from '../components/SectionHeader';
+import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
 import { SimpleChart } from '../components/SimpleChart';
 import { nativeApi, CpuUsage, CpuUsageAll, ThreadCpuInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -100,13 +100,12 @@ struct CpuPage {
     return '未获取';
   }
 
-  @Builder
-  DataDescription(text: string) {
-    Text(text)
-      .fontSize(12)
-      .fontColor($r('app.color.text_secondary'))
-      .margin({ top: 4, bottom: 8 })
-      .width('100%')
+  // 跳转到概念详情页
+  navigateToConcept(conceptId: string): void {
+    router.pushUrl({
+      url: 'pages/ConceptDetailPage',
+      params: { conceptId: conceptId }
+    });
   }
 
   build() {
@@ -137,8 +136,12 @@ struct CpuPage {
               .margin(24)
           } else {
             // CPU 使用率概览
-            SectionHeader({ title: 'CPU 使用率' });
-            this.DataDescription('显示系统和应用的 CPU 使用率。CPU 使用率表示处理器在一段时间内处于忙碌状态的时间比例。');
+            InfoHeader({
+              title: 'CPU 使用率',
+              subtitle: '显示系统和应用的 CPU 使用率',
+              conceptId: 'cpu_usage',
+              onInfoClick: () => this.navigateToConcept('cpu_usage')
+            });
 
             if (this.isNativeAvailable && this.systemCpuUsage?.success) {
               Column() {
@@ -171,9 +174,11 @@ struct CpuPage {
 
               // 应用 CPU 使用率
               if (this.appCpuUsage?.success) {
-                InfoCard({
+                InfoCardWithDesc({
                   title: '应用 CPU 使用率',
-                  value: `${this.getAppCpuUsagePercent()}%`
+                  value: `${this.getAppCpuUsagePercent()}%`,
+                  conceptId: 'cpu_usage',
+                  onInfoClick: () => this.navigateToConcept('cpu_usage')
                 })
               }
             } else {
@@ -191,8 +196,10 @@ struct CpuPage {
             }
 
             // CPU 基本信息
-            SectionHeader({ title: 'CPU 信息' });
-            this.DataDescription('显示 CPU 的硬件规格信息，包括架构、核心数、型号等。');
+            InfoHeader({
+              title: 'CPU 信息',
+              subtitle: '显示 CPU 的硬件规格信息'
+            });
 
             InfoCard({
               title: '架构',
@@ -216,8 +223,12 @@ struct CpuPage {
 
             // 线程 CPU 使用率
             if (this.cpuUsageAll?.success && this.cpuUsageAll.threads.length > 0) {
-              SectionHeader({ title: `线程 CPU 使用率 (${this.cpuUsageAll.threadCount})` });
-              this.DataDescription('显示应用各线程的 CPU 使用率。线程是程序执行的最小单位，多线程可以提高程序的并发性能。');
+              InfoHeader({
+                title: `线程 CPU 使用率 (${this.cpuUsageAll.threadCount})`,
+                subtitle: '显示应用各线程的 CPU 使用率',
+                conceptId: 'thread_cpu',
+                onInfoClick: () => this.navigateToConcept('thread_cpu')
+              });
 
               ForEach(this.cpuUsageAll.threads.slice(0, 15), (thread: ThreadCpuInfo) => {
                 InfoCard({

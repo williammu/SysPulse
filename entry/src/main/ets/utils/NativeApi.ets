@@ -64,6 +64,52 @@ export interface GpuMemoryInfo {
   error?: string;
 }
 
+export interface GpuInfo {
+  // 基本信息
+  vendor: string;
+  renderer: string;
+  version: string;
+  shadingLanguageVersion: string;
+  extensions: string;
+
+  // 纹理限制
+  maxTextureSize: number;
+  maxCubeMapTextureSize: number;
+  maxRenderbufferSize: number;
+  maxTextureImageUnits: number;
+  maxVertexTextureImageUnits: number;
+  maxCombinedTextureImageUnits: number;
+
+  // 视口和渲染限制
+  maxViewportWidth: number;
+  maxViewportHeight: number;
+  aliasedLineWidthRange: number[];
+  aliasedPointSizeRange: number[];
+
+  // 着色器限制
+  maxVertexAttribs: number;
+  maxVertexUniformVectors: number;
+  maxFragmentUniformVectors: number;
+  maxVaryingVectors: number;
+  maxUniformBufferBindings: number;
+  maxUniformBlockSize: number;
+
+  // 其他限制
+  maxDrawBuffers: number;
+  maxColorAttachments: number;
+  maxSamples: number;
+  maxElementIndex: number;
+  numProgramBinaryFormats: number;
+  numShaderBinaryFormats: number;
+  numExtensions: number;
+
+  // 压缩纹理格式
+  compressedTextureFormats: number[];
+
+  success: boolean;
+  error?: string;
+}
+
 // ============ Sensor 数据接口 ============
 
 export interface SensorInfo {
@@ -274,6 +320,18 @@ export class NativeApi {
       return result;
     } catch (e) {
       hilog.error(0x0000, TAG, 'getGpuMemoryInfo error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getGpuInfo(): GpuInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getGpuInfo() as GpuInfo;
+      hilog.debug(0x0000, TAG, 'GpuInfo: vendor=%{public}s, renderer=%{public}s', result.vendor, result.renderer);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getGpuInfo error: %{public}s', String(e));
       return null;
     }
   }

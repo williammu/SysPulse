@@ -252,6 +252,12 @@ PACKAGE_FIND_FILE:UNINITIALIZED=/Users/bytedance/dev/huawei_sysinfo/entry/.cxx/d
 UNIX:BOOL=TRUE
 
 //Path to a library.
+egl-lib:FILEPATH=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libEGL.so
+
+//Path to a library.
+gles-lib:FILEPATH=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libGLESv3.so
+
+//Path to a library.
 hilog-lib:FILEPATH=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libhilog_ndk.z.so
 
 //Value Computed by CMake
@@ -261,7 +267,7 @@ sysinfo_BINARY_DIR:STATIC=/Users/bytedance/dev/huawei_sysinfo/entry/.cxx/default
 sysinfo_IS_TOP_LEVEL:STATIC=ON
 
 //Dependencies for the target
-sysinfo_LIB_DEPENDS:STATIC=general;/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libhilog_ndk.z.so;general;libace_napi.z.so;general;libohhidebug.so;general;libc++.a;
+sysinfo_LIB_DEPENDS:STATIC=general;/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libhilog_ndk.z.so;general;/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libEGL.so;general;/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot/usr/lib/aarch64-linux-ohos/libGLESv3.so;general;libace_napi.z.so;general;libohhidebug.so;general;libc++.a;
 
 //Value Computed by CMake
 sysinfo_SOURCE_DIR:STATIC=/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp

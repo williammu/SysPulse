@@ -12,6 +12,17 @@ find_library(
     hilog_ndk.z
 )
 
-add_library(sysinfo SHARED sysinfo.cpp hidebug_module.cpp sensor_module.cpp)
+# 添加 EGL 和 GLES 库
+find_library(
+    egl-lib
+    EGL
+)
 
-target_link_libraries(sysinfo PUBLIC ${hilog-lib} libace_napi.z.so libohhidebug.so libc++.a)
+find_library(
+    gles-lib
+    GLESv3
+)
+
+add_library(sysinfo SHARED sysinfo.cpp hidebug_module.cpp sensor_module.cpp gpu_module.cpp)
+
+target_link_libraries(sysinfo PUBLIC ${hilog-lib} ${egl-lib} ${gles-lib} libace_napi.z.so libohhidebug.so libc++.a)

@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import { InfoCard } from '../components/InfoCard';
-import { SectionHeader } from '../components/SectionHeader';
+import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
+import { nativeApi, GpuInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 const TAG = 'GpuPage';
@@ -8,43 +9,50 @@ const TAG = 'GpuPage';
 @Entry
 @Component
 struct GpuPage {
-  @State gpuVendor: string = '未知';
-  @State gpuRenderer: string = '未知';
-  @State gpuVersion: string = '未知';
+  @State gpuInfo: GpuInfo | null = null;
   @State isLoading: boolean = true;
+  @State hasError: boolean = false;
+  @State errorMessage: string = '';
 
   aboutToAppear() {
     hilog.info(0x0000, TAG, 'GpuPage aboutToAppear');
-    
-    // 获取 GPU 信息（通过系统属性）
     this.loadGpuInfo();
-    
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 100);
   }
 
   loadGpuInfo() {
     try {
-      // 尝试获取 GPU 信息
-      // 注意：HarmonyOS 目前没有直接的 GPU 内存 API
-      // 这里展示的是 GPU 基本信息
-      this.gpuVendor = 'Mali';
-      this.gpuRenderer = 'Mali-G78';
-      this.gpuVersion = 'OpenGL ES 3.2';
+      const info = nativeApi.getGpuInfo();
+      if (info && info.success) {
+        this.gpuInfo = info;
+        hilog.info(0x0000, TAG, 'GPU info loaded: vendor=%{public}s, renderer=%{public}s', 
+                   info.vendor, info.renderer);
+      } else {
+        this.hasError = true;
+        this.errorMessage = info?.error || '无法获取 GPU 信息';
+        hilog.error(0x0000, TAG, 'Failed to get GPU info: %{public}s', this.errorMessage);
+      }
     } catch (error) {
-      hilog.error(0x0000, TAG, 'Load GPU info error: %{public}s', String(error));
+      this.hasError = true;
+      this.errorMessage = String(error);
+      hilog.error(0x0000, TAG, 'Error loading GPU info: %{public}s', String(error));
     }
+    this.isLoading = false;
   }
 
-  // 数据说明组件
-  @Builder
-  DataDescription(text: string) {
-    Text(text)
-      .fontSize(12)
-      .fontColor($r('app.color.text_secondary'))
-      .margin({ top: 4, bottom: 8 })
-      .width('100%')
+  // 跳转到概念详情页
+  navigateToConcept(conceptId: string): void {
+    router.pushUrl({
+      url: 'pages/ConceptDetailPage',
+      params: { conceptId: conceptId }
+    });
+  }
+
+  // 格式化数值显示
+  formatValue(value: number, unit: string = ''): string {
+    if (value === -1 || value === undefined) {
+      return '不支持';
+    }
+    return unit ? `${value} ${unit}` : `${value}`;
   }
 
   build() {
@@ -69,50 +77,241 @@ struct GpuPage {
       Scroll() {
         Column() {
           if (this.isLoading) {
-            Text('加载中...')
-              .fontSize(16)
-              .fontColor($r('app.color.text_secondary'))
-              .margin(24)
-          } else {
-            SectionHeader({ title: 'GPU 基本信息' });
-            this.DataDescription('显示设备的图形处理器(GPU)基本信息。GPU负责图形渲染、图像处理等任务。');
+            Column() {
+              Text('加载中...')
+                .fontSize(16)
+                .fontColor($r('app.color.text_secondary'))
+                .margin(24)
+            }
+            .width('100%')
+            .padding(24)
+            .borderRadius(12)
+            .backgroundColor($r('app.color.background_card'))
+            .alignItems(HorizontalAlign.Center)
+          } else if (this.hasError) {
+            Column() {
+              Text('获取 GPU 信息失败')
+                .fontSize(18)
+                .fontColor($r('app.color.text_secondary'))
+                .margin(24)
+
+              Text(this.errorMessage)
+                .fontSize(14)
+                .fontColor($r('app.color.text_secondary'))
+            }
+            .width('100%')
+            .padding(24)
+            .borderRadius(12)
+            .backgroundColor($r('app.color.background_card'))
+            .alignItems(HorizontalAlign.Center)
+          } else if (this.gpuInfo) {
+            // GPU 基本信息
+            InfoHeader({
+              title: 'GPU 基本信息',
+              subtitle: '通过 OpenGL ES API 获取的 GPU 硬件信息'
+            });
 
             InfoCard({
               title: 'GPU 厂商',
-              value: this.gpuVendor
+              value: this.gpuInfo.vendor || '未知'
             })
 
             InfoCard({
               title: 'GPU 型号',
-              value: this.gpuRenderer
+              value: this.gpuInfo.renderer || '未知'
             })
 
             InfoCard({
               title: 'OpenGL ES 版本',
-              value: this.gpuVersion
+              value: this.gpuInfo.version || '未知'
             })
 
-            SectionHeader({ title: 'GPU 内存' });
-            this.DataDescription('当前 HarmonyOS 版本暂不支持直接获取 GPU 内存使用情况。GPU 内存主要用于纹理、缓冲区、帧缓冲等图形数据存储。');
+            InfoCard({
+              title: 'GLSL 版本',
+              value: this.gpuInfo.shadingLanguageVersion || '未知'
+            })
+
+            // 纹理限制
+            InfoHeader({
+              title: '纹理限制',
+              subtitle: 'GPU 对纹理资源的硬件限制',
+              conceptId: 'gpu_max_texture_size',
+              onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
+            });
+
+            InfoCardWithDesc({
+              title: '最大纹理尺寸',
+              value: this.formatValue(this.gpuInfo.maxTextureSize, 'px'),
+              conceptId: 'gpu_max_texture_size',
+              onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
+            })
+
+            InfoCardWithDesc({
+              title: '最大立方体贴图尺寸',
+              value: this.formatValue(this.gpuInfo.maxCubeMapTextureSize, 'px'),
+              conceptId: 'gpu_cube_map_size',
+              onInfoClick: () => this.navigateToConcept('gpu_cube_map_size')
+            })
+
+            InfoCardWithDesc({
+              title: '最大渲染缓冲区尺寸',
+              value: this.formatValue(this.gpuInfo.maxRenderbufferSize, 'px'),
+              conceptId: 'gpu_max_texture_size',
+              onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
+            })
+
+            InfoCardWithDesc({
+              title: '纹理单元数',
+              value: this.formatValue(this.gpuInfo.maxTextureImageUnits),
+              conceptId: 'gpu_texture_units',
+              onInfoClick: () => this.navigateToConcept('gpu_texture_units')
+            })
+
+            InfoCardWithDesc({
+              title: '顶点纹理单元数',
+              value: this.formatValue(this.gpuInfo.maxVertexTextureImageUnits),
+              conceptId: 'gpu_texture_units',
+              onInfoClick: () => this.navigateToConcept('gpu_texture_units')
+            })
+
+            InfoCardWithDesc({
+              title: '组合纹理单元数',
+              value: this.formatValue(this.gpuInfo.maxCombinedTextureImageUnits),
+              conceptId: 'gpu_texture_units',
+              onInfoClick: () => this.navigateToConcept('gpu_texture_units')
+            })
+
+            // 视口限制
+            InfoHeader({
+              title: '视口与渲染',
+              subtitle: 'GPU 对视口和渲染的限制'
+            });
+
+            InfoCard({
+              title: '最大视口尺寸',
+              value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`
+            })
+
+            InfoCard({
+              title: '线宽范围',
+              value: this.gpuInfo.aliasedLineWidthRange && this.gpuInfo.aliasedLineWidthRange.length >= 2
+                ? `${this.gpuInfo.aliasedLineWidthRange[0]} - ${this.gpuInfo.aliasedLineWidthRange[1]}`
+                : '未知'
+            })
+
+            InfoCard({
+              title: '点大小范围',
+              value: this.gpuInfo.aliasedPointSizeRange && this.gpuInfo.aliasedPointSizeRange.length >= 2
+                ? `${this.gpuInfo.aliasedPointSizeRange[0]} - ${this.gpuInfo.aliasedPointSizeRange[1]}`
+                : '未知'
+            })
+
+            // 着色器限制
+            InfoHeader({
+              title: '着色器限制',
+              subtitle: 'GPU 对着色器程序的资源限制',
+              conceptId: 'gpu_vertex_attribs',
+              onInfoClick: () => this.navigateToConcept('gpu_vertex_attribs')
+            });
+
+            InfoCardWithDesc({
+              title: '顶点属性数',
+              value: this.formatValue(this.gpuInfo.maxVertexAttribs),
+              conceptId: 'gpu_vertex_attribs',
+              onInfoClick: () => this.navigateToConcept('gpu_vertex_attribs')
+            })
+
+            InfoCardWithDesc({
+              title: '顶点 Uniform 向量数',
+              value: this.formatValue(this.gpuInfo.maxVertexUniformVectors),
+              conceptId: 'gpu_uniform_vectors',
+              onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
+            })
+
+            InfoCardWithDesc({
+              title: '片段 Uniform 向量数',
+              value: this.formatValue(this.gpuInfo.maxFragmentUniformVectors),
+              conceptId: 'gpu_uniform_vectors',
+              onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
+            })
+
+            InfoCardWithDesc({
+              title: 'Varying 向量数',
+              value: this.formatValue(this.gpuInfo.maxVaryingVectors),
+              conceptId: 'gpu_varying_vectors',
+              onInfoClick: () => this.navigateToConcept('gpu_varying_vectors')
+            })
+
+            InfoCardWithDesc({
+              title: 'Uniform 缓冲区绑定数',
+              value: this.formatValue(this.gpuInfo.maxUniformBufferBindings),
+              conceptId: 'gpu_uniform_vectors',
+              onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
+            })
+
+            InfoCardWithDesc({
+              title: 'Uniform 块大小',
+              value: this.formatValue(this.gpuInfo.maxUniformBlockSize, 'bytes'),
+              conceptId: 'gpu_uniform_vectors',
+              onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
+            })
+
+            // 其他限制
+            InfoHeader({
+              title: '其他限制',
+              subtitle: 'GPU 的其他硬件能力限制',
+              conceptId: 'gpu_multisample',
+              onInfoClick: () => this.navigateToConcept('gpu_multisample')
+            });
+
+            InfoCardWithDesc({
+              title: '绘制缓冲区数',
+              value: this.formatValue(this.gpuInfo.maxDrawBuffers),
+              conceptId: 'gpu_draw_buffers',
+              onInfoClick: () => this.navigateToConcept('gpu_draw_buffers')
+            })
+
+            InfoCardWithDesc({
+              title: '颜色附件数',
+              value: this.formatValue(this.gpuInfo.maxColorAttachments),
+              conceptId: 'gpu_draw_buffers',
+              onInfoClick: () => this.navigateToConcept('gpu_draw_buffers')
+            })
+
+            InfoCardWithDesc({
+              title: '最大采样数 (MSAA)',
+              value: this.formatValue(this.gpuInfo.maxSamples, 'x'),
+              conceptId: 'gpu_multisample',
+              onInfoClick: () => this.navigateToConcept('gpu_multisample')
+            })
+
+            InfoCard({
+              title: '最大元素索引',
+              value: this.formatValue(this.gpuInfo.maxElementIndex)
+            })
+
+            InfoCard({
+              title: '扩展数量',
+              value: this.formatValue(this.gpuInfo.numExtensions)
+            })
+
+            // 扩展支持
+            InfoHeader({
+              title: '扩展支持',
+              subtitle: 'GPU 支持的 OpenGL ES 扩展功能'
+            });
 
             Column() {
-              Text('GPU 内存信息暂不可用')
-                .fontSize(16)
+              Text(this.gpuInfo.extensions || '无扩展信息')
+                .fontSize(12)
                 .fontColor($r('app.color.text_secondary'))
-                .margin(16)
-
-              Text('HiDebug API 当前版本不支持 GPU 内存查询')
-                .fontSize(14)
-                .fontColor($r('app.color.text_secondary'))
+                .maxLines(10)
+                .textOverflow({ overflow: TextOverflow.Ellipsis })
             }
             .width('100%')
             .padding(16)
             .borderRadius(12)
             .backgroundColor($r('app.color.background_card'))
-            .alignItems(HorizontalAlign.Center)
-
-            SectionHeader({ title: '说明' });
-            this.DataDescription('GPU(图形处理器)是专为图形渲染设计的处理器。在手机中，GPU负责游戏画面渲染、UI动画、视频解码等任务。GPU内存用于存储纹理、顶点数据、帧缓冲等图形资源。');
           }
         }
         .width('100%')

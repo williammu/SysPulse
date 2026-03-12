@@ -10,24 +10,24 @@ import { InfoCard } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoCa
 import { SectionHeader } from "@bundle:com.huawei.sysinfo/entry/ets/components/SectionHeader";
 import type { DeviceInfoModel } from '../model/DeviceInfo';
 class AboutPage extends ViewPU {
-    constructor(o2, p2, q2, r2 = -1, s2 = undefined, t2) {
-        super(o2, q2, r2, t2);
-        if (typeof s2 === "function") {
-            this.paramsGenerator_ = s2;
+    constructor(e6, f6, g6, h6 = -1, i6 = undefined, j6) {
+        super(e6, g6, h6, j6);
+        if (typeof i6 === "function") {
+            this.paramsGenerator_ = i6;
         }
         this.__deviceInfo = new ObservedPropertyObjectPU(null, this, "deviceInfo");
-        this.setInitiallyProvidedValue(p2);
+        this.setInitiallyProvidedValue(f6);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(n2: AboutPage_Params) {
-        if (n2.deviceInfo !== undefined) {
-            this.deviceInfo = n2.deviceInfo;
+    setInitiallyProvidedValue(d6: AboutPage_Params) {
+        if (d6.deviceInfo !== undefined) {
+            this.deviceInfo = d6.deviceInfo;
         }
     }
-    updateStateVars(m2: AboutPage_Params) {
+    updateStateVars(c6: AboutPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(l2) {
-        this.__deviceInfo.purgeDependencyOnElmtId(l2);
+    purgeVariableDependenciesOnElmtId(b6) {
+        this.__deviceInfo.purgeDependencyOnElmtId(b6);
     }
     aboutToBeDeleted() {
         this.__deviceInfo.aboutToBeDeleted();
@@ -38,25 +38,25 @@ class AboutPage extends ViewPU {
     get deviceInfo() {
         return this.__deviceInfo.get();
     }
-    set deviceInfo(k2: DeviceInfoModel | null) {
-        this.__deviceInfo.set(k2);
+    set deviceInfo(a6: DeviceInfoModel | null) {
+        this.__deviceInfo.set(a6);
     }
     aboutToAppear() {
         this.deviceInfo = DeviceUtil.getDeviceInfo();
     }
     initialRender() {
-        this.observeComponentCreation2((i2, j2) => {
+        this.observeComponentCreation2((y5, z5) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((g2, h2) => {
+        this.observeComponentCreation2((w5, x5) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((e2, f2) => {
+        this.observeComponentCreation2((u5, v5) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -65,7 +65,7 @@ class AboutPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((c2, d2) => {
+        this.observeComponentCreation2((s5, t5) => {
             Text.create('关于');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
@@ -74,29 +74,29 @@ class AboutPage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((a2, b2) => {
+        this.observeComponentCreation2((q5, r5) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((y1, z1) => {
+        this.observeComponentCreation2((o5, p5) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((w1, x1) => {
+        this.observeComponentCreation2((m5, n5) => {
             Column.create();
             Column.width('100%');
             Column.padding(24);
             Column.alignItems(HorizontalAlign.Center);
         }, Column);
-        this.observeComponentCreation2((u1, v1) => {
+        this.observeComponentCreation2((k5, l5) => {
             Text.create('SysPulse');
             Text.fontSize(24);
             Text.fontWeight(FontWeight.Bold);
             Text.margin({ top: 12 });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((s1, t1) => {
+        this.observeComponentCreation2((i5, j5) => {
             Text.create('v1.0.0');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -105,42 +105,42 @@ class AboutPage extends ViewPU {
         Text.pop();
         Column.pop();
         {
-            this.observeComponentCreation2((o1, p1) => {
-                if (p1) {
-                    let q1 = new SectionHeader(this, { title: '设备信息' }, undefined, o1, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 52, col: 11 });
-                    ViewPU.create(q1);
-                    let r1 = () => {
+            this.observeComponentCreation2((e5, f5) => {
+                if (f5) {
+                    let g5 = new SectionHeader(this, { title: '设备信息' }, undefined, e5, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 52, col: 11 });
+                    ViewPU.create(g5);
+                    let h5 = () => {
                         return {
                             title: '设备信息'
                         };
                     };
-                    q1.paramsGenerator_ = r1;
+                    g5.paramsGenerator_ = h5;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(o1, {
+                    this.updateStateVarsOfChildByElmtId(e5, {
                         title: '设备信息'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((k1, l1) => {
-                if (l1) {
-                    let m1 = new InfoCard(this, {
+            this.observeComponentCreation2((a5, b5) => {
+                if (b5) {
+                    let c5 = new InfoCard(this, {
                         title: '设备型号',
                         value: this.deviceInfo?.marketName || '--'
-                    }, undefined, k1, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 54, col: 11 });
-                    ViewPU.create(m1);
-                    let n1 = () => {
+                    }, undefined, a5, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 54, col: 11 });
+                    ViewPU.create(c5);
+                    let d5 = () => {
                         return {
                             title: '设备型号',
                             value: this.deviceInfo?.marketName || '--'
                         };
                     };
-                    m1.paramsGenerator_ = n1;
+                    c5.paramsGenerator_ = d5;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(k1, {
+                    this.updateStateVarsOfChildByElmtId(a5, {
                         title: '设备型号',
                         value: this.deviceInfo?.marketName || '--'
                     });
@@ -148,23 +148,23 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((g1, h1) => {
-                if (h1) {
-                    let i1 = new InfoCard(this, {
+            this.observeComponentCreation2((w4, x4) => {
+                if (x4) {
+                    let y4 = new InfoCard(this, {
                         title: '品牌',
                         value: this.deviceInfo?.brand || '--'
-                    }, undefined, g1, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 59, col: 11 });
-                    ViewPU.create(i1);
-                    let j1 = () => {
+                    }, undefined, w4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 59, col: 11 });
+                    ViewPU.create(y4);
+                    let z4 = () => {
                         return {
                             title: '品牌',
                             value: this.deviceInfo?.brand || '--'
                         };
                     };
-                    i1.paramsGenerator_ = j1;
+                    y4.paramsGenerator_ = z4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(g1, {
+                    this.updateStateVarsOfChildByElmtId(w4, {
                         title: '品牌',
                         value: this.deviceInfo?.brand || '--'
                     });
@@ -172,23 +172,23 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((c1, d1) => {
-                if (d1) {
-                    let e1 = new InfoCard(this, {
+            this.observeComponentCreation2((s4, t4) => {
+                if (t4) {
+                    let u4 = new InfoCard(this, {
                         title: '制造商',
                         value: this.deviceInfo?.manufacture || '--'
-                    }, undefined, c1, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 64, col: 11 });
-                    ViewPU.create(e1);
-                    let f1 = () => {
+                    }, undefined, s4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 64, col: 11 });
+                    ViewPU.create(u4);
+                    let v4 = () => {
                         return {
                             title: '制造商',
                             value: this.deviceInfo?.manufacture || '--'
                         };
                     };
-                    e1.paramsGenerator_ = f1;
+                    u4.paramsGenerator_ = v4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(c1, {
+                    this.updateStateVarsOfChildByElmtId(s4, {
                         title: '制造商',
                         value: this.deviceInfo?.manufacture || '--'
                     });
@@ -196,42 +196,42 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((y, z) => {
-                if (z) {
-                    let a1 = new SectionHeader(this, { title: '系统信息' }, undefined, y, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 69, col: 11 });
-                    ViewPU.create(a1);
-                    let b1 = () => {
+            this.observeComponentCreation2((o4, p4) => {
+                if (p4) {
+                    let q4 = new SectionHeader(this, { title: '系统信息' }, undefined, o4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 69, col: 11 });
+                    ViewPU.create(q4);
+                    let r4 = () => {
                         return {
                             title: '系统信息'
                         };
                     };
-                    a1.paramsGenerator_ = b1;
+                    q4.paramsGenerator_ = r4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(y, {
+                    this.updateStateVarsOfChildByElmtId(o4, {
                         title: '系统信息'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((u, v) => {
-                if (v) {
-                    let w = new InfoCard(this, {
+            this.observeComponentCreation2((k4, l4) => {
+                if (l4) {
+                    let m4 = new InfoCard(this, {
                         title: '系统版本',
                         value: this.deviceInfo?.osFullName || '--'
-                    }, undefined, u, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 71, col: 11 });
-                    ViewPU.create(w);
-                    let x = () => {
+                    }, undefined, k4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 71, col: 11 });
+                    ViewPU.create(m4);
+                    let n4 = () => {
                         return {
                             title: '系统版本',
                             value: this.deviceInfo?.osFullName || '--'
                         };
                     };
-                    w.paramsGenerator_ = x;
+                    m4.paramsGenerator_ = n4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(u, {
+                    this.updateStateVarsOfChildByElmtId(k4, {
                         title: '系统版本',
                         value: this.deviceInfo?.osFullName || '--'
                     });
@@ -239,23 +239,23 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((q, r) => {
-                if (r) {
-                    let s = new InfoCard(this, {
+            this.observeComponentCreation2((g4, h4) => {
+                if (h4) {
+                    let i4 = new InfoCard(this, {
                         title: '系统类型',
                         value: 'HarmonyOS'
-                    }, undefined, q, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 76, col: 11 });
-                    ViewPU.create(s);
-                    let t = () => {
+                    }, undefined, g4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 76, col: 11 });
+                    ViewPU.create(i4);
+                    let j4 = () => {
                         return {
                             title: '系统类型',
                             value: 'HarmonyOS'
                         };
                     };
-                    s.paramsGenerator_ = t;
+                    i4.paramsGenerator_ = j4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(q, {
+                    this.updateStateVarsOfChildByElmtId(g4, {
                         title: '系统类型',
                         value: 'HarmonyOS'
                     });
@@ -263,23 +263,23 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((m, n) => {
-                if (n) {
-                    let o = new InfoCard(this, {
+            this.observeComponentCreation2((c4, d4) => {
+                if (d4) {
+                    let e4 = new InfoCard(this, {
                         title: 'API 版本',
                         value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
-                    }, undefined, m, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 81, col: 11 });
-                    ViewPU.create(o);
-                    let p = () => {
+                    }, undefined, c4, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 81, col: 11 });
+                    ViewPU.create(e4);
+                    let f4 = () => {
                         return {
                             title: 'API 版本',
                             value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
                         };
                     };
-                    o.paramsGenerator_ = p;
+                    e4.paramsGenerator_ = f4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(m, {
+                    this.updateStateVarsOfChildByElmtId(c4, {
                         title: 'API 版本',
                         value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
                     });
@@ -287,23 +287,23 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((i, j) => {
-                if (j) {
-                    let k = new InfoCard(this, {
+            this.observeComponentCreation2((y3, z3) => {
+                if (z3) {
+                    let a4 = new InfoCard(this, {
                         title: '设备类型',
                         value: this.deviceInfo?.deviceType || '--'
-                    }, undefined, i, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 86, col: 11 });
-                    ViewPU.create(k);
-                    let l = () => {
+                    }, undefined, y3, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 86, col: 11 });
+                    ViewPU.create(a4);
+                    let b4 = () => {
                         return {
                             title: '设备类型',
                             value: this.deviceInfo?.deviceType || '--'
                         };
                     };
-                    k.paramsGenerator_ = l;
+                    a4.paramsGenerator_ = b4;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(i, {
+                    this.updateStateVarsOfChildByElmtId(y3, {
                         title: '设备类型',
                         value: this.deviceInfo?.deviceType || '--'
                     });
@@ -311,36 +311,36 @@ class AboutPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((e, f) => {
-                if (f) {
-                    let g = new InfoCard(this, {
+            this.observeComponentCreation2((u3, v3) => {
+                if (v3) {
+                    let w3 = new InfoCard(this, {
                         title: '编译类型',
                         value: this.deviceInfo?.buildType || '--'
-                    }, undefined, e, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 91, col: 11 });
-                    ViewPU.create(g);
-                    let h = () => {
+                    }, undefined, u3, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 91, col: 11 });
+                    ViewPU.create(w3);
+                    let x3 = () => {
                         return {
                             title: '编译类型',
                             value: this.deviceInfo?.buildType || '--'
                         };
                     };
-                    g.paramsGenerator_ = h;
+                    w3.paramsGenerator_ = x3;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(e, {
+                    this.updateStateVarsOfChildByElmtId(u3, {
                         title: '编译类型',
                         value: this.deviceInfo?.buildType || '--'
                     });
                 }
             }, { name: "InfoCard" });
         }
-        this.observeComponentCreation2((c, d) => {
+        this.observeComponentCreation2((s3, t3) => {
             Column.create();
             Column.width('100%');
             Column.padding({ top: 24, bottom: 24 });
             Column.alignItems(HorizontalAlign.Center);
         }, Column);
-        this.observeComponentCreation2((a, b) => {
+        this.observeComponentCreation2((q3, r3) => {
             Text.create('© 2026 SysPulse. All rights reserved.');
             Text.fontSize(12);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });

@@ -339,16 +339,12 @@ export class TechCard extends ViewPU {
         }, Row);
         Row.pop();
         this.observeComponentCreation2((p1, q1) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding(16);
-        }, Row);
-        this.observeComponentCreation2((n1, o1) => {
             Column.create();
+            Column.width('100%');
+            Column.padding(16);
             Column.alignItems(HorizontalAlign.Start);
-            Column.layoutWeight(1);
         }, Column);
-        this.observeComponentCreation2((l1, m1) => {
+        this.observeComponentCreation2((n1, o1) => {
             Text.create(this.title);
             Text.fontSize(13);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -356,28 +352,31 @@ export class TechCard extends ViewPU {
             Text.margin({ bottom: 8 });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((j1, k1) => {
+        this.observeComponentCreation2((l1, m1) => {
             Row.create();
+            Row.width('100%');
             Row.alignItems(VerticalAlign.Bottom);
         }, Row);
-        this.observeComponentCreation2((h1, i1) => {
+        this.observeComponentCreation2((j1, k1) => {
             Text.create(this.value);
-            Text.fontSize(28);
+            Text.fontSize(this.value.length > 6 ? 20 : 24);
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.maxLines(1);
             Text.textOverflow({ overflow: TextOverflow.Ellipsis });
+            Text.flexShrink(1);
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((d1, e1) => {
+        this.observeComponentCreation2((f1, g1) => {
             If.create();
             if (this.unit) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((f1, g1) => {
+                    this.observeComponentCreation2((h1, i1) => {
                         Text.create(this.unit);
-                        Text.fontSize(14);
+                        Text.fontSize(12);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Text.margin({ left: 4 });
+                        Text.flexShrink(0);
                     }, Text);
                     Text.pop();
                 });
@@ -389,24 +388,28 @@ export class TechCard extends ViewPU {
         }, If);
         If.pop();
         Row.pop();
-        Column.pop();
         this.observeComponentCreation2((x, y) => {
             If.create();
             if (this.trend !== 0) {
                 this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((d1, e1) => {
+                        Row.create();
+                        Row.margin({ top: 4 });
+                    }, Row);
                     this.observeComponentCreation2((b1, c1) => {
-                        Column.create();
-                        Column.padding(8);
-                        Column.backgroundColor(this.trend > 0 ? 'rgba(0, 230, 118, 0.1)' : 'rgba(255, 71, 87, 0.1)');
-                        Column.borderRadius(8);
-                    }, Column);
-                    this.observeComponentCreation2((z, a1) => {
                         Text.create(this.trend > 0 ? '▲' : '▼');
-                        Text.fontSize(12);
+                        Text.fontSize(10);
+                        Text.fontColor(this.trend > 0 ? { "id": 16777242, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" } : { "id": 16777237, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin({ right: 4 });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((z, a1) => {
+                        Text.create(this.trend > 0 ? '上升' : '下降');
+                        Text.fontSize(10);
                         Text.fontColor(this.trend > 0 ? { "id": 16777242, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" } : { "id": 16777237, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                     }, Text);
                     Text.pop();
-                    Column.pop();
+                    Row.pop();
                 });
             }
             else {
@@ -415,7 +418,7 @@ export class TechCard extends ViewPU {
             }
         }, If);
         If.pop();
-        Row.pop();
+        Column.pop();
         Column.pop();
     }
     rerender() {

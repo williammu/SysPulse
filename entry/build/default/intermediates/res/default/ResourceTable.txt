@@ -25,4 +25,5 @@ color warning_color 0x0100001c
 media app_icon 0x01000001
 media icon 0x01000002
 media startIcon 0x0100000d
+media syspulse_icon 0x01000008
 profile main_pages 0x0100000e

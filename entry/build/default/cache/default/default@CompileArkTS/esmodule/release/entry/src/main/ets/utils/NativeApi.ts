@@ -53,6 +53,39 @@ export interface GpuMemoryInfo {
     success: boolean;
     error?: string;
 }
+export interface GpuInfo {
+    vendor: string;
+    renderer: string;
+    version: string;
+    shadingLanguageVersion: string;
+    extensions: string;
+    maxTextureSize: number;
+    maxCubeMapTextureSize: number;
+    maxRenderbufferSize: number;
+    maxTextureImageUnits: number;
+    maxVertexTextureImageUnits: number;
+    maxCombinedTextureImageUnits: number;
+    maxViewportWidth: number;
+    maxViewportHeight: number;
+    aliasedLineWidthRange: number[];
+    aliasedPointSizeRange: number[];
+    maxVertexAttribs: number;
+    maxVertexUniformVectors: number;
+    maxFragmentUniformVectors: number;
+    maxVaryingVectors: number;
+    maxUniformBufferBindings: number;
+    maxUniformBlockSize: number;
+    maxDrawBuffers: number;
+    maxColorAttachments: number;
+    maxSamples: number;
+    maxElementIndex: number;
+    numProgramBinaryFormats: number;
+    numShaderBinaryFormats: number;
+    numExtensions: number;
+    compressedTextureFormats: number[];
+    success: boolean;
+    error?: string;
+}
 export interface SensorInfo {
     type: number;
     typeName: string;
@@ -132,19 +165,19 @@ export class NativeApi {
         hilog.info(0x0000, TAG, 'Checking Native API availability...');
         try {
             hilog.info(0x0000, TAG, 'About to call sysinfo.getSystemMemInfo()...');
-            const h1 = sysinfo.getSystemMemInfo();
+            const u7 = sysinfo.getSystemMemInfo();
             hilog.info(0x0000, TAG, 'getSystemMemInfo returned successfully');
-            hilog.info(0x0000, TAG, 'Result type: %{public}s', typeof h1);
-            hilog.info(0x0000, TAG, 'Result value: %{public}s', JSON.stringify(h1));
-            this.isAvailable = h1 !== undefined && h1 !== null;
+            hilog.info(0x0000, TAG, 'Result type: %{public}s', typeof u7);
+            hilog.info(0x0000, TAG, 'Result value: %{public}s', JSON.stringify(u7));
+            this.isAvailable = u7 !== undefined && u7 !== null;
             this.hasInitialized = true;
             hilog.info(0x0000, TAG, 'Native API initialized, available: %{public}s', String(this.isAvailable));
         }
-        catch (g1) {
+        catch (t7) {
             this.isAvailable = false;
             this.hasInitialized = true;
             hilog.error(0x0000, TAG, 'Native API initialization failed');
-            hilog.error(0x0000, TAG, 'Error: %{public}s', String(g1));
+            hilog.error(0x0000, TAG, 'Error: %{public}s', String(t7));
         }
     }
     static getInstance(): NativeApi {
@@ -163,12 +196,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const f1 = sysinfo.getSystemMemInfo() as SystemMemInfo;
-            hilog.debug(0x0000, TAG, 'SystemMemInfo: total=%{public}d, available=%{public}d', f1.total, f1.available);
-            return f1;
+            const s7 = sysinfo.getSystemMemInfo() as SystemMemInfo;
+            hilog.debug(0x0000, TAG, 'SystemMemInfo: total=%{public}d, available=%{public}d', s7.total, s7.available);
+            return s7;
         }
-        catch (e1) {
-            hilog.error(0x0000, TAG, 'getSystemMemInfo error: %{public}s', String(e1));
+        catch (r7) {
+            hilog.error(0x0000, TAG, 'getSystemMemInfo error: %{public}s', String(r7));
             return null;
         }
     }
@@ -176,12 +209,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const d1 = sysinfo.getAppMemInfo() as AppMemInfo;
-            hilog.debug(0x0000, TAG, 'AppMemInfo: pss=%{public}d, vss=%{public}d', d1.pss, d1.vss);
-            return d1;
+            const q7 = sysinfo.getAppMemInfo() as AppMemInfo;
+            hilog.debug(0x0000, TAG, 'AppMemInfo: pss=%{public}d, vss=%{public}d', q7.pss, q7.vss);
+            return q7;
         }
-        catch (c1) {
-            hilog.error(0x0000, TAG, 'getAppMemInfo error: %{public}s', String(c1));
+        catch (p7) {
+            hilog.error(0x0000, TAG, 'getAppMemInfo error: %{public}s', String(p7));
             return null;
         }
     }
@@ -189,12 +222,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const b1 = sysinfo.getMemoryLimit() as MemoryLimit;
-            hilog.debug(0x0000, TAG, 'MemoryLimit: rssLimit=%{public}d', b1.rssLimit);
-            return b1;
+            const o7 = sysinfo.getMemoryLimit() as MemoryLimit;
+            hilog.debug(0x0000, TAG, 'MemoryLimit: rssLimit=%{public}d', o7.rssLimit);
+            return o7;
         }
-        catch (a1) {
-            hilog.error(0x0000, TAG, 'getMemoryLimit error: %{public}s', String(a1));
+        catch (n7) {
+            hilog.error(0x0000, TAG, 'getMemoryLimit error: %{public}s', String(n7));
             return null;
         }
     }
@@ -202,12 +235,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const z = sysinfo.getSystemCpuUsage() as CpuUsage;
-            hilog.debug(0x0000, TAG, 'SystemCpuUsage: %{public}f%%', z.percentage);
-            return z;
+            const m7 = sysinfo.getSystemCpuUsage() as CpuUsage;
+            hilog.debug(0x0000, TAG, 'SystemCpuUsage: %{public}f%%', m7.percentage);
+            return m7;
         }
-        catch (y) {
-            hilog.error(0x0000, TAG, 'getSystemCpuUsage error: %{public}s', String(y));
+        catch (l7) {
+            hilog.error(0x0000, TAG, 'getSystemCpuUsage error: %{public}s', String(l7));
             return null;
         }
     }
@@ -215,12 +248,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const x = sysinfo.getAppCpuUsage() as CpuUsage;
-            hilog.debug(0x0000, TAG, 'AppCpuUsage: %{public}f%%', x.percentage);
-            return x;
+            const k7 = sysinfo.getAppCpuUsage() as CpuUsage;
+            hilog.debug(0x0000, TAG, 'AppCpuUsage: %{public}f%%', k7.percentage);
+            return k7;
         }
-        catch (w) {
-            hilog.error(0x0000, TAG, 'getAppCpuUsage error: %{public}s', String(w));
+        catch (j7) {
+            hilog.error(0x0000, TAG, 'getAppCpuUsage error: %{public}s', String(j7));
             return null;
         }
     }
@@ -228,12 +261,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const v = sysinfo.getCpuUsageAll() as CpuUsageAll;
-            hilog.debug(0x0000, TAG, 'CpuUsageAll: threads=%{public}d', v.threadCount);
-            return v;
+            const i7 = sysinfo.getCpuUsageAll() as CpuUsageAll;
+            hilog.debug(0x0000, TAG, 'CpuUsageAll: threads=%{public}d', i7.threadCount);
+            return i7;
         }
-        catch (u) {
-            hilog.error(0x0000, TAG, 'getCpuUsageAll error: %{public}s', String(u));
+        catch (h7) {
+            hilog.error(0x0000, TAG, 'getCpuUsageAll error: %{public}s', String(h7));
             return null;
         }
     }
@@ -241,12 +274,25 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const t = sysinfo.getGpuMemoryInfo() as GpuMemoryInfo;
-            hilog.debug(0x0000, TAG, 'GpuMemoryInfo: total=%{public}d, used=%{public}d', t.total, t.used);
-            return t;
+            const g7 = sysinfo.getGpuMemoryInfo() as GpuMemoryInfo;
+            hilog.debug(0x0000, TAG, 'GpuMemoryInfo: total=%{public}d, used=%{public}d', g7.total, g7.used);
+            return g7;
         }
-        catch (s) {
-            hilog.error(0x0000, TAG, 'getGpuMemoryInfo error: %{public}s', String(s));
+        catch (f7) {
+            hilog.error(0x0000, TAG, 'getGpuMemoryInfo error: %{public}s', String(f7));
+            return null;
+        }
+    }
+    getGpuInfo(): GpuInfo | null {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const e7 = sysinfo.getGpuInfo() as GpuInfo;
+            hilog.debug(0x0000, TAG, 'GpuInfo: vendor=%{public}s, renderer=%{public}s', e7.vendor, e7.renderer);
+            return e7;
+        }
+        catch (d7) {
+            hilog.error(0x0000, TAG, 'getGpuInfo error: %{public}s', String(d7));
             return null;
         }
     }
@@ -254,12 +300,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const r = sysinfo.getAllSensorInfos() as AllSensorInfos;
-            hilog.debug(0x0000, TAG, 'AllSensorInfos: count=%{public}d', r.count);
-            return r;
+            const c7 = sysinfo.getAllSensorInfos() as AllSensorInfos;
+            hilog.debug(0x0000, TAG, 'AllSensorInfos: count=%{public}d', c7.count);
+            return c7;
         }
-        catch (q) {
-            hilog.error(0x0000, TAG, 'getAllSensorInfos error: %{public}s', String(q));
+        catch (b7) {
+            hilog.error(0x0000, TAG, 'getAllSensorInfos error: %{public}s', String(b7));
             return null;
         }
     }
@@ -267,12 +313,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const p = sysinfo.getAccelerometerData() as AccelerometerData;
-            hilog.debug(0x0000, TAG, 'AccelerometerData: values=%{public}s', JSON.stringify(p.values));
-            return p;
+            const a7 = sysinfo.getAccelerometerData() as AccelerometerData;
+            hilog.debug(0x0000, TAG, 'AccelerometerData: values=%{public}s', JSON.stringify(a7.values));
+            return a7;
         }
-        catch (o) {
-            hilog.error(0x0000, TAG, 'getAccelerometerData error: %{public}s', String(o));
+        catch (z6) {
+            hilog.error(0x0000, TAG, 'getAccelerometerData error: %{public}s', String(z6));
             return null;
         }
     }
@@ -280,12 +326,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const n = sysinfo.getGyroscopeData() as GyroscopeData;
-            hilog.debug(0x0000, TAG, 'GyroscopeData: values=%{public}s', JSON.stringify(n.values));
-            return n;
+            const y6 = sysinfo.getGyroscopeData() as GyroscopeData;
+            hilog.debug(0x0000, TAG, 'GyroscopeData: values=%{public}s', JSON.stringify(y6.values));
+            return y6;
         }
-        catch (m) {
-            hilog.error(0x0000, TAG, 'getGyroscopeData error: %{public}s', String(m));
+        catch (x6) {
+            hilog.error(0x0000, TAG, 'getGyroscopeData error: %{public}s', String(x6));
             return null;
         }
     }
@@ -293,12 +339,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const l = sysinfo.getMagnetometerData() as MagnetometerData;
-            hilog.debug(0x0000, TAG, 'MagnetometerData: values=%{public}s', JSON.stringify(l.values));
-            return l;
+            const w6 = sysinfo.getMagnetometerData() as MagnetometerData;
+            hilog.debug(0x0000, TAG, 'MagnetometerData: values=%{public}s', JSON.stringify(w6.values));
+            return w6;
         }
-        catch (k) {
-            hilog.error(0x0000, TAG, 'getMagnetometerData error: %{public}s', String(k));
+        catch (v6) {
+            hilog.error(0x0000, TAG, 'getMagnetometerData error: %{public}s', String(v6));
             return null;
         }
     }
@@ -306,12 +352,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const j = sysinfo.getLightData() as LightData;
-            hilog.debug(0x0000, TAG, 'LightData: values=%{public}s', JSON.stringify(j.values));
-            return j;
+            const u6 = sysinfo.getLightData() as LightData;
+            hilog.debug(0x0000, TAG, 'LightData: values=%{public}s', JSON.stringify(u6.values));
+            return u6;
         }
-        catch (i) {
-            hilog.error(0x0000, TAG, 'getLightData error: %{public}s', String(i));
+        catch (t6) {
+            hilog.error(0x0000, TAG, 'getLightData error: %{public}s', String(t6));
             return null;
         }
     }
@@ -319,12 +365,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const h = sysinfo.getProximityData() as ProximityData;
-            hilog.debug(0x0000, TAG, 'ProximityData: values=%{public}s', JSON.stringify(h.values));
-            return h;
+            const s6 = sysinfo.getProximityData() as ProximityData;
+            hilog.debug(0x0000, TAG, 'ProximityData: values=%{public}s', JSON.stringify(s6.values));
+            return s6;
         }
-        catch (g) {
-            hilog.error(0x0000, TAG, 'getProximityData error: %{public}s', String(g));
+        catch (r6) {
+            hilog.error(0x0000, TAG, 'getProximityData error: %{public}s', String(r6));
             return null;
         }
     }
@@ -332,12 +378,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const f = sysinfo.getBarometerData() as BarometerData;
-            hilog.debug(0x0000, TAG, 'BarometerData: values=%{public}s', JSON.stringify(f.values));
-            return f;
+            const q6 = sysinfo.getBarometerData() as BarometerData;
+            hilog.debug(0x0000, TAG, 'BarometerData: values=%{public}s', JSON.stringify(q6.values));
+            return q6;
         }
-        catch (e) {
-            hilog.error(0x0000, TAG, 'getBarometerData error: %{public}s', String(e));
+        catch (p6) {
+            hilog.error(0x0000, TAG, 'getBarometerData error: %{public}s', String(p6));
             return null;
         }
     }
@@ -345,12 +391,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const d = sysinfo.getTemperatureData() as TemperatureData;
-            hilog.debug(0x0000, TAG, 'TemperatureData: values=%{public}s', JSON.stringify(d.values));
-            return d;
+            const o6 = sysinfo.getTemperatureData() as TemperatureData;
+            hilog.debug(0x0000, TAG, 'TemperatureData: values=%{public}s', JSON.stringify(o6.values));
+            return o6;
         }
-        catch (c) {
-            hilog.error(0x0000, TAG, 'getTemperatureData error: %{public}s', String(c));
+        catch (n6) {
+            hilog.error(0x0000, TAG, 'getTemperatureData error: %{public}s', String(n6));
             return null;
         }
     }
@@ -358,12 +404,12 @@ export class NativeApi {
         if (!this.isAvailable)
             return null;
         try {
-            const b = sysinfo.getHumidityData() as HumidityData;
-            hilog.debug(0x0000, TAG, 'HumidityData: values=%{public}s', JSON.stringify(b.values));
-            return b;
+            const m6 = sysinfo.getHumidityData() as HumidityData;
+            hilog.debug(0x0000, TAG, 'HumidityData: values=%{public}s', JSON.stringify(m6.values));
+            return m6;
         }
-        catch (a) {
-            hilog.error(0x0000, TAG, 'getHumidityData error: %{public}s', String(a));
+        catch (l6) {
+            hilog.error(0x0000, TAG, 'getHumidityData error: %{public}s', String(l6));
             return null;
         }
     }

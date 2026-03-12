@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- 背景渐变 -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A0E1A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A1F3A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00D4FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00F5D4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1024" height="1024" rx="224" ry="224" fill="url(#bgGradient)"/>
+
+  <!-- 外圈发光环 -->
+  <circle cx="512" cy="512" r="420" fill="none" stroke="url(#glowGradient)" stroke-width="8" opacity="0.6" filter="url(#glow)"/>
+
+  <!-- 内圈 -->
+  <circle cx="512" cy="512" r="380" fill="none" stroke="#2A3142" stroke-width="4"/>
+
+  <!-- 脉冲波形 - 外环 -->
+  <path d="M 512 180
+           L 512 220" stroke="url(#glowGradient)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 512 804
+           L 512 844" stroke="url(#glowGradient)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 180 512
+           L 220 512" stroke="url(#glowGradient)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M 804 512
+           L 844 512" stroke="url(#glowGradient)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+
+  <!-- 主脉冲波形 -->
+  <path d="M 280 512
+           L 360 512
+           L 400 380
+           L 480 644
+           L 560 280
+           L 640 512
+           L 744 512" 
+        fill="none" 
+        stroke="url(#glowGradient)" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        filter="url(#glow)"/>
+
+  <!-- 脉冲点 -->
+  <circle cx="280" cy="512" r="20" fill="#00D4FF" filter="url(#glow)"/>
+  <circle cx="744" cy="512" r="20" fill="#00F5D4" filter="url(#glow)"/>
+
+  <!-- 中心圆点 -->
+  <circle cx="512" cy="512" r="60" fill="url(#glowGradient)" filter="url(#glow)"/>
+  <circle cx="512" cy="512" r="30" fill="#0A0E1A"/>
+
+  <!-- 装饰性小点 -->
+  <circle cx="340" cy="340" r="12" fill="#00D4FF" opacity="0.8"/>
+  <circle cx="684" cy="340" r="12" fill="#00F5D4" opacity="0.8"/>
+  <circle cx="340" cy="684" r="12" fill="#00F5D4" opacity="0.8"/>
+  <circle cx="684" cy="684" r="12" fill="#00D4FF" opacity="0.8"/>
+</svg>

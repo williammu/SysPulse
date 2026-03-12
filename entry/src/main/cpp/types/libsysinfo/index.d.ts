@@ -61,6 +61,52 @@ export interface GpuMemoryInfo {
   error?: string;
 }
 
+export interface GpuInfo {
+  // 基本信息
+  vendor: string;
+  renderer: string;
+  version: string;
+  shadingLanguageVersion: string;
+  extensions: string;
+  
+  // 纹理限制
+  maxTextureSize: number;
+  maxCubeMapTextureSize: number;
+  maxRenderbufferSize: number;
+  maxTextureImageUnits: number;
+  maxVertexTextureImageUnits: number;
+  maxCombinedTextureImageUnits: number;
+  
+  // 视口和渲染限制
+  maxViewportWidth: number;
+  maxViewportHeight: number;
+  aliasedLineWidthRange: number[];
+  aliasedPointSizeRange: number[];
+  
+  // 着色器限制
+  maxVertexAttribs: number;
+  maxVertexUniformVectors: number;
+  maxFragmentUniformVectors: number;
+  maxVaryingVectors: number;
+  maxUniformBufferBindings: number;
+  maxUniformBlockSize: number;
+  
+  // 其他限制
+  maxDrawBuffers: number;
+  maxColorAttachments: number;
+  maxSamples: number;
+  maxElementIndex: number;
+  numProgramBinaryFormats: number;
+  numShaderBinaryFormats: number;
+  numExtensions: number;
+  
+  // 压缩纹理格式
+  compressedTextureFormats: number[];
+  
+  success: boolean;
+  error?: string;
+}
+
 // ============ Sensor 模块 ============
 
 export interface SensorInfo {
@@ -158,6 +204,7 @@ export function getSystemCpuUsage(): CpuUsage;
 export function getAppCpuUsage(): CpuUsage;
 export function getCpuUsageAll(): CpuUsageAll;
 export function getGpuMemoryInfo(): GpuMemoryInfo;
+export function getGpuInfo(): GpuInfo;
 
 export function getAllSensorInfos(): AllSensorInfos;
 export function getAccelerometerData(): AccelerometerData;

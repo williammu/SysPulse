@@ -20,29 +20,29 @@ interface NetworkDetails {
     linkDownBandwidth: number;
 }
 class NetworkPage extends ViewPU {
-    constructor(e23, f23, g23, h23 = -1, i23 = undefined, j23) {
-        super(e23, g23, h23, j23);
-        if (typeof i23 === "function") {
-            this.paramsGenerator_ = i23;
+    constructor(h36, i36, j36, k36 = -1, l36 = undefined, m36) {
+        super(h36, j36, k36, m36);
+        if (typeof l36 === "function") {
+            this.paramsGenerator_ = l36;
         }
         this.__networkDetails = new ObservedPropertyObjectPU(null, this, "networkDetails");
         this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
-        this.setInitiallyProvidedValue(f23);
+        this.setInitiallyProvidedValue(i36);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(d23: NetworkPage_Params) {
-        if (d23.networkDetails !== undefined) {
-            this.networkDetails = d23.networkDetails;
+    setInitiallyProvidedValue(g36: NetworkPage_Params) {
+        if (g36.networkDetails !== undefined) {
+            this.networkDetails = g36.networkDetails;
         }
-        if (d23.isLoading !== undefined) {
-            this.isLoading = d23.isLoading;
+        if (g36.isLoading !== undefined) {
+            this.isLoading = g36.isLoading;
         }
     }
-    updateStateVars(c23: NetworkPage_Params) {
+    updateStateVars(f36: NetworkPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(b23) {
-        this.__networkDetails.purgeDependencyOnElmtId(b23);
-        this.__isLoading.purgeDependencyOnElmtId(b23);
+    purgeVariableDependenciesOnElmtId(e36) {
+        this.__networkDetails.purgeDependencyOnElmtId(e36);
+        this.__isLoading.purgeDependencyOnElmtId(e36);
     }
     aboutToBeDeleted() {
         this.__networkDetails.aboutToBeDeleted();
@@ -54,15 +54,15 @@ class NetworkPage extends ViewPU {
     get networkDetails() {
         return this.__networkDetails.get();
     }
-    set networkDetails(a23: NetworkDetails | null) {
-        this.__networkDetails.set(a23);
+    set networkDetails(d36: NetworkDetails | null) {
+        this.__networkDetails.set(d36);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(z22: boolean) {
-        this.__isLoading.set(z22);
+    set isLoading(c36: boolean) {
+        this.__isLoading.set(c36);
     }
     async aboutToAppear() {
         hilog.info(0x0000, TAG, 'NetworkPage aboutToAppear');
@@ -73,21 +73,21 @@ class NetworkPage extends ViewPU {
     }
     async loadNetworkInfo() {
         try {
-            const s22 = connection.getDefaultNetSync();
-            if (s22 && s22.netId !== 0) {
-                const t22 = connection.getNetCapabilitiesSync(s22);
-                const u22 = connection.getConnectionPropertiesSync(s22);
-                const v22 = t22.bearerTypes[0] || connection.NetBearType.BEARER_CELLULAR;
-                const w22 = t22.networkCap || [];
-                const x22 = t22.linkUpBandwidthKbps || 0;
-                const y22 = t22.linkDownBandwidthKbps || 0;
+            const v35 = connection.getDefaultNetSync();
+            if (v35 && v35.netId !== 0) {
+                const w35 = connection.getNetCapabilitiesSync(v35);
+                const x35 = connection.getConnectionPropertiesSync(v35);
+                const y35 = w35.bearerTypes[0] || connection.NetBearType.BEARER_CELLULAR;
+                const z35 = w35.networkCap || [];
+                const a36 = w35.linkUpBandwidthKbps || 0;
+                const b36 = w35.linkDownBandwidthKbps || 0;
                 this.networkDetails = {
-                    type: this.getNetworkTypeName(v22),
+                    type: this.getNetworkTypeName(y35),
                     isConnected: true,
-                    isMetered: w22.includes(connection.NetCap.NET_CAPABILITY_NOT_METERED) ? false : true,
+                    isMetered: z35.includes(connection.NetCap.NET_CAPABILITY_NOT_METERED) ? false : true,
                     isRoaming: false,
-                    linkUpBandwidth: x22,
-                    linkDownBandwidth: y22
+                    linkUpBandwidth: a36,
+                    linkDownBandwidth: b36
                 };
             }
             else {
@@ -101,8 +101,8 @@ class NetworkPage extends ViewPU {
                 };
             }
         }
-        catch (r22) {
-            hilog.error(0x0000, TAG, 'Load network info error: %{public}s', String(r22));
+        catch (u35) {
+            hilog.error(0x0000, TAG, 'Load network info error: %{public}s', String(u35));
             this.networkDetails = {
                 type: '未知',
                 isConnected: false,
@@ -113,8 +113,8 @@ class NetworkPage extends ViewPU {
             };
         }
     }
-    getNetworkTypeName(q22: connection.NetBearType): string {
-        switch (q22) {
+    getNetworkTypeName(t35: connection.NetBearType): string {
+        switch (t35) {
             case connection.NetBearType.BEARER_CELLULAR:
                 return '移动数据';
             case connection.NetBearType.BEARER_WIFI:
@@ -129,22 +129,22 @@ class NetworkPage extends ViewPU {
                 return '未知';
         }
     }
-    formatBandwidth(p22: number): string {
-        if (p22 <= 0)
+    formatBandwidth(s35: number): string {
+        if (s35 <= 0)
             return '未知';
-        if (p22 >= 1000000) {
-            return `${(p22 / 1000000).toFixed(1)} Gbps`;
+        if (s35 >= 1000000) {
+            return `${(s35 / 1000000).toFixed(1)} Gbps`;
         }
-        else if (p22 >= 1000) {
-            return `${(p22 / 1000).toFixed(1)} Mbps`;
+        else if (s35 >= 1000) {
+            return `${(s35 / 1000).toFixed(1)} Mbps`;
         }
         else {
-            return `${p22} Kbps`;
+            return `${s35} Kbps`;
         }
     }
-    DataDescription(l22: string, m22 = null) {
-        this.observeComponentCreation2((n22, o22) => {
-            Text.create(l22);
+    DataDescription(o35: string, p35 = null) {
+        this.observeComponentCreation2((q35, r35) => {
+            Text.create(o35);
             Text.fontSize(12);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ top: 4, bottom: 8 });
@@ -153,18 +153,18 @@ class NetworkPage extends ViewPU {
         Text.pop();
     }
     initialRender() {
-        this.observeComponentCreation2((j22, k22) => {
+        this.observeComponentCreation2((m35, n35) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((h22, i22) => {
+        this.observeComponentCreation2((k35, l35) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((f22, g22) => {
+        this.observeComponentCreation2((i35, j35) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -173,7 +173,7 @@ class NetworkPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((d22, e22) => {
+        this.observeComponentCreation2((g35, h35) => {
             Text.create('网络');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
@@ -182,20 +182,20 @@ class NetworkPage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((b22, c22) => {
+        this.observeComponentCreation2((e35, f35) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((z21, a22) => {
+        this.observeComponentCreation2((c35, d35) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((l20, m20) => {
+        this.observeComponentCreation2((o33, p33) => {
             If.create();
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((x21, y21) => {
+                    this.observeComponentCreation2((a35, b35) => {
                         Text.create('加载中...');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -207,19 +207,19 @@ class NetworkPage extends ViewPU {
             else if (this.networkDetails) {
                 this.ifElseBranchUpdateFunction(1, () => {
                     {
-                        this.observeComponentCreation2((t21, u21) => {
-                            if (u21) {
-                                let v21 = new SectionHeader(this, { title: '网络状态' }, undefined, t21, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 140, col: 13 });
-                                ViewPU.create(v21);
-                                let w21 = () => {
+                        this.observeComponentCreation2((w34, x34) => {
+                            if (x34) {
+                                let y34 = new SectionHeader(this, { title: '网络状态' }, undefined, w34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 140, col: 13 });
+                                ViewPU.create(y34);
+                                let z34 = () => {
                                     return {
                                         title: '网络状态'
                                     };
                                 };
-                                v21.paramsGenerator_ = w21;
+                                y34.paramsGenerator_ = z34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(t21, {
+                                this.updateStateVarsOfChildByElmtId(w34, {
                                     title: '网络状态'
                                 });
                             }
@@ -227,23 +227,23 @@ class NetworkPage extends ViewPU {
                     }
                     this.DataDescription.bind(this)('显示当前设备的网络连接状态和网络类型。');
                     {
-                        this.observeComponentCreation2((p21, q21) => {
-                            if (q21) {
-                                let r21 = new InfoCard(this, {
+                        this.observeComponentCreation2((s34, t34) => {
+                            if (t34) {
+                                let u34 = new InfoCard(this, {
                                     title: '网络类型',
                                     value: this.networkDetails.type
-                                }, undefined, p21, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 143, col: 13 });
-                                ViewPU.create(r21);
-                                let s21 = () => {
+                                }, undefined, s34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 143, col: 13 });
+                                ViewPU.create(u34);
+                                let v34 = () => {
                                     return {
                                         title: '网络类型',
                                         value: this.networkDetails.type
                                     };
                                 };
-                                r21.paramsGenerator_ = s21;
+                                u34.paramsGenerator_ = v34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(p21, {
+                                this.updateStateVarsOfChildByElmtId(s34, {
                                     title: '网络类型',
                                     value: this.networkDetails.type
                                 });
@@ -251,23 +251,23 @@ class NetworkPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((l21, m21) => {
-                            if (m21) {
-                                let n21 = new InfoCard(this, {
+                        this.observeComponentCreation2((o34, p34) => {
+                            if (p34) {
+                                let q34 = new InfoCard(this, {
                                     title: '连接状态',
                                     value: this.networkDetails.isConnected ? '已连接' : '未连接'
-                                }, undefined, l21, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 148, col: 13 });
-                                ViewPU.create(n21);
-                                let o21 = () => {
+                                }, undefined, o34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 148, col: 13 });
+                                ViewPU.create(q34);
+                                let r34 = () => {
                                     return {
                                         title: '连接状态',
                                         value: this.networkDetails.isConnected ? '已连接' : '未连接'
                                     };
                                 };
-                                n21.paramsGenerator_ = o21;
+                                q34.paramsGenerator_ = r34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(l21, {
+                                this.updateStateVarsOfChildByElmtId(o34, {
                                     title: '连接状态',
                                     value: this.networkDetails.isConnected ? '已连接' : '未连接'
                                 });
@@ -275,23 +275,23 @@ class NetworkPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((h21, i21) => {
-                            if (i21) {
-                                let j21 = new InfoCard(this, {
+                        this.observeComponentCreation2((k34, l34) => {
+                            if (l34) {
+                                let m34 = new InfoCard(this, {
                                     title: '计费网络',
                                     value: this.networkDetails.isMetered ? '是' : '否'
-                                }, undefined, h21, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 153, col: 13 });
-                                ViewPU.create(j21);
-                                let k21 = () => {
+                                }, undefined, k34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 153, col: 13 });
+                                ViewPU.create(m34);
+                                let n34 = () => {
                                     return {
                                         title: '计费网络',
                                         value: this.networkDetails.isMetered ? '是' : '否'
                                     };
                                 };
-                                j21.paramsGenerator_ = k21;
+                                m34.paramsGenerator_ = n34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(h21, {
+                                this.updateStateVarsOfChildByElmtId(k34, {
                                     title: '计费网络',
                                     value: this.networkDetails.isMetered ? '是' : '否'
                                 });
@@ -299,19 +299,19 @@ class NetworkPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((d21, e21) => {
-                            if (e21) {
-                                let f21 = new SectionHeader(this, { title: '带宽信息' }, undefined, d21, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 158, col: 13 });
-                                ViewPU.create(f21);
-                                let g21 = () => {
+                        this.observeComponentCreation2((g34, h34) => {
+                            if (h34) {
+                                let i34 = new SectionHeader(this, { title: '带宽信息' }, undefined, g34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 158, col: 13 });
+                                ViewPU.create(i34);
+                                let j34 = () => {
                                     return {
                                         title: '带宽信息'
                                     };
                                 };
-                                f21.paramsGenerator_ = g21;
+                                i34.paramsGenerator_ = j34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(d21, {
+                                this.updateStateVarsOfChildByElmtId(g34, {
                                     title: '带宽信息'
                                 });
                             }
@@ -319,23 +319,23 @@ class NetworkPage extends ViewPU {
                     }
                     this.DataDescription.bind(this)('显示当前网络连接的理论上行和下行带宽。实际网速可能因网络环境、信号强度等因素而有所不同。');
                     {
-                        this.observeComponentCreation2((z20, a21) => {
-                            if (a21) {
-                                let b21 = new InfoCard(this, {
+                        this.observeComponentCreation2((c34, d34) => {
+                            if (d34) {
+                                let e34 = new InfoCard(this, {
                                     title: '上行带宽',
                                     value: this.formatBandwidth(this.networkDetails.linkUpBandwidth)
-                                }, undefined, z20, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 161, col: 13 });
-                                ViewPU.create(b21);
-                                let c21 = () => {
+                                }, undefined, c34, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 161, col: 13 });
+                                ViewPU.create(e34);
+                                let f34 = () => {
                                     return {
                                         title: '上行带宽',
                                         value: this.formatBandwidth(this.networkDetails.linkUpBandwidth)
                                     };
                                 };
-                                b21.paramsGenerator_ = c21;
+                                e34.paramsGenerator_ = f34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(z20, {
+                                this.updateStateVarsOfChildByElmtId(c34, {
                                     title: '上行带宽',
                                     value: this.formatBandwidth(this.networkDetails.linkUpBandwidth)
                                 });
@@ -343,23 +343,23 @@ class NetworkPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((v20, w20) => {
-                            if (w20) {
-                                let x20 = new InfoCard(this, {
+                        this.observeComponentCreation2((y33, z33) => {
+                            if (z33) {
+                                let a34 = new InfoCard(this, {
                                     title: '下行带宽',
                                     value: this.formatBandwidth(this.networkDetails.linkDownBandwidth)
-                                }, undefined, v20, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 166, col: 13 });
-                                ViewPU.create(x20);
-                                let y20 = () => {
+                                }, undefined, y33, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 166, col: 13 });
+                                ViewPU.create(a34);
+                                let b34 = () => {
                                     return {
                                         title: '下行带宽',
                                         value: this.formatBandwidth(this.networkDetails.linkDownBandwidth)
                                     };
                                 };
-                                x20.paramsGenerator_ = y20;
+                                a34.paramsGenerator_ = b34;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(v20, {
+                                this.updateStateVarsOfChildByElmtId(y33, {
                                     title: '下行带宽',
                                     value: this.formatBandwidth(this.networkDetails.linkDownBandwidth)
                                 });
@@ -367,19 +367,19 @@ class NetworkPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((r20, s20) => {
-                            if (s20) {
-                                let t20 = new SectionHeader(this, { title: '说明' }, undefined, r20, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 171, col: 13 });
-                                ViewPU.create(t20);
-                                let u20 = () => {
+                        this.observeComponentCreation2((u33, v33) => {
+                            if (v33) {
+                                let w33 = new SectionHeader(this, { title: '说明' }, undefined, u33, () => { }, { page: "entry/src/main/ets/pages/NetworkPage.ets", line: 171, col: 13 });
+                                ViewPU.create(w33);
+                                let x33 = () => {
                                     return {
                                         title: '说明'
                                     };
                                 };
-                                t20.paramsGenerator_ = u20;
+                                w33.paramsGenerator_ = x33;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(r20, {
+                                this.updateStateVarsOfChildByElmtId(u33, {
                                     title: '说明'
                                 });
                             }
@@ -390,7 +390,7 @@ class NetworkPage extends ViewPU {
             }
             else {
                 this.ifElseBranchUpdateFunction(2, () => {
-                    this.observeComponentCreation2((p20, q20) => {
+                    this.observeComponentCreation2((s33, t33) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(24);
@@ -398,7 +398,7 @@ class NetworkPage extends ViewPU {
                         Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((n20, o20) => {
+                    this.observeComponentCreation2((q33, r33) => {
                         Text.create('无法获取网络信息');
                         Text.fontSize(18);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });

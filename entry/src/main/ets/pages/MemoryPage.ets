@@ -1,7 +1,7 @@
 import router from '@ohos.router';
 import { FormatUtil } from '../utils/FormatUtil';
 import { InfoCard } from '../components/InfoCard';
-import { SectionHeader } from '../components/SectionHeader';
+import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
 import { nativeApi, SystemMemInfo, AppMemInfo, MemoryLimit } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -107,13 +107,12 @@ struct MemoryPage {
     return '未获取';
   }
 
-  @Builder
-  DataDescription(text: string) {
-    Text(text)
-      .fontSize(12)
-      .fontColor($r('app.color.text_secondary'))
-      .margin({ top: 4, bottom: 8 })
-      .width('100%');
+  // 跳转到概念详情页
+  navigateToConcept(conceptId: string): void {
+    router.pushUrl({
+      url: 'pages/ConceptDetailPage',
+      params: { conceptId: conceptId }
+    });
   }
 
   build() {
@@ -143,7 +142,7 @@ struct MemoryPage {
               .fontColor($r('app.color.text_secondary'))
               .margin(24);
           } else if (!this.isNativeAvailable) {
-            SectionHeader({ title: '内存状态' });
+            InfoHeader({ title: '内存状态' });
 
             Column() {
               Text('Native API 不可用')
@@ -162,8 +161,10 @@ struct MemoryPage {
             .alignItems(HorizontalAlign.Center);
           } else {
             // 系统内存概览
-            SectionHeader({ title: '系统内存' });
-            this.DataDescription('显示设备总内存和使用情况。总内存是设备物理内存的总量，可用内存是当前可分配给应用程序的内存。');
+            InfoHeader({
+              title: '系统内存',
+              subtitle: '显示设备总内存和使用情况'
+            });
 
             Column() {
               Text(this.getTotalMemory())
@@ -201,8 +202,12 @@ struct MemoryPage {
             });
 
             // 应用内存
-            SectionHeader({ title: '应用内存' });
-            this.DataDescription('PSS：实际使用的物理内存。RSS：驻留内存大小。VSS：虚拟内存大小。');
+            InfoHeader({
+              title: '应用内存',
+              subtitle: 'PSS、RSS、VSS 内存指标',
+              conceptId: 'memory_pss',
+              onInfoClick: () => this.navigateToConcept('memory_pss')
+            });
 
             if (this.appMemInfo?.success) {
               Column() {
@@ -224,49 +229,71 @@ struct MemoryPage {
               .margin({ bottom: 12 });
             }
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'RSS (驻留内存)',
-              value: this.getAppRss()
+              value: this.getAppRss(),
+              conceptId: 'memory_rss',
+              onInfoClick: () => this.navigateToConcept('memory_rss')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'VSS (虚拟内存)',
-              value: this.getAppVss()
+              value: this.getAppVss(),
+              conceptId: 'memory_vss',
+              onInfoClick: () => this.navigateToConcept('memory_vss')
             });
 
             // 内存分类
             if (this.appMemInfo?.success) {
-              SectionHeader({ title: '内存分类' });
-              this.DataDescription('Shared：与其他进程共享的内存。Private：进程独占的内存。Clean：未修改的内存页。Dirty：已修改的内存页。');
+              InfoHeader({
+                title: '内存分类',
+                subtitle: 'Shared/Private Clean/Dirty',
+                conceptId: 'memory_shared',
+                onInfoClick: () => this.navigateToConcept('memory_shared')
+              });
 
-              InfoCard({
+              InfoCardWithDesc({
                 title: 'Shared Clean',
-                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
+                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean),
+                conceptId: 'memory_shared',
+                onInfoClick: () => this.navigateToConcept('memory_shared')
               });
 
-              InfoCard({
+              InfoCardWithDesc({
                 title: 'Shared Dirty',
-                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
+                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty),
+                conceptId: 'memory_shared',
+                onInfoClick: () => this.navigateToConcept('memory_shared')
               });
 
-              InfoCard({
+              InfoCardWithDesc({
                 title: 'Private Clean',
-                value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
+                value: FormatUtil.formatBytes(this.appMemInfo.privateClean),
+                conceptId: 'memory_shared',
+                onInfoClick: () => this.navigateToConcept('memory_shared')
               });
 
-              InfoCard({
+              InfoCardWithDesc({
                 title: 'Private Dirty',
-                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
+                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty),
+                conceptId: 'memory_shared',
+                onInfoClick: () => this.navigateToConcept('memory_shared')
               });
             }
 
             // 内存限制
-            SectionHeader({ title: '内存限制' });
-            this.DataDescription('系统为每个进程设置的内存使用上限。当应用内存超过限制时，系统可能会触发内存警告或终止应用。');
+            InfoHeader({
+              title: '内存限制',
+              subtitle: '系统为应用设置的内存上限',
+              conceptId: 'memory_limit',
+              onInfoClick: () => this.navigateToConcept('memory_limit')
+            });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'RSS 限制',
-              value: this.getMemoryLimit()
+              value: this.getMemoryLimit(),
+              conceptId: 'memory_limit',
+              onInfoClick: () => this.navigateToConcept('memory_limit')
             });
           }
         }

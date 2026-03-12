@@ -32,6 +32,10 @@
 			"name":	"permission_reason_network",
 			"id":	"0x01000007"
 		}, {
+			"type":	"media",
+			"name":	"syspulse_icon",
+			"id":	"0x01000008"
+		}, {
 			"type":	"color",
 			"name":	"primary_color",
 			"id":	"0x01000009"

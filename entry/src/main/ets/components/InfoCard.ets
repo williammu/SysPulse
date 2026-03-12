@@ -102,48 +102,52 @@ export struct TechCard {
           playMode: PlayMode.Alternate
         })
 
-      Row() {
-        Column() {
-          Text(this.title)
-            .fontSize(13)
-            .fontColor($r('app.color.text_secondary'))
-            .letterSpacing(1)
-            .margin({ bottom: 8 })
+      Column() {
+        Text(this.title)
+          .fontSize(13)
+          .fontColor($r('app.color.text_secondary'))
+          .letterSpacing(1)
+          .margin({ bottom: 8 })
 
-          Row() {
-            Text(this.value)
-              .fontSize(28)
-              .fontWeight(FontWeight.Bold)
-              .fontColor($r('app.color.text_primary'))
-              .maxLines(1)
-              .textOverflow({ overflow: TextOverflow.Ellipsis })
+        // 数值和单位的组合，自适应字体大小
+        Row() {
+          Text(this.value)
+            .fontSize(this.value.length > 6 ? 20 : 24)
+            .fontWeight(FontWeight.Bold)
+            .fontColor($r('app.color.text_primary'))
+            .maxLines(1)
+            .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .flexShrink(1)
 
-            if (this.unit) {
-              Text(this.unit)
-                .fontSize(14)
-                .fontColor($r('app.color.text_secondary'))
-                .margin({ left: 4 })
-            }
-          }
-          .alignItems(VerticalAlign.Bottom)
-        }
-        .alignItems(HorizontalAlign.Start)
-        .layoutWeight(1)
-
-        // 趋势指示器
-        if (this.trend !== 0) {
-          Column() {
-            Text(this.trend > 0 ? '▲' : '▼')
+          if (this.unit) {
+            Text(this.unit)
               .fontSize(12)
+              .fontColor($r('app.color.text_secondary'))
+              .margin({ left: 4 })
+              .flexShrink(0)
+          }
+        }
+        .width('100%')
+        .alignItems(VerticalAlign.Bottom)
+
+        // 趋势指示器（放在下方）
+        if (this.trend !== 0) {
+          Row() {
+            Text(this.trend > 0 ? '▲' : '▼')
+              .fontSize(10)
+              .fontColor(this.trend > 0 ? $r('app.color.success_color') : $r('app.color.error_color'))
+              .margin({ right: 4 })
+            
+            Text(this.trend > 0 ? '上升' : '下降')
+              .fontSize(10)
               .fontColor(this.trend > 0 ? $r('app.color.success_color') : $r('app.color.error_color'))
           }
-          .padding(8)
-          .backgroundColor(this.trend > 0 ? 'rgba(0, 230, 118, 0.1)' : 'rgba(255, 71, 87, 0.1)')
-          .borderRadius(8)
+          .margin({ top: 4 })
         }
       }
       .width('100%')
       .padding(16)
+      .alignItems(HorizontalAlign.Start)
     }
     .width('100%')
     .backgroundColor($r('app.color.background_card'))

@@ -10,6 +10,7 @@
     "pages/NetworkPage",
     "pages/CameraPage",
     "pages/SensorPage",
+    "pages/ConceptDetailPage",
     "pages/AboutPage",
     "pages/TestPage"
   ]

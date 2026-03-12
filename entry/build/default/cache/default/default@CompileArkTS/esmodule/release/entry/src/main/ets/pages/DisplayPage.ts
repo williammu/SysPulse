@@ -10,24 +10,24 @@ import { InfoCard } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoCa
 import { SectionHeader } from "@bundle:com.huawei.sysinfo/entry/ets/components/SectionHeader";
 import type { DisplayInfoModel } from '../model/DeviceInfo';
 class DisplayPage extends ViewPU {
-    constructor(b13, c13, d13, e13 = -1, f13 = undefined, g13) {
-        super(b13, d13, e13, g13);
-        if (typeof f13 === "function") {
-            this.paramsGenerator_ = f13;
+    constructor(o16, p16, q16, r16 = -1, s16 = undefined, t16) {
+        super(o16, q16, r16, t16);
+        if (typeof s16 === "function") {
+            this.paramsGenerator_ = s16;
         }
         this.__displayInfo = new ObservedPropertyObjectPU(null, this, "displayInfo");
-        this.setInitiallyProvidedValue(c13);
+        this.setInitiallyProvidedValue(p16);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(a13: DisplayPage_Params) {
-        if (a13.displayInfo !== undefined) {
-            this.displayInfo = a13.displayInfo;
+    setInitiallyProvidedValue(n16: DisplayPage_Params) {
+        if (n16.displayInfo !== undefined) {
+            this.displayInfo = n16.displayInfo;
         }
     }
-    updateStateVars(z12: DisplayPage_Params) {
+    updateStateVars(m16: DisplayPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(y12) {
-        this.__displayInfo.purgeDependencyOnElmtId(y12);
+    purgeVariableDependenciesOnElmtId(l16) {
+        this.__displayInfo.purgeDependencyOnElmtId(l16);
     }
     aboutToBeDeleted() {
         this.__displayInfo.aboutToBeDeleted();
@@ -38,25 +38,25 @@ class DisplayPage extends ViewPU {
     get displayInfo() {
         return this.__displayInfo.get();
     }
-    set displayInfo(x12: DisplayInfoModel | null) {
-        this.__displayInfo.set(x12);
+    set displayInfo(k16: DisplayInfoModel | null) {
+        this.__displayInfo.set(k16);
     }
     async aboutToAppear() {
         this.displayInfo = await DeviceUtil.getDisplayInfo();
     }
     initialRender() {
-        this.observeComponentCreation2((v12, w12) => {
+        this.observeComponentCreation2((i16, j16) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((t12, u12) => {
+        this.observeComponentCreation2((g16, h16) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((r12, s12) => {
+        this.observeComponentCreation2((e16, f16) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -65,7 +65,7 @@ class DisplayPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((p12, q12) => {
+        this.observeComponentCreation2((c16, d16) => {
             Text.create('屏幕');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
@@ -74,52 +74,52 @@ class DisplayPage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((n12, o12) => {
+        this.observeComponentCreation2((a16, b16) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((l12, m12) => {
+        this.observeComponentCreation2((y15, z15) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
         {
-            this.observeComponentCreation2((h12, i12) => {
-                if (i12) {
-                    let j12 = new SectionHeader(this, { title: '屏幕信息' }, undefined, h12, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 37, col: 11 });
-                    ViewPU.create(j12);
-                    let k12 = () => {
+            this.observeComponentCreation2((u15, v15) => {
+                if (v15) {
+                    let w15 = new SectionHeader(this, { title: '屏幕信息' }, undefined, u15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 37, col: 11 });
+                    ViewPU.create(w15);
+                    let x15 = () => {
                         return {
                             title: '屏幕信息'
                         };
                     };
-                    j12.paramsGenerator_ = k12;
+                    w15.paramsGenerator_ = x15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(h12, {
+                    this.updateStateVarsOfChildByElmtId(u15, {
                         title: '屏幕信息'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((d12, e12) => {
-                if (e12) {
-                    let f12 = new InfoCard(this, {
+            this.observeComponentCreation2((q15, r15) => {
+                if (r15) {
+                    let s15 = new InfoCard(this, {
                         title: '分辨率',
                         value: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height}` : '--'
-                    }, undefined, d12, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 39, col: 11 });
-                    ViewPU.create(f12);
-                    let g12 = () => {
+                    }, undefined, q15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 39, col: 11 });
+                    ViewPU.create(s15);
+                    let t15 = () => {
                         return {
                             title: '分辨率',
                             value: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height}` : '--'
                         };
                     };
-                    f12.paramsGenerator_ = g12;
+                    s15.paramsGenerator_ = t15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(d12, {
+                    this.updateStateVarsOfChildByElmtId(q15, {
                         title: '分辨率',
                         value: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height}` : '--'
                     });
@@ -127,23 +127,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((z11, a12) => {
-                if (a12) {
-                    let b12 = new InfoCard(this, {
+            this.observeComponentCreation2((m15, n15) => {
+                if (n15) {
+                    let o15 = new InfoCard(this, {
                         title: '像素密度',
                         value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--'
-                    }, undefined, z11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 44, col: 11 });
-                    ViewPU.create(b12);
-                    let c12 = () => {
+                    }, undefined, m15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 44, col: 11 });
+                    ViewPU.create(o15);
+                    let p15 = () => {
                         return {
                             title: '像素密度',
                             value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--'
                         };
                     };
-                    b12.paramsGenerator_ = c12;
+                    o15.paramsGenerator_ = p15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(z11, {
+                    this.updateStateVarsOfChildByElmtId(m15, {
                         title: '像素密度',
                         value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--'
                     });
@@ -151,23 +151,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((v11, w11) => {
-                if (w11) {
-                    let x11 = new InfoCard(this, {
+            this.observeComponentCreation2((i15, j15) => {
+                if (j15) {
+                    let k15 = new InfoCard(this, {
                         title: '刷新率',
                         value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--'
-                    }, undefined, v11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 49, col: 11 });
-                    ViewPU.create(x11);
-                    let y11 = () => {
+                    }, undefined, i15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 49, col: 11 });
+                    ViewPU.create(k15);
+                    let l15 = () => {
                         return {
                             title: '刷新率',
                             value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--'
                         };
                     };
-                    x11.paramsGenerator_ = y11;
+                    k15.paramsGenerator_ = l15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(v11, {
+                    this.updateStateVarsOfChildByElmtId(i15, {
                         title: '刷新率',
                         value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--'
                     });
@@ -175,23 +175,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((r11, s11) => {
-                if (s11) {
-                    let t11 = new InfoCard(this, {
+            this.observeComponentCreation2((e15, f15) => {
+                if (f15) {
+                    let g15 = new InfoCard(this, {
                         title: 'X轴DPI',
                         value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--'
-                    }, undefined, r11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 54, col: 11 });
-                    ViewPU.create(t11);
-                    let u11 = () => {
+                    }, undefined, e15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 54, col: 11 });
+                    ViewPU.create(g15);
+                    let h15 = () => {
                         return {
                             title: 'X轴DPI',
                             value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--'
                         };
                     };
-                    t11.paramsGenerator_ = u11;
+                    g15.paramsGenerator_ = h15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(r11, {
+                    this.updateStateVarsOfChildByElmtId(e15, {
                         title: 'X轴DPI',
                         value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--'
                     });
@@ -199,23 +199,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((n11, o11) => {
-                if (o11) {
-                    let p11 = new InfoCard(this, {
+            this.observeComponentCreation2((a15, b15) => {
+                if (b15) {
+                    let c15 = new InfoCard(this, {
                         title: 'Y轴DPI',
                         value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--'
-                    }, undefined, n11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 59, col: 11 });
-                    ViewPU.create(p11);
-                    let q11 = () => {
+                    }, undefined, a15, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 59, col: 11 });
+                    ViewPU.create(c15);
+                    let d15 = () => {
                         return {
                             title: 'Y轴DPI',
                             value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--'
                         };
                     };
-                    p11.paramsGenerator_ = q11;
+                    c15.paramsGenerator_ = d15;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(n11, {
+                    this.updateStateVarsOfChildByElmtId(a15, {
                         title: 'Y轴DPI',
                         value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--'
                     });
@@ -223,23 +223,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((j11, k11) => {
-                if (k11) {
-                    let l11 = new InfoCard(this, {
+            this.observeComponentCreation2((w14, x14) => {
+                if (x14) {
+                    let y14 = new InfoCard(this, {
                         title: '显示状态',
                         value: this.displayInfo ? (this.displayInfo.alive ? '正常' : '异常') : '--'
-                    }, undefined, j11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 64, col: 11 });
-                    ViewPU.create(l11);
-                    let m11 = () => {
+                    }, undefined, w14, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 64, col: 11 });
+                    ViewPU.create(y14);
+                    let z14 = () => {
                         return {
                             title: '显示状态',
                             value: this.displayInfo ? (this.displayInfo.alive ? '正常' : '异常') : '--'
                         };
                     };
-                    l11.paramsGenerator_ = m11;
+                    y14.paramsGenerator_ = z14;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(j11, {
+                    this.updateStateVarsOfChildByElmtId(w14, {
                         title: '显示状态',
                         value: this.displayInfo ? (this.displayInfo.alive ? '正常' : '异常') : '--'
                     });
@@ -247,23 +247,23 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((f11, g11) => {
-                if (g11) {
-                    let h11 = new InfoCard(this, {
+            this.observeComponentCreation2((s14, t14) => {
+                if (t14) {
+                    let u14 = new InfoCard(this, {
                         title: '旋转角度',
                         value: this.displayInfo ? `${this.displayInfo.rotation}°` : '--'
-                    }, undefined, f11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 69, col: 11 });
-                    ViewPU.create(h11);
-                    let i11 = () => {
+                    }, undefined, s14, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 69, col: 11 });
+                    ViewPU.create(u14);
+                    let v14 = () => {
                         return {
                             title: '旋转角度',
                             value: this.displayInfo ? `${this.displayInfo.rotation}°` : '--'
                         };
                     };
-                    h11.paramsGenerator_ = i11;
+                    u14.paramsGenerator_ = v14;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(f11, {
+                    this.updateStateVarsOfChildByElmtId(s14, {
                         title: '旋转角度',
                         value: this.displayInfo ? `${this.displayInfo.rotation}°` : '--'
                     });
@@ -271,42 +271,42 @@ class DisplayPage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((b11, c11) => {
-                if (c11) {
-                    let d11 = new SectionHeader(this, { title: '说明' }, undefined, b11, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 74, col: 11 });
-                    ViewPU.create(d11);
-                    let e11 = () => {
+            this.observeComponentCreation2((o14, p14) => {
+                if (p14) {
+                    let q14 = new SectionHeader(this, { title: '说明' }, undefined, o14, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 74, col: 11 });
+                    ViewPU.create(q14);
+                    let r14 = () => {
                         return {
                             title: '说明'
                         };
                     };
-                    d11.paramsGenerator_ = e11;
+                    q14.paramsGenerator_ = r14;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(b11, {
+                    this.updateStateVarsOfChildByElmtId(o14, {
                         title: '说明'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((x10, y10) => {
-                if (y10) {
-                    let z10 = new InfoCard(this, {
+            this.observeComponentCreation2((k14, l14) => {
+                if (l14) {
+                    let m14 = new InfoCard(this, {
                         title: '数据来源',
                         value: '所有屏幕信息均来自 @ohos.display API'
-                    }, undefined, x10, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 76, col: 11 });
-                    ViewPU.create(z10);
-                    let a11 = () => {
+                    }, undefined, k14, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 76, col: 11 });
+                    ViewPU.create(m14);
+                    let n14 = () => {
                         return {
                             title: '数据来源',
                             value: '所有屏幕信息均来自 @ohos.display API'
                         };
                     };
-                    z10.paramsGenerator_ = a11;
+                    m14.paramsGenerator_ = n14;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(x10, {
+                    this.updateStateVarsOfChildByElmtId(k14, {
                         title: '数据来源',
                         value: '所有屏幕信息均来自 @ohos.display API'
                     });

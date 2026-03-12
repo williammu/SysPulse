@@ -22,10 +22,10 @@ import { nativeApi } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi"
 import type { SystemMemInfo, CpuUsage, AppMemInfo } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi";
 import type { DeviceInfoModel, BatteryInfoModel, DisplayInfoModel, StorageInfoModel } from '../model/DeviceInfo';
 class Index extends ViewPU {
-    constructor(g8, h8, i8, j8 = -1, k8 = undefined, l8) {
-        super(g8, i8, j8, l8);
-        if (typeof k8 === "function") {
-            this.paramsGenerator_ = k8;
+    constructor(q28, r28, s28, t28 = -1, u28 = undefined, v28) {
+        super(q28, s28, t28, v28);
+        if (typeof u28 === "function") {
+            this.paramsGenerator_ = u28;
         }
         this.__deviceInfo = new ObservedPropertyObjectPU(null, this, "deviceInfo");
         this.__batteryInfo = new ObservedPropertyObjectPU(null, this, "batteryInfo");
@@ -36,49 +36,49 @@ class Index extends ViewPU {
         this.__storageInfo = new ObservedPropertyObjectPU(null, this, "storageInfo");
         this.__currentTime = new ObservedPropertySimplePU('', this, "currentTime");
         this.refreshTimer = null;
-        this.setInitiallyProvidedValue(h8);
+        this.setInitiallyProvidedValue(r28);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(f8: Index_Params) {
-        if (f8.deviceInfo !== undefined) {
-            this.deviceInfo = f8.deviceInfo;
+    setInitiallyProvidedValue(p28: Index_Params) {
+        if (p28.deviceInfo !== undefined) {
+            this.deviceInfo = p28.deviceInfo;
         }
-        if (f8.batteryInfo !== undefined) {
-            this.batteryInfo = f8.batteryInfo;
+        if (p28.batteryInfo !== undefined) {
+            this.batteryInfo = p28.batteryInfo;
         }
-        if (f8.systemMemInfo !== undefined) {
-            this.systemMemInfo = f8.systemMemInfo;
+        if (p28.systemMemInfo !== undefined) {
+            this.systemMemInfo = p28.systemMemInfo;
         }
-        if (f8.appMemInfo !== undefined) {
-            this.appMemInfo = f8.appMemInfo;
+        if (p28.appMemInfo !== undefined) {
+            this.appMemInfo = p28.appMemInfo;
         }
-        if (f8.systemCpuUsage !== undefined) {
-            this.systemCpuUsage = f8.systemCpuUsage;
+        if (p28.systemCpuUsage !== undefined) {
+            this.systemCpuUsage = p28.systemCpuUsage;
         }
-        if (f8.displayInfo !== undefined) {
-            this.displayInfo = f8.displayInfo;
+        if (p28.displayInfo !== undefined) {
+            this.displayInfo = p28.displayInfo;
         }
-        if (f8.storageInfo !== undefined) {
-            this.storageInfo = f8.storageInfo;
+        if (p28.storageInfo !== undefined) {
+            this.storageInfo = p28.storageInfo;
         }
-        if (f8.currentTime !== undefined) {
-            this.currentTime = f8.currentTime;
+        if (p28.currentTime !== undefined) {
+            this.currentTime = p28.currentTime;
         }
-        if (f8.refreshTimer !== undefined) {
-            this.refreshTimer = f8.refreshTimer;
+        if (p28.refreshTimer !== undefined) {
+            this.refreshTimer = p28.refreshTimer;
         }
     }
-    updateStateVars(e8: Index_Params) {
+    updateStateVars(o28: Index_Params) {
     }
-    purgeVariableDependenciesOnElmtId(d8) {
-        this.__deviceInfo.purgeDependencyOnElmtId(d8);
-        this.__batteryInfo.purgeDependencyOnElmtId(d8);
-        this.__systemMemInfo.purgeDependencyOnElmtId(d8);
-        this.__appMemInfo.purgeDependencyOnElmtId(d8);
-        this.__systemCpuUsage.purgeDependencyOnElmtId(d8);
-        this.__displayInfo.purgeDependencyOnElmtId(d8);
-        this.__storageInfo.purgeDependencyOnElmtId(d8);
-        this.__currentTime.purgeDependencyOnElmtId(d8);
+    purgeVariableDependenciesOnElmtId(n28) {
+        this.__deviceInfo.purgeDependencyOnElmtId(n28);
+        this.__batteryInfo.purgeDependencyOnElmtId(n28);
+        this.__systemMemInfo.purgeDependencyOnElmtId(n28);
+        this.__appMemInfo.purgeDependencyOnElmtId(n28);
+        this.__systemCpuUsage.purgeDependencyOnElmtId(n28);
+        this.__displayInfo.purgeDependencyOnElmtId(n28);
+        this.__storageInfo.purgeDependencyOnElmtId(n28);
+        this.__currentTime.purgeDependencyOnElmtId(n28);
     }
     aboutToBeDeleted() {
         this.__deviceInfo.aboutToBeDeleted();
@@ -96,57 +96,57 @@ class Index extends ViewPU {
     get deviceInfo() {
         return this.__deviceInfo.get();
     }
-    set deviceInfo(c8: DeviceInfoModel | null) {
-        this.__deviceInfo.set(c8);
+    set deviceInfo(m28: DeviceInfoModel | null) {
+        this.__deviceInfo.set(m28);
     }
     private __batteryInfo: ObservedPropertyObjectPU<BatteryInfoModel | null>;
     get batteryInfo() {
         return this.__batteryInfo.get();
     }
-    set batteryInfo(b8: BatteryInfoModel | null) {
-        this.__batteryInfo.set(b8);
+    set batteryInfo(l28: BatteryInfoModel | null) {
+        this.__batteryInfo.set(l28);
     }
     private __systemMemInfo: ObservedPropertyObjectPU<SystemMemInfo | null>;
     get systemMemInfo() {
         return this.__systemMemInfo.get();
     }
-    set systemMemInfo(a8: SystemMemInfo | null) {
-        this.__systemMemInfo.set(a8);
+    set systemMemInfo(k28: SystemMemInfo | null) {
+        this.__systemMemInfo.set(k28);
     }
     private __appMemInfo: ObservedPropertyObjectPU<AppMemInfo | null>;
     get appMemInfo() {
         return this.__appMemInfo.get();
     }
-    set appMemInfo(z7: AppMemInfo | null) {
-        this.__appMemInfo.set(z7);
+    set appMemInfo(j28: AppMemInfo | null) {
+        this.__appMemInfo.set(j28);
     }
     private __systemCpuUsage: ObservedPropertyObjectPU<CpuUsage | null>;
     get systemCpuUsage() {
         return this.__systemCpuUsage.get();
     }
-    set systemCpuUsage(y7: CpuUsage | null) {
-        this.__systemCpuUsage.set(y7);
+    set systemCpuUsage(i28: CpuUsage | null) {
+        this.__systemCpuUsage.set(i28);
     }
     private __displayInfo: ObservedPropertyObjectPU<DisplayInfoModel | null>;
     get displayInfo() {
         return this.__displayInfo.get();
     }
-    set displayInfo(x7: DisplayInfoModel | null) {
-        this.__displayInfo.set(x7);
+    set displayInfo(h28: DisplayInfoModel | null) {
+        this.__displayInfo.set(h28);
     }
     private __storageInfo: ObservedPropertyObjectPU<StorageInfoModel | null>;
     get storageInfo() {
         return this.__storageInfo.get();
     }
-    set storageInfo(w7: StorageInfoModel | null) {
-        this.__storageInfo.set(w7);
+    set storageInfo(g28: StorageInfoModel | null) {
+        this.__storageInfo.set(g28);
     }
     private __currentTime: ObservedPropertySimplePU<string>;
     get currentTime() {
         return this.__currentTime.get();
     }
-    set currentTime(v7: string) {
-        this.__currentTime.set(v7);
+    set currentTime(f28: string) {
+        this.__currentTime.set(f28);
     }
     private refreshTimer: number | null;
     aboutToAppear() {
@@ -177,8 +177,8 @@ class Index extends ViewPU {
         this.batteryInfo = DeviceUtil.getBatteryInfo();
     }
     private updateTime(): void {
-        const u7 = new Date();
-        this.currentTime = u7.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        const e28 = new Date();
+        this.currentTime = e28.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
     }
     getCpuUsageDisplay(): string {
         if (this.systemCpuUsage?.success) {
@@ -188,9 +188,9 @@ class Index extends ViewPU {
     }
     getMemoryUsageDisplay(): string {
         if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
-            const s7 = this.systemMemInfo.total - this.systemMemInfo.available;
-            const t7 = ((s7 / this.systemMemInfo.total) * 100).toFixed(1);
-            return `${t7}`;
+            const c28 = this.systemMemInfo.total - this.systemMemInfo.available;
+            const d28 = ((c28 / this.systemMemInfo.total) * 100).toFixed(1);
+            return `${d28}`;
         }
         return '--';
     }
@@ -219,27 +219,27 @@ class Index extends ViewPU {
         return '--';
     }
     initialRender() {
-        this.observeComponentCreation2((q7, r7) => {
+        this.observeComponentCreation2((a28, b28) => {
             Scroll.create();
             Scroll.width('100%');
             Scroll.height('100%');
             Scroll.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Scroll);
-        this.observeComponentCreation2((o7, p7) => {
+        this.observeComponentCreation2((y27, z27) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((m7, n7) => {
+        this.observeComponentCreation2((w27, x27) => {
             Row.create();
             Row.width('100%');
             Row.justifyContent(FlexAlign.SpaceBetween);
             Row.padding({ top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((k7, l7) => {
+        this.observeComponentCreation2((u27, v27) => {
             Row.create();
         }, Row);
-        this.observeComponentCreation2((i7, j7) => {
+        this.observeComponentCreation2((s27, t27) => {
             Row.create();
             Row.width(8);
             Row.height(8);
@@ -253,7 +253,7 @@ class Index extends ViewPU {
             });
         }, Row);
         Row.pop();
-        this.observeComponentCreation2((g7, h7) => {
+        this.observeComponentCreation2((q27, r27) => {
             Text.create('SYSTEM ONLINE');
             Text.fontSize(11);
             Text.fontColor({ "id": 16777242, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -262,7 +262,7 @@ class Index extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((e7, f7) => {
+        this.observeComponentCreation2((o27, p27) => {
             Text.create(this.currentTime);
             Text.fontSize(14);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -270,22 +270,22 @@ class Index extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((c7, d7) => {
+        this.observeComponentCreation2((m27, n27) => {
             Column.create();
             Column.width('100%');
             Column.padding({ top: 16, bottom: 24 });
         }, Column);
-        this.observeComponentCreation2((a7, b7) => {
+        this.observeComponentCreation2((k27, l27) => {
             Row.create();
         }, Row);
-        this.observeComponentCreation2((y6, z6) => {
+        this.observeComponentCreation2((i27, j27) => {
             Text.create('SYS');
             Text.fontSize(32);
             Text.fontWeight(FontWeight.Bold);
             Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((w6, x6) => {
+        this.observeComponentCreation2((g27, h27) => {
             Text.create('PULSE');
             Text.fontSize(32);
             Text.fontWeight(FontWeight.Bold);
@@ -299,14 +299,14 @@ class Index extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((u6, v6) => {
+        this.observeComponentCreation2((e27, f27) => {
             Text.create(this.deviceInfo?.marketName || '设备型号');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ top: 8 });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((s6, t6) => {
+        this.observeComponentCreation2((c27, d27) => {
             Text.create(`${this.deviceInfo?.brand || '品牌'} · ${this.deviceInfo?.osFullName || '系统版本'}`);
             Text.fontSize(12);
             Text.fontColor({ "id": 16777243, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -315,30 +315,30 @@ class Index extends ViewPU {
         Text.pop();
         Column.pop();
         {
-            this.observeComponentCreation2((o6, p6) => {
-                if (p6) {
-                    let q6 = new TechHeader(this, {
+            this.observeComponentCreation2((y26, z26) => {
+                if (z26) {
+                    let a27 = new TechHeader(this, {
                         title: '实时监控',
                         subtitle: 'REAL-TIME MONITORING'
-                    }, undefined, o6, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 187, col: 9 });
-                    ViewPU.create(q6);
-                    let r6 = () => {
+                    }, undefined, y26, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 187, col: 9 });
+                    ViewPU.create(a27);
+                    let b27 = () => {
                         return {
                             title: '实时监控',
                             subtitle: 'REAL-TIME MONITORING'
                         };
                     };
-                    q6.paramsGenerator_ = r6;
+                    a27.paramsGenerator_ = b27;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(o6, {
+                    this.updateStateVarsOfChildByElmtId(y26, {
                         title: '实时监控',
                         subtitle: 'REAL-TIME MONITORING'
                     });
                 }
             }, { name: "TechHeader" });
         }
-        this.observeComponentCreation2((m6, n6) => {
+        this.observeComponentCreation2((w26, x26) => {
             Grid.create();
             Grid.columnsTemplate('1fr 1fr');
             Grid.columnsGap(12);
@@ -346,34 +346,34 @@ class Index extends ViewPU {
             Grid.width('100%');
         }, Grid);
         {
-            const e6 = (k6, l6) => {
+            const o26 = (u26, v26) => {
                 GridItem.create(() => { }, false);
                 GridItem.onClick(() => {
                     router.pushUrl({ url: 'pages/CpuPage' });
                 });
             };
-            const f6 = () => {
-                this.observeComponentCreation2(e6, GridItem);
+            const p26 = () => {
+                this.observeComponentCreation2(o26, GridItem);
                 {
-                    this.observeComponentCreation2((g6, h6) => {
-                        if (h6) {
-                            let i6 = new TechCard(this, {
+                    this.observeComponentCreation2((q26, r26) => {
+                        if (r26) {
+                            let s26 = new TechCard(this, {
                                 title: 'CPU 使用率',
                                 value: this.getCpuUsageDisplay(),
                                 unit: '%'
-                            }, undefined, g6, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 194, col: 13 });
-                            ViewPU.create(i6);
-                            let j6 = () => {
+                            }, undefined, q26, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 194, col: 13 });
+                            ViewPU.create(s26);
+                            let t26 = () => {
                                 return {
                                     title: 'CPU 使用率',
                                     value: this.getCpuUsageDisplay(),
                                     unit: '%'
                                 };
                             };
-                            i6.paramsGenerator_ = j6;
+                            s26.paramsGenerator_ = t26;
                         }
                         else {
-                            this.updateStateVarsOfChildByElmtId(g6, {
+                            this.updateStateVarsOfChildByElmtId(q26, {
                                 title: 'CPU 使用率',
                                 value: this.getCpuUsageDisplay(),
                                 unit: '%'
@@ -383,37 +383,37 @@ class Index extends ViewPU {
                 }
                 GridItem.pop();
             };
-            f6();
+            p26();
         }
         {
-            const w5 = (c6, d6) => {
+            const g26 = (m26, n26) => {
                 GridItem.create(() => { }, false);
                 GridItem.onClick(() => {
                     router.pushUrl({ url: 'pages/MemoryPage' });
                 });
             };
-            const x5 = () => {
-                this.observeComponentCreation2(w5, GridItem);
+            const h26 = () => {
+                this.observeComponentCreation2(g26, GridItem);
                 {
-                    this.observeComponentCreation2((y5, z5) => {
-                        if (z5) {
-                            let a6 = new TechCard(this, {
+                    this.observeComponentCreation2((i26, j26) => {
+                        if (j26) {
+                            let k26 = new TechCard(this, {
                                 title: '内存使用率',
                                 value: this.getMemoryUsageDisplay(),
                                 unit: '%'
-                            }, undefined, y5, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 205, col: 13 });
-                            ViewPU.create(a6);
-                            let b6 = () => {
+                            }, undefined, i26, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 205, col: 13 });
+                            ViewPU.create(k26);
+                            let l26 = () => {
                                 return {
                                     title: '内存使用率',
                                     value: this.getMemoryUsageDisplay(),
                                     unit: '%'
                                 };
                             };
-                            a6.paramsGenerator_ = b6;
+                            k26.paramsGenerator_ = l26;
                         }
                         else {
-                            this.updateStateVarsOfChildByElmtId(y5, {
+                            this.updateStateVarsOfChildByElmtId(i26, {
                                 title: '内存使用率',
                                 value: this.getMemoryUsageDisplay(),
                                 unit: '%'
@@ -423,37 +423,37 @@ class Index extends ViewPU {
                 }
                 GridItem.pop();
             };
-            x5();
+            h26();
         }
         {
-            const o5 = (u5, v5) => {
+            const y25 = (e26, f26) => {
                 GridItem.create(() => { }, false);
                 GridItem.onClick(() => {
                     router.pushUrl({ url: 'pages/MemoryPage' });
                 });
             };
-            const p5 = () => {
-                this.observeComponentCreation2(o5, GridItem);
+            const z25 = () => {
+                this.observeComponentCreation2(y25, GridItem);
                 {
-                    this.observeComponentCreation2((q5, r5) => {
-                        if (r5) {
-                            let s5 = new TechCard(this, {
+                    this.observeComponentCreation2((a26, b26) => {
+                        if (b26) {
+                            let c26 = new TechCard(this, {
                                 title: '应用内存',
                                 value: this.getAppMemoryDisplay(),
                                 unit: ''
-                            }, undefined, q5, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 216, col: 13 });
-                            ViewPU.create(s5);
-                            let t5 = () => {
+                            }, undefined, a26, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 216, col: 13 });
+                            ViewPU.create(c26);
+                            let d26 = () => {
                                 return {
                                     title: '应用内存',
                                     value: this.getAppMemoryDisplay(),
                                     unit: ''
                                 };
                             };
-                            s5.paramsGenerator_ = t5;
+                            c26.paramsGenerator_ = d26;
                         }
                         else {
-                            this.updateStateVarsOfChildByElmtId(q5, {
+                            this.updateStateVarsOfChildByElmtId(a26, {
                                 title: '应用内存',
                                 value: this.getAppMemoryDisplay(),
                                 unit: ''
@@ -463,37 +463,37 @@ class Index extends ViewPU {
                 }
                 GridItem.pop();
             };
-            p5();
+            z25();
         }
         {
-            const g5 = (m5, n5) => {
+            const q25 = (w25, x25) => {
                 GridItem.create(() => { }, false);
                 GridItem.onClick(() => {
                     router.pushUrl({ url: 'pages/BatteryPage' });
                 });
             };
-            const h5 = () => {
-                this.observeComponentCreation2(g5, GridItem);
+            const r25 = () => {
+                this.observeComponentCreation2(q25, GridItem);
                 {
-                    this.observeComponentCreation2((i5, j5) => {
-                        if (j5) {
-                            let k5 = new TechCard(this, {
+                    this.observeComponentCreation2((s25, t25) => {
+                        if (t25) {
+                            let u25 = new TechCard(this, {
                                 title: '电池电量',
                                 value: this.getBatteryDisplay(),
                                 unit: '%'
-                            }, undefined, i5, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 227, col: 13 });
-                            ViewPU.create(k5);
-                            let l5 = () => {
+                            }, undefined, s25, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 227, col: 13 });
+                            ViewPU.create(u25);
+                            let v25 = () => {
                                 return {
                                     title: '电池电量',
                                     value: this.getBatteryDisplay(),
                                     unit: '%'
                                 };
                             };
-                            k5.paramsGenerator_ = l5;
+                            u25.paramsGenerator_ = v25;
                         }
                         else {
-                            this.updateStateVarsOfChildByElmtId(i5, {
+                            this.updateStateVarsOfChildByElmtId(s25, {
                                 title: '电池电量',
                                 value: this.getBatteryDisplay(),
                                 unit: '%'
@@ -503,27 +503,27 @@ class Index extends ViewPU {
                 }
                 GridItem.pop();
             };
-            h5();
+            r25();
         }
         Grid.pop();
         {
-            this.observeComponentCreation2((c5, d5) => {
-                if (d5) {
-                    let e5 = new TechHeader(this, {
+            this.observeComponentCreation2((m25, n25) => {
+                if (n25) {
+                    let o25 = new TechHeader(this, {
                         title: '硬件信息',
                         subtitle: 'HARDWARE INFO'
-                    }, undefined, c5, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 243, col: 9 });
-                    ViewPU.create(e5);
-                    let f5 = () => {
+                    }, undefined, m25, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 243, col: 9 });
+                    ViewPU.create(o25);
+                    let p25 = () => {
                         return {
                             title: '硬件信息',
                             subtitle: 'HARDWARE INFO'
                         };
                     };
-                    e5.paramsGenerator_ = f5;
+                    o25.paramsGenerator_ = p25;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(c5, {
+                    this.updateStateVarsOfChildByElmtId(m25, {
                         title: '硬件信息',
                         subtitle: 'HARDWARE INFO'
                     });
@@ -531,107 +531,107 @@ class Index extends ViewPU {
             }, { name: "TechHeader" });
         }
         {
-            this.observeComponentCreation2((y4, z4) => {
-                if (z4) {
-                    let a5 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((i25, j25) => {
+                if (j25) {
+                    let k25 = new SysInfoMenuItem(this, {
                         title: '处理器',
-                        subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'} · 点击查看详情`,
+                        subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'}`,
                         onTap: () => {
                             router.pushUrl({ url: 'pages/CpuPage' });
                         }
-                    }, undefined, y4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 248, col: 9 });
-                    ViewPU.create(a5);
-                    let b5 = () => {
+                    }, undefined, i25, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 248, col: 9 });
+                    ViewPU.create(k25);
+                    let l25 = () => {
                         return {
                             title: '处理器',
-                            subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'} · 点击查看详情`,
+                            subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'}`,
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/CpuPage' });
                             }
                         };
                     };
-                    a5.paramsGenerator_ = b5;
+                    k25.paramsGenerator_ = l25;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(y4, {
+                    this.updateStateVarsOfChildByElmtId(i25, {
                         title: '处理器',
-                        subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'} · 点击查看详情`
+                        subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'}`
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((u4, v4) => {
-                if (v4) {
-                    let w4 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((e25, f25) => {
+                if (f25) {
+                    let g25 = new SysInfoMenuItem(this, {
                         title: '内存',
-                        subtitle: `总计 ${this.getTotalMemoryDisplay()} · 点击查看详情`,
+                        subtitle: `总计 ${this.getTotalMemoryDisplay()}`,
                         onTap: () => {
                             router.pushUrl({ url: 'pages/MemoryPage' });
                         }
-                    }, undefined, u4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 256, col: 9 });
-                    ViewPU.create(w4);
-                    let x4 = () => {
+                    }, undefined, e25, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 256, col: 9 });
+                    ViewPU.create(g25);
+                    let h25 = () => {
                         return {
                             title: '内存',
-                            subtitle: `总计 ${this.getTotalMemoryDisplay()} · 点击查看详情`,
+                            subtitle: `总计 ${this.getTotalMemoryDisplay()}`,
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/MemoryPage' });
                             }
                         };
                     };
-                    w4.paramsGenerator_ = x4;
+                    g25.paramsGenerator_ = h25;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(u4, {
+                    this.updateStateVarsOfChildByElmtId(e25, {
                         title: '内存',
-                        subtitle: `总计 ${this.getTotalMemoryDisplay()} · 点击查看详情`
+                        subtitle: `总计 ${this.getTotalMemoryDisplay()}`
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((q4, r4) => {
-                if (r4) {
-                    let s4 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((a25, b25) => {
+                if (b25) {
+                    let c25 = new SysInfoMenuItem(this, {
                         title: '存储',
-                        subtitle: `总计 ${this.getStorageDisplay()} · 点击查看详情`,
+                        subtitle: `总计 ${this.getStorageDisplay()}`,
                         onTap: () => {
                             router.pushUrl({ url: 'pages/StoragePage' });
                         }
-                    }, undefined, q4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 264, col: 9 });
-                    ViewPU.create(s4);
-                    let t4 = () => {
+                    }, undefined, a25, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 264, col: 9 });
+                    ViewPU.create(c25);
+                    let d25 = () => {
                         return {
                             title: '存储',
-                            subtitle: `总计 ${this.getStorageDisplay()} · 点击查看详情`,
+                            subtitle: `总计 ${this.getStorageDisplay()}`,
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/StoragePage' });
                             }
                         };
                     };
-                    s4.paramsGenerator_ = t4;
+                    c25.paramsGenerator_ = d25;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(q4, {
+                    this.updateStateVarsOfChildByElmtId(a25, {
                         title: '存储',
-                        subtitle: `总计 ${this.getStorageDisplay()} · 点击查看详情`
+                        subtitle: `总计 ${this.getStorageDisplay()}`
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((m4, n4) => {
-                if (n4) {
-                    let o4 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((w24, x24) => {
+                if (x24) {
+                    let y24 = new SysInfoMenuItem(this, {
                         title: '屏幕',
                         subtitle: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height} · ${this.displayInfo.refreshRate}Hz` : '--',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/DisplayPage' });
                         }
-                    }, undefined, m4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 272, col: 9 });
-                    ViewPU.create(o4);
-                    let p4 = () => {
+                    }, undefined, w24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 272, col: 9 });
+                    ViewPU.create(y24);
+                    let z24 = () => {
                         return {
                             title: '屏幕',
                             subtitle: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height} · ${this.displayInfo.refreshRate}Hz` : '--',
@@ -640,10 +640,10 @@ class Index extends ViewPU {
                             }
                         };
                     };
-                    o4.paramsGenerator_ = p4;
+                    y24.paramsGenerator_ = z24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(m4, {
+                    this.updateStateVarsOfChildByElmtId(w24, {
                         title: '屏幕',
                         subtitle: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height} · ${this.displayInfo.refreshRate}Hz` : '--'
                     });
@@ -651,83 +651,83 @@ class Index extends ViewPU {
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((i4, j4) => {
-                if (j4) {
-                    let k4 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((s24, t24) => {
+                if (t24) {
+                    let u24 = new SysInfoMenuItem(this, {
                         title: '电池',
-                        subtitle: `${this.getBatteryDisplay()}% · 点击查看详情`,
+                        subtitle: `${this.getBatteryDisplay()}%`,
                         onTap: () => {
                             router.pushUrl({ url: 'pages/BatteryPage' });
                         }
-                    }, undefined, i4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 280, col: 9 });
-                    ViewPU.create(k4);
-                    let l4 = () => {
+                    }, undefined, s24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 280, col: 9 });
+                    ViewPU.create(u24);
+                    let v24 = () => {
                         return {
                             title: '电池',
-                            subtitle: `${this.getBatteryDisplay()}% · 点击查看详情`,
+                            subtitle: `${this.getBatteryDisplay()}%`,
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/BatteryPage' });
                             }
                         };
                     };
-                    k4.paramsGenerator_ = l4;
+                    u24.paramsGenerator_ = v24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(i4, {
+                    this.updateStateVarsOfChildByElmtId(s24, {
                         title: '电池',
-                        subtitle: `${this.getBatteryDisplay()}% · 点击查看详情`
+                        subtitle: `${this.getBatteryDisplay()}%`
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((e4, f4) => {
-                if (f4) {
-                    let g4 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((o24, p24) => {
+                if (p24) {
+                    let q24 = new SysInfoMenuItem(this, {
                         title: 'GPU',
-                        subtitle: '点击查看详情',
+                        subtitle: '',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/GpuPage' });
                         }
-                    }, undefined, e4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 288, col: 9 });
-                    ViewPU.create(g4);
-                    let h4 = () => {
+                    }, undefined, o24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 288, col: 9 });
+                    ViewPU.create(q24);
+                    let r24 = () => {
                         return {
                             title: 'GPU',
-                            subtitle: '点击查看详情',
+                            subtitle: '',
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/GpuPage' });
                             }
                         };
                     };
-                    g4.paramsGenerator_ = h4;
+                    q24.paramsGenerator_ = r24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(e4, {
+                    this.updateStateVarsOfChildByElmtId(o24, {
                         title: 'GPU',
-                        subtitle: '点击查看详情'
+                        subtitle: ''
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((a4, b4) => {
-                if (b4) {
-                    let c4 = new TechHeader(this, {
+            this.observeComponentCreation2((k24, l24) => {
+                if (l24) {
+                    let m24 = new TechHeader(this, {
                         title: '连接与传感器',
                         subtitle: 'CONNECTIVITY & SENSORS'
-                    }, undefined, a4, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 297, col: 9 });
-                    ViewPU.create(c4);
-                    let d4 = () => {
+                    }, undefined, k24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 297, col: 9 });
+                    ViewPU.create(m24);
+                    let n24 = () => {
                         return {
                             title: '连接与传感器',
                             subtitle: 'CONNECTIVITY & SENSORS'
                         };
                     };
-                    c4.paramsGenerator_ = d4;
+                    m24.paramsGenerator_ = n24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(a4, {
+                    this.updateStateVarsOfChildByElmtId(k24, {
                         title: '连接与传感器',
                         subtitle: 'CONNECTIVITY & SENSORS'
                     });
@@ -735,113 +735,113 @@ class Index extends ViewPU {
             }, { name: "TechHeader" });
         }
         {
-            this.observeComponentCreation2((w3, x3) => {
-                if (x3) {
-                    let y3 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((g24, h24) => {
+                if (h24) {
+                    let i24 = new SysInfoMenuItem(this, {
                         title: '网络',
-                        subtitle: '点击查看详情',
+                        subtitle: '',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/NetworkPage' });
                         }
-                    }, undefined, w3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 302, col: 9 });
-                    ViewPU.create(y3);
-                    let z3 = () => {
+                    }, undefined, g24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 302, col: 9 });
+                    ViewPU.create(i24);
+                    let j24 = () => {
                         return {
                             title: '网络',
-                            subtitle: '点击查看详情',
+                            subtitle: '',
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/NetworkPage' });
                             }
                         };
                     };
-                    y3.paramsGenerator_ = z3;
+                    i24.paramsGenerator_ = j24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(w3, {
+                    this.updateStateVarsOfChildByElmtId(g24, {
                         title: '网络',
-                        subtitle: '点击查看详情'
+                        subtitle: ''
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((s3, t3) => {
-                if (t3) {
-                    let u3 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((c24, d24) => {
+                if (d24) {
+                    let e24 = new SysInfoMenuItem(this, {
                         title: '摄像头',
-                        subtitle: '点击查看详情',
+                        subtitle: '',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/CameraPage' });
                         }
-                    }, undefined, s3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 310, col: 9 });
-                    ViewPU.create(u3);
-                    let v3 = () => {
+                    }, undefined, c24, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 310, col: 9 });
+                    ViewPU.create(e24);
+                    let f24 = () => {
                         return {
                             title: '摄像头',
-                            subtitle: '点击查看详情',
+                            subtitle: '',
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/CameraPage' });
                             }
                         };
                     };
-                    u3.paramsGenerator_ = v3;
+                    e24.paramsGenerator_ = f24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(s3, {
+                    this.updateStateVarsOfChildByElmtId(c24, {
                         title: '摄像头',
-                        subtitle: '点击查看详情'
+                        subtitle: ''
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((o3, p3) => {
-                if (p3) {
-                    let q3 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((y23, z23) => {
+                if (z23) {
+                    let a24 = new SysInfoMenuItem(this, {
                         title: '传感器',
-                        subtitle: '点击查看详情',
+                        subtitle: '',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/SensorPage' });
                         }
-                    }, undefined, o3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 318, col: 9 });
-                    ViewPU.create(q3);
-                    let r3 = () => {
+                    }, undefined, y23, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 318, col: 9 });
+                    ViewPU.create(a24);
+                    let b24 = () => {
                         return {
                             title: '传感器',
-                            subtitle: '点击查看详情',
+                            subtitle: '',
                             onTap: () => {
                                 router.pushUrl({ url: 'pages/SensorPage' });
                             }
                         };
                     };
-                    q3.paramsGenerator_ = r3;
+                    a24.paramsGenerator_ = b24;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(o3, {
+                    this.updateStateVarsOfChildByElmtId(y23, {
                         title: '传感器',
-                        subtitle: '点击查看详情'
+                        subtitle: ''
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((k3, l3) => {
-                if (l3) {
-                    let m3 = new TechHeader(this, {
+            this.observeComponentCreation2((u23, v23) => {
+                if (v23) {
+                    let w23 = new TechHeader(this, {
                         title: '其他',
                         subtitle: 'OTHERS'
-                    }, undefined, k3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 327, col: 9 });
-                    ViewPU.create(m3);
-                    let n3 = () => {
+                    }, undefined, u23, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 327, col: 9 });
+                    ViewPU.create(w23);
+                    let x23 = () => {
                         return {
                             title: '其他',
                             subtitle: 'OTHERS'
                         };
                     };
-                    m3.paramsGenerator_ = n3;
+                    w23.paramsGenerator_ = x23;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(k3, {
+                    this.updateStateVarsOfChildByElmtId(u23, {
                         title: '其他',
                         subtitle: 'OTHERS'
                     });
@@ -849,17 +849,17 @@ class Index extends ViewPU {
             }, { name: "TechHeader" });
         }
         {
-            this.observeComponentCreation2((g3, h3) => {
-                if (h3) {
-                    let i3 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((q23, r23) => {
+                if (r23) {
+                    let s23 = new SysInfoMenuItem(this, {
                         title: '系统信息测试',
                         subtitle: '运行完整 API 测试',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/TestPage' });
                         }
-                    }, undefined, g3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 332, col: 9 });
-                    ViewPU.create(i3);
-                    let j3 = () => {
+                    }, undefined, q23, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 332, col: 9 });
+                    ViewPU.create(s23);
+                    let t23 = () => {
                         return {
                             title: '系统信息测试',
                             subtitle: '运行完整 API 测试',
@@ -868,10 +868,10 @@ class Index extends ViewPU {
                             }
                         };
                     };
-                    i3.paramsGenerator_ = j3;
+                    s23.paramsGenerator_ = t23;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(g3, {
+                    this.updateStateVarsOfChildByElmtId(q23, {
                         title: '系统信息测试',
                         subtitle: '运行完整 API 测试'
                     });
@@ -879,17 +879,17 @@ class Index extends ViewPU {
             }, { name: "SysInfoMenuItem" });
         }
         {
-            this.observeComponentCreation2((c3, d3) => {
-                if (d3) {
-                    let e3 = new SysInfoMenuItem(this, {
+            this.observeComponentCreation2((m23, n23) => {
+                if (n23) {
+                    let o23 = new SysInfoMenuItem(this, {
                         title: '关于',
                         subtitle: 'SysPulse v1.0.0',
                         onTap: () => {
                             router.pushUrl({ url: 'pages/AboutPage' });
                         }
-                    }, undefined, c3, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 340, col: 9 });
-                    ViewPU.create(e3);
-                    let f3 = () => {
+                    }, undefined, m23, () => { }, { page: "entry/src/main/ets/pages/Index.ets", line: 340, col: 9 });
+                    ViewPU.create(o23);
+                    let p23 = () => {
                         return {
                             title: '关于',
                             subtitle: 'SysPulse v1.0.0',
@@ -898,36 +898,36 @@ class Index extends ViewPU {
                             }
                         };
                     };
-                    e3.paramsGenerator_ = f3;
+                    o23.paramsGenerator_ = p23;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(c3, {
+                    this.updateStateVarsOfChildByElmtId(m23, {
                         title: '关于',
                         subtitle: 'SysPulse v1.0.0'
                     });
                 }
             }, { name: "SysInfoMenuItem" });
         }
-        this.observeComponentCreation2((a3, b3) => {
+        this.observeComponentCreation2((k23, l23) => {
             Row.create();
             Row.justifyContent(FlexAlign.Center);
             Row.margin({ top: 32, bottom: 16 });
         }, Row);
-        this.observeComponentCreation2((y2, z2) => {
+        this.observeComponentCreation2((i23, j23) => {
             Row.create();
             Row.width(60);
             Row.height(1);
             Row.backgroundColor({ "id": 16777236, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Row);
         Row.pop();
-        this.observeComponentCreation2((w2, x2) => {
+        this.observeComponentCreation2((g23, h23) => {
             Text.create('●');
             Text.fontSize(8);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ left: 8, right: 8 });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((u2, v2) => {
+        this.observeComponentCreation2((e23, f23) => {
             Row.create();
             Row.width(60);
             Row.height(1);

@@ -1,7 +1,11 @@
 # ninja log v6
-755	895	1773292984686647413	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	eb34fdda51e1e564
-1	753	1773292983932183516	CMakeFiles/sysinfo.dir/hidebug_module.cpp.o	1bbd36310e86969c
-1	235	1773292983932375351	CMakeFiles/sysinfo.dir/sensor_module.cpp.o	fdd14ec458225b64
 0	234	1773292983931654721	CMakeFiles/sysinfo.dir/sysinfo.cpp.o	5e0f9e2d183a3d08
+1	235	1773292983932375351	CMakeFiles/sysinfo.dir/sensor_module.cpp.o	fdd14ec458225b64
 4	3792	1773295671229663313	CMakeFiles/sysinfo.dir/hidebug_module.cpp.o	1bbd36310e86969c
 3792	3959	1773295675017462613	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	8a72e8b781d26c46
+4	1022	1773307290567973265	CMakeFiles/sysinfo.dir/sysinfo.cpp.o	5e0f9e2d183a3d08
+5	1024	1773307290568879373	CMakeFiles/sysinfo.dir/gpu_module.cpp.o	afcf222506e414f5
+1024	1709	1773307291587034654	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	1a5c6806c0e2477c
+4	1009	1773308610863721897	CMakeFiles/sysinfo.dir/sysinfo.cpp.o	5e0f9e2d183a3d08
+4	1090	1773308610864355259	CMakeFiles/sysinfo.dir/gpu_module.cpp.o	afcf222506e414f5
+1090	1248	1773308611949933691	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	1a5c6806c0e2477c

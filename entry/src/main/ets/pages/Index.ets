@@ -247,7 +247,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '处理器',
-          subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'} · 点击查看详情`,
+          subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'}`,
           onTap: () => {
             router.pushUrl({ url: 'pages/CpuPage' });
           }
@@ -255,7 +255,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '内存',
-          subtitle: `总计 ${this.getTotalMemoryDisplay()} · 点击查看详情`,
+          subtitle: `总计 ${this.getTotalMemoryDisplay()}`,
           onTap: () => {
             router.pushUrl({ url: 'pages/MemoryPage' });
           }
@@ -263,7 +263,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '存储',
-          subtitle: `总计 ${this.getStorageDisplay()} · 点击查看详情`,
+          subtitle: `总计 ${this.getStorageDisplay()}`,
           onTap: () => {
             router.pushUrl({ url: 'pages/StoragePage' });
           }
@@ -279,7 +279,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '电池',
-          subtitle: `${this.getBatteryDisplay()}% · 点击查看详情`,
+          subtitle: `${this.getBatteryDisplay()}%`,
           onTap: () => {
             router.pushUrl({ url: 'pages/BatteryPage' });
           }
@@ -287,7 +287,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: 'GPU',
-          subtitle: '点击查看详情',
+          subtitle: '',
           onTap: () => {
             router.pushUrl({ url: 'pages/GpuPage' });
           }
@@ -301,7 +301,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '网络',
-          subtitle: '点击查看详情',
+          subtitle: '',
           onTap: () => {
             router.pushUrl({ url: 'pages/NetworkPage' });
           }
@@ -309,7 +309,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '摄像头',
-          subtitle: '点击查看详情',
+          subtitle: '',
           onTap: () => {
             router.pushUrl({ url: 'pages/CameraPage' });
           }
@@ -317,7 +317,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '传感器',
-          subtitle: '点击查看详情',
+          subtitle: '',
           onTap: () => {
             router.pushUrl({ url: 'pages/SensorPage' });
           }
