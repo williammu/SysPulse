@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import { ConceptInfo, ConceptDetailItem, getConceptInfo } from '../config/ConceptConfig';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 const TAG = 'ConceptDetailPage';
 
@@ -28,23 +29,12 @@ struct ConceptDetailPage {
 
   build() {
     Column() {
-      // 顶部导航栏
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          });
-
-        Text('概念说明')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 });
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 });
+      NavigationBarWithArrow({
+        title: '概念说明',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {

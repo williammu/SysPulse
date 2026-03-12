@@ -13,41 +13,42 @@ import { InfoHeader, InfoCardWithDesc } from "@bundle:com.huawei.sysinfo/entry/e
 import { nativeApi } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi";
 import type { GpuInfo } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi";
 import hilog from "@ohos:hilog";
+import { NavigationBarWithArrow } from "@bundle:com.huawei.sysinfo/entry/ets/components/NavigationBar";
 const TAG = 'GpuPage';
 class GpuPage extends ViewPU {
-    constructor(f6, g6, h6, i6 = -1, j6 = undefined, k6) {
-        super(f6, h6, i6, k6);
-        if (typeof j6 === "function") {
-            this.paramsGenerator_ = j6;
+    constructor(d6, e6, f6, g6 = -1, h6 = undefined, i6) {
+        super(d6, f6, g6, i6);
+        if (typeof h6 === "function") {
+            this.paramsGenerator_ = h6;
         }
         this.__gpuInfo = new ObservedPropertyObjectPU(null, this, "gpuInfo");
         this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
         this.__hasError = new ObservedPropertySimplePU(false, this, "hasError");
         this.__errorMessage = new ObservedPropertySimplePU('', this, "errorMessage");
-        this.setInitiallyProvidedValue(g6);
+        this.setInitiallyProvidedValue(e6);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(e6: GpuPage_Params) {
-        if (e6.gpuInfo !== undefined) {
-            this.gpuInfo = e6.gpuInfo;
+    setInitiallyProvidedValue(c6: GpuPage_Params) {
+        if (c6.gpuInfo !== undefined) {
+            this.gpuInfo = c6.gpuInfo;
         }
-        if (e6.isLoading !== undefined) {
-            this.isLoading = e6.isLoading;
+        if (c6.isLoading !== undefined) {
+            this.isLoading = c6.isLoading;
         }
-        if (e6.hasError !== undefined) {
-            this.hasError = e6.hasError;
+        if (c6.hasError !== undefined) {
+            this.hasError = c6.hasError;
         }
-        if (e6.errorMessage !== undefined) {
-            this.errorMessage = e6.errorMessage;
+        if (c6.errorMessage !== undefined) {
+            this.errorMessage = c6.errorMessage;
         }
     }
-    updateStateVars(d6: GpuPage_Params) {
+    updateStateVars(b6: GpuPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(c6) {
-        this.__gpuInfo.purgeDependencyOnElmtId(c6);
-        this.__isLoading.purgeDependencyOnElmtId(c6);
-        this.__hasError.purgeDependencyOnElmtId(c6);
-        this.__errorMessage.purgeDependencyOnElmtId(c6);
+    purgeVariableDependenciesOnElmtId(a6) {
+        this.__gpuInfo.purgeDependencyOnElmtId(a6);
+        this.__isLoading.purgeDependencyOnElmtId(a6);
+        this.__hasError.purgeDependencyOnElmtId(a6);
+        this.__errorMessage.purgeDependencyOnElmtId(a6);
     }
     aboutToBeDeleted() {
         this.__gpuInfo.aboutToBeDeleted();
@@ -61,29 +62,29 @@ class GpuPage extends ViewPU {
     get gpuInfo() {
         return this.__gpuInfo.get();
     }
-    set gpuInfo(b6: GpuInfo | null) {
-        this.__gpuInfo.set(b6);
+    set gpuInfo(z5: GpuInfo | null) {
+        this.__gpuInfo.set(z5);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(a6: boolean) {
-        this.__isLoading.set(a6);
+    set isLoading(y5: boolean) {
+        this.__isLoading.set(y5);
     }
     private __hasError: ObservedPropertySimplePU<boolean>;
     get hasError() {
         return this.__hasError.get();
     }
-    set hasError(z5: boolean) {
-        this.__hasError.set(z5);
+    set hasError(x5: boolean) {
+        this.__hasError.set(x5);
     }
     private __errorMessage: ObservedPropertySimplePU<string>;
     get errorMessage() {
         return this.__errorMessage.get();
     }
-    set errorMessage(y5: string) {
-        this.__errorMessage.set(y5);
+    set errorMessage(w5: string) {
+        this.__errorMessage.set(w5);
     }
     aboutToAppear() {
         hilog.info(0x0000, TAG, 'GpuPage aboutToAppear');
@@ -91,66 +92,70 @@ class GpuPage extends ViewPU {
     }
     loadGpuInfo() {
         try {
-            const x5 = nativeApi.getGpuInfo();
-            if (x5 && x5.success) {
-                this.gpuInfo = x5;
-                hilog.info(0x0000, TAG, 'GPU info loaded: vendor=%{public}s, renderer=%{public}s', x5.vendor, x5.renderer);
+            const v5 = nativeApi.getGpuInfo();
+            if (v5 && v5.success) {
+                this.gpuInfo = v5;
+                hilog.info(0x0000, TAG, 'GPU info loaded: vendor=%{public}s, renderer=%{public}s', v5.vendor, v5.renderer);
             }
             else {
                 this.hasError = true;
-                this.errorMessage = x5?.error || '无法获取 GPU 信息';
+                this.errorMessage = v5?.error || '无法获取 GPU 信息';
                 hilog.error(0x0000, TAG, 'Failed to get GPU info: %{public}s', this.errorMessage);
             }
         }
-        catch (w5) {
+        catch (u5) {
             this.hasError = true;
-            this.errorMessage = String(w5);
-            hilog.error(0x0000, TAG, 'Error loading GPU info: %{public}s', String(w5));
+            this.errorMessage = String(u5);
+            hilog.error(0x0000, TAG, 'Error loading GPU info: %{public}s', String(u5));
         }
         this.isLoading = false;
     }
-    navigateToConcept(v5: string): void {
+    navigateToConcept(t5: string): void {
         router.pushUrl({
             url: 'pages/ConceptDetailPage',
-            params: { conceptId: v5 }
+            params: { conceptId: t5 }
         });
     }
-    formatValue(t5: number, u5: string = ''): string {
-        if (t5 === -1 || t5 === undefined) {
+    formatValue(r5: number, s5: string = ''): string {
+        if (r5 === -1 || r5 === undefined) {
             return '不支持';
         }
-        return u5 ? `${t5} ${u5}` : `${t5}`;
+        return s5 ? `${r5} ${s5}` : `${r5}`;
     }
     initialRender() {
-        this.observeComponentCreation2((r5, s5) => {
+        this.observeComponentCreation2((p5, q5) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((p5, q5) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((n5, o5) => {
-            Text.create('← 返回');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((l5, m5) => {
-            Text.create('GPU 信息');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
+        {
+            this.observeComponentCreation2((l5, m5) => {
+                if (m5) {
+                    let n5 = new NavigationBarWithArrow(this, {
+                        title: 'GPU 信息',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, l5, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 61, col: 7 });
+                    ViewPU.create(n5);
+                    let o5 = () => {
+                        return {
+                            title: 'GPU 信息',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    n5.paramsGenerator_ = o5;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(l5, {
+                        title: 'GPU 信息'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
         this.observeComponentCreation2((j5, k5) => {
             Scroll.create();
             Scroll.layoutWeight(1);
@@ -216,7 +221,7 @@ class GpuPage extends ViewPU {
                                 let v4 = new InfoHeader(this, {
                                     title: 'GPU 基本信息',
                                     subtitle: '通过 OpenGL ES API 获取的 GPU 硬件信息'
-                                }, undefined, t4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 109, col: 13 });
+                                }, undefined, t4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 100, col: 13 });
                                 ViewPU.create(v4);
                                 let w4 = () => {
                                     return {
@@ -240,7 +245,7 @@ class GpuPage extends ViewPU {
                                 let r4 = new InfoCard(this, {
                                     title: 'GPU 厂商',
                                     value: this.gpuInfo.vendor || '未知'
-                                }, undefined, p4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 114, col: 13 });
+                                }, undefined, p4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 105, col: 13 });
                                 ViewPU.create(r4);
                                 let s4 = () => {
                                     return {
@@ -264,7 +269,7 @@ class GpuPage extends ViewPU {
                                 let n4 = new InfoCard(this, {
                                     title: 'GPU 型号',
                                     value: this.gpuInfo.renderer || '未知'
-                                }, undefined, l4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 119, col: 13 });
+                                }, undefined, l4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 110, col: 13 });
                                 ViewPU.create(n4);
                                 let o4 = () => {
                                     return {
@@ -288,7 +293,7 @@ class GpuPage extends ViewPU {
                                 let j4 = new InfoCard(this, {
                                     title: 'OpenGL ES 版本',
                                     value: this.gpuInfo.version || '未知'
-                                }, undefined, h4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 124, col: 13 });
+                                }, undefined, h4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 115, col: 13 });
                                 ViewPU.create(j4);
                                 let k4 = () => {
                                     return {
@@ -312,7 +317,7 @@ class GpuPage extends ViewPU {
                                 let f4 = new InfoCard(this, {
                                     title: 'GLSL 版本',
                                     value: this.gpuInfo.shadingLanguageVersion || '未知'
-                                }, undefined, d4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 129, col: 13 });
+                                }, undefined, d4, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 120, col: 13 });
                                 ViewPU.create(f4);
                                 let g4 = () => {
                                     return {
@@ -338,7 +343,7 @@ class GpuPage extends ViewPU {
                                     subtitle: 'GPU 对纹理资源的硬件限制',
                                     conceptId: 'gpu_max_texture_size',
                                     onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
-                                }, undefined, z3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 135, col: 13 });
+                                }, undefined, z3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 126, col: 13 });
                                 ViewPU.create(b4);
                                 let c4 = () => {
                                     return {
@@ -367,7 +372,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxTextureSize, 'px'),
                                     conceptId: 'gpu_max_texture_size',
                                     onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
-                                }, undefined, v3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 142, col: 13 });
+                                }, undefined, v3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 133, col: 13 });
                                 ViewPU.create(x3);
                                 let y3 = () => {
                                     return {
@@ -396,7 +401,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxCubeMapTextureSize, 'px'),
                                     conceptId: 'gpu_cube_map_size',
                                     onInfoClick: () => this.navigateToConcept('gpu_cube_map_size')
-                                }, undefined, r3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 149, col: 13 });
+                                }, undefined, r3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 140, col: 13 });
                                 ViewPU.create(t3);
                                 let u3 = () => {
                                     return {
@@ -425,7 +430,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxRenderbufferSize, 'px'),
                                     conceptId: 'gpu_max_texture_size',
                                     onInfoClick: () => this.navigateToConcept('gpu_max_texture_size')
-                                }, undefined, n3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 156, col: 13 });
+                                }, undefined, n3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 147, col: 13 });
                                 ViewPU.create(p3);
                                 let q3 = () => {
                                     return {
@@ -454,7 +459,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxTextureImageUnits),
                                     conceptId: 'gpu_texture_units',
                                     onInfoClick: () => this.navigateToConcept('gpu_texture_units')
-                                }, undefined, j3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 163, col: 13 });
+                                }, undefined, j3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 154, col: 13 });
                                 ViewPU.create(l3);
                                 let m3 = () => {
                                     return {
@@ -483,7 +488,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxVertexTextureImageUnits),
                                     conceptId: 'gpu_texture_units',
                                     onInfoClick: () => this.navigateToConcept('gpu_texture_units')
-                                }, undefined, f3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 170, col: 13 });
+                                }, undefined, f3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 161, col: 13 });
                                 ViewPU.create(h3);
                                 let i3 = () => {
                                     return {
@@ -512,7 +517,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxCombinedTextureImageUnits),
                                     conceptId: 'gpu_texture_units',
                                     onInfoClick: () => this.navigateToConcept('gpu_texture_units')
-                                }, undefined, b3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 177, col: 13 });
+                                }, undefined, b3, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 168, col: 13 });
                                 ViewPU.create(d3);
                                 let e3 = () => {
                                     return {
@@ -538,13 +543,17 @@ class GpuPage extends ViewPU {
                             if (y2) {
                                 let z2 = new InfoHeader(this, {
                                     title: '视口与渲染',
-                                    subtitle: 'GPU 对视口和渲染的限制'
-                                }, undefined, x2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 185, col: 13 });
+                                    subtitle: 'GPU 对视口和渲染的限制',
+                                    conceptId: 'gpu_viewport',
+                                    onInfoClick: () => this.navigateToConcept('gpu_viewport')
+                                }, undefined, x2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 176, col: 13 });
                                 ViewPU.create(z2);
                                 let a3 = () => {
                                     return {
                                         title: '视口与渲染',
-                                        subtitle: 'GPU 对视口和渲染的限制'
+                                        subtitle: 'GPU 对视口和渲染的限制',
+                                        conceptId: 'gpu_viewport',
+                                        onInfoClick: () => this.navigateToConcept('gpu_viewport')
                                     };
                                 };
                                 z2.paramsGenerator_ = a3;
@@ -552,7 +561,8 @@ class GpuPage extends ViewPU {
                             else {
                                 this.updateStateVarsOfChildByElmtId(x2, {
                                     title: '视口与渲染',
-                                    subtitle: 'GPU 对视口和渲染的限制'
+                                    subtitle: 'GPU 对视口和渲染的限制',
+                                    conceptId: 'gpu_viewport'
                                 });
                             }
                         }, { name: "InfoHeader" });
@@ -560,15 +570,19 @@ class GpuPage extends ViewPU {
                     {
                         this.observeComponentCreation2((t2, u2) => {
                             if (u2) {
-                                let v2 = new InfoCard(this, {
+                                let v2 = new InfoCardWithDesc(this, {
                                     title: '最大视口尺寸',
-                                    value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`
-                                }, undefined, t2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 190, col: 13 });
+                                    value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`,
+                                    conceptId: 'gpu_viewport',
+                                    onInfoClick: () => this.navigateToConcept('gpu_viewport')
+                                }, undefined, t2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 183, col: 13 });
                                 ViewPU.create(v2);
                                 let w2 = () => {
                                     return {
                                         title: '最大视口尺寸',
-                                        value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`
+                                        value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`,
+                                        conceptId: 'gpu_viewport',
+                                        onInfoClick: () => this.navigateToConcept('gpu_viewport')
                                     };
                                 };
                                 v2.paramsGenerator_ = w2;
@@ -576,27 +590,32 @@ class GpuPage extends ViewPU {
                             else {
                                 this.updateStateVarsOfChildByElmtId(t2, {
                                     title: '最大视口尺寸',
-                                    value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`
+                                    value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`,
+                                    conceptId: 'gpu_viewport'
                                 });
                             }
-                        }, { name: "InfoCard" });
+                        }, { name: "InfoCardWithDesc" });
                     }
                     {
                         this.observeComponentCreation2((p2, q2) => {
                             if (q2) {
-                                let r2 = new InfoCard(this, {
+                                let r2 = new InfoCardWithDesc(this, {
                                     title: '线宽范围',
                                     value: this.gpuInfo.aliasedLineWidthRange && this.gpuInfo.aliasedLineWidthRange.length >= 2
                                         ? `${this.gpuInfo.aliasedLineWidthRange[0]} - ${this.gpuInfo.aliasedLineWidthRange[1]}`
-                                        : '未知'
-                                }, undefined, p2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 195, col: 13 });
+                                        : '未知',
+                                    conceptId: 'gpu_line_width',
+                                    onInfoClick: () => this.navigateToConcept('gpu_line_width')
+                                }, undefined, p2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 190, col: 13 });
                                 ViewPU.create(r2);
                                 let s2 = () => {
                                     return {
                                         title: '线宽范围',
                                         value: this.gpuInfo.aliasedLineWidthRange && this.gpuInfo.aliasedLineWidthRange.length >= 2
                                             ? `${this.gpuInfo.aliasedLineWidthRange[0]} - ${this.gpuInfo.aliasedLineWidthRange[1]}`
-                                            : '未知'
+                                            : '未知',
+                                        conceptId: 'gpu_line_width',
+                                        onInfoClick: () => this.navigateToConcept('gpu_line_width')
                                     };
                                 };
                                 r2.paramsGenerator_ = s2;
@@ -606,27 +625,32 @@ class GpuPage extends ViewPU {
                                     title: '线宽范围',
                                     value: this.gpuInfo.aliasedLineWidthRange && this.gpuInfo.aliasedLineWidthRange.length >= 2
                                         ? `${this.gpuInfo.aliasedLineWidthRange[0]} - ${this.gpuInfo.aliasedLineWidthRange[1]}`
-                                        : '未知'
+                                        : '未知',
+                                    conceptId: 'gpu_line_width'
                                 });
                             }
-                        }, { name: "InfoCard" });
+                        }, { name: "InfoCardWithDesc" });
                     }
                     {
                         this.observeComponentCreation2((l2, m2) => {
                             if (m2) {
-                                let n2 = new InfoCard(this, {
+                                let n2 = new InfoCardWithDesc(this, {
                                     title: '点大小范围',
                                     value: this.gpuInfo.aliasedPointSizeRange && this.gpuInfo.aliasedPointSizeRange.length >= 2
                                         ? `${this.gpuInfo.aliasedPointSizeRange[0]} - ${this.gpuInfo.aliasedPointSizeRange[1]}`
-                                        : '未知'
-                                }, undefined, l2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 202, col: 13 });
+                                        : '未知',
+                                    conceptId: 'gpu_point_size',
+                                    onInfoClick: () => this.navigateToConcept('gpu_point_size')
+                                }, undefined, l2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 199, col: 13 });
                                 ViewPU.create(n2);
                                 let o2 = () => {
                                     return {
                                         title: '点大小范围',
                                         value: this.gpuInfo.aliasedPointSizeRange && this.gpuInfo.aliasedPointSizeRange.length >= 2
                                             ? `${this.gpuInfo.aliasedPointSizeRange[0]} - ${this.gpuInfo.aliasedPointSizeRange[1]}`
-                                            : '未知'
+                                            : '未知',
+                                        conceptId: 'gpu_point_size',
+                                        onInfoClick: () => this.navigateToConcept('gpu_point_size')
                                     };
                                 };
                                 n2.paramsGenerator_ = o2;
@@ -636,10 +660,11 @@ class GpuPage extends ViewPU {
                                     title: '点大小范围',
                                     value: this.gpuInfo.aliasedPointSizeRange && this.gpuInfo.aliasedPointSizeRange.length >= 2
                                         ? `${this.gpuInfo.aliasedPointSizeRange[0]} - ${this.gpuInfo.aliasedPointSizeRange[1]}`
-                                        : '未知'
+                                        : '未知',
+                                    conceptId: 'gpu_point_size'
                                 });
                             }
-                        }, { name: "InfoCard" });
+                        }, { name: "InfoCardWithDesc" });
                     }
                     {
                         this.observeComponentCreation2((h2, i2) => {
@@ -649,7 +674,7 @@ class GpuPage extends ViewPU {
                                     subtitle: 'GPU 对着色器程序的资源限制',
                                     conceptId: 'gpu_vertex_attribs',
                                     onInfoClick: () => this.navigateToConcept('gpu_vertex_attribs')
-                                }, undefined, h2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 210, col: 13 });
+                                }, undefined, h2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 209, col: 13 });
                                 ViewPU.create(j2);
                                 let k2 = () => {
                                     return {
@@ -678,7 +703,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxVertexAttribs),
                                     conceptId: 'gpu_vertex_attribs',
                                     onInfoClick: () => this.navigateToConcept('gpu_vertex_attribs')
-                                }, undefined, d2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 217, col: 13 });
+                                }, undefined, d2, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 216, col: 13 });
                                 ViewPU.create(f2);
                                 let g2 = () => {
                                     return {
@@ -707,7 +732,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxVertexUniformVectors),
                                     conceptId: 'gpu_uniform_vectors',
                                     onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
-                                }, undefined, z1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 224, col: 13 });
+                                }, undefined, z1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 223, col: 13 });
                                 ViewPU.create(b2);
                                 let c2 = () => {
                                     return {
@@ -736,7 +761,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxFragmentUniformVectors),
                                     conceptId: 'gpu_uniform_vectors',
                                     onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
-                                }, undefined, v1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 231, col: 13 });
+                                }, undefined, v1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 230, col: 13 });
                                 ViewPU.create(x1);
                                 let y1 = () => {
                                     return {
@@ -765,7 +790,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxVaryingVectors),
                                     conceptId: 'gpu_varying_vectors',
                                     onInfoClick: () => this.navigateToConcept('gpu_varying_vectors')
-                                }, undefined, r1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 238, col: 13 });
+                                }, undefined, r1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 237, col: 13 });
                                 ViewPU.create(t1);
                                 let u1 = () => {
                                     return {
@@ -794,7 +819,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxUniformBufferBindings),
                                     conceptId: 'gpu_uniform_vectors',
                                     onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
-                                }, undefined, n1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 245, col: 13 });
+                                }, undefined, n1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 244, col: 13 });
                                 ViewPU.create(p1);
                                 let q1 = () => {
                                     return {
@@ -823,7 +848,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxUniformBlockSize, 'bytes'),
                                     conceptId: 'gpu_uniform_vectors',
                                     onInfoClick: () => this.navigateToConcept('gpu_uniform_vectors')
-                                }, undefined, j1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 252, col: 13 });
+                                }, undefined, j1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 251, col: 13 });
                                 ViewPU.create(l1);
                                 let m1 = () => {
                                     return {
@@ -852,7 +877,7 @@ class GpuPage extends ViewPU {
                                     subtitle: 'GPU 的其他硬件能力限制',
                                     conceptId: 'gpu_multisample',
                                     onInfoClick: () => this.navigateToConcept('gpu_multisample')
-                                }, undefined, f1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 260, col: 13 });
+                                }, undefined, f1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 259, col: 13 });
                                 ViewPU.create(h1);
                                 let i1 = () => {
                                     return {
@@ -881,7 +906,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxDrawBuffers),
                                     conceptId: 'gpu_draw_buffers',
                                     onInfoClick: () => this.navigateToConcept('gpu_draw_buffers')
-                                }, undefined, b1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 267, col: 13 });
+                                }, undefined, b1, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 266, col: 13 });
                                 ViewPU.create(d1);
                                 let e1 = () => {
                                     return {
@@ -910,7 +935,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxColorAttachments),
                                     conceptId: 'gpu_draw_buffers',
                                     onInfoClick: () => this.navigateToConcept('gpu_draw_buffers')
-                                }, undefined, x, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 274, col: 13 });
+                                }, undefined, x, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 273, col: 13 });
                                 ViewPU.create(z);
                                 let a1 = () => {
                                     return {
@@ -939,7 +964,7 @@ class GpuPage extends ViewPU {
                                     value: this.formatValue(this.gpuInfo.maxSamples, 'x'),
                                     conceptId: 'gpu_multisample',
                                     onInfoClick: () => this.navigateToConcept('gpu_multisample')
-                                }, undefined, t, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 281, col: 13 });
+                                }, undefined, t, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 280, col: 13 });
                                 ViewPU.create(v);
                                 let w = () => {
                                     return {
@@ -966,7 +991,7 @@ class GpuPage extends ViewPU {
                                 let r = new InfoCard(this, {
                                     title: '最大元素索引',
                                     value: this.formatValue(this.gpuInfo.maxElementIndex)
-                                }, undefined, p, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 288, col: 13 });
+                                }, undefined, p, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 287, col: 13 });
                                 ViewPU.create(r);
                                 let s = () => {
                                     return {
@@ -990,7 +1015,7 @@ class GpuPage extends ViewPU {
                                 let n = new InfoCard(this, {
                                     title: '扩展数量',
                                     value: this.formatValue(this.gpuInfo.numExtensions)
-                                }, undefined, l, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 293, col: 13 });
+                                }, undefined, l, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 292, col: 13 });
                                 ViewPU.create(n);
                                 let o = () => {
                                     return {
@@ -1013,13 +1038,17 @@ class GpuPage extends ViewPU {
                             if (i) {
                                 let j = new InfoHeader(this, {
                                     title: '扩展支持',
-                                    subtitle: 'GPU 支持的 OpenGL ES 扩展功能'
-                                }, undefined, h, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 299, col: 13 });
+                                    subtitle: 'GPU 支持的 OpenGL ES 扩展功能',
+                                    conceptId: 'gpu_extensions',
+                                    onInfoClick: () => this.navigateToConcept('gpu_extensions')
+                                }, undefined, h, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 298, col: 13 });
                                 ViewPU.create(j);
                                 let k = () => {
                                     return {
                                         title: '扩展支持',
-                                        subtitle: 'GPU 支持的 OpenGL ES 扩展功能'
+                                        subtitle: 'GPU 支持的 OpenGL ES 扩展功能',
+                                        conceptId: 'gpu_extensions',
+                                        onInfoClick: () => this.navigateToConcept('gpu_extensions')
                                     };
                                 };
                                 j.paramsGenerator_ = k;
@@ -1027,7 +1056,8 @@ class GpuPage extends ViewPU {
                             else {
                                 this.updateStateVarsOfChildByElmtId(h, {
                                     title: '扩展支持',
-                                    subtitle: 'GPU 支持的 OpenGL ES 扩展功能'
+                                    subtitle: 'GPU 支持的 OpenGL ES 扩展功能',
+                                    conceptId: 'gpu_extensions'
                                 });
                             }
                         }, { name: "InfoHeader" });

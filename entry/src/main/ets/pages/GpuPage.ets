@@ -3,6 +3,7 @@ import { InfoCard } from '../components/InfoCard';
 import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
 import { nativeApi, GpuInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 const TAG = 'GpuPage';
 
@@ -57,22 +58,12 @@ struct GpuPage {
 
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('GPU 信息')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: 'GPU 信息',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {
@@ -184,26 +175,34 @@ struct GpuPage {
             // 视口限制
             InfoHeader({
               title: '视口与渲染',
-              subtitle: 'GPU 对视口和渲染的限制'
+              subtitle: 'GPU 对视口和渲染的限制',
+              conceptId: 'gpu_viewport',
+              onInfoClick: () => this.navigateToConcept('gpu_viewport')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '最大视口尺寸',
-              value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`
+              value: `${this.formatValue(this.gpuInfo.maxViewportWidth)} × ${this.formatValue(this.gpuInfo.maxViewportHeight)}`,
+              conceptId: 'gpu_viewport',
+              onInfoClick: () => this.navigateToConcept('gpu_viewport')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '线宽范围',
               value: this.gpuInfo.aliasedLineWidthRange && this.gpuInfo.aliasedLineWidthRange.length >= 2
                 ? `${this.gpuInfo.aliasedLineWidthRange[0]} - ${this.gpuInfo.aliasedLineWidthRange[1]}`
-                : '未知'
+                : '未知',
+              conceptId: 'gpu_line_width',
+              onInfoClick: () => this.navigateToConcept('gpu_line_width')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '点大小范围',
               value: this.gpuInfo.aliasedPointSizeRange && this.gpuInfo.aliasedPointSizeRange.length >= 2
                 ? `${this.gpuInfo.aliasedPointSizeRange[0]} - ${this.gpuInfo.aliasedPointSizeRange[1]}`
-                : '未知'
+                : '未知',
+              conceptId: 'gpu_point_size',
+              onInfoClick: () => this.navigateToConcept('gpu_point_size')
             })
 
             // 着色器限制
@@ -298,7 +297,9 @@ struct GpuPage {
             // 扩展支持
             InfoHeader({
               title: '扩展支持',
-              subtitle: 'GPU 支持的 OpenGL ES 扩展功能'
+              subtitle: 'GPU 支持的 OpenGL ES 扩展功能',
+              conceptId: 'gpu_extensions',
+              onInfoClick: () => this.navigateToConcept('gpu_extensions')
             });
 
             Column() {

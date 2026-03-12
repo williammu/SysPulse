@@ -6,6 +6,16 @@ export struct InfoCard {
   @Prop icon: string = '';
   @State isPressed: boolean = false;
 
+  // 根据文本长度计算自适应字体大小
+  getAdaptiveFontSize(text: string): number {
+    const length = text.length;
+    if (length <= 4) return 24;
+    if (length <= 6) return 20;
+    if (length <= 8) return 18;
+    if (length <= 10) return 16;
+    return 14;
+  }
+
   build() {
     Column() {
       Row() {
@@ -16,11 +26,12 @@ export struct InfoCard {
             .margin({ bottom: 4 })
 
           Text(this.value)
-            .fontSize(24)
+            .fontSize(this.getAdaptiveFontSize(this.value))
             .fontWeight(FontWeight.Bold)
             .fontColor($r('app.color.primary_color'))
-            .maxLines(1)
+            .maxLines(2)  // 最多显示2行
             .textOverflow({ overflow: TextOverflow.Ellipsis })
+            .width('100%')
         }
         .alignItems(HorizontalAlign.Start)
         .layoutWeight(1)
@@ -87,6 +98,16 @@ export struct TechCard {
     }, 2000);
   }
 
+  // 根据文本长度计算自适应字体大小
+  getAdaptiveFontSize(text: string): number {
+    const length = text.length;
+    if (length <= 4) return 24;
+    if (length <= 6) return 20;
+    if (length <= 8) return 18;
+    if (length <= 10) return 16;
+    return 14;
+  }
+
   build() {
     Column() {
       // 顶部装饰线
@@ -112,7 +133,7 @@ export struct TechCard {
         // 数值和单位的组合，自适应字体大小
         Row() {
           Text(this.value)
-            .fontSize(this.value.length > 6 ? 20 : 24)
+            .fontSize(this.getAdaptiveFontSize(this.value))
             .fontWeight(FontWeight.Bold)
             .fontColor($r('app.color.text_primary'))
             .maxLines(1)
@@ -181,6 +202,15 @@ export struct StatusCard {
     }
   }
 
+  // 根据文本长度计算自适应字体大小
+  getAdaptiveFontSize(text: string): number {
+    const length = text.length;
+    if (length <= 4) return 18;
+    if (length <= 6) return 16;
+    if (length <= 8) return 14;
+    return 12;
+  }
+
   getStatusColor(): ResourceColor {
     switch (this.status) {
       case 'warning':
@@ -220,7 +250,7 @@ export struct StatusCard {
           .fontColor($r('app.color.text_secondary'))
 
         Text(this.value)
-          .fontSize(18)
+          .fontSize(this.getAdaptiveFontSize(this.value))
           .fontWeight(FontWeight.Medium)
           .fontColor($r('app.color.text_primary'))
           .margin({ top: 4 })

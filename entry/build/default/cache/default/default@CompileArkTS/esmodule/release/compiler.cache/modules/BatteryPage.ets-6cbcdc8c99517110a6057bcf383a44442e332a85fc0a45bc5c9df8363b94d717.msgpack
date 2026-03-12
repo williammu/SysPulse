@@ -1,4 +1,4 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ>Ãif (!("finalizeConstruction" in ViewPU.prototype)) {
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ?ƒif (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 import router from '@ohos.router';
@@ -6,6 +6,7 @@ import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
 import { ProgressBar } from '../components/ProgressBar';
 import { SectionHeader } from '../components/SectionHeader';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 class BatteryPage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -47,29 +48,33 @@ class BatteryPage extends ViewPU {
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('â† è¿”å›');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('ç”µæ± ');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new NavigationBarWithArrow(this, {
+                        title: 'ç”µæ± ',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 20, col: 7 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'ç”µæ± ',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'ç”µæ± '
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create();
             Scroll.layoutWeight(1);
@@ -82,7 +87,7 @@ class BatteryPage extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'ç”µæ± çŠ¶æ€' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 38, col: 11 });
+                    let componentCall = new SectionHeader(this, { title: 'ç”µæ± çŠ¶æ€' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 29, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -125,7 +130,7 @@ class BatteryPage extends ViewPU {
                         total: 100,
                         barHeight: 12,
                         color: (this.batteryInfo?.batterySOC ?? 0) > 20 ? '#00B578' : '#F53F3F'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 46, col: 13 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 37, col: 13 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -159,7 +164,7 @@ class BatteryPage extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'ç”µæ± ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 65, col: 11 });
+                    let componentCall = new SectionHeader(this, { title: 'ç”µæ± ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 56, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -181,7 +186,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'ç”µé‡',
                         value: this.batteryInfo ? `${this.batteryInfo.batterySOC}%` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 67, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 58, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -205,7 +210,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'æ¸©åº¦',
                         value: this.batteryInfo?.batteryTemperature ? `${(this.batteryInfo.batteryTemperature / 10).toFixed(1)}Â°C` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 72, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 63, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -229,7 +234,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'ç”µå‹',
                         value: this.batteryInfo?.voltage ? `${this.batteryInfo.voltage} Î¼V` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 77, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 68, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -253,7 +258,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'ç”µæ± æŠ€æœ¯',
                         value: this.batteryInfo?.technology || '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 82, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 73, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -277,7 +282,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'å¥åº·çŠ¶æ€',
                         value: this.batteryInfo?.healthStatus !== undefined ? `${this.batteryInfo.healthStatus}` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 87, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 78, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -301,7 +306,7 @@ class BatteryPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'å……ç”µå™¨ç±»å‹',
                         value: this.batteryInfo?.pluggedType !== undefined ? `${this.batteryInfo.pluggedType}` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 92, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/BatteryPage.ets", line: 83, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -331,12 +336,13 @@ class BatteryPage extends ViewPU {
     }
 }
 registerNamedRoute(() => new BatteryPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/BatteryPage", pageFullPath: "entry/src/main/ets/pages/BatteryPage", integratedHsp: "false", moduleType: "followWithHap" });
-//# sourceMappingURL=BatteryPage.js.mapÂ•Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙL/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚSimport router from '@ohos.router';
+//# sourceMappingURL=BatteryPage.js.mapÂ–Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsÙL/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚWimport router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
 import { ProgressBar } from '../components/ProgressBar';
 import { SectionHeader } from '../components/SectionHeader';
 import type { BatteryInfoModel } from '../model/DeviceInfo';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 @Entry
 @Component
@@ -349,22 +355,12 @@ struct BatteryPage {
 
   build() {
     Column() {
-      Row() {
-        Text('â† è¿”å›')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('ç”µæ± ')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: 'ç”µæ± ',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {
@@ -437,34 +433,31 @@ struct BatteryPage {
     .backgroundColor($r('app.color.background_dark'))
   }
 }
-ÀÔrD•¬@ohos.router³../utils/DeviceUtil»../components/SectionHeader¹../components/ProgressBar¶../components/InfoCardÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂEAÂÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings®BatteryPage.js ‘¯BatteryPage.etsÜE–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”7 7”8 8˜”   ” ”	 	” ” ” ”; ;”< <’” 	” 	‘”  ’”: 
-0”> 
-4‘” <’” 
-	” 
-’” 
-	” 
-’” ” š” ” ” 	” ” ”% !”& "”4 0”6 2”7 3’” ” ‘” ’” ” 
-–” ” 
-” Ìe” Ìe
-” Ìe” Ìe–” ” 
-” Ìf” Ìf” Ìf”  Ìf”” ” 
-” Ìg”" Ìg’” ” 	–” ” 	”  ”  ”  ”  Ü ” ” 	” !” !” !” !” !”  !”" !”$ !”) ! ”+ !"”- !$”/ !&”2 !)”4 !+”6 !-”8 !/”> !5”Ì@ !7”ÌB !9”ÌD !;”” ” ” ” –” ” ” ” ” ” ”” ” ” ” —” ” ” ” ” ” ” –” ” ” ” ” ” ’” 
-” ’” ” ”” ” ” ” –” ” ” ” ” ” ˜” ” ” ” ” ”&  ”' !”- '”” ” ” ” š” ” ” ” ” ” ” ”  ”" ”$ ’” ” ’” ” 	’” #” #–” #” #” Ìc” Ìc”  Ìc”! Ìc’” $” $–” $” $” Ì`	” Ì`” Ì`” Ì`–” $” $” Ìa	” Ìa” Ìa” Ìa˜”, %
-”9 %”Ì@ %”ÌB %”ÌG %”ÌI %!”ÌO %'”ÌQ %)”” %”! %”# %!”) %'”” %” %” %!”% %'’” '
-” '–” '
-” '” :” :” :” :–” '
-” '” ;” ;” ;” ;–” '
-” '” <” <”  <”" <”” '
-” '” =”" =˜” '
-” '” >” >” >”- >%”. >&”4 >,Ü ” (” (” (” (” (”( (!”) ("”* (#”+ ($”. ('”2 (+”3 (,”> (7”? (8”ÌI (ÌB”ÌL (ÌE”ÌM (ÌF”ÌN (ÌG”ÌO (ÌH”ÌS (ÌL–” (” (” )” )” )” )˜” (” (” *” *” *”& *$”' *%”+ *)”” (” (” +” +’” (” (˜” 3” 3” 3”  3”# 3”% 3”' 3”) 3“”, -”7 -”> -š” .”  .”" .”& .”' .”2 .(”4 .*”> .4”ÌB .8”ÌC .9”” /” /” /”" /”” 0”! 0”# 0”% 0Ü ” 1” 1” 1”  1”$ 1”% 1”0 1&”2 1(”< 12”Ì@ 16”ÌA 17”ÌB 18”ÌE 1;”ÌG 1=”ÌH 1>”ÌI 1?”ÌJ 1Ì@”ÌS 1ÌI”ÌT 1ÌJ”ÌU 1ÌK”ÌV 1ÌL”Ì_ 1ÌU‘” 2š” .”$ .”& .”* .”+ .”6 .(”8 .*”ÌB .4”ÌF .8”ÌG .9”” /”! /”# /”& /”” 0”% 0”' 0”) 0Ü ” 1”! 1”# 1”$ 1”( 1”) 1”4 1&”6 1(”Ì@ 12”ÌD 16”ÌE 17”ÌF 18”ÌI 1;”ÌK 1=”ÌL 1>”ÌM 1?”ÌN 1Ì@”ÌW 1ÌI”ÌX 1ÌJ”ÌY 1ÌK”ÌZ 1ÌL”Ìc 1ÌUš” .”  .”" .”& .”' .”2 .(”4 .*”> .4”ÌB .8”ÌC .9”” /” /” /”" /”” 0”! 0”# 0”% 0Ü ” 1” 1” 1”  1”$ 1”% 1”0 1&”2 1(”< 12”Ì@ 16”ÌA 17”ÌB 18”ÌE 1;”ÌG 1=”ÌH 1>”ÌI 1?”ÌJ 1Ì@”ÌS 1ÌI”ÌT 1ÌJ”ÌU 1ÌK”ÌV 1ÌL”Ì_ 1ÌUÜ ” 5” 5” 5” 5” 5”( 5!”* 5#”8 51”9 52”: 53”; 54”Ì@ 59”ÌA 5:”ÌB 5;”ÌC 5<”ÌH 5ÌA–” 5” 5” 6” 6” 6” 6”” 5” 5” 7” 7š” 5” 5” 8” 8” 8” 8” 8” 8”! 8”# 8!’” 5” 5’” '
-” '˜”, Ì@
-”9 Ì@”Ì@ Ì@”ÌB Ì@”ÌG Ì@”ÌI Ì@!”ÌO Ì@'”ÌQ Ì@)”” Ì@”! Ì@”# Ì@!”) Ì@'”” Ì@” Ì@” Ì@!”% Ì@'“”, ÌB
-”4 ÌB”; ÌB”” ÌC” ÌC” ÌC”# ÌCÜ ” ÌD” ÌD” ÌD”# ÌD”$ ÌD”/ ÌD#”0 ÌD$”1 ÌD%”2 ÌD&”5 ÌD)”9 ÌD-”: ÌD.”ÌE ÌD9”ÌF ÌD:”ÌP ÌDÌD”ÌS ÌDÌG”ÌT ÌDÌH”ÌU ÌDÌI”ÌV ÌDÌJ”ÌZ ÌDÌN‘” ÌE”” ÌC”! ÌC”# ÌC”' ÌCÜ ” ÌD”! ÌD”# ÌD”' ÌD”( ÌD”3 ÌD#”4 ÌD$”5 ÌD%”6 ÌD&”9 ÌD)”= ÌD-”> ÌD.”ÌI ÌD9”ÌJ ÌD:”ÌT ÌDÌD”ÌW ÌDÌG”ÌX ÌDÌH”ÌY ÌDÌI”ÌZ ÌDÌJ”Ì^ ÌDÌN”” ÌC” ÌC” ÌC”# ÌCÜ ” ÌD” ÌD” ÌD”# ÌD”$ ÌD”/ ÌD#”0 ÌD$”1 ÌD%”2 ÌD&”5 ÌD)”9 ÌD-”: ÌD.”ÌE ÌD9”ÌF ÌD:”ÌP ÌDÌD”ÌS ÌDÌG”ÌT ÌDÌH”ÌU ÌDÌI”ÌV ÌDÌJ”ÌZ ÌDÌN“”, ÌG
-”4 ÌG”; ÌG”” ÌH” ÌH” ÌH”# ÌHÜ ” ÌI” ÌI” ÌI”# ÌI”$ ÌI”/ ÌI#”1 ÌI%”ÌC ÌI7”ÌD ÌI8”ÌE ÌI9”ÌF ÌI:”ÌI ÌI=”ÌJ ÌI>”ÌN ÌIÌB”ÌO ÌIÌC”ÌZ ÌIÌN”Ì[ ÌIÌO”Ìm ÌIÌa”Ìp ÌIÌd”Ìr ÌIÌf”Ìs ÌIÌg”Ìt ÌIÌh”Ì{ ÌIÌo”Ì| ÌIÌp”Ì} ÌIÌq”Ì~ ÌIÌr”Ì‚ ÌIÌv”Ìƒ ÌIÌw”Ì„ ÌIÌx”Ì… ÌIÌy”Ì‰ ÌIÌ}‘” ÌJ”” ÌH”! ÌH”# ÌH”' ÌHÜ ” ÌI”! ÌI”# ÌI”' ÌI”( ÌI”3 ÌI#”5 ÌI%”ÌG ÌI7”ÌH ÌI8”ÌI ÌI9”ÌJ ÌI:”ÌM ÌI=”ÌN ÌI>”ÌR ÌIÌB”ÌS ÌIÌC”Ì^ ÌIÌN”Ì_ ÌIÌO”Ìq ÌIÌa”Ìt ÌIÌd”Ìv ÌIÌf”Ìw ÌIÌg”Ìx ÌIÌh”Ì ÌIÌo”Ì€ ÌIÌp”Ì ÌIÌq”Ì‚ ÌIÌr”Ì† ÌIÌv”Ì‡ ÌIÌw”Ìˆ ÌIÌx”Ì‰ ÌIÌy”Ì ÌIÌ}”” ÌH” ÌH” ÌH”# ÌHÜ ” ÌI” ÌI” ÌI”# ÌI”$ ÌI”/ ÌI#”1 ÌI%”ÌC ÌI7”ÌD ÌI8”ÌE ÌI9”ÌF ÌI:”ÌI ÌI=”ÌJ ÌI>”ÌN ÌIÌB”ÌO ÌIÌC”ÌZ ÌIÌN”Ì[ ÌIÌO”Ìm ÌIÌa”Ìp ÌIÌd”Ìr ÌIÌf”Ìs ÌIÌg”Ìt ÌIÌh”Ì{ ÌIÌo”Ì| ÌIÌp”Ì} ÌIÌq”Ì~ ÌIÌr”Ì‚ ÌIÌv”Ìƒ ÌIÌw”Ì„ ÌIÌx”Ì… ÌIÌy”Ì‰ ÌIÌ}“”, ÌL
-”4 ÌL”; ÌL”” ÌM” ÌM” ÌM”# ÌMÜ ” ÌN” ÌN” ÌN”# ÌN”$ ÌN”/ ÌN#”1 ÌN%”8 ÌN,”9 ÌN-”: ÌN.”; ÌN/”> ÌN2”ÌB ÌN6”ÌC ÌN7”ÌN ÌNÌB”ÌO ÌNÌC”ÌV ÌNÌJ”Ì[ ÌNÌO”Ì\ ÌNÌP”Ì] ÌNÌQ”Ì^ ÌNÌR”Ìb ÌNÌV‘” ÌO”” ÌM”! ÌM”# ÌM”' ÌMÜ ” ÌN”! ÌN”# ÌN”' ÌN”( ÌN”3 ÌN#”5 ÌN%”< ÌN,”= ÌN-”> ÌN.”? ÌN/”ÌB ÌN2”ÌF ÌN6”ÌG ÌN7”ÌR ÌNÌB”ÌS ÌNÌC”ÌZ ÌNÌJ”Ì_ ÌNÌO”Ì` ÌNÌP”Ìa ÌNÌQ”Ìb ÌNÌR”Ìf ÌNÌV”” ÌM” ÌM” ÌM”# ÌMÜ ” ÌN” ÌN” ÌN”# ÌN”$ ÌN”/ ÌN#”1 ÌN%”8 ÌN,”9 ÌN-”: ÌN.”; ÌN/”> ÌN2”ÌB ÌN6”ÌC ÌN7”ÌN ÌNÌB”ÌO ÌNÌC”ÌV ÌNÌJ”Ì[ ÌNÌO”Ì\ ÌNÌP”Ì] ÌNÌQ”Ì^ ÌNÌR”Ìb ÌNÌV“”, ÌQ
-”4 ÌQ”; ÌQ”” ÌR” ÌR” ÌR”% ÌRš” ÌS” ÌS” ÌS”# ÌS”$ ÌS”/ ÌS#”1 ÌS%”; ÌS/”? ÌS3”ÌC ÌS7‘” ÌT”” ÌR”! ÌR”# ÌR”) ÌRš” ÌS”! ÌS”# ÌS”' ÌS”( ÌS”3 ÌS#”5 ÌS%”? ÌS/”ÌC ÌS3”ÌG ÌS7”” ÌR” ÌR” ÌR”% ÌRš” ÌS” ÌS” ÌS”# ÌS”$ ÌS”/ ÌS#”1 ÌS%”; ÌS/”? ÌS3”ÌC ÌS7“”, ÌV
-”4 ÌV”; ÌV”” ÌW” ÌW” ÌW”% ÌWÜ ” ÌX” ÌX” ÌX”# ÌX”$ ÌX”/ ÌX#”1 ÌX%”= ÌX1”ÌB ÌX6”ÌK ÌX?”ÌL ÌXÌ@”ÌM ÌXÌA”ÌN ÌXÌB”ÌQ ÌXÌE”ÌU ÌXÌI”ÌV ÌXÌJ”Ìa ÌXÌU”Ìb ÌXÌV”Ìn ÌXÌb”Ìp ÌXÌd”Ìq ÌXÌe”Ìr ÌXÌf”Ìs ÌXÌg”Ìw ÌXÌk‘” ÌY”” ÌW”! ÌW”# ÌW”) ÌWÜ ” ÌX”! ÌX”# ÌX”' ÌX”( ÌX”3 ÌX#”5 ÌX%”ÌA ÌX1”ÌF ÌX6”ÌO ÌX?”ÌP ÌXÌ@”ÌQ ÌXÌA”ÌR ÌXÌB”ÌU ÌXÌE”ÌY ÌXÌI”ÌZ ÌXÌJ”Ìe ÌXÌU”Ìf ÌXÌV”Ìr ÌXÌb”Ìt ÌXÌd”Ìu ÌXÌe”Ìv ÌXÌf”Ìw ÌXÌg”Ì{ ÌXÌk”” ÌW” ÌW” ÌW”% ÌWÜ ” ÌX” ÌX” ÌX”# ÌX”$ ÌX”/ ÌX#”1 ÌX%”= ÌX1”ÌB ÌX6”ÌK ÌX?”ÌL ÌXÌ@”ÌM ÌXÌA”ÌN ÌXÌB”ÌQ ÌXÌE”ÌU ÌXÌI”ÌV ÌXÌJ”Ìa ÌXÌU”Ìb ÌXÌV”Ìn ÌXÌb”Ìp ÌXÌd”Ìq ÌXÌe”Ìr ÌXÌf”Ìs ÌXÌg”Ìw ÌXÌk“”, Ì[
-”4 Ì[”; Ì[”” Ì\” Ì\” Ì\”& Ì\Ü ” Ì]” Ì]” Ì]”# Ì]”$ Ì]”/ Ì]#”1 Ì]%”< Ì]0”ÌA Ì]5”ÌJ Ì]>”ÌK Ì]?”ÌL Ì]Ì@”ÌM Ì]ÌA”ÌP Ì]ÌD”ÌT Ì]ÌH”ÌU Ì]ÌI”Ì` Ì]ÌT”Ìa Ì]ÌU”Ìl Ì]Ì`”Ìn Ì]Ìb”Ìo Ì]Ìc”Ìp Ì]Ìd”Ìq Ì]Ìe”Ìu Ì]Ìi‘” Ì^”” Ì\”! Ì\”# Ì\”* Ì\Ü ” Ì]”! Ì]”# Ì]”' Ì]”( Ì]”3 Ì]#”5 Ì]%”Ì@ Ì]0”ÌE Ì]5”ÌN Ì]>”ÌO Ì]?”ÌP Ì]Ì@”ÌQ Ì]ÌA”ÌT Ì]ÌD”ÌX Ì]ÌH”ÌY Ì]ÌI”Ìd Ì]ÌT”Ìe Ì]ÌU”Ìp Ì]Ì`”Ìr Ì]Ìb”Ìs Ì]Ìc”Ìt Ì]Ìd”Ìu Ì]Ìe”Ìy Ì]Ìi”” Ì\” Ì\” Ì\”& Ì\Ü ” Ì]” Ì]” Ì]”# Ì]”$ Ì]”/ Ì]#”1 Ì]%”< Ì]0”ÌA Ì]5”ÌJ Ì]>”ÌK Ì]?”ÌL Ì]Ì@”ÌM Ì]ÌA”ÌP Ì]ÌD”ÌT Ì]ÌH”ÌU Ì]ÌI”Ì` Ì]ÌT”Ìa Ì]ÌU”Ìl Ì]Ì`”Ìn Ì]Ìb”Ìo Ì]Ìc”Ìp Ì]Ìd”Ìq Ì]Ìe”Ìu Ì]Ìi’” $” $’” #” #’” ” 
-‘” ÌhÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜN‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ÀÔrD–¬@ohos.router³../utils/DeviceUtil¶../components/InfoCard¹../components/ProgressBar»../components/SectionHeader»../components/NavigationBarÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings®BatteryPage.js ‘¯BatteryPage.etsÜJ–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”7 7”8 8˜”   ” ”	 	” ” ” ”; ;”< <˜”   ” ”	 	” ”! !”' '”ÌD ÌD”ÌE ÌE’” 
+” 
+‘”  ’”: 0”> 4‘” ÌE’” 	” ’” 	” ’” ” š” ” ” 	” ” ”% !”& "”4 0”6 2”7 3’” ” ‘” ’” ” 
+–” ” 
+” Ì\” Ì\
+” Ì\” Ì\–” ” 
+” Ì]” Ì]” Ì]”  Ì]”” ” 
+” Ì^”" Ì^“”, ”ÌB ”ÌI ”” ” ” ”# •” ” ”  ”# ”% –” 
+”" ”# ”' ”) ”* ’” ” 	‘” ”” ”! ”# ”' •” ”" ”$ ”' ”) –”  
+”& ”' ”+ ”- ”. ’” ” 	”” ” ” ”# ’” ” –” ” ” ÌZ” ÌZ”  ÌZ”! ÌZ’” ” –” ” ” ÌW	” ÌW” ÌW” ÌW–” ” ” ÌX	” ÌX” ÌX” ÌX˜”, 
+”9 ”Ì@ ”ÌB ”ÌG ”ÌI !”ÌO '”ÌQ )”” ”! ”# !”) '”” ” ” !”% '’” 
+” –” 
+” ” 1” 1” 1” 1–” 
+” ” 2” 2” 2” 2–” 
+” ” 3” 3”  3”" 3”” 
+” ” 4”" 4˜” 
+” ” 5” 5” 5”- 5%”. 5&”4 5,Ü ” ” ” ” ” ”( !”) "”* #”+ $”. '”2 +”3 ,”> 7”? 8”ÌI ÌB”ÌL ÌE”ÌM ÌF”ÌN ÌG”ÌO ÌH”ÌS ÌL–” ” ”  ”  ”  ”  ˜” ” ” !” !” !”& !$”' !%”+ !)”” ” ” "” "’” ” ˜” *” *” *”  *”# *”% *”' *”) *“”, $”7 $”> $š” %”  %”" %”& %”' %”2 %(”4 %*”> %4”ÌB %8”ÌC %9”” &” &” &”" &”” '”! '”# '”% 'Ü ” (” (” (”  (”$ (”% (”0 (&”2 ((”< (2”Ì@ (6”ÌA (7”ÌB (8”ÌE (;”ÌG (=”ÌH (>”ÌI (?”ÌJ (Ì@”ÌS (ÌI”ÌT (ÌJ”ÌU (ÌK”ÌV (ÌL”Ì_ (ÌU‘” )š” %”$ %”& %”* %”+ %”6 %(”8 %*”ÌB %4”ÌF %8”ÌG %9”” &”! &”# &”& &”” '”% '”' '”) 'Ü ” (”! (”# (”$ (”( (”) (”4 (&”6 ((”Ì@ (2”ÌD (6”ÌE (7”ÌF (8”ÌI (;”ÌK (=”ÌL (>”ÌM (?”ÌN (Ì@”ÌW (ÌI”ÌX (ÌJ”ÌY (ÌK”ÌZ (ÌL”Ìc (ÌUš” %”  %”" %”& %”' %”2 %(”4 %*”> %4”ÌB %8”ÌC %9”” &” &” &”" &”” '”! '”# '”% 'Ü ” (” (” (”  (”$ (”% (”0 (&”2 ((”< (2”Ì@ (6”ÌA (7”ÌB (8”ÌE (;”ÌG (=”ÌH (>”ÌI (?”ÌJ (Ì@”ÌS (ÌI”ÌT (ÌJ”ÌU (ÌK”ÌV (ÌL”Ì_ (ÌUÜ ” ,” ,” ,” ,” ,”( ,!”* ,#”8 ,1”9 ,2”: ,3”; ,4”Ì@ ,9”ÌA ,:”ÌB ,;”ÌC ,<”ÌH ,ÌA–” ,” ,” -” -” -” -”” ,” ,” .” .š” ,” ,” /” /” /” /” /” /”! /”# /!’” ,” ,’” 
+” ˜”, 7
+”9 7”Ì@ 7”ÌB 7”ÌG 7”ÌI 7!”ÌO 7'”ÌQ 7)”” 7”! 7”# 7!”) 7'”” 7” 7” 7!”% 7'“”, 9
+”4 9”; 9”” :” :” :”# :Ü ” ;” ;” ;”# ;”$ ;”/ ;#”0 ;$”1 ;%”2 ;&”5 ;)”9 ;-”: ;.”ÌE ;9”ÌF ;:”ÌP ;ÌD”ÌS ;ÌG”ÌT ;ÌH”ÌU ;ÌI”ÌV ;ÌJ”ÌZ ;ÌN‘” <”” :”! :”# :”' :Ü ” ;”! ;”# ;”' ;”( ;”3 ;#”4 ;$”5 ;%”6 ;&”9 ;)”= ;-”> ;.”ÌI ;9”ÌJ ;:”ÌT ;ÌD”ÌW ;ÌG”ÌX ;ÌH”ÌY ;ÌI”ÌZ ;ÌJ”Ì^ ;ÌN”” :” :” :”# :Ü ” ;” ;” ;”# ;”$ ;”/ ;#”0 ;$”1 ;%”2 ;&”5 ;)”9 ;-”: ;.”ÌE ;9”ÌF ;:”ÌP ;ÌD”ÌS ;ÌG”ÌT ;ÌH”ÌU ;ÌI”ÌV ;ÌJ”ÌZ ;ÌN“”, >
+”4 >”; >”” ?” ?” ?”# ?Ü ” Ì@” Ì@” Ì@”# Ì@”$ Ì@”/ Ì@#”1 Ì@%”ÌC Ì@7”ÌD Ì@8”ÌE Ì@9”ÌF Ì@:”ÌI Ì@=”ÌJ Ì@>”ÌN Ì@ÌB”ÌO Ì@ÌC”ÌZ Ì@ÌN”Ì[ Ì@ÌO”Ìm Ì@Ìa”Ìp Ì@Ìd”Ìr Ì@Ìf”Ìs Ì@Ìg”Ìt Ì@Ìh”Ì{ Ì@Ìo”Ì| Ì@Ìp”Ì} Ì@Ìq”Ì~ Ì@Ìr”Ì‚ Ì@Ìv”Ìƒ Ì@Ìw”Ì„ Ì@Ìx”Ì… Ì@Ìy”Ì‰ Ì@Ì}‘” ÌA”” ?”! ?”# ?”' ?Ü ” Ì@”! Ì@”# Ì@”' Ì@”( Ì@”3 Ì@#”5 Ì@%”ÌG Ì@7”ÌH Ì@8”ÌI Ì@9”ÌJ Ì@:”ÌM Ì@=”ÌN Ì@>”ÌR Ì@ÌB”ÌS Ì@ÌC”Ì^ Ì@ÌN”Ì_ Ì@ÌO”Ìq Ì@Ìa”Ìt Ì@Ìd”Ìv Ì@Ìf”Ìw Ì@Ìg”Ìx Ì@Ìh”Ì Ì@Ìo”Ì€ Ì@Ìp”Ì Ì@Ìq”Ì‚ Ì@Ìr”Ì† Ì@Ìv”Ì‡ Ì@Ìw”Ìˆ Ì@Ìx”Ì‰ Ì@Ìy”Ì Ì@Ì}”” ?” ?” ?”# ?Ü ” Ì@” Ì@” Ì@”# Ì@”$ Ì@”/ Ì@#”1 Ì@%”ÌC Ì@7”ÌD Ì@8”ÌE Ì@9”ÌF Ì@:”ÌI Ì@=”ÌJ Ì@>”ÌN Ì@ÌB”ÌO Ì@ÌC”ÌZ Ì@ÌN”Ì[ Ì@ÌO”Ìm Ì@Ìa”Ìp Ì@Ìd”Ìr Ì@Ìf”Ìs Ì@Ìg”Ìt Ì@Ìh”Ì{ Ì@Ìo”Ì| Ì@Ìp”Ì} Ì@Ìq”Ì~ Ì@Ìr”Ì‚ Ì@Ìv”Ìƒ Ì@Ìw”Ì„ Ì@Ìx”Ì… Ì@Ìy”Ì‰ Ì@Ì}“”, ÌC
+”4 ÌC”; ÌC”” ÌD” ÌD” ÌD”# ÌDÜ ” ÌE” ÌE” ÌE”# ÌE”$ ÌE”/ ÌE#”1 ÌE%”8 ÌE,”9 ÌE-”: ÌE.”; ÌE/”> ÌE2”ÌB ÌE6”ÌC ÌE7”ÌN ÌEÌB”ÌO ÌEÌC”ÌV ÌEÌJ”Ì[ ÌEÌO”Ì\ ÌEÌP”Ì] ÌEÌQ”Ì^ ÌEÌR”Ìb ÌEÌV‘” ÌF”” ÌD”! ÌD”# ÌD”' ÌDÜ ” ÌE”! ÌE”# ÌE”' ÌE”( ÌE”3 ÌE#”5 ÌE%”< ÌE,”= ÌE-”> ÌE.”? ÌE/”ÌB ÌE2”ÌF ÌE6”ÌG ÌE7”ÌR ÌEÌB”ÌS ÌEÌC”ÌZ ÌEÌJ”Ì_ ÌEÌO”Ì` ÌEÌP”Ìa ÌEÌQ”Ìb ÌEÌR”Ìf ÌEÌV”” ÌD” ÌD” ÌD”# ÌDÜ ” ÌE” ÌE” ÌE”# ÌE”$ ÌE”/ ÌE#”1 ÌE%”8 ÌE,”9 ÌE-”: ÌE.”; ÌE/”> ÌE2”ÌB ÌE6”ÌC ÌE7”ÌN ÌEÌB”ÌO ÌEÌC”ÌV ÌEÌJ”Ì[ ÌEÌO”Ì\ ÌEÌP”Ì] ÌEÌQ”Ì^ ÌEÌR”Ìb ÌEÌV“”, ÌH
+”4 ÌH”; ÌH”” ÌI” ÌI” ÌI”% ÌIš” ÌJ” ÌJ” ÌJ”# ÌJ”$ ÌJ”/ ÌJ#”1 ÌJ%”; ÌJ/”? ÌJ3”ÌC ÌJ7‘” ÌK”” ÌI”! ÌI”# ÌI”) ÌIš” ÌJ”! ÌJ”# ÌJ”' ÌJ”( ÌJ”3 ÌJ#”5 ÌJ%”? ÌJ/”ÌC ÌJ3”ÌG ÌJ7”” ÌI” ÌI” ÌI”% ÌIš” ÌJ” ÌJ” ÌJ”# ÌJ”$ ÌJ”/ ÌJ#”1 ÌJ%”; ÌJ/”? ÌJ3”ÌC ÌJ7“”, ÌM
+”4 ÌM”; ÌM”” ÌN” ÌN” ÌN”% ÌNÜ ” ÌO” ÌO” ÌO”# ÌO”$ ÌO”/ ÌO#”1 ÌO%”= ÌO1”ÌB ÌO6”ÌK ÌO?”ÌL ÌOÌ@”ÌM ÌOÌA”ÌN ÌOÌB”ÌQ ÌOÌE”ÌU ÌOÌI”ÌV ÌOÌJ”Ìa ÌOÌU”Ìb ÌOÌV”Ìn ÌOÌb”Ìp ÌOÌd”Ìq ÌOÌe”Ìr ÌOÌf”Ìs ÌOÌg”Ìw ÌOÌk‘” ÌP”” ÌN”! ÌN”# ÌN”) ÌNÜ ” ÌO”! ÌO”# ÌO”' ÌO”( ÌO”3 ÌO#”5 ÌO%”ÌA ÌO1”ÌF ÌO6”ÌO ÌO?”ÌP ÌOÌ@”ÌQ ÌOÌA”ÌR ÌOÌB”ÌU ÌOÌE”ÌY ÌOÌI”ÌZ ÌOÌJ”Ìe ÌOÌU”Ìf ÌOÌV”Ìr ÌOÌb”Ìt ÌOÌd”Ìu ÌOÌe”Ìv ÌOÌf”Ìw ÌOÌg”Ì{ ÌOÌk”” ÌN” ÌN” ÌN”% ÌNÜ ” ÌO” ÌO” ÌO”# ÌO”$ ÌO”/ ÌO#”1 ÌO%”= ÌO1”ÌB ÌO6”ÌK ÌO?”ÌL ÌOÌ@”ÌM ÌOÌA”ÌN ÌOÌB”ÌQ ÌOÌE”ÌU ÌOÌI”ÌV ÌOÌJ”Ìa ÌOÌU”Ìb ÌOÌV”Ìn ÌOÌb”Ìp ÌOÌd”Ìq ÌOÌe”Ìr ÌOÌf”Ìs ÌOÌg”Ìw ÌOÌk“”, ÌR
+”4 ÌR”; ÌR”” ÌS” ÌS” ÌS”& ÌSÜ ” ÌT” ÌT” ÌT”# ÌT”$ ÌT”/ ÌT#”1 ÌT%”< ÌT0”ÌA ÌT5”ÌJ ÌT>”ÌK ÌT?”ÌL ÌTÌ@”ÌM ÌTÌA”ÌP ÌTÌD”ÌT ÌTÌH”ÌU ÌTÌI”Ì` ÌTÌT”Ìa ÌTÌU”Ìl ÌTÌ`”Ìn ÌTÌb”Ìo ÌTÌc”Ìp ÌTÌd”Ìq ÌTÌe”Ìu ÌTÌi‘” ÌU”” ÌS”! ÌS”# ÌS”* ÌSÜ ” ÌT”! ÌT”# ÌT”' ÌT”( ÌT”3 ÌT#”5 ÌT%”Ì@ ÌT0”ÌE ÌT5”ÌN ÌT>”ÌO ÌT?”ÌP ÌTÌ@”ÌQ ÌTÌA”ÌT ÌTÌD”ÌX ÌTÌH”ÌY ÌTÌI”Ìd ÌTÌT”Ìe ÌTÌU”Ìp ÌTÌ`”Ìr ÌTÌb”Ìs ÌTÌc”Ìt ÌTÌd”Ìu ÌTÌe”Ìy ÌTÌi”” ÌS” ÌS” ÌS”& ÌSÜ ” ÌT” ÌT” ÌT”# ÌT”$ ÌT”/ ÌT#”1 ÌT%”< ÌT0”ÌA ÌT5”ÌJ ÌT>”ÌK ÌT?”ÌL ÌTÌ@”ÌM ÌTÌA”ÌP ÌTÌD”ÌT ÌTÌH”ÌU ÌTÌI”Ì` ÌTÌT”Ìa ÌTÌU”Ìl ÌTÌ`”Ìn ÌTÌb”Ìo ÌTÌc”Ìp ÌTÌd”Ìq ÌTÌe”Ìu ÌTÌi’” ” ’” ” ’” ” 
+‘” Ì_ÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜS‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
  ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
- ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache•ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í	‘N¯ImportSpecifierÌàÌèLªIdentifierÌàÌè¨InfoCardLªIdentifierÌàÌè¨InfoCardM§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍÍC‘N¯ImportSpecifierÍÍLªIdentifierÍÍ«ProgressBarLªIdentifierÍÍ«ProgressBarM§LiteralÍ'ÍB¹../components/ProgressBar»'../components/ProgressBar'J±ImportDeclarationÍEÍ‘N¯ImportSpecifierÍNÍ[LªIdentifierÍNÍ[­SectionHeaderLªIdentifierÍNÍ[­SectionHeaderM§LiteralÍcÍ€»../components/SectionHeader½'../components/SectionHeader'
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache–ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í	‘N¯ImportSpecifierÌàÌèLªIdentifierÌàÌè¨InfoCardLªIdentifierÌàÌè¨InfoCardM§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍÍC‘N¯ImportSpecifierÍÍLªIdentifierÍÍ«ProgressBarLªIdentifierÍÍ«ProgressBarM§LiteralÍ'ÍB¹../components/ProgressBar»'../components/ProgressBar'J±ImportDeclarationÍEÍ‘N¯ImportSpecifierÍNÍ[LªIdentifierÍNÍ[­SectionHeaderLªIdentifierÍNÍ[­SectionHeaderM§LiteralÍcÍ€»../components/SectionHeader½'../components/SectionHeader'J±ImportDeclarationÍƒÍÈ‘N¯ImportSpecifierÍŒÍ¢LªIdentifierÍŒÍ¢¶NavigationBarWithArrowLªIdentifierÍŒÍ¢¶NavigationBarWithArrowM§LiteralÍªÍÇ»../components/NavigationBar½'../components/NavigationBar'

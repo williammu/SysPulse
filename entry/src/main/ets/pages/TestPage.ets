@@ -10,6 +10,7 @@ import type {
   StorageInfoModel,
   NetworkInfoModel
 } from '../model/DeviceInfo';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 @Entry
 @Component
@@ -91,24 +92,12 @@ struct TestPage {
 
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(18)
-          .onClick(() => {
-            router.back();
-          })
-        Blank()
-          .layoutWeight(1)
-        Text('系统信息测试')
-          .fontSize(20)
-          .fontWeight(FontWeight.Bold)
-        Blank()
-          .layoutWeight(1)
-        Blank()
-      }
-      .width('100%')
-      .height(50)
-      .padding({ left: 16, right: 16 })
+      NavigationBarWithArrow({
+        title: '系统信息测试',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column({ space: 16 }) {

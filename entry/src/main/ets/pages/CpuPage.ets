@@ -3,6 +3,7 @@ import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
 import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
 import { SimpleChart } from '../components/SimpleChart';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 import { nativeApi, CpuUsage, CpuUsageAll, ThreadCpuInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -110,22 +111,12 @@ struct CpuPage {
 
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('处理器')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: '处理器',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {

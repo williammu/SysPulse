@@ -1,10 +1,11 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ;Pif (!("finalizeConstruction" in ViewPU.prototype)) {
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ<if (!("finalizeConstruction" in ViewPU.prototype)) {
     Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
 }
 import router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
 import { SectionHeader } from '../components/SectionHeader';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 class DisplayPage extends ViewPU {
     constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
         super(parent, __localStorage, elmtId, extraInfo);
@@ -46,29 +47,33 @@ class DisplayPage extends ViewPU {
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('â† è¿”å›');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('å±å¹•');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new NavigationBarWithArrow(this, {
+                        title: 'å±å¹•',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 19, col: 7 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'å±å¹•',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'å±å¹•'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
         this.observeComponentCreation2((elmtId, isInitialRender) => {
             Scroll.create();
             Scroll.layoutWeight(1);
@@ -81,7 +86,7 @@ class DisplayPage extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'å±å¹•ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 37, col: 11 });
+                    let componentCall = new SectionHeader(this, { title: 'å±å¹•ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 28, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -103,7 +108,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'åˆ†è¾¨ç‡',
                         value: this.displayInfo ? `${this.displayInfo.width} Ã— ${this.displayInfo.height}` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 39, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 30, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -127,7 +132,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'åƒç´ å¯†åº¦',
                         value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 44, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 35, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -151,7 +156,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'åˆ·æ–°ç‡',
                         value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 49, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 40, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -175,7 +180,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'Xè½´DPI',
                         value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 54, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 45, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -199,7 +204,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'Yè½´DPI',
                         value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 59, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 50, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -223,7 +228,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'æ˜¾ç¤ºçŠ¶æ€',
                         value: this.displayInfo ? (this.displayInfo.alive ? 'æ­£å¸¸' : 'å¼‚å¸¸') : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 64, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 55, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -247,7 +252,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'æ—‹è½¬è§’åº¦',
                         value: this.displayInfo ? `${this.displayInfo.rotation}Â°` : '--'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 69, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 60, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -268,7 +273,7 @@ class DisplayPage extends ViewPU {
         {
             this.observeComponentCreation2((elmtId, isInitialRender) => {
                 if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'è¯´æ˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 74, col: 11 });
+                    let componentCall = new SectionHeader(this, { title: 'è¯´æ˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 65, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -290,7 +295,7 @@ class DisplayPage extends ViewPU {
                     let componentCall = new InfoCard(this, {
                         title: 'æ•°æ®æ¥æº',
                         value: 'æ‰€æœ‰å±å¹•ä¿¡æ¯å‡æ¥è‡ª @ohos.display API'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 76, col: 11 });
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/DisplayPage.ets", line: 67, col: 11 });
                     ViewPU.create(componentCall);
                     let paramsLambda = () => {
                         return {
@@ -320,11 +325,12 @@ class DisplayPage extends ViewPU {
     }
 }
 registerNamedRoute(() => new DisplayPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/DisplayPage", pageFullPath: "entry/src/main/ets/pages/DisplayPage", integratedHsp: "false", moduleType: "followWithHap" });
-//# sourceMappingURL=DisplayPage.js.mapÂ”Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙL/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ	import router from '@ohos.router';
+//# sourceMappingURL=DisplayPage.js.mapÂ•Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsÙL/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚƒimport router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
 import { SectionHeader } from '../components/SectionHeader';
 import type { DisplayInfoModel } from '../model/DeviceInfo';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 @Entry
 @Component
@@ -337,22 +343,12 @@ struct DisplayPage {
 
   build() {
     Column() {
-      Row() {
-        Text('â† è¿”å›')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('å±å¹•')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: 'å±å¹•',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {
@@ -410,24 +406,31 @@ struct DisplayPage {
     .backgroundColor($r('app.color.background_dark'))
   }
 }
-ÀÔrD”¬@ohos.router³../utils/DeviceUtil¶../components/InfoCard»../components/SectionHeaderÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings®DisplayPage.js ‘¯DisplayPage.etsÜ:–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”; ;”< <’” ” ‘”  ’”: 	0”> 	4‘” <’” 		” 	’” 		” 	”” ”	 ”
- ” ›” ” ” 	” ” ”! ”+ '”, (”: 6”< 8”= 9’” ” ‘” ’” ” 
-–” ” 
-” ÌU” ÌU
-” ÌU” ÌU–” ” 
-” ÌV” ÌV” ÌV”  ÌV”” ” 
-” ÌW”" ÌW’” ” 	–” ” 	” ” ” ” Ü ” ” 	”  ”  ”  ”  ”  ”   ”"  ”$  ”)   ”+  "”-  $”/  &”2  )”4  +”6  -”8  /”>  5”Ì@  7”ÌB  9”ÌD  ;”” ” ” ” –” ” ” ” ” ” ”” ” ” ” —” ” ” ” ” ” ” –” ” ” ” ” ” ’” 
-” ’” ” ”” ” ” ” –” ” ” ” ” ” ˜” ” ” ” ” ”&  ”' !”- '”” ” ” ” š” ” ” ” ” ” ” ”  ”" ”$ ’” ” ’” ” 	’” "” "–” "” "” ÌS” ÌS”  ÌS”! ÌS’” #” #–” #” #” ÌP	” ÌP” ÌP” ÌP–” #” #” ÌQ	” ÌQ” ÌQ” ÌQ˜”, $
-”9 $”Ì@ $”ÌB $”ÌG $”ÌI $!”ÌO $'”ÌQ $)”” $”! $”# $!”) $'”” $” $” $!”% $'“”, &
-”4 &”; &”” '” '” '”$ 'Ü ” (” (” (”# (”$ (”/ (#”0 ($”1 (%”2 (&”5 ()”9 (-”: (.”ÌE (9”ÌF (:”ÌK (?”ÌQ (ÌE”ÌU (ÌI”ÌV (ÌJ”Ìa (ÌU”Ìb (ÌV”Ìh (Ì\”Ìj (Ì^”Ìk (Ì_”Ìl (Ì`”Ìm (Ìa”Ìq (Ìe‘” )”” '”! '”# '”( 'Ü ” (”! (”# (”' (”( (”3 (#”4 ($”5 (%”6 (&”9 ()”= (-”> (.”ÌI (9”ÌJ (:”ÌO (?”ÌU (ÌE”ÌY (ÌI”ÌZ (ÌJ”Ìe (ÌU”Ìf (ÌV”Ìl (Ì\”Ìn (Ì^”Ìo (Ì_”Ìp (Ì`”Ìq (Ìa”Ìu (Ìe”” '” '” '”$ 'Ü ” (” (” (”# (”$ (”/ (#”0 ($”1 (%”2 (&”5 ()”9 (-”: (.”ÌE (9”ÌF (:”ÌK (?”ÌQ (ÌE”ÌU (ÌI”ÌV (ÌJ”Ìa (ÌU”Ìb (ÌV”Ìh (Ì\”Ìj (Ì^”Ìk (Ì_”Ìl (Ì`”Ìm (Ìa”Ìq (Ìe“”, +
-”4 +”; +”” ,” ,” ,”% ,Ü ” -” -” -”# -”$ -”/ -#”0 -$”1 -%”2 -&”5 -)”9 --”: -.”ÌE -9”ÌF -:”ÌP -ÌD”ÌV -ÌJ”ÌW -ÌK”ÌX -ÌL”ÌY -ÌM”Ì] -ÌQ‘” .”” ,”! ,”# ,”) ,Ü ” -”! -”# -”' -”( -”3 -#”4 -$”5 -%”6 -&”9 -)”= --”> -.”ÌI -9”ÌJ -:”ÌT -ÌD”ÌZ -ÌJ”Ì[ -ÌK”Ì\ -ÌL”Ì] -ÌM”Ìa -ÌQ”” ,” ,” ,”% ,Ü ” -” -” -”# -”$ -”/ -#”0 -$”1 -%”2 -&”5 -)”9 --”: -.”ÌE -9”ÌF -:”ÌP -ÌD”ÌV -ÌJ”ÌW -ÌK”ÌX -ÌL”ÌY -ÌM”Ì] -ÌQ“”, 0
-”4 0”; 0”” 1” 1” 1”$ 1Ü ” 2” 2” 2”# 2”$ 2”/ 2#”0 2$”1 2%”2 2&”5 2)”9 2-”: 2.”ÌE 29”ÌF 2:”ÌQ 2ÌE”ÌV 2ÌJ”ÌW 2ÌK”ÌX 2ÌL”ÌY 2ÌM”Ì] 2ÌQ‘” 3”” 1”! 1”# 1”( 1Ü ” 2”! 2”# 2”' 2”( 2”3 2#”4 2$”5 2%”6 2&”9 2)”= 2-”> 2.”ÌI 29”ÌJ 2:”ÌU 2ÌE”ÌZ 2ÌJ”Ì[ 2ÌK”Ì\ 2ÌL”Ì] 2ÌM”Ìa 2ÌQ”” 1” 1” 1”$ 1Ü ” 2” 2” 2”# 2”$ 2”/ 2#”0 2$”1 2%”2 2&”5 2)”9 2-”: 2.”ÌE 29”ÌF 2:”ÌQ 2ÌE”ÌV 2ÌJ”ÌW 2ÌK”ÌX 2ÌL”ÌY 2ÌM”Ì] 2ÌQ“”, 5
-”4 5”; 5”” 6” 6” 6”& 6Ü ” 7” 7” 7”# 7”$ 7”/ 7#”0 7$”1 7%”2 7&”5 7)”9 7-”: 7.”ÌE 79”ÌF 7:”ÌJ 7>”ÌL 7Ì@”ÌM 7ÌA”ÌN 7ÌB”ÌO 7ÌC”ÌS 7ÌG‘” 8”” 6”! 6”# 6”* 6Ü ” 7”! 7”# 7”' 7”( 7”3 7#”4 7$”5 7%”6 7&”9 7)”= 7-”> 7.”ÌI 79”ÌJ 7:”ÌN 7>”ÌP 7Ì@”ÌQ 7ÌA”ÌR 7ÌB”ÌS 7ÌC”ÌW 7ÌG”” 6” 6” 6”& 6Ü ” 7” 7” 7”# 7”$ 7”/ 7#”0 7$”1 7%”2 7&”5 7)”9 7-”: 7.”ÌE 79”ÌF 7:”ÌJ 7>”ÌL 7Ì@”ÌM 7ÌA”ÌN 7ÌB”ÌO 7ÌC”ÌS 7ÌG“”, :
-”4 :”; :”” ;” ;” ;”& ;Ü ” <” <” <”# <”$ <”/ <#”0 <$”1 <%”2 <&”5 <)”9 <-”: <.”ÌE <9”ÌF <:”ÌJ <>”ÌL <Ì@”ÌM <ÌA”ÌN <ÌB”ÌO <ÌC”ÌS <ÌG‘” =”” ;”! ;”# ;”* ;Ü ” <”! <”# <”' <”( <”3 <#”4 <$”5 <%”6 <&”9 <)”= <-”> <.”ÌI <9”ÌJ <:”ÌN <>”ÌP <Ì@”ÌQ <ÌA”ÌR <ÌB”ÌS <ÌC”ÌW <ÌG”” ;” ;” ;”& ;Ü ” <” <” <”# <”$ <”/ <#”0 <$”1 <%”2 <&”5 <)”9 <-”: <.”ÌE <9”ÌF <:”ÌJ <>”ÌL <Ì@”ÌM <ÌA”ÌN <ÌB”ÌO <ÌC”ÌS <ÌG“”, ?
-”4 ?”; ?”” Ì@” Ì@” Ì@”% Ì@Ü ” ÌA” ÌA” ÌA”# ÌA”$ ÌA”/ ÌA#”0 ÌA$”1 ÌA%”2 ÌA&”3 ÌA'”7 ÌA+”8 ÌA,”ÌC ÌA7”ÌD ÌA8”ÌI ÌA=”ÌJ ÌA>”ÌK ÌA?”ÌL ÌAÌ@”ÌP ÌAÌD”ÌQ ÌAÌE”ÌR ÌAÌF”ÌS ÌAÌG”ÌW ÌAÌK”ÌX ÌAÌL”ÌY ÌAÌM”ÌZ ÌAÌN”Ì[ ÌAÌO”Ì_ ÌAÌS‘” ÌB”” Ì@”! Ì@”# Ì@”) Ì@Ü ” ÌA”! ÌA”# ÌA”' ÌA”( ÌA”3 ÌA#”4 ÌA$”5 ÌA%”6 ÌA&”7 ÌA'”; ÌA+”< ÌA,”ÌG ÌA7”ÌH ÌA8”ÌM ÌA=”ÌN ÌA>”ÌO ÌA?”ÌP ÌAÌ@”ÌT ÌAÌD”ÌU ÌAÌE”ÌV ÌAÌF”ÌW ÌAÌG”Ì[ ÌAÌK”Ì\ ÌAÌL”Ì] ÌAÌM”Ì^ ÌAÌN”Ì_ ÌAÌO”Ìc ÌAÌS”” Ì@” Ì@” Ì@”% Ì@Ü ” ÌA” ÌA” ÌA”# ÌA”$ ÌA”/ ÌA#”0 ÌA$”1 ÌA%”2 ÌA&”3 ÌA'”7 ÌA+”8 ÌA,”ÌC ÌA7”ÌD ÌA8”ÌI ÌA=”ÌJ ÌA>”ÌK ÌA?”ÌL ÌAÌ@”ÌP ÌAÌD”ÌQ ÌAÌE”ÌR ÌAÌF”ÌS ÌAÌG”ÌW ÌAÌK”ÌX ÌAÌL”ÌY ÌAÌM”ÌZ ÌAÌN”Ì[ ÌAÌO”Ì_ ÌAÌS“”, ÌD
-”4 ÌD”; ÌD”” ÌE” ÌE” ÌE”% ÌEÜ ” ÌF” ÌF” ÌF”# ÌF”$ ÌF”/ ÌF#”0 ÌF$”1 ÌF%”2 ÌF&”5 ÌF)”9 ÌF-”: ÌF.”ÌE ÌF9”ÌF ÌF:”ÌN ÌFÌB”ÌQ ÌFÌE”ÌR ÌFÌF”ÌS ÌFÌG”ÌT ÌFÌH”ÌX ÌFÌL‘” ÌG”” ÌE”! ÌE”# ÌE”) ÌEÜ ” ÌF”! ÌF”# ÌF”' ÌF”( ÌF”3 ÌF#”4 ÌF$”5 ÌF%”6 ÌF&”9 ÌF)”= ÌF-”> ÌF.”ÌI ÌF9”ÌJ ÌF:”ÌR ÌFÌB”ÌU ÌFÌE”ÌV ÌFÌF”ÌW ÌFÌG”ÌX ÌFÌH”Ì\ ÌFÌL”” ÌE” ÌE” ÌE”% ÌEÜ ” ÌF” ÌF” ÌF”# ÌF”$ ÌF”/ ÌF#”0 ÌF$”1 ÌF%”2 ÌF&”5 ÌF)”9 ÌF-”: ÌF.”ÌE ÌF9”ÌF ÌF:”ÌN ÌFÌB”ÌQ ÌFÌE”ÌR ÌFÌF”ÌS ÌFÌG”ÌT ÌFÌH”ÌX ÌFÌL˜”, ÌI
-”9 ÌI”Ì@ ÌI”ÌB ÌI”ÌG ÌI”ÌI ÌI!”ÌM ÌI%”ÌO ÌI'”” ÌI”! ÌI”# ÌI!”' ÌI%”” ÌI” ÌI” ÌI!”# ÌI%“”, ÌK
-”4 ÌK”; ÌK”” ÌL” ÌL” ÌL”% ÌL”” ÌM” ÌM” ÌM”< ÌM0‘” ÌN”” ÌL”! ÌL”# ÌL”) ÌL”” ÌM”! ÌM”# ÌM”Ì@ ÌM0”” ÌL” ÌL” ÌL”% ÌL”” ÌM” ÌM” ÌM”< ÌM0’” #” #’” "” "’” ” 
-‘” ÌXÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜC‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ÀÔrD•¬@ohos.router³../utils/DeviceUtil¶../components/InfoCard»../components/SectionHeader»../components/NavigationBarÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings®DisplayPage.js ‘¯DisplayPage.etsÜ?–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”; ;”< <˜”   ” ”	 	” ”! !”' '”ÌD ÌD”ÌE ÌE’” 	” 	‘”  ’”: 
+0”> 
+4‘” ÌE’” 
+	” 
+’” 
+	” 
+”” ”	 ”
+ ” ›” ” ” 	” ” ”! ”+ '”, (”: 6”< 8”= 9’” ” ‘” ’” ” 
+–” ” 
+” ÌL” ÌL
+” ÌL” ÌL–” ” 
+” ÌM” ÌM” ÌM”  ÌM”” ” 
+” ÌN”" ÌN“”, ”ÌB ”ÌI ”” ” ” ”# •” ” ”  ”# ”% –” 
+”" ”# ”' ”) ”* ’” ” 	‘” ”” ”! ”# ”' •” ”" ”$ ”' ”) –”  
+”& ”' ”+ ”- ”. ’” ” 	”” ” ” ”# ’” ” –” ” ” ÌJ” ÌJ”  ÌJ”! ÌJ’” ” –” ” ” ÌG	” ÌG” ÌG” ÌG–” ” ” ÌH	” ÌH” ÌH” ÌH˜”, 
+”9 ”Ì@ ”ÌB ”ÌG ”ÌI !”ÌO '”ÌQ )”” ”! ”# !”) '”” ” ” !”% '“”, 
+”4 ”; ”” ” ” ”$ Ü ” ” ” ”# ”$ ”/ #”0 $”1 %”2 &”5 )”9 -”: .”ÌE 9”ÌF :”ÌK ?”ÌQ ÌE”ÌU ÌI”ÌV ÌJ”Ìa ÌU”Ìb ÌV”Ìh Ì\”Ìj Ì^”Ìk Ì_”Ìl Ì`”Ìm Ìa”Ìq Ìe‘”  ”” ”! ”# ”( Ü ” ”! ”# ”' ”( ”3 #”4 $”5 %”6 &”9 )”= -”> .”ÌI 9”ÌJ :”ÌO ?”ÌU ÌE”ÌY ÌI”ÌZ ÌJ”Ìe ÌU”Ìf ÌV”Ìl Ì\”Ìn Ì^”Ìo Ì_”Ìp Ì`”Ìq Ìa”Ìu Ìe”” ” ” ”$ Ü ” ” ” ”# ”$ ”/ #”0 $”1 %”2 &”5 )”9 -”: .”ÌE 9”ÌF :”ÌK ?”ÌQ ÌE”ÌU ÌI”ÌV ÌJ”Ìa ÌU”Ìb ÌV”Ìh Ì\”Ìj Ì^”Ìk Ì_”Ìl Ì`”Ìm Ìa”Ìq Ìe“”, "
+”4 "”; "”” #” #” #”% #Ü ” $” $” $”# $”$ $”/ $#”0 $$”1 $%”2 $&”5 $)”9 $-”: $.”ÌE $9”ÌF $:”ÌP $ÌD”ÌV $ÌJ”ÌW $ÌK”ÌX $ÌL”ÌY $ÌM”Ì] $ÌQ‘” %”” #”! #”# #”) #Ü ” $”! $”# $”' $”( $”3 $#”4 $$”5 $%”6 $&”9 $)”= $-”> $.”ÌI $9”ÌJ $:”ÌT $ÌD”ÌZ $ÌJ”Ì[ $ÌK”Ì\ $ÌL”Ì] $ÌM”Ìa $ÌQ”” #” #” #”% #Ü ” $” $” $”# $”$ $”/ $#”0 $$”1 $%”2 $&”5 $)”9 $-”: $.”ÌE $9”ÌF $:”ÌP $ÌD”ÌV $ÌJ”ÌW $ÌK”ÌX $ÌL”ÌY $ÌM”Ì] $ÌQ“”, '
+”4 '”; '”” (” (” (”$ (Ü ” )” )” )”# )”$ )”/ )#”0 )$”1 )%”2 )&”5 ))”9 )-”: ).”ÌE )9”ÌF ):”ÌQ )ÌE”ÌV )ÌJ”ÌW )ÌK”ÌX )ÌL”ÌY )ÌM”Ì] )ÌQ‘” *”” (”! (”# (”( (Ü ” )”! )”# )”' )”( )”3 )#”4 )$”5 )%”6 )&”9 ))”= )-”> ).”ÌI )9”ÌJ ):”ÌU )ÌE”ÌZ )ÌJ”Ì[ )ÌK”Ì\ )ÌL”Ì] )ÌM”Ìa )ÌQ”” (” (” (”$ (Ü ” )” )” )”# )”$ )”/ )#”0 )$”1 )%”2 )&”5 ))”9 )-”: ).”ÌE )9”ÌF ):”ÌQ )ÌE”ÌV )ÌJ”ÌW )ÌK”ÌX )ÌL”ÌY )ÌM”Ì] )ÌQ“”, ,
+”4 ,”; ,”” -” -” -”& -Ü ” .” .” .”# .”$ .”/ .#”0 .$”1 .%”2 .&”5 .)”9 .-”: ..”ÌE .9”ÌF .:”ÌJ .>”ÌL .Ì@”ÌM .ÌA”ÌN .ÌB”ÌO .ÌC”ÌS .ÌG‘” /”” -”! -”# -”* -Ü ” .”! .”# .”' .”( .”3 .#”4 .$”5 .%”6 .&”9 .)”= .-”> ..”ÌI .9”ÌJ .:”ÌN .>”ÌP .Ì@”ÌQ .ÌA”ÌR .ÌB”ÌS .ÌC”ÌW .ÌG”” -” -” -”& -Ü ” .” .” .”# .”$ .”/ .#”0 .$”1 .%”2 .&”5 .)”9 .-”: ..”ÌE .9”ÌF .:”ÌJ .>”ÌL .Ì@”ÌM .ÌA”ÌN .ÌB”ÌO .ÌC”ÌS .ÌG“”, 1
+”4 1”; 1”” 2” 2” 2”& 2Ü ” 3” 3” 3”# 3”$ 3”/ 3#”0 3$”1 3%”2 3&”5 3)”9 3-”: 3.”ÌE 39”ÌF 3:”ÌJ 3>”ÌL 3Ì@”ÌM 3ÌA”ÌN 3ÌB”ÌO 3ÌC”ÌS 3ÌG‘” 4”” 2”! 2”# 2”* 2Ü ” 3”! 3”# 3”' 3”( 3”3 3#”4 3$”5 3%”6 3&”9 3)”= 3-”> 3.”ÌI 39”ÌJ 3:”ÌN 3>”ÌP 3Ì@”ÌQ 3ÌA”ÌR 3ÌB”ÌS 3ÌC”ÌW 3ÌG”” 2” 2” 2”& 2Ü ” 3” 3” 3”# 3”$ 3”/ 3#”0 3$”1 3%”2 3&”5 3)”9 3-”: 3.”ÌE 39”ÌF 3:”ÌJ 3>”ÌL 3Ì@”ÌM 3ÌA”ÌN 3ÌB”ÌO 3ÌC”ÌS 3ÌG“”, 6
+”4 6”; 6”” 7” 7” 7”% 7Ü ” 8” 8” 8”# 8”$ 8”/ 8#”0 8$”1 8%”2 8&”3 8'”7 8+”8 8,”ÌC 87”ÌD 88”ÌI 8=”ÌJ 8>”ÌK 8?”ÌL 8Ì@”ÌP 8ÌD”ÌQ 8ÌE”ÌR 8ÌF”ÌS 8ÌG”ÌW 8ÌK”ÌX 8ÌL”ÌY 8ÌM”ÌZ 8ÌN”Ì[ 8ÌO”Ì_ 8ÌS‘” 9”” 7”! 7”# 7”) 7Ü ” 8”! 8”# 8”' 8”( 8”3 8#”4 8$”5 8%”6 8&”7 8'”; 8+”< 8,”ÌG 87”ÌH 88”ÌM 8=”ÌN 8>”ÌO 8?”ÌP 8Ì@”ÌT 8ÌD”ÌU 8ÌE”ÌV 8ÌF”ÌW 8ÌG”Ì[ 8ÌK”Ì\ 8ÌL”Ì] 8ÌM”Ì^ 8ÌN”Ì_ 8ÌO”Ìc 8ÌS”” 7” 7” 7”% 7Ü ” 8” 8” 8”# 8”$ 8”/ 8#”0 8$”1 8%”2 8&”3 8'”7 8+”8 8,”ÌC 87”ÌD 88”ÌI 8=”ÌJ 8>”ÌK 8?”ÌL 8Ì@”ÌP 8ÌD”ÌQ 8ÌE”ÌR 8ÌF”ÌS 8ÌG”ÌW 8ÌK”ÌX 8ÌL”ÌY 8ÌM”ÌZ 8ÌN”Ì[ 8ÌO”Ì_ 8ÌS“”, ;
+”4 ;”; ;”” <” <” <”% <Ü ” =” =” =”# =”$ =”/ =#”0 =$”1 =%”2 =&”5 =)”9 =-”: =.”ÌE =9”ÌF =:”ÌN =ÌB”ÌQ =ÌE”ÌR =ÌF”ÌS =ÌG”ÌT =ÌH”ÌX =ÌL‘” >”” <”! <”# <”) <Ü ” =”! =”# =”' =”( =”3 =#”4 =$”5 =%”6 =&”9 =)”= =-”> =.”ÌI =9”ÌJ =:”ÌR =ÌB”ÌU =ÌE”ÌV =ÌF”ÌW =ÌG”ÌX =ÌH”Ì\ =ÌL”” <” <” <”% <Ü ” =” =” =”# =”$ =”/ =#”0 =$”1 =%”2 =&”5 =)”9 =-”: =.”ÌE =9”ÌF =:”ÌN =ÌB”ÌQ =ÌE”ÌR =ÌF”ÌS =ÌG”ÌT =ÌH”ÌX =ÌL˜”, Ì@
+”9 Ì@”Ì@ Ì@”ÌB Ì@”ÌG Ì@”ÌI Ì@!”ÌM Ì@%”ÌO Ì@'”” Ì@”! Ì@”# Ì@!”' Ì@%”” Ì@” Ì@” Ì@!”# Ì@%“”, ÌB
+”4 ÌB”; ÌB”” ÌC” ÌC” ÌC”% ÌC”” ÌD” ÌD” ÌD”< ÌD0‘” ÌE”” ÌC”! ÌC”# ÌC”) ÌC”” ÌD”! ÌD”# ÌD”Ì@ ÌD0”” ÌC” ÌC” ÌC”% ÌC”” ÌD” ÌD” ÌD”< ÌD0’” ” ’” ” ’” ” 
+‘” ÌOÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜH‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
  ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
- ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache”ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í	‘N¯ImportSpecifierÌàÌèLªIdentifierÌàÌè¨InfoCardLªIdentifierÌàÌè¨InfoCardM§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍÍG‘N¯ImportSpecifierÍÍ!LªIdentifierÍÍ!­SectionHeaderLªIdentifierÍÍ!­SectionHeaderM§LiteralÍ)ÍF»../components/SectionHeader½'../components/SectionHeader'
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache•ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í	‘N¯ImportSpecifierÌàÌèLªIdentifierÌàÌè¨InfoCardLªIdentifierÌàÌè¨InfoCardM§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍÍG‘N¯ImportSpecifierÍÍ!LªIdentifierÍÍ!­SectionHeaderLªIdentifierÍÍ!­SectionHeaderM§LiteralÍ)ÍF»../components/SectionHeader½'../components/SectionHeader'J±ImportDeclarationÍIÍ‘N¯ImportSpecifierÍRÍhLªIdentifierÍRÍh¶NavigationBarWithArrowLªIdentifierÍRÍh¶NavigationBarWithArrowM§LiteralÍpÍ»../components/NavigationBar½'../components/NavigationBar'

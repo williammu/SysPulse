@@ -17,6 +17,7 @@ import { DeviceUtil } from "@bundle:com.huawei.sysinfo/entry/ets/utils/DeviceUti
 import { InfoCard } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoCard";
 import { InfoHeader, InfoCardWithDesc } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoButton";
 import { SimpleChart } from "@bundle:com.huawei.sysinfo/entry/ets/components/SimpleChart";
+import { NavigationBarWithArrow } from "@bundle:com.huawei.sysinfo/entry/ets/components/NavigationBar";
 import { nativeApi } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi";
 import type { CpuUsage, CpuUsageAll, ThreadCpuInfo } from "@bundle:com.huawei.sysinfo/entry/ets/utils/NativeApi";
 const TAG = 'CpuPage';
@@ -29,10 +30,10 @@ interface CpuBaseInfo {
     process: string;
 }
 class CpuPage extends ViewPU {
-    constructor(e14, f14, g14, h14 = -1, i14 = undefined, j14) {
-        super(e14, g14, h14, j14);
-        if (typeof i14 === "function") {
-            this.paramsGenerator_ = i14;
+    constructor(a14, b14, c14, d14 = -1, e14 = undefined, f14) {
+        super(a14, c14, d14, f14);
+        if (typeof e14 === "function") {
+            this.paramsGenerator_ = e14;
         }
         this.__cpuInfo = new ObservedPropertyObjectPU(null, this, "cpuInfo");
         this.__systemCpuUsage = new ObservedPropertyObjectPU(null, this, "systemCpuUsage");
@@ -43,49 +44,49 @@ class CpuPage extends ViewPU {
         this.__systemCpuHistory = new ObservedPropertyObjectPU([], this, "systemCpuHistory");
         this.__appCpuHistory = new ObservedPropertyObjectPU([], this, "appCpuHistory");
         this.refreshTimer = null;
-        this.setInitiallyProvidedValue(f14);
+        this.setInitiallyProvidedValue(b14);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(d14: CpuPage_Params) {
-        if (d14.cpuInfo !== undefined) {
-            this.cpuInfo = d14.cpuInfo;
+    setInitiallyProvidedValue(z13: CpuPage_Params) {
+        if (z13.cpuInfo !== undefined) {
+            this.cpuInfo = z13.cpuInfo;
         }
-        if (d14.systemCpuUsage !== undefined) {
-            this.systemCpuUsage = d14.systemCpuUsage;
+        if (z13.systemCpuUsage !== undefined) {
+            this.systemCpuUsage = z13.systemCpuUsage;
         }
-        if (d14.appCpuUsage !== undefined) {
-            this.appCpuUsage = d14.appCpuUsage;
+        if (z13.appCpuUsage !== undefined) {
+            this.appCpuUsage = z13.appCpuUsage;
         }
-        if (d14.cpuUsageAll !== undefined) {
-            this.cpuUsageAll = d14.cpuUsageAll;
+        if (z13.cpuUsageAll !== undefined) {
+            this.cpuUsageAll = z13.cpuUsageAll;
         }
-        if (d14.isNativeAvailable !== undefined) {
-            this.isNativeAvailable = d14.isNativeAvailable;
+        if (z13.isNativeAvailable !== undefined) {
+            this.isNativeAvailable = z13.isNativeAvailable;
         }
-        if (d14.isLoading !== undefined) {
-            this.isLoading = d14.isLoading;
+        if (z13.isLoading !== undefined) {
+            this.isLoading = z13.isLoading;
         }
-        if (d14.systemCpuHistory !== undefined) {
-            this.systemCpuHistory = d14.systemCpuHistory;
+        if (z13.systemCpuHistory !== undefined) {
+            this.systemCpuHistory = z13.systemCpuHistory;
         }
-        if (d14.appCpuHistory !== undefined) {
-            this.appCpuHistory = d14.appCpuHistory;
+        if (z13.appCpuHistory !== undefined) {
+            this.appCpuHistory = z13.appCpuHistory;
         }
-        if (d14.refreshTimer !== undefined) {
-            this.refreshTimer = d14.refreshTimer;
+        if (z13.refreshTimer !== undefined) {
+            this.refreshTimer = z13.refreshTimer;
         }
     }
-    updateStateVars(c14: CpuPage_Params) {
+    updateStateVars(y13: CpuPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(b14) {
-        this.__cpuInfo.purgeDependencyOnElmtId(b14);
-        this.__systemCpuUsage.purgeDependencyOnElmtId(b14);
-        this.__appCpuUsage.purgeDependencyOnElmtId(b14);
-        this.__cpuUsageAll.purgeDependencyOnElmtId(b14);
-        this.__isNativeAvailable.purgeDependencyOnElmtId(b14);
-        this.__isLoading.purgeDependencyOnElmtId(b14);
-        this.__systemCpuHistory.purgeDependencyOnElmtId(b14);
-        this.__appCpuHistory.purgeDependencyOnElmtId(b14);
+    purgeVariableDependenciesOnElmtId(x13) {
+        this.__cpuInfo.purgeDependencyOnElmtId(x13);
+        this.__systemCpuUsage.purgeDependencyOnElmtId(x13);
+        this.__appCpuUsage.purgeDependencyOnElmtId(x13);
+        this.__cpuUsageAll.purgeDependencyOnElmtId(x13);
+        this.__isNativeAvailable.purgeDependencyOnElmtId(x13);
+        this.__isLoading.purgeDependencyOnElmtId(x13);
+        this.__systemCpuHistory.purgeDependencyOnElmtId(x13);
+        this.__appCpuHistory.purgeDependencyOnElmtId(x13);
     }
     aboutToBeDeleted() {
         this.__cpuInfo.aboutToBeDeleted();
@@ -103,66 +104,66 @@ class CpuPage extends ViewPU {
     get cpuInfo() {
         return this.__cpuInfo.get();
     }
-    set cpuInfo(a14: CpuBaseInfo | null) {
-        this.__cpuInfo.set(a14);
+    set cpuInfo(w13: CpuBaseInfo | null) {
+        this.__cpuInfo.set(w13);
     }
     private __systemCpuUsage: ObservedPropertyObjectPU<CpuUsage | null>;
     get systemCpuUsage() {
         return this.__systemCpuUsage.get();
     }
-    set systemCpuUsage(z13: CpuUsage | null) {
-        this.__systemCpuUsage.set(z13);
+    set systemCpuUsage(v13: CpuUsage | null) {
+        this.__systemCpuUsage.set(v13);
     }
     private __appCpuUsage: ObservedPropertyObjectPU<CpuUsage | null>;
     get appCpuUsage() {
         return this.__appCpuUsage.get();
     }
-    set appCpuUsage(y13: CpuUsage | null) {
-        this.__appCpuUsage.set(y13);
+    set appCpuUsage(u13: CpuUsage | null) {
+        this.__appCpuUsage.set(u13);
     }
     private __cpuUsageAll: ObservedPropertyObjectPU<CpuUsageAll | null>;
     get cpuUsageAll() {
         return this.__cpuUsageAll.get();
     }
-    set cpuUsageAll(x13: CpuUsageAll | null) {
-        this.__cpuUsageAll.set(x13);
+    set cpuUsageAll(t13: CpuUsageAll | null) {
+        this.__cpuUsageAll.set(t13);
     }
     private __isNativeAvailable: ObservedPropertySimplePU<boolean>;
     get isNativeAvailable() {
         return this.__isNativeAvailable.get();
     }
-    set isNativeAvailable(w13: boolean) {
-        this.__isNativeAvailable.set(w13);
+    set isNativeAvailable(s13: boolean) {
+        this.__isNativeAvailable.set(s13);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(v13: boolean) {
-        this.__isLoading.set(v13);
+    set isLoading(r13: boolean) {
+        this.__isLoading.set(r13);
     }
     private __systemCpuHistory: ObservedPropertyObjectPU<number[]>;
     get systemCpuHistory() {
         return this.__systemCpuHistory.get();
     }
-    set systemCpuHistory(u13: number[]) {
-        this.__systemCpuHistory.set(u13);
+    set systemCpuHistory(q13: number[]) {
+        this.__systemCpuHistory.set(q13);
     }
     private __appCpuHistory: ObservedPropertyObjectPU<number[]>;
     get appCpuHistory() {
         return this.__appCpuHistory.get();
     }
-    set appCpuHistory(t13: number[]) {
-        this.__appCpuHistory.set(t13);
+    set appCpuHistory(p13: number[]) {
+        this.__appCpuHistory.set(p13);
     }
     private refreshTimer: number | null;
     aboutToAppear() {
-        const s13 = DeviceUtil.getCpuInfo();
+        const o13 = DeviceUtil.getCpuInfo();
         this.cpuInfo = {
-            model: s13.model || '未获取',
-            cores: s13.cores || 0,
-            architecture: s13.architecture || '未获取',
-            process: s13.process || '未获取'
+            model: o13.model || '未获取',
+            cores: o13.cores || 0,
+            architecture: o13.architecture || '未获取',
+            process: o13.process || '未获取'
         };
         this.isNativeAvailable = nativeApi.isNativeAvailable();
         if (this.isNativeAvailable) {
@@ -216,56 +217,60 @@ class CpuPage extends ViewPU {
         }
         return '未获取';
     }
-    navigateToConcept(r13: string): void {
+    navigateToConcept(n13: string): void {
         router.pushUrl({
             url: 'pages/ConceptDetailPage',
-            params: { conceptId: r13 }
+            params: { conceptId: n13 }
         });
     }
     initialRender() {
-        this.observeComponentCreation2((p13, q13) => {
+        this.observeComponentCreation2((l13, m13) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((n13, o13) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((l13, m13) => {
-            Text.create('← 返回');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((j13, k13) => {
-            Text.create('处理器');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((h13, i13) => {
+        {
+            this.observeComponentCreation2((h13, i13) => {
+                if (i13) {
+                    let j13 = new NavigationBarWithArrow(this, {
+                        title: '处理器',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, h13, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 114, col: 7 });
+                    ViewPU.create(j13);
+                    let k13 = () => {
+                        return {
+                            title: '处理器',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    j13.paramsGenerator_ = k13;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(h13, {
+                        title: '处理器'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
+        this.observeComponentCreation2((f13, g13) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((f13, g13) => {
+        this.observeComponentCreation2((d13, e13) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((n10, o10) => {
+        this.observeComponentCreation2((l10, m10) => {
             If.create();
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((d13, e13) => {
+                    this.observeComponentCreation2((b13, c13) => {
                         Text.create('加载中...');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -277,16 +282,16 @@ class CpuPage extends ViewPU {
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
                     {
-                        this.observeComponentCreation2((z12, a13) => {
-                            if (a13) {
-                                let b13 = new InfoHeader(this, {
+                        this.observeComponentCreation2((x12, y12) => {
+                            if (y12) {
+                                let z12 = new InfoHeader(this, {
                                     title: 'CPU 使用率',
                                     subtitle: '显示系统和应用的 CPU 使用率',
                                     conceptId: 'cpu_usage',
                                     onInfoClick: () => this.navigateToConcept('cpu_usage')
-                                }, undefined, z12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 139, col: 13 });
-                                ViewPU.create(b13);
-                                let c13 = () => {
+                                }, undefined, x12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 130, col: 13 });
+                                ViewPU.create(z12);
+                                let a13 = () => {
                                     return {
                                         title: 'CPU 使用率',
                                         subtitle: '显示系统和应用的 CPU 使用率',
@@ -294,10 +299,10 @@ class CpuPage extends ViewPU {
                                         onInfoClick: () => this.navigateToConcept('cpu_usage')
                                     };
                                 };
-                                b13.paramsGenerator_ = c13;
+                                z12.paramsGenerator_ = a13;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(z12, {
+                                this.updateStateVarsOfChildByElmtId(x12, {
                                     title: 'CPU 使用率',
                                     subtitle: '显示系统和应用的 CPU 使用率',
                                     conceptId: 'cpu_usage'
@@ -305,11 +310,11 @@ class CpuPage extends ViewPU {
                             }
                         }, { name: "InfoHeader" });
                     }
-                    this.observeComponentCreation2((z11, a12) => {
+                    this.observeComponentCreation2((x11, y11) => {
                         If.create();
                         if (this.isNativeAvailable && this.systemCpuUsage?.success) {
                             this.ifElseBranchUpdateFunction(0, () => {
-                                this.observeComponentCreation2((x12, y12) => {
+                                this.observeComponentCreation2((v12, w12) => {
                                     Column.create();
                                     Column.width('100%');
                                     Column.padding(24);
@@ -317,14 +322,14 @@ class CpuPage extends ViewPU {
                                     Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                     Column.alignItems(HorizontalAlign.Center);
                                 }, Column);
-                                this.observeComponentCreation2((v12, w12) => {
+                                this.observeComponentCreation2((t12, u12) => {
                                     Text.create(`${this.getSystemCpuUsagePercent()}%`);
                                     Text.fontSize(48);
                                     Text.fontWeight(FontWeight.Bold);
                                     Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                 }, Text);
                                 Text.pop();
-                                this.observeComponentCreation2((t12, u12) => {
+                                this.observeComponentCreation2((r12, s12) => {
                                     Text.create('系统 CPU 使用率');
                                     Text.fontSize(14);
                                     Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -332,25 +337,25 @@ class CpuPage extends ViewPU {
                                 }, Text);
                                 Text.pop();
                                 Column.pop();
-                                this.observeComponentCreation2((l12, m12) => {
+                                this.observeComponentCreation2((j12, k12) => {
                                     If.create();
                                     if (this.systemCpuHistory.length > 1) {
                                         this.ifElseBranchUpdateFunction(0, () => {
-                                            this.observeComponentCreation2((r12, s12) => {
+                                            this.observeComponentCreation2((p12, q12) => {
                                                 __Common__.create();
                                                 __Common__.margin({ top: 16 });
                                             }, __Common__);
                                             {
-                                                this.observeComponentCreation2((n12, o12) => {
-                                                    if (o12) {
-                                                        let p12 = new SimpleChart(this, {
+                                                this.observeComponentCreation2((l12, m12) => {
+                                                    if (m12) {
+                                                        let n12 = new SimpleChart(this, {
                                                             data: this.systemCpuHistory,
                                                             maxValue: 100,
                                                             color: '#007DFF',
                                                             title: '系统 CPU 使用率趋势'
-                                                        }, undefined, n12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 166, col: 17 });
-                                                        ViewPU.create(p12);
-                                                        let q12 = () => {
+                                                        }, undefined, l12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 157, col: 17 });
+                                                        ViewPU.create(n12);
+                                                        let o12 = () => {
                                                             return {
                                                                 data: this.systemCpuHistory,
                                                                 maxValue: 100,
@@ -358,10 +363,10 @@ class CpuPage extends ViewPU {
                                                                 title: '系统 CPU 使用率趋势'
                                                             };
                                                         };
-                                                        p12.paramsGenerator_ = q12;
+                                                        n12.paramsGenerator_ = o12;
                                                     }
                                                     else {
-                                                        this.updateStateVarsOfChildByElmtId(n12, {
+                                                        this.updateStateVarsOfChildByElmtId(l12, {
                                                             data: this.systemCpuHistory,
                                                             maxValue: 100,
                                                             color: '#007DFF',
@@ -379,21 +384,21 @@ class CpuPage extends ViewPU {
                                     }
                                 }, If);
                                 If.pop();
-                                this.observeComponentCreation2((f12, g12) => {
+                                this.observeComponentCreation2((d12, e12) => {
                                     If.create();
                                     if (this.appCpuUsage?.success) {
                                         this.ifElseBranchUpdateFunction(0, () => {
                                             {
-                                                this.observeComponentCreation2((h12, i12) => {
-                                                    if (i12) {
-                                                        let j12 = new InfoCardWithDesc(this, {
+                                                this.observeComponentCreation2((f12, g12) => {
+                                                    if (g12) {
+                                                        let h12 = new InfoCardWithDesc(this, {
                                                             title: '应用 CPU 使用率',
                                                             value: `${this.getAppCpuUsagePercent()}%`,
                                                             conceptId: 'cpu_usage',
                                                             onInfoClick: () => this.navigateToConcept('cpu_usage')
-                                                        }, undefined, h12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 177, col: 17 });
-                                                        ViewPU.create(j12);
-                                                        let k12 = () => {
+                                                        }, undefined, f12, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 168, col: 17 });
+                                                        ViewPU.create(h12);
+                                                        let i12 = () => {
                                                             return {
                                                                 title: '应用 CPU 使用率',
                                                                 value: `${this.getAppCpuUsagePercent()}%`,
@@ -401,10 +406,10 @@ class CpuPage extends ViewPU {
                                                                 onInfoClick: () => this.navigateToConcept('cpu_usage')
                                                             };
                                                         };
-                                                        j12.paramsGenerator_ = k12;
+                                                        h12.paramsGenerator_ = i12;
                                                     }
                                                     else {
-                                                        this.updateStateVarsOfChildByElmtId(h12, {
+                                                        this.updateStateVarsOfChildByElmtId(f12, {
                                                             title: '应用 CPU 使用率',
                                                             value: `${this.getAppCpuUsagePercent()}%`,
                                                             conceptId: 'cpu_usage'
@@ -424,7 +429,7 @@ class CpuPage extends ViewPU {
                         }
                         else {
                             this.ifElseBranchUpdateFunction(1, () => {
-                                this.observeComponentCreation2((d12, e12) => {
+                                this.observeComponentCreation2((b12, c12) => {
                                     Column.create();
                                     Column.width('100%');
                                     Column.padding(24);
@@ -432,7 +437,7 @@ class CpuPage extends ViewPU {
                                     Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                     Column.alignItems(HorizontalAlign.Center);
                                 }, Column);
-                                this.observeComponentCreation2((b12, c12) => {
+                                this.observeComponentCreation2((z11, a12) => {
                                     Text.create(this.isNativeAvailable ? '无法获取 CPU 使用率' : 'Native API 不可用');
                                     Text.fontSize(18);
                                     Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -445,23 +450,23 @@ class CpuPage extends ViewPU {
                     }, If);
                     If.pop();
                     {
-                        this.observeComponentCreation2((v11, w11) => {
-                            if (w11) {
-                                let x11 = new InfoHeader(this, {
+                        this.observeComponentCreation2((t11, u11) => {
+                            if (u11) {
+                                let v11 = new InfoHeader(this, {
                                     title: 'CPU 信息',
                                     subtitle: '显示 CPU 的硬件规格信息'
-                                }, undefined, v11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 199, col: 13 });
-                                ViewPU.create(x11);
-                                let y11 = () => {
+                                }, undefined, t11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 190, col: 13 });
+                                ViewPU.create(v11);
+                                let w11 = () => {
                                     return {
                                         title: 'CPU 信息',
                                         subtitle: '显示 CPU 的硬件规格信息'
                                     };
                                 };
-                                x11.paramsGenerator_ = y11;
+                                v11.paramsGenerator_ = w11;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(v11, {
+                                this.updateStateVarsOfChildByElmtId(t11, {
                                     title: 'CPU 信息',
                                     subtitle: '显示 CPU 的硬件规格信息'
                                 });
@@ -469,23 +474,23 @@ class CpuPage extends ViewPU {
                         }, { name: "InfoHeader" });
                     }
                     {
-                        this.observeComponentCreation2((r11, s11) => {
-                            if (s11) {
-                                let t11 = new InfoCard(this, {
+                        this.observeComponentCreation2((p11, q11) => {
+                            if (q11) {
+                                let r11 = new InfoCard(this, {
                                     title: '架构',
                                     value: this.cpuInfo?.architecture || '未获取'
-                                }, undefined, r11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 204, col: 13 });
-                                ViewPU.create(t11);
-                                let u11 = () => {
+                                }, undefined, p11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 195, col: 13 });
+                                ViewPU.create(r11);
+                                let s11 = () => {
                                     return {
                                         title: '架构',
                                         value: this.cpuInfo?.architecture || '未获取'
                                     };
                                 };
-                                t11.paramsGenerator_ = u11;
+                                r11.paramsGenerator_ = s11;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(r11, {
+                                this.updateStateVarsOfChildByElmtId(p11, {
                                     title: '架构',
                                     value: this.cpuInfo?.architecture || '未获取'
                                 });
@@ -493,23 +498,23 @@ class CpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((n11, o11) => {
-                            if (o11) {
-                                let p11 = new InfoCard(this, {
+                        this.observeComponentCreation2((l11, m11) => {
+                            if (m11) {
+                                let n11 = new InfoCard(this, {
                                     title: '核心数',
                                     value: this.getCoreCount()
-                                }, undefined, n11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 209, col: 13 });
-                                ViewPU.create(p11);
-                                let q11 = () => {
+                                }, undefined, l11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 200, col: 13 });
+                                ViewPU.create(n11);
+                                let o11 = () => {
                                     return {
                                         title: '核心数',
                                         value: this.getCoreCount()
                                     };
                                 };
-                                p11.paramsGenerator_ = q11;
+                                n11.paramsGenerator_ = o11;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(n11, {
+                                this.updateStateVarsOfChildByElmtId(l11, {
                                     title: '核心数',
                                     value: this.getCoreCount()
                                 });
@@ -517,23 +522,23 @@ class CpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((j11, k11) => {
-                            if (k11) {
-                                let l11 = new InfoCard(this, {
+                        this.observeComponentCreation2((h11, i11) => {
+                            if (i11) {
+                                let j11 = new InfoCard(this, {
                                     title: '型号',
                                     value: this.cpuInfo?.model || '未获取'
-                                }, undefined, j11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 214, col: 13 });
-                                ViewPU.create(l11);
-                                let m11 = () => {
+                                }, undefined, h11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 205, col: 13 });
+                                ViewPU.create(j11);
+                                let k11 = () => {
                                     return {
                                         title: '型号',
                                         value: this.cpuInfo?.model || '未获取'
                                     };
                                 };
-                                l11.paramsGenerator_ = m11;
+                                j11.paramsGenerator_ = k11;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(j11, {
+                                this.updateStateVarsOfChildByElmtId(h11, {
                                     title: '型号',
                                     value: this.cpuInfo?.model || '未获取'
                                 });
@@ -541,44 +546,44 @@ class CpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((f11, g11) => {
-                            if (g11) {
-                                let h11 = new InfoCard(this, {
+                        this.observeComponentCreation2((d11, e11) => {
+                            if (e11) {
+                                let f11 = new InfoCard(this, {
                                     title: '制程工艺',
                                     value: this.cpuInfo?.process || '未获取'
-                                }, undefined, f11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 219, col: 13 });
-                                ViewPU.create(h11);
-                                let i11 = () => {
+                                }, undefined, d11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 210, col: 13 });
+                                ViewPU.create(f11);
+                                let g11 = () => {
                                     return {
                                         title: '制程工艺',
                                         value: this.cpuInfo?.process || '未获取'
                                     };
                                 };
-                                h11.paramsGenerator_ = i11;
+                                f11.paramsGenerator_ = g11;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(f11, {
+                                this.updateStateVarsOfChildByElmtId(d11, {
                                     title: '制程工艺',
                                     value: this.cpuInfo?.process || '未获取'
                                 });
                             }
                         }, { name: "InfoCard" });
                     }
-                    this.observeComponentCreation2((p10, q10) => {
+                    this.observeComponentCreation2((n10, o10) => {
                         If.create();
                         if (this.cpuUsageAll?.success && this.cpuUsageAll.threads.length > 0) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((b11, c11) => {
-                                        if (c11) {
-                                            let d11 = new InfoHeader(this, {
+                                    this.observeComponentCreation2((z10, a11) => {
+                                        if (a11) {
+                                            let b11 = new InfoHeader(this, {
                                                 title: `线程 CPU 使用率 (${this.cpuUsageAll.threadCount})`,
                                                 subtitle: '显示应用各线程的 CPU 使用率',
                                                 conceptId: 'thread_cpu',
                                                 onInfoClick: () => this.navigateToConcept('thread_cpu')
-                                            }, undefined, b11, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 226, col: 15 });
-                                            ViewPU.create(d11);
-                                            let e11 = () => {
+                                            }, undefined, z10, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 217, col: 15 });
+                                            ViewPU.create(b11);
+                                            let c11 = () => {
                                                 return {
                                                     title: `线程 CPU 使用率 (${this.cpuUsageAll.threadCount})`,
                                                     subtitle: '显示应用各线程的 CPU 使用率',
@@ -586,10 +591,10 @@ class CpuPage extends ViewPU {
                                                     onInfoClick: () => this.navigateToConcept('thread_cpu')
                                                 };
                                             };
-                                            d11.paramsGenerator_ = e11;
+                                            b11.paramsGenerator_ = c11;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(b11, {
+                                            this.updateStateVarsOfChildByElmtId(z10, {
                                                 title: `线程 CPU 使用率 (${this.cpuUsageAll.threadCount})`,
                                                 subtitle: '显示应用各线程的 CPU 使用率',
                                                 conceptId: 'thread_cpu'
@@ -597,36 +602,36 @@ class CpuPage extends ViewPU {
                                         }
                                     }, { name: "InfoHeader" });
                                 }
-                                this.observeComponentCreation2((r10, s10) => {
+                                this.observeComponentCreation2((p10, q10) => {
                                     ForEach.create();
-                                    const t10 = v10 => {
-                                        const w10 = v10;
+                                    const r10 = t10 => {
+                                        const u10 = t10;
                                         {
-                                            this.observeComponentCreation2((x10, y10) => {
-                                                if (y10) {
-                                                    let z10 = new InfoCard(this, {
-                                                        title: `线程 ${w10.threadId}`,
-                                                        value: `${Math.round(w10.percentage)}%`
-                                                    }, undefined, x10, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 234, col: 17 });
-                                                    ViewPU.create(z10);
-                                                    let a11 = () => {
+                                            this.observeComponentCreation2((v10, w10) => {
+                                                if (w10) {
+                                                    let x10 = new InfoCard(this, {
+                                                        title: `线程 ${u10.threadId}`,
+                                                        value: `${Math.round(u10.percentage)}%`
+                                                    }, undefined, v10, () => { }, { page: "entry/src/main/ets/pages/CpuPage.ets", line: 225, col: 17 });
+                                                    ViewPU.create(x10);
+                                                    let y10 = () => {
                                                         return {
-                                                            title: `线程 ${w10.threadId}`,
-                                                            value: `${Math.round(w10.percentage)}%`
+                                                            title: `线程 ${u10.threadId}`,
+                                                            value: `${Math.round(u10.percentage)}%`
                                                         };
                                                     };
-                                                    z10.paramsGenerator_ = a11;
+                                                    x10.paramsGenerator_ = y10;
                                                 }
                                                 else {
-                                                    this.updateStateVarsOfChildByElmtId(x10, {
-                                                        title: `线程 ${w10.threadId}`,
-                                                        value: `${Math.round(w10.percentage)}%`
+                                                    this.updateStateVarsOfChildByElmtId(v10, {
+                                                        title: `线程 ${u10.threadId}`,
+                                                        value: `${Math.round(u10.percentage)}%`
                                                     });
                                                 }
                                             }, { name: "InfoCard" });
                                         }
                                     };
-                                    this.forEachUpdateFunction(r10, this.cpuUsageAll.threads.slice(0, 15), t10, (u10: ThreadCpuInfo) => u10.threadId.toString(), false, false);
+                                    this.forEachUpdateFunction(p10, this.cpuUsageAll.threads.slice(0, 15), r10, (s10: ThreadCpuInfo) => s10.threadId.toString(), false, false);
                                 }, ForEach);
                                 ForEach.pop();
                             });

@@ -11,25 +11,26 @@ import { InfoCard } from "@bundle:com.huawei.sysinfo/entry/ets/components/InfoCa
 import { ProgressBar } from "@bundle:com.huawei.sysinfo/entry/ets/components/ProgressBar";
 import { SectionHeader } from "@bundle:com.huawei.sysinfo/entry/ets/components/SectionHeader";
 import type { StorageInfoModel } from '../model/DeviceInfo';
+import { NavigationBarWithArrow } from "@bundle:com.huawei.sysinfo/entry/ets/components/NavigationBar";
 class StoragePage extends ViewPU {
-    constructor(e45, f45, g45, h45 = -1, i45 = undefined, j45) {
-        super(e45, g45, h45, j45);
-        if (typeof i45 === "function") {
-            this.paramsGenerator_ = i45;
+    constructor(t38, u38, v38, w38 = -1, x38 = undefined, y38) {
+        super(t38, v38, w38, y38);
+        if (typeof x38 === "function") {
+            this.paramsGenerator_ = x38;
         }
         this.__storageInfo = new ObservedPropertyObjectPU(null, this, "storageInfo");
-        this.setInitiallyProvidedValue(f45);
+        this.setInitiallyProvidedValue(u38);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(d45: StoragePage_Params) {
-        if (d45.storageInfo !== undefined) {
-            this.storageInfo = d45.storageInfo;
+    setInitiallyProvidedValue(s38: StoragePage_Params) {
+        if (s38.storageInfo !== undefined) {
+            this.storageInfo = s38.storageInfo;
         }
     }
-    updateStateVars(c45: StoragePage_Params) {
+    updateStateVars(r38: StoragePage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(b45) {
-        this.__storageInfo.purgeDependencyOnElmtId(b45);
+    purgeVariableDependenciesOnElmtId(q38) {
+        this.__storageInfo.purgeDependencyOnElmtId(q38);
     }
     aboutToBeDeleted() {
         this.__storageInfo.aboutToBeDeleted();
@@ -40,92 +41,96 @@ class StoragePage extends ViewPU {
     get storageInfo() {
         return this.__storageInfo.get();
     }
-    set storageInfo(a45: StorageInfoModel | null) {
-        this.__storageInfo.set(a45);
+    set storageInfo(p38: StorageInfoModel | null) {
+        this.__storageInfo.set(p38);
     }
     aboutToAppear() {
         this.storageInfo = DeviceUtil.getStorageInfo();
     }
     initialRender() {
-        this.observeComponentCreation2((y44, z44) => {
+        this.observeComponentCreation2((n38, o38) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((w44, x44) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((u44, v44) => {
-            Text.create('← 返回');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((s44, t44) => {
-            Text.create('存储');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((q44, r44) => {
+        {
+            this.observeComponentCreation2((j38, k38) => {
+                if (k38) {
+                    let l38 = new NavigationBarWithArrow(this, {
+                        title: '存储',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, j38, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 21, col: 7 });
+                    ViewPU.create(l38);
+                    let m38 = () => {
+                        return {
+                            title: '存储',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    l38.paramsGenerator_ = m38;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(j38, {
+                        title: '存储'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
+        this.observeComponentCreation2((h38, i38) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((o44, p44) => {
+        this.observeComponentCreation2((f38, g38) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
         {
-            this.observeComponentCreation2((k44, l44) => {
-                if (l44) {
-                    let m44 = new SectionHeader(this, { title: '存储使用' }, undefined, k44, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 39, col: 11 });
-                    ViewPU.create(m44);
-                    let n44 = () => {
+            this.observeComponentCreation2((b38, c38) => {
+                if (c38) {
+                    let d38 = new SectionHeader(this, { title: '存储使用' }, undefined, b38, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 30, col: 11 });
+                    ViewPU.create(d38);
+                    let e38 = () => {
                         return {
                             title: '存储使用'
                         };
                     };
-                    m44.paramsGenerator_ = n44;
+                    d38.paramsGenerator_ = e38;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(k44, {
+                    this.updateStateVarsOfChildByElmtId(b38, {
                         title: '存储使用'
                     });
                 }
             }, { name: "SectionHeader" });
         }
-        this.observeComponentCreation2((i44, j44) => {
+        this.observeComponentCreation2((z37, a38) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
             Column.borderRadius(12);
             Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((g44, h44) => {
+        this.observeComponentCreation2((x37, y37) => {
             Row.create();
             Row.width('100%');
         }, Row);
-        this.observeComponentCreation2((e44, f44) => {
+        this.observeComponentCreation2((v37, w37) => {
             Text.create('已用');
             Text.fontSize(14);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((c44, d44) => {
+        this.observeComponentCreation2((t37, u37) => {
             Blank.create();
         }, Blank);
         Blank.pop();
-        this.observeComponentCreation2((a44, b44) => {
+        this.observeComponentCreation2((r37, s37) => {
             Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.usedSize) : '未获取');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Medium);
@@ -133,30 +138,30 @@ class StoragePage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((y43, z43) => {
+        this.observeComponentCreation2((p37, q37) => {
             __Common__.create();
             __Common__.margin({ top: 12, bottom: 12 });
         }, __Common__);
         {
-            this.observeComponentCreation2((u43, v43) => {
-                if (v43) {
-                    let w43 = new ProgressBar(this, {
+            this.observeComponentCreation2((l37, m37) => {
+                if (m37) {
+                    let n37 = new ProgressBar(this, {
                         progress: this.storageInfo?.usedSize || 0,
                         total: this.storageInfo?.totalSize || 1,
                         color: '#007DFF'
-                    }, undefined, u43, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 54, col: 13 });
-                    ViewPU.create(w43);
-                    let x43 = () => {
+                    }, undefined, l37, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 45, col: 13 });
+                    ViewPU.create(n37);
+                    let o37 = () => {
                         return {
                             progress: this.storageInfo?.usedSize || 0,
                             total: this.storageInfo?.totalSize || 1,
                             color: '#007DFF'
                         };
                     };
-                    w43.paramsGenerator_ = x43;
+                    n37.paramsGenerator_ = o37;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(u43, {
+                    this.updateStateVarsOfChildByElmtId(l37, {
                         progress: this.storageInfo?.usedSize || 0,
                         total: this.storageInfo?.totalSize || 1,
                         color: '#007DFF'
@@ -165,21 +170,21 @@ class StoragePage extends ViewPU {
             }, { name: "ProgressBar" });
         }
         __Common__.pop();
-        this.observeComponentCreation2((s43, t43) => {
+        this.observeComponentCreation2((j37, k37) => {
             Row.create();
             Row.width('100%');
         }, Row);
-        this.observeComponentCreation2((q43, r43) => {
+        this.observeComponentCreation2((h37, i37) => {
             Text.create('可用');
             Text.fontSize(14);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((o43, p43) => {
+        this.observeComponentCreation2((f37, g37) => {
             Blank.create();
         }, Blank);
         Blank.pop();
-        this.observeComponentCreation2((m43, n43) => {
+        this.observeComponentCreation2((d37, e37) => {
             Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.freeSize) : '未获取');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Medium);
@@ -187,22 +192,22 @@ class StoragePage extends ViewPU {
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((k43, l43) => {
+        this.observeComponentCreation2((b37, c37) => {
             Row.create();
             Row.width('100%');
             Row.margin({ top: 8 });
         }, Row);
-        this.observeComponentCreation2((i43, j43) => {
+        this.observeComponentCreation2((z36, a37) => {
             Text.create('总计');
             Text.fontSize(14);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((g43, h43) => {
+        this.observeComponentCreation2((x36, y36) => {
             Blank.create();
         }, Blank);
         Blank.pop();
-        this.observeComponentCreation2((e43, f43) => {
+        this.observeComponentCreation2((v36, w36) => {
             Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.totalSize) : '未获取');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Medium);
@@ -212,42 +217,42 @@ class StoragePage extends ViewPU {
         Row.pop();
         Column.pop();
         {
-            this.observeComponentCreation2((a43, b43) => {
-                if (b43) {
-                    let c43 = new SectionHeader(this, { title: '存储信息' }, undefined, a43, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 91, col: 11 });
-                    ViewPU.create(c43);
-                    let d43 = () => {
+            this.observeComponentCreation2((r36, s36) => {
+                if (s36) {
+                    let t36 = new SectionHeader(this, { title: '存储信息' }, undefined, r36, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 82, col: 11 });
+                    ViewPU.create(t36);
+                    let u36 = () => {
                         return {
                             title: '存储信息'
                         };
                     };
-                    c43.paramsGenerator_ = d43;
+                    t36.paramsGenerator_ = u36;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(a43, {
+                    this.updateStateVarsOfChildByElmtId(r36, {
                         title: '存储信息'
                     });
                 }
             }, { name: "SectionHeader" });
         }
         {
-            this.observeComponentCreation2((w42, x42) => {
-                if (x42) {
-                    let y42 = new InfoCard(this, {
+            this.observeComponentCreation2((n36, o36) => {
+                if (o36) {
+                    let p36 = new InfoCard(this, {
                         title: '状态',
                         value: this.storageInfo ? '已获取' : '未获取'
-                    }, undefined, w42, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 93, col: 11 });
-                    ViewPU.create(y42);
-                    let z42 = () => {
+                    }, undefined, n36, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 84, col: 11 });
+                    ViewPU.create(p36);
+                    let q36 = () => {
                         return {
                             title: '状态',
                             value: this.storageInfo ? '已获取' : '未获取'
                         };
                     };
-                    y42.paramsGenerator_ = z42;
+                    p36.paramsGenerator_ = q36;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(w42, {
+                    this.updateStateVarsOfChildByElmtId(n36, {
                         title: '状态',
                         value: this.storageInfo ? '已获取' : '未获取'
                     });
@@ -255,23 +260,23 @@ class StoragePage extends ViewPU {
             }, { name: "InfoCard" });
         }
         {
-            this.observeComponentCreation2((s42, t42) => {
-                if (t42) {
-                    let u42 = new InfoCard(this, {
+            this.observeComponentCreation2((j36, k36) => {
+                if (k36) {
+                    let l36 = new InfoCard(this, {
                         title: '说明',
                         value: this.storageInfo ? '存储信息来自系统 API' : '部分设备可能无法获取存储信息'
-                    }, undefined, s42, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 98, col: 11 });
-                    ViewPU.create(u42);
-                    let v42 = () => {
+                    }, undefined, j36, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 89, col: 11 });
+                    ViewPU.create(l36);
+                    let m36 = () => {
                         return {
                             title: '说明',
                             value: this.storageInfo ? '存储信息来自系统 API' : '部分设备可能无法获取存储信息'
                         };
                     };
-                    u42.paramsGenerator_ = v42;
+                    l36.paramsGenerator_ = m36;
                 }
                 else {
-                    this.updateStateVarsOfChildByElmtId(s42, {
+                    this.updateStateVarsOfChildByElmtId(j36, {
                         title: '说明',
                         value: this.storageInfo ? '存储信息来自系统 API' : '部分设备可能无法获取存储信息'
                     });

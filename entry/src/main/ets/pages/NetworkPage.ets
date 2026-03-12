@@ -3,6 +3,7 @@ import connection from '@ohos.net.connection';
 import { InfoCard } from '../components/InfoCard';
 import { SectionHeader } from '../components/SectionHeader';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 const TAG = 'NetworkPage';
 
@@ -13,6 +14,19 @@ interface NetworkDetails {
   isRoaming: boolean;
   linkUpBandwidth: number;
   linkDownBandwidth: number;
+  // 连接属性
+  interfaceName: string;
+  ipAddress: string;
+  gateway: string;
+  dnsServers: string[];
+  mtu: number;
+  macAddress: string;
+  subnetMask: string;
+  // WiFi 信息
+  ssid: string;
+  signalStrength: number;
+  frequency: number;
+  linkSpeed: number;
 }
 
 @Entry
@@ -32,22 +46,85 @@ struct NetworkPage {
   async loadNetworkInfo() {
     try {
       const netHandle = connection.getDefaultNetSync();
+      hilog.info(0x0000, TAG, 'NetHandle: netId=%{public}d', netHandle?.netId || 0);
+
       if (netHandle && netHandle.netId !== 0) {
         const netCapabilities = connection.getNetCapabilitiesSync(netHandle);
         const connectionProperties = connection.getConnectionPropertiesSync(netHandle);
 
-        const bearerType = netCapabilities.bearerTypes[0] || connection.NetBearType.BEARER_CELLULAR;
+        hilog.info(0x0000, TAG, 'NetCapabilities: %{public}s', JSON.stringify(netCapabilities));
+        hilog.info(0x0000, TAG, 'ConnectionProperties: %{public}s', JSON.stringify(connectionProperties));
+
+        const bearerType = netCapabilities.bearerTypes?.[0] || connection.NetBearType.BEARER_CELLULAR;
         const networkCap = netCapabilities.networkCap || [];
         const linkUpBandwidth = netCapabilities.linkUpBandwidthKbps || 0;
         const linkDownBandwidth = netCapabilities.linkDownBandwidthKbps || 0;
+
+        hilog.info(0x0000, TAG, 'Bandwidth: up=%{public}d, down=%{public}d', linkUpBandwidth, linkDownBandwidth);
+
+        // 解析连接属性
+        const connProps = JSON.parse(JSON.stringify(connectionProperties)) as Record<string, string | number | object | object[]>;
+
+        // 安全地获取属性值
+        const getStringProp = (key: string): string => {
+          const val = connProps[key];
+          return typeof val === 'string' ? val : '未知';
+        };
+
+        const getNumberProp = (key: string): number => {
+          const val = connProps[key];
+          return typeof val === 'number' ? val : 0;
+        };
+
+        const getObjectArrayProp = (key: string): object[] => {
+          const val = connProps[key];
+          return Array.isArray(val) ? val : [];
+        };
+
+        // 解析 IP 地址
+        const linkAddresses = getObjectArrayProp('linkAddresses');
+        let ipAddress = '未获取';
+        let subnetMask = '未获取';
+        if (linkAddresses.length > 0) {
+          const firstAddr = linkAddresses[0] as Record<string, string | number>;
+          ipAddress = typeof firstAddr.address === 'string' ? firstAddr.address : '未获取';
+          subnetMask = typeof firstAddr.prefixLength === 'number' ? `/${firstAddr.prefixLength}` : '未获取';
+        }
+
+        // 解析网关
+        const gateway = connProps.gateway as Record<string, string> | undefined;
+        const gatewayAddress = gateway?.address || '未知';
+
+        // 解析 DNS
+        const dnsServers = getObjectArrayProp('dnsServers');
+        const dnsList: string[] = [];
+        for (const dns of dnsServers) {
+          const dnsRecord = dns as Record<string, string>;
+          if (typeof dnsRecord.address === 'string') {
+            dnsList.push(dnsRecord.address);
+          }
+        }
 
         this.networkDetails = {
           type: this.getNetworkTypeName(bearerType),
           isConnected: true,
           isMetered: networkCap.includes(connection.NetCap.NET_CAPABILITY_NOT_METERED) ? false : true,
-          isRoaming: false, // 需要额外权限
+          isRoaming: false,
           linkUpBandwidth: linkUpBandwidth,
-          linkDownBandwidth: linkDownBandwidth
+          linkDownBandwidth: linkDownBandwidth,
+          // 连接属性
+          interfaceName: getStringProp('interfaceName'),
+          ipAddress: ipAddress,
+          gateway: gatewayAddress,
+          dnsServers: dnsList,
+          mtu: getNumberProp('mtu'),
+          macAddress: getStringProp('macAddress'),
+          subnetMask: subnetMask,
+          // WiFi 信息
+          ssid: getStringProp('ssid'),
+          signalStrength: getNumberProp('signalStrength'),
+          frequency: getNumberProp('frequency'),
+          linkSpeed: getNumberProp('linkSpeed')
         };
       } else {
         this.networkDetails = {
@@ -56,7 +133,18 @@ struct NetworkPage {
           isMetered: false,
           isRoaming: false,
           linkUpBandwidth: 0,
-          linkDownBandwidth: 0
+          linkDownBandwidth: 0,
+          interfaceName: '无',
+          ipAddress: '无',
+          gateway: '无',
+          dnsServers: [],
+          mtu: 0,
+          macAddress: '无',
+          subnetMask: '无',
+          ssid: '',
+          signalStrength: 0,
+          frequency: 0,
+          linkSpeed: 0
         };
       }
     } catch (error) {
@@ -67,7 +155,18 @@ struct NetworkPage {
         isMetered: false,
         isRoaming: false,
         linkUpBandwidth: 0,
-        linkDownBandwidth: 0
+        linkDownBandwidth: 0,
+        interfaceName: '未知',
+        ipAddress: '未知',
+        gateway: '未知',
+        dnsServers: [],
+        mtu: 0,
+        macAddress: '未知',
+        subnetMask: '未知',
+        ssid: '',
+        signalStrength: 0,
+        frequency: 0,
+        linkSpeed: 0
       };
     }
   }
@@ -90,7 +189,7 @@ struct NetworkPage {
   }
 
   formatBandwidth(kbps: number): string {
-    if (kbps <= 0) return '未知';
+    if (kbps <= 0) return '未提供';
     if (kbps >= 1000000) {
       return `${(kbps / 1000000).toFixed(1)} Gbps`;
     } else if (kbps >= 1000) {
@@ -98,6 +197,24 @@ struct NetworkPage {
     } else {
       return `${kbps} Kbps`;
     }
+  }
+
+  formatMtu(mtu: number): string {
+    if (mtu <= 0) return '未获取';
+    return `${mtu} bytes`;
+  }
+
+  formatFrequency(freq: number): string {
+    if (freq <= 0) return '未获取';
+    if (freq >= 1000) {
+      return `${(freq / 1000).toFixed(1)} GHz`;
+    }
+    return `${freq} MHz`;
+  }
+
+  formatLinkSpeed(speed: number): string {
+    if (speed <= 0) return '未获取';
+    return `${speed} Mbps`;
   }
 
   // 数据说明组件
@@ -112,22 +229,12 @@ struct NetworkPage {
 
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('网络')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: '网络',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {
@@ -137,6 +244,7 @@ struct NetworkPage {
               .fontColor($r('app.color.text_secondary'))
               .margin(24)
           } else if (this.networkDetails) {
+            // 网络状态
             SectionHeader({ title: '网络状态' });
             this.DataDescription('显示当前设备的网络连接状态和网络类型。');
 
@@ -155,8 +263,97 @@ struct NetworkPage {
               value: this.networkDetails.isMetered ? '是' : '否'
             })
 
+            // IP 配置
+            SectionHeader({ title: 'IP 配置' });
+            this.DataDescription('显示当前网络的 IP 地址、子网掩码、网关等配置信息。');
+
+            InfoCard({
+              title: 'IP 地址',
+              value: this.networkDetails.ipAddress
+            })
+
+            InfoCard({
+              title: '子网前缀',
+              value: this.networkDetails.subnetMask
+            })
+
+            InfoCard({
+              title: '默认网关',
+              value: this.networkDetails.gateway
+            })
+
+            // DNS 服务器
+            SectionHeader({ title: 'DNS 服务器' });
+            this.DataDescription('显示当前网络配置的 DNS 服务器地址，用于域名解析。');
+
+            if (this.networkDetails.dnsServers.length > 0) {
+              ForEach(this.networkDetails.dnsServers, (dns: string, index: number) => {
+                InfoCard({
+                  title: `DNS ${index + 1}`,
+                  value: dns
+                })
+              }, (dns: string, index: number) => index.toString())
+            } else {
+              InfoCard({
+                title: 'DNS 服务器',
+                value: '未获取'
+              })
+            }
+
+            // 网卡信息
+            SectionHeader({ title: '网卡信息' });
+            this.DataDescription('显示网卡名称、MAC 地址、MTU 等硬件信息。');
+
+            InfoCard({
+              title: '网卡名称',
+              value: this.networkDetails.interfaceName
+            })
+
+            InfoCard({
+              title: 'MAC 地址',
+              value: this.networkDetails.macAddress
+            })
+
+            InfoCard({
+              title: 'MTU',
+              value: this.formatMtu(this.networkDetails.mtu)
+            })
+
+            // WiFi 详细信息（仅 WiFi 网络显示）
+            if (this.networkDetails.type === 'Wi-Fi' && this.networkDetails.ssid) {
+              SectionHeader({ title: 'Wi-Fi 信息' });
+              this.DataDescription('显示 Wi-Fi 网络的详细信息。');
+
+              InfoCard({
+                title: 'SSID',
+                value: this.networkDetails.ssid
+              })
+
+              if (this.networkDetails.signalStrength > 0) {
+                InfoCard({
+                  title: '信号强度',
+                  value: `${this.networkDetails.signalStrength} dBm`
+                })
+              }
+
+              if (this.networkDetails.frequency > 0) {
+                InfoCard({
+                  title: '频段',
+                  value: this.formatFrequency(this.networkDetails.frequency)
+                })
+              }
+
+              if (this.networkDetails.linkSpeed > 0) {
+                InfoCard({
+                  title: '连接速度',
+                  value: this.formatLinkSpeed(this.networkDetails.linkSpeed)
+                })
+              }
+            }
+
+            // 带宽信息
             SectionHeader({ title: '带宽信息' });
-            this.DataDescription('显示当前网络连接的理论上行和下行带宽。实际网速可能因网络环境、信号强度等因素而有所不同。');
+            this.DataDescription('显示当前网络连接的理论上行和下行带宽。某些网络类型（如模拟器环境）可能不提供带宽信息。实际网速可能因网络环境、信号强度等因素而有所不同。');
 
             InfoCard({
               title: '上行带宽',
@@ -168,8 +365,9 @@ struct NetworkPage {
               value: this.formatBandwidth(this.networkDetails.linkDownBandwidth)
             })
 
+            // 说明
             SectionHeader({ title: '说明' });
-            this.DataDescription('网络信息通过 @ohos.net.connection API 获取。移动数据网络通常按流量计费，Wi-Fi 网络通常不计费。带宽信息由系统根据网络类型估算，不代表实际测速结果。');
+            this.DataDescription('网络信息通过 @ohos.net.connection API 获取。IP 配置、DNS、网关等信息用于网络诊断和故障排查。MAC 地址是网卡的物理地址，MTU 是最大传输单元。');
           } else {
             Column() {
               Text('无法获取网络信息')

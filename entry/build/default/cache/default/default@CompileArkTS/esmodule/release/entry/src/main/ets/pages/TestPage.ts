@@ -24,11 +24,12 @@ import type { SystemMemInfo, AppMemInfo, MemoryLimit, CpuUsage, CpuUsageAll, Thr
 import { FormatUtil } from "@bundle:com.huawei.sysinfo/entry/ets/utils/FormatUtil";
 import hilog from "@ohos:hilog";
 import type { DeviceInfoModel, BatteryInfoModel, DisplayInfoModel, StorageInfoModel, NetworkInfoModel } from '../model/DeviceInfo';
+import { NavigationBarWithArrow } from "@bundle:com.huawei.sysinfo/entry/ets/components/NavigationBar";
 class TestPage extends ViewPU {
-    constructor(x9, y9, z9, a10 = -1, b10 = undefined, c10) {
-        super(x9, z9, a10, c10);
-        if (typeof b10 === "function") {
-            this.paramsGenerator_ = b10;
+    constructor(s43, t43, u43, v43 = -1, w43 = undefined, x43) {
+        super(s43, u43, v43, x43);
+        if (typeof w43 === "function") {
+            this.paramsGenerator_ = w43;
         }
         this.__testResults = new ObservedPropertySimplePU('点击下方按钮运行测试', this, "testResults");
         this.__deviceInfo = new ObservedPropertyObjectPU(null, this, "deviceInfo");
@@ -44,70 +45,70 @@ class TestPage extends ViewPU {
         this.__cpuUsageAll = new ObservedPropertyObjectPU(null, this, "cpuUsageAll");
         this.__isNativeAvailable = new ObservedPropertySimplePU(false, this, "isNativeAvailable");
         this.__isTesting = new ObservedPropertySimplePU(false, this, "isTesting");
-        this.setInitiallyProvidedValue(y9);
+        this.setInitiallyProvidedValue(t43);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(w9: TestPage_Params) {
-        if (w9.testResults !== undefined) {
-            this.testResults = w9.testResults;
+    setInitiallyProvidedValue(r43: TestPage_Params) {
+        if (r43.testResults !== undefined) {
+            this.testResults = r43.testResults;
         }
-        if (w9.deviceInfo !== undefined) {
-            this.deviceInfo = w9.deviceInfo;
+        if (r43.deviceInfo !== undefined) {
+            this.deviceInfo = r43.deviceInfo;
         }
-        if (w9.batteryInfo !== undefined) {
-            this.batteryInfo = w9.batteryInfo;
+        if (r43.batteryInfo !== undefined) {
+            this.batteryInfo = r43.batteryInfo;
         }
-        if (w9.displayInfo !== undefined) {
-            this.displayInfo = w9.displayInfo;
+        if (r43.displayInfo !== undefined) {
+            this.displayInfo = r43.displayInfo;
         }
-        if (w9.storageInfo !== undefined) {
-            this.storageInfo = w9.storageInfo;
+        if (r43.storageInfo !== undefined) {
+            this.storageInfo = r43.storageInfo;
         }
-        if (w9.networkInfo !== undefined) {
-            this.networkInfo = w9.networkInfo;
+        if (r43.networkInfo !== undefined) {
+            this.networkInfo = r43.networkInfo;
         }
-        if (w9.systemMemInfo !== undefined) {
-            this.systemMemInfo = w9.systemMemInfo;
+        if (r43.systemMemInfo !== undefined) {
+            this.systemMemInfo = r43.systemMemInfo;
         }
-        if (w9.appMemInfo !== undefined) {
-            this.appMemInfo = w9.appMemInfo;
+        if (r43.appMemInfo !== undefined) {
+            this.appMemInfo = r43.appMemInfo;
         }
-        if (w9.memoryLimit !== undefined) {
-            this.memoryLimit = w9.memoryLimit;
+        if (r43.memoryLimit !== undefined) {
+            this.memoryLimit = r43.memoryLimit;
         }
-        if (w9.systemCpuUsage !== undefined) {
-            this.systemCpuUsage = w9.systemCpuUsage;
+        if (r43.systemCpuUsage !== undefined) {
+            this.systemCpuUsage = r43.systemCpuUsage;
         }
-        if (w9.appCpuUsage !== undefined) {
-            this.appCpuUsage = w9.appCpuUsage;
+        if (r43.appCpuUsage !== undefined) {
+            this.appCpuUsage = r43.appCpuUsage;
         }
-        if (w9.cpuUsageAll !== undefined) {
-            this.cpuUsageAll = w9.cpuUsageAll;
+        if (r43.cpuUsageAll !== undefined) {
+            this.cpuUsageAll = r43.cpuUsageAll;
         }
-        if (w9.isNativeAvailable !== undefined) {
-            this.isNativeAvailable = w9.isNativeAvailable;
+        if (r43.isNativeAvailable !== undefined) {
+            this.isNativeAvailable = r43.isNativeAvailable;
         }
-        if (w9.isTesting !== undefined) {
-            this.isTesting = w9.isTesting;
+        if (r43.isTesting !== undefined) {
+            this.isTesting = r43.isTesting;
         }
     }
-    updateStateVars(v9: TestPage_Params) {
+    updateStateVars(q43: TestPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(u9) {
-        this.__testResults.purgeDependencyOnElmtId(u9);
-        this.__deviceInfo.purgeDependencyOnElmtId(u9);
-        this.__batteryInfo.purgeDependencyOnElmtId(u9);
-        this.__displayInfo.purgeDependencyOnElmtId(u9);
-        this.__storageInfo.purgeDependencyOnElmtId(u9);
-        this.__networkInfo.purgeDependencyOnElmtId(u9);
-        this.__systemMemInfo.purgeDependencyOnElmtId(u9);
-        this.__appMemInfo.purgeDependencyOnElmtId(u9);
-        this.__memoryLimit.purgeDependencyOnElmtId(u9);
-        this.__systemCpuUsage.purgeDependencyOnElmtId(u9);
-        this.__appCpuUsage.purgeDependencyOnElmtId(u9);
-        this.__cpuUsageAll.purgeDependencyOnElmtId(u9);
-        this.__isNativeAvailable.purgeDependencyOnElmtId(u9);
-        this.__isTesting.purgeDependencyOnElmtId(u9);
+    purgeVariableDependenciesOnElmtId(p43) {
+        this.__testResults.purgeDependencyOnElmtId(p43);
+        this.__deviceInfo.purgeDependencyOnElmtId(p43);
+        this.__batteryInfo.purgeDependencyOnElmtId(p43);
+        this.__displayInfo.purgeDependencyOnElmtId(p43);
+        this.__storageInfo.purgeDependencyOnElmtId(p43);
+        this.__networkInfo.purgeDependencyOnElmtId(p43);
+        this.__systemMemInfo.purgeDependencyOnElmtId(p43);
+        this.__appMemInfo.purgeDependencyOnElmtId(p43);
+        this.__memoryLimit.purgeDependencyOnElmtId(p43);
+        this.__systemCpuUsage.purgeDependencyOnElmtId(p43);
+        this.__appCpuUsage.purgeDependencyOnElmtId(p43);
+        this.__cpuUsageAll.purgeDependencyOnElmtId(p43);
+        this.__isNativeAvailable.purgeDependencyOnElmtId(p43);
+        this.__isTesting.purgeDependencyOnElmtId(p43);
     }
     aboutToBeDeleted() {
         this.__testResults.aboutToBeDeleted();
@@ -131,99 +132,99 @@ class TestPage extends ViewPU {
     get testResults() {
         return this.__testResults.get();
     }
-    set testResults(t9: string) {
-        this.__testResults.set(t9);
+    set testResults(o43: string) {
+        this.__testResults.set(o43);
     }
     private __deviceInfo: ObservedPropertyObjectPU<DeviceInfoModel | null>;
     get deviceInfo() {
         return this.__deviceInfo.get();
     }
-    set deviceInfo(s9: DeviceInfoModel | null) {
-        this.__deviceInfo.set(s9);
+    set deviceInfo(n43: DeviceInfoModel | null) {
+        this.__deviceInfo.set(n43);
     }
     private __batteryInfo: ObservedPropertyObjectPU<BatteryInfoModel | null>;
     get batteryInfo() {
         return this.__batteryInfo.get();
     }
-    set batteryInfo(r9: BatteryInfoModel | null) {
-        this.__batteryInfo.set(r9);
+    set batteryInfo(m43: BatteryInfoModel | null) {
+        this.__batteryInfo.set(m43);
     }
     private __displayInfo: ObservedPropertyObjectPU<DisplayInfoModel | null>;
     get displayInfo() {
         return this.__displayInfo.get();
     }
-    set displayInfo(q9: DisplayInfoModel | null) {
-        this.__displayInfo.set(q9);
+    set displayInfo(l43: DisplayInfoModel | null) {
+        this.__displayInfo.set(l43);
     }
     private __storageInfo: ObservedPropertyObjectPU<StorageInfoModel | null>;
     get storageInfo() {
         return this.__storageInfo.get();
     }
-    set storageInfo(p9: StorageInfoModel | null) {
-        this.__storageInfo.set(p9);
+    set storageInfo(k43: StorageInfoModel | null) {
+        this.__storageInfo.set(k43);
     }
     private __networkInfo: ObservedPropertyObjectPU<NetworkInfoModel | null>;
     get networkInfo() {
         return this.__networkInfo.get();
     }
-    set networkInfo(o9: NetworkInfoModel | null) {
-        this.__networkInfo.set(o9);
+    set networkInfo(j43: NetworkInfoModel | null) {
+        this.__networkInfo.set(j43);
     }
     private __systemMemInfo: ObservedPropertyObjectPU<SystemMemInfo | null>;
     get systemMemInfo() {
         return this.__systemMemInfo.get();
     }
-    set systemMemInfo(n9: SystemMemInfo | null) {
-        this.__systemMemInfo.set(n9);
+    set systemMemInfo(i43: SystemMemInfo | null) {
+        this.__systemMemInfo.set(i43);
     }
     private __appMemInfo: ObservedPropertyObjectPU<AppMemInfo | null>;
     get appMemInfo() {
         return this.__appMemInfo.get();
     }
-    set appMemInfo(m9: AppMemInfo | null) {
-        this.__appMemInfo.set(m9);
+    set appMemInfo(h43: AppMemInfo | null) {
+        this.__appMemInfo.set(h43);
     }
     private __memoryLimit: ObservedPropertyObjectPU<MemoryLimit | null>;
     get memoryLimit() {
         return this.__memoryLimit.get();
     }
-    set memoryLimit(l9: MemoryLimit | null) {
-        this.__memoryLimit.set(l9);
+    set memoryLimit(g43: MemoryLimit | null) {
+        this.__memoryLimit.set(g43);
     }
     private __systemCpuUsage: ObservedPropertyObjectPU<CpuUsage | null>;
     get systemCpuUsage() {
         return this.__systemCpuUsage.get();
     }
-    set systemCpuUsage(k9: CpuUsage | null) {
-        this.__systemCpuUsage.set(k9);
+    set systemCpuUsage(f43: CpuUsage | null) {
+        this.__systemCpuUsage.set(f43);
     }
     private __appCpuUsage: ObservedPropertyObjectPU<CpuUsage | null>;
     get appCpuUsage() {
         return this.__appCpuUsage.get();
     }
-    set appCpuUsage(j9: CpuUsage | null) {
-        this.__appCpuUsage.set(j9);
+    set appCpuUsage(e43: CpuUsage | null) {
+        this.__appCpuUsage.set(e43);
     }
     private __cpuUsageAll: ObservedPropertyObjectPU<CpuUsageAll | null>;
     get cpuUsageAll() {
         return this.__cpuUsageAll.get();
     }
-    set cpuUsageAll(i9: CpuUsageAll | null) {
-        this.__cpuUsageAll.set(i9);
+    set cpuUsageAll(d43: CpuUsageAll | null) {
+        this.__cpuUsageAll.set(d43);
     }
     private __isNativeAvailable: ObservedPropertySimplePU<boolean>;
     get isNativeAvailable() {
         return this.__isNativeAvailable.get();
     }
-    set isNativeAvailable(h9: boolean) {
-        this.__isNativeAvailable.set(h9);
+    set isNativeAvailable(c43: boolean) {
+        this.__isNativeAvailable.set(c43);
     }
     private __isTesting: ObservedPropertySimplePU<boolean>;
     get isTesting() {
         return this.__isTesting.get();
     }
-    set isTesting(g9: boolean) {
-        this.__isTesting.set(g9);
+    set isTesting(b43: boolean) {
+        this.__isTesting.set(b43);
     }
     aboutToAppear() {
         this.isNativeAvailable = nativeApi.isNativeAvailable();
@@ -252,84 +253,76 @@ class TestPage extends ViewPU {
             }
             this.testResults = '测试完成！请查看下方详细信息';
         }
-        catch (f9) {
-            this.testResults = `测试失败: ${JSON.stringify(f9)}`;
-            console.error('Test error:', f9);
+        catch (a43) {
+            this.testResults = `测试失败: ${JSON.stringify(a43)}`;
+            console.error('Test error:', a43);
         }
         this.isTesting = false;
     }
-    formatBytes(e9: number | undefined): string {
-        if (e9 === undefined || e9 === 0) {
+    formatBytes(z42: number | undefined): string {
+        if (z42 === undefined || z42 === 0) {
             return '未获取';
         }
-        return FormatUtil.formatBytes(e9);
+        return FormatUtil.formatBytes(z42);
     }
-    formatPercent(d9: number | undefined): string {
-        if (d9 === undefined) {
+    formatPercent(y42: number | undefined): string {
+        if (y42 === undefined) {
             return '未获取';
         }
-        return `${d9.toFixed(2)}%`;
+        return `${y42.toFixed(2)}%`;
     }
     initialRender() {
-        this.observeComponentCreation2((b9, c9) => {
+        this.observeComponentCreation2((w42, x42) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor('#ffffff');
         }, Column);
-        this.observeComponentCreation2((z8, a9) => {
-            Row.create();
-            Row.width('100%');
-            Row.height(50);
-            Row.padding({ left: 16, right: 16 });
-        }, Row);
-        this.observeComponentCreation2((x8, y8) => {
-            Text.create('← 返回');
-            Text.fontSize(18);
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((v8, w8) => {
-            Blank.create();
-            Blank.layoutWeight(1);
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((t8, u8) => {
-            Text.create('系统信息测试');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Bold);
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((r8, s8) => {
-            Blank.create();
-            Blank.layoutWeight(1);
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((p8, q8) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        Row.pop();
-        this.observeComponentCreation2((n8, o8) => {
+        {
+            this.observeComponentCreation2((s42, t42) => {
+                if (t42) {
+                    let u42 = new NavigationBarWithArrow(this, {
+                        title: '系统信息测试',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, s42, () => { }, { page: "entry/src/main/ets/pages/TestPage.ets", line: 95, col: 7 });
+                    ViewPU.create(u42);
+                    let v42 = () => {
+                        return {
+                            title: '系统信息测试',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    u42.paramsGenerator_ = v42;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(s42, {
+                        title: '系统信息测试'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
+        this.observeComponentCreation2((q42, r42) => {
             Scroll.create();
             Scroll.layoutWeight(1);
             Scroll.width('100%');
         }, Scroll);
-        this.observeComponentCreation2((l8, m8) => {
+        this.observeComponentCreation2((o42, p42) => {
             Column.create({ space: 16 });
             Column.padding(16);
             Column.width('100%');
         }, Column);
-        this.observeComponentCreation2((j8, k8) => {
+        this.observeComponentCreation2((m42, n42) => {
             Text.create('测试控制');
             Text.fontSize(18);
             Text.fontWeight(FontWeight.Bold);
             Text.width('100%');
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((h8, i8) => {
+        this.observeComponentCreation2((k42, l42) => {
             Button.createWithLabel(this.isTesting ? '测试中...' : '运行所有测试');
             Button.width('100%');
             Button.height(50);
@@ -339,7 +332,7 @@ class TestPage extends ViewPU {
             });
         }, Button);
         Button.pop();
-        this.observeComponentCreation2((f8, g8) => {
+        this.observeComponentCreation2((i42, j42) => {
             Text.create(this.testResults);
             Text.fontSize(14);
             Text.width('100%');
@@ -349,7 +342,7 @@ class TestPage extends ViewPU {
         }, Text);
         Text.pop();
         this.buildNativeApiStatusSection.bind(this)();
-        this.observeComponentCreation2((d8, e8) => {
+        this.observeComponentCreation2((g42, h42) => {
             If.create();
             if (this.systemMemInfo?.success) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -362,7 +355,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((b8, c8) => {
+        this.observeComponentCreation2((e42, f42) => {
             If.create();
             if (this.appMemInfo?.success) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -375,7 +368,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((z7, a8) => {
+        this.observeComponentCreation2((c42, d42) => {
             If.create();
             if (this.systemCpuUsage?.success) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -388,7 +381,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((x7, y7) => {
+        this.observeComponentCreation2((a42, b42) => {
             If.create();
             if (this.deviceInfo) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -401,7 +394,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((v7, w7) => {
+        this.observeComponentCreation2((y41, z41) => {
             If.create();
             if (this.batteryInfo) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -414,7 +407,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((t7, u7) => {
+        this.observeComponentCreation2((w41, x41) => {
             If.create();
             if (this.displayInfo) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -427,7 +420,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((r7, s7) => {
+        this.observeComponentCreation2((u41, v41) => {
             If.create();
             if (this.storageInfo) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -440,7 +433,7 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((p7, q7) => {
+        this.observeComponentCreation2((s41, t41) => {
             If.create();
             if (this.networkInfo) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -457,15 +450,15 @@ class TestPage extends ViewPU {
         Scroll.pop();
         Column.pop();
     }
-    buildNativeApiStatusSection(k7 = null) {
-        this.observeComponentCreation2((n7, o7) => {
+    buildNativeApiStatusSection(n41 = null) {
+        this.observeComponentCreation2((q41, r41) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#e6f7ff');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((l7, m7) => {
+        this.observeComponentCreation2((o41, p41) => {
             Text.create('Native API 状态');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -479,21 +472,21 @@ class TestPage extends ViewPU {
     }
     getUsedMemoryText(): string {
         if (this.systemMemInfo && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
-            const i7: number = this.systemMemInfo.total - this.systemMemInfo.available;
-            const j7: string = ((i7 / this.systemMemInfo.total) * 100).toFixed(1);
-            return `${this.formatBytes(i7)} (${j7}%)`;
+            const l41: number = this.systemMemInfo.total - this.systemMemInfo.available;
+            const m41: string = ((l41 / this.systemMemInfo.total) * 100).toFixed(1);
+            return `${this.formatBytes(l41)} (${m41}%)`;
         }
         return '未获取';
     }
-    buildSystemMemSection(d7 = null) {
-        this.observeComponentCreation2((g7, h7) => {
+    buildSystemMemSection(g41 = null) {
+        this.observeComponentCreation2((j41, k41) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#f6ffed');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((e7, f7) => {
+        this.observeComponentCreation2((h41, i41) => {
             Text.create('系统内存 (Native API)');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -506,15 +499,15 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('已用内存', this.getUsedMemoryText());
         Column.pop();
     }
-    buildAppMemSection(w6 = null) {
-        this.observeComponentCreation2((b7, c7) => {
+    buildAppMemSection(z40 = null) {
+        this.observeComponentCreation2((e41, f41) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#fff7e6');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((z6, a7) => {
+        this.observeComponentCreation2((c41, d41) => {
             Text.create('应用内存 (Native API)');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -528,7 +521,7 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('Shared Dirty', this.formatBytes(this.appMemInfo?.sharedDirty));
         this.buildInfoItem.bind(this)('Private Clean', this.formatBytes(this.appMemInfo?.privateClean));
         this.buildInfoItem.bind(this)('Private Dirty', this.formatBytes(this.appMemInfo?.privateDirty));
-        this.observeComponentCreation2((x6, y6) => {
+        this.observeComponentCreation2((a41, b41) => {
             If.create();
             if (this.memoryLimit?.success) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -544,15 +537,15 @@ class TestPage extends ViewPU {
         If.pop();
         Column.pop();
     }
-    buildCpuSection(h6 = null) {
-        this.observeComponentCreation2((u6, v6) => {
+    buildCpuSection(k40 = null) {
+        this.observeComponentCreation2((x40, y40) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#f9f0ff');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((s6, t6) => {
+        this.observeComponentCreation2((v40, w40) => {
             Text.create('CPU 信息 (Native API)');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -560,7 +553,7 @@ class TestPage extends ViewPU {
         }, Text);
         Text.pop();
         this.buildInfoItem.bind(this)('系统 CPU 使用率', this.formatPercent(this.systemCpuUsage?.percentage));
-        this.observeComponentCreation2((q6, r6) => {
+        this.observeComponentCreation2((t40, u40) => {
             If.create();
             if (this.appCpuUsage?.success) {
                 this.ifElseBranchUpdateFunction(0, () => {
@@ -573,18 +566,18 @@ class TestPage extends ViewPU {
             }
         }, If);
         If.pop();
-        this.observeComponentCreation2((i6, j6) => {
+        this.observeComponentCreation2((l40, m40) => {
             If.create();
             if (this.cpuUsageAll?.success && this.cpuUsageAll.threads.length > 0) {
                 this.ifElseBranchUpdateFunction(0, () => {
                     this.buildInfoItem.bind(this)('线程数量', this.cpuUsageAll.threadCount.toString());
-                    this.observeComponentCreation2((k6, l6) => {
+                    this.observeComponentCreation2((n40, o40) => {
                         ForEach.create();
-                        const m6 = o6 => {
-                            const p6 = o6;
-                            this.buildInfoItem.bind(this)(`线程 ${p6.threadId}`, `${p6.percentage.toFixed(2)}%`);
+                        const p40 = r40 => {
+                            const s40 = r40;
+                            this.buildInfoItem.bind(this)(`线程 ${s40.threadId}`, `${s40.percentage.toFixed(2)}%`);
                         };
-                        this.forEachUpdateFunction(k6, this.cpuUsageAll.threads.slice(0, 5), m6, (n6: ThreadCpuInfo) => n6.threadId.toString(), false, false);
+                        this.forEachUpdateFunction(n40, this.cpuUsageAll.threads.slice(0, 5), p40, (q40: ThreadCpuInfo) => q40.threadId.toString(), false, false);
                     }, ForEach);
                     ForEach.pop();
                 });
@@ -597,15 +590,15 @@ class TestPage extends ViewPU {
         If.pop();
         Column.pop();
     }
-    buildDeviceInfoSection(c6 = null) {
-        this.observeComponentCreation2((f6, g6) => {
+    buildDeviceInfoSection(f40 = null) {
+        this.observeComponentCreation2((i40, j40) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#f0f8ff');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((d6, e6) => {
+        this.observeComponentCreation2((g40, h40) => {
             Text.create('设备信息');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -623,15 +616,15 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('CPU 架构', this.deviceInfo?.abiList || '未获取');
         Column.pop();
     }
-    buildBatteryInfoSection(x5 = null) {
-        this.observeComponentCreation2((a6, b6) => {
+    buildBatteryInfoSection(a40 = null) {
+        this.observeComponentCreation2((d40, e40) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#fff8f0');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((y5, z5) => {
+        this.observeComponentCreation2((b40, c40) => {
             Text.create('电池信息');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -646,15 +639,15 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('技术', this.batteryInfo?.technology || '未知');
         Column.pop();
     }
-    buildDisplayInfoSection(s5 = null) {
-        this.observeComponentCreation2((v5, w5) => {
+    buildDisplayInfoSection(v39 = null) {
+        this.observeComponentCreation2((y39, z39) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#f0fff0');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((t5, u5) => {
+        this.observeComponentCreation2((w39, x39) => {
             Text.create('屏幕信息');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -669,15 +662,15 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('Y DPI', `${this.displayInfo?.yDPI || 0}`);
         Column.pop();
     }
-    buildStorageInfoSection(n5 = null) {
-        this.observeComponentCreation2((q5, r5) => {
+    buildStorageInfoSection(q39 = null) {
+        this.observeComponentCreation2((t39, u39) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#fff0f0');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((o5, p5) => {
+        this.observeComponentCreation2((r39, s39) => {
             Text.create('存储信息');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -689,15 +682,15 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('已用存储', this.getStorageDisplayValue(this.storageInfo?.usedSize));
         Column.pop();
     }
-    buildNetworkInfoSection(i5 = null) {
-        this.observeComponentCreation2((l5, m5) => {
+    buildNetworkInfoSection(l39 = null) {
+        this.observeComponentCreation2((o39, p39) => {
             Column.create({ space: 8 });
             Column.width('100%');
             Column.padding(12);
             Column.backgroundColor('#f0f0ff');
             Column.borderRadius(8);
         }, Column);
-        this.observeComponentCreation2((j5, k5) => {
+        this.observeComponentCreation2((m39, n39) => {
             Text.create('网络信息');
             Text.fontSize(16);
             Text.fontWeight(FontWeight.Bold);
@@ -707,34 +700,34 @@ class TestPage extends ViewPU {
         this.buildInfoItem.bind(this)('网络类型', this.networkInfo?.netType || '未知');
         Column.pop();
     }
-    buildInfoItem(z4: string, a5: string, b5 = null) {
-        this.observeComponentCreation2((g5, h5) => {
+    buildInfoItem(c39: string, d39: string, e39 = null) {
+        this.observeComponentCreation2((j39, k39) => {
             Row.create();
             Row.width('100%');
         }, Row);
-        this.observeComponentCreation2((e5, f5) => {
-            Text.create(z4);
+        this.observeComponentCreation2((h39, i39) => {
+            Text.create(c39);
             Text.fontSize(14);
             Text.width(140);
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((c5, d5) => {
-            Text.create(a5);
+        this.observeComponentCreation2((f39, g39) => {
+            Text.create(d39);
             Text.fontSize(14);
             Text.layoutWeight(1);
         }, Text);
         Text.pop();
         Row.pop();
     }
-    formatStorageSize(x4: number): string {
-        const y4 = (x4 / 1024 / 1024 / 1024).toFixed(2);
-        return `${y4} GB`;
+    formatStorageSize(a39: number): string {
+        const b39 = (a39 / 1024 / 1024 / 1024).toFixed(2);
+        return `${b39} GB`;
     }
-    getStorageDisplayValue(w4: number | undefined): string {
-        if (w4 === undefined || w4 === 0) {
+    getStorageDisplayValue(z38: number | undefined): string {
+        if (z38 === undefined || z38 === 0) {
             return '未获取';
         }
-        return this.formatStorageSize(w4);
+        return this.formatStorageSize(z38);
     }
     rerender() {
         this.updateDirtyElements();

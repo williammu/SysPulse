@@ -402,6 +402,66 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
             }
         ]
     },
+    'gpu_viewport': {
+        id: 'gpu_viewport',
+        title: '视口尺寸',
+        subtitle: 'Viewport Dimensions',
+        description: 'GPU 支持的最大视口渲染区域尺寸。',
+        details: [
+            {
+                title: '什么是视口？',
+                content: '视口（Viewport）是 OpenGL ES 渲染输出的目标区域，通常对应屏幕或帧缓冲区的某个矩形区域。maxViewportDims 定义了视口的最大宽度和高度。'
+            },
+            {
+                title: '为什么重要？',
+                content: '视口尺寸限制了渲染目标的最大分辨率。例如 16384×16384 表示 GPU 可以渲染最大 16K×16K 的图像，这对于高分辨率截图、离线渲染等场景很重要。'
+            },
+            {
+                title: '与屏幕分辨率的区别',
+                content: '屏幕分辨率是物理显示器的像素数，而视口尺寸是 GPU 渲染能力的上限。视口可以大于屏幕（用于缩放），也可以小于屏幕（用于局部渲染）。'
+            }
+        ]
+    },
+    'gpu_line_width': {
+        id: 'gpu_line_width',
+        title: '线宽范围',
+        subtitle: 'Line Width Range',
+        description: 'GPU 支持的线条渲染宽度范围。',
+        details: [
+            {
+                title: '什么是线宽？',
+                content: '线宽是 OpenGL ES 绘制线条时的粗细程度。aliasedLineWidthRange 表示 GPU 支持的抗锯齿线条的最小和最大宽度。'
+            },
+            {
+                title: '为什么显示 1-1？',
+                content: '许多移动 GPU（特别是 Mali 系列）只支持线宽为 1。这是硬件限制，意味着无法通过 OpenGL ES 直接绘制更粗的线条。需要绘制矩形或多边形来模拟粗线条。'
+            },
+            {
+                title: '实际应用',
+                content: '在数据可视化、CAD 应用、游戏调试线框等场景中，线宽控制很重要。如果 GPU 不支持可变线宽，需要在应用层通过几何体扩展来实现。'
+            }
+        ]
+    },
+    'gpu_point_size': {
+        id: 'gpu_point_size',
+        title: '点大小范围',
+        subtitle: 'Point Size Range',
+        description: 'GPU 支持的点精灵（Point Sprite）渲染大小范围。',
+        details: [
+            {
+                title: '什么是点大小？',
+                content: '点大小是 OpenGL ES 绘制点精灵（Point Sprite）时的尺寸。与线宽类似，aliasedPointSizeRange 表示 GPU 支持的点的最小和最大尺寸。'
+            },
+            {
+                title: '为什么显示 1-1？',
+                content: '许多移动 GPU 只支持点大小为 1。这意味着无法直接绘制更大的点。需要绘制小三角形或四边形来模拟大点，这在粒子系统、点云渲染中很常见。'
+            },
+            {
+                title: '实际应用',
+                content: '点精灵常用于粒子效果、星空、点云可视化等。如果 GPU 不支持可变点大小，可以使用公告板技术（Billboarding）用始终朝向相机的四边形替代点。'
+            }
+        ]
+    },
     'gpu_vertex_attribs': {
         id: 'gpu_vertex_attribs',
         title: '顶点属性',
@@ -519,6 +579,34 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
             {
                 title: '使用建议',
                 content: '优先使用 ETC2（保证兼容性）或 ASTC（高质量）。根据纹理内容选择压缩方式：RGB 用 ETC2_RGB，RGBA 用 ETC2_RGBA 或 ASTC_4x4。'
+            }
+        ]
+    },
+    'gpu_extensions': {
+        id: 'gpu_extensions',
+        title: 'OpenGL ES 扩展',
+        subtitle: 'OpenGL ES Extensions',
+        description: 'GPU 支持的 OpenGL ES 扩展功能列表，这些扩展提供了超出标准规范的高级特性。',
+        details: [
+            {
+                title: '什么是扩展？',
+                content: 'OpenGL ES 扩展是 GPU 厂商提供的额外功能，超出标准 OpenGL ES 规范。扩展名称以 GL_ 开头，后跟厂商前缀（如 OES、KHR、EXT、ARM 等）和功能描述。'
+            },
+            {
+                title: '常见扩展 - 图像与同步',
+                content: 'GL_OES_EGL_image：支持 EGL 图像作为纹理；GL_OES_EGL_image_external：支持外部图像（如相机预览）；GL_OES_EGL_sync：支持 GPU 同步原语，用于多线程渲染协调。'
+            },
+            {
+                title: '常见扩展 - 深度与浮点',
+                content: 'GL_OES_depth24/depth32：支持 24/32 位深度缓冲；GL_OES_texture_float/half_float：支持浮点纹理（HDR 渲染）；GL_EXT_color_buffer_float：支持浮点颜色缓冲区。'
+            },
+            {
+                title: '常见扩展 - 压缩与顶点',
+                content: 'GL_KHR_texture_compression_astc_ldr/hdr：ASTC 纹理压缩（高质量）；GL_OES_vertex_array_object：VAO 支持（减少状态切换开销）；GL_OES_depth_texture：深度纹理支持（阴影贴图）。'
+            },
+            {
+                title: '如何使用扩展？',
+                content: '使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。'
             }
         ]
     }

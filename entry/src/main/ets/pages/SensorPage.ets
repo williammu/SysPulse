@@ -4,6 +4,7 @@ import { SectionHeader } from '../components/SectionHeader';
 import { SensorUtil, AccelerometerData, GyroscopeData, LightData, ProximityData, MagneticFieldData, OrientationData } from '../utils/SensorUtil';
 import sensor from '@ohos.sensor';
 import { hilog } from '@kit.PerformanceAnalysisKit';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 const TAG = 'SensorPage';
 
@@ -133,22 +134,12 @@ struct SensorPage {
 
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('传感器')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: '传感器',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {

@@ -9,3 +9,5 @@
 4	1009	1773308610863721897	CMakeFiles/sysinfo.dir/sysinfo.cpp.o	5e0f9e2d183a3d08
 4	1090	1773308610864355259	CMakeFiles/sysinfo.dir/gpu_module.cpp.o	afcf222506e414f5
 1090	1248	1773308611949933691	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	1a5c6806c0e2477c
+24	5363	1773311459426571324	CMakeFiles/sysinfo.dir/hidebug_module.cpp.o	1bbd36310e86969c
+5364	6048	1773311464766637969	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	1a5c6806c0e2477c

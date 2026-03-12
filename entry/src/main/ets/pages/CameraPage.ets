@@ -1,28 +1,19 @@
 import router from '@ohos.router';
 import { InfoCard } from '../components/InfoCard';
 import { SectionHeader } from '../components/SectionHeader';
+import { NavigationBarWithArrow } from '../components/NavigationBar';
 
 @Entry
 @Component
 struct CameraPage {
   build() {
     Column() {
-      Row() {
-        Text('← 返回')
-          .fontSize(16)
-          .fontColor($r('app.color.primary_color'))
-          .onClick(() => {
-            router.back();
-          })
-
-        Text('摄像头')
-          .fontSize(20)
-          .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-          .margin({ left: 12 })
-      }
-      .width('100%')
-      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+      NavigationBarWithArrow({
+        title: '摄像头',
+        onBack: () => {
+          router.back();
+        }
+      })
 
       Scroll() {
         Column() {

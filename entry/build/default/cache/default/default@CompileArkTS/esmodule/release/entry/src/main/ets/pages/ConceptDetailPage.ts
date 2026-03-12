@@ -9,31 +9,32 @@ import router from "@ohos:router";
 import { getConceptInfo } from "@bundle:com.huawei.sysinfo/entry/ets/config/ConceptConfig";
 import type { ConceptInfo, ConceptDetailItem } from "@bundle:com.huawei.sysinfo/entry/ets/config/ConceptConfig";
 import hilog from "@ohos:hilog";
+import { NavigationBarWithArrow } from "@bundle:com.huawei.sysinfo/entry/ets/components/NavigationBar";
 const TAG = 'ConceptDetailPage';
 class ConceptDetailPage extends ViewPU {
-    constructor(f5, g5, h5, i5 = -1, j5 = undefined, k5) {
-        super(f5, h5, i5, k5);
-        if (typeof j5 === "function") {
-            this.paramsGenerator_ = j5;
+    constructor(f10, g10, h10, i10 = -1, j10 = undefined, k10) {
+        super(f10, h10, i10, k10);
+        if (typeof j10 === "function") {
+            this.paramsGenerator_ = j10;
         }
         this.__conceptInfo = new ObservedPropertyObjectPU(null, this, "conceptInfo");
         this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
-        this.setInitiallyProvidedValue(g5);
+        this.setInitiallyProvidedValue(g10);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(e5: ConceptDetailPage_Params) {
-        if (e5.conceptInfo !== undefined) {
-            this.conceptInfo = e5.conceptInfo;
+    setInitiallyProvidedValue(e10: ConceptDetailPage_Params) {
+        if (e10.conceptInfo !== undefined) {
+            this.conceptInfo = e10.conceptInfo;
         }
-        if (e5.isLoading !== undefined) {
-            this.isLoading = e5.isLoading;
+        if (e10.isLoading !== undefined) {
+            this.isLoading = e10.isLoading;
         }
     }
-    updateStateVars(d5: ConceptDetailPage_Params) {
+    updateStateVars(d10: ConceptDetailPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(c5) {
-        this.__conceptInfo.purgeDependencyOnElmtId(c5);
-        this.__isLoading.purgeDependencyOnElmtId(c5);
+    purgeVariableDependenciesOnElmtId(c10) {
+        this.__conceptInfo.purgeDependencyOnElmtId(c10);
+        this.__isLoading.purgeDependencyOnElmtId(c10);
     }
     aboutToBeDeleted() {
         this.__conceptInfo.aboutToBeDeleted();
@@ -45,72 +46,76 @@ class ConceptDetailPage extends ViewPU {
     get conceptInfo() {
         return this.__conceptInfo.get();
     }
-    set conceptInfo(b5: ConceptInfo | null) {
-        this.__conceptInfo.set(b5);
+    set conceptInfo(b10: ConceptInfo | null) {
+        this.__conceptInfo.set(b10);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(a5: boolean) {
-        this.__isLoading.set(a5);
+    set isLoading(a10: boolean) {
+        this.__isLoading.set(a10);
     }
     aboutToAppear() {
-        const x4 = router.getParams() as Record<string, string>;
-        const y4 = x4?.['conceptId'];
-        hilog.info(0x0000, TAG, 'Loading concept: %{public}s', y4);
-        if (y4) {
-            const z4 = getConceptInfo(y4);
-            if (z4) {
-                this.conceptInfo = z4;
+        const x9 = router.getParams() as Record<string, string>;
+        const y9 = x9?.['conceptId'];
+        hilog.info(0x0000, TAG, 'Loading concept: %{public}s', y9);
+        if (y9) {
+            const z9 = getConceptInfo(y9);
+            if (z9) {
+                this.conceptInfo = z9;
             }
         }
         this.isLoading = false;
     }
     initialRender() {
-        this.observeComponentCreation2((v4, w4) => {
+        this.observeComponentCreation2((v9, w9) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
             Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((t4, u4) => {
-            Row.create();
-            Row.width('100%');
-            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
-        }, Row);
-        this.observeComponentCreation2((r4, s4) => {
-            Text.create('← 返回');
-            Text.fontSize(16);
-            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.onClick(() => {
-                router.back();
-            });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((p4, q4) => {
-            Text.create('概念说明');
-            Text.fontSize(20);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-            Text.margin({ left: 12 });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((n4, o4) => {
+        {
+            this.observeComponentCreation2((r9, s9) => {
+                if (s9) {
+                    let t9 = new NavigationBarWithArrow(this, {
+                        title: '概念说明',
+                        onBack: () => {
+                            router.back();
+                        }
+                    }, undefined, r9, () => { }, { page: "entry/src/main/ets/pages/ConceptDetailPage.ets", line: 32, col: 7 });
+                    ViewPU.create(t9);
+                    let u9 = () => {
+                        return {
+                            title: '概念说明',
+                            onBack: () => {
+                                router.back();
+                            }
+                        };
+                    };
+                    t9.paramsGenerator_ = u9;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(r9, {
+                        title: '概念说明'
+                    });
+                }
+            }, { name: "NavigationBarWithArrow" });
+        }
+        this.observeComponentCreation2((p9, q9) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((l4, m4) => {
+        this.observeComponentCreation2((n9, o9) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((d3, e3) => {
+        this.observeComponentCreation2((f8, g8) => {
             If.create();
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((j4, k4) => {
+                    this.observeComponentCreation2((l9, m9) => {
                         Text.create('加载中...');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -121,13 +126,13 @@ class ConceptDetailPage extends ViewPU {
             }
             else if (!this.conceptInfo) {
                 this.ifElseBranchUpdateFunction(1, () => {
-                    this.observeComponentCreation2((h4, i4) => {
+                    this.observeComponentCreation2((j9, k9) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(24);
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((f4, g4) => {
+                    this.observeComponentCreation2((h9, i9) => {
                         Text.create('未找到概念信息');
                         Text.fontSize(18);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -139,7 +144,7 @@ class ConceptDetailPage extends ViewPU {
             }
             else {
                 this.ifElseBranchUpdateFunction(2, () => {
-                    this.observeComponentCreation2((d4, e4) => {
+                    this.observeComponentCreation2((f9, g9) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(16);
@@ -147,7 +152,7 @@ class ConceptDetailPage extends ViewPU {
                         Column.borderRadius(12);
                         Column.margin({ bottom: 16 });
                     }, Column);
-                    this.observeComponentCreation2((b4, c4) => {
+                    this.observeComponentCreation2((d9, e9) => {
                         Text.create(this.conceptInfo.title);
                         Text.fontSize(28);
                         Text.fontWeight(FontWeight.Bold);
@@ -155,7 +160,7 @@ class ConceptDetailPage extends ViewPU {
                         Text.width('100%');
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((z3, a4) => {
+                    this.observeComponentCreation2((b9, c9) => {
                         Text.create(this.conceptInfo.subtitle);
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -163,7 +168,7 @@ class ConceptDetailPage extends ViewPU {
                         Text.width('100%');
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((x3, y3) => {
+                    this.observeComponentCreation2((z8, a9) => {
                         Text.create(this.conceptInfo.description);
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -173,11 +178,11 @@ class ConceptDetailPage extends ViewPU {
                     }, Text);
                     Text.pop();
                     Column.pop();
-                    this.observeComponentCreation2((f3, g3) => {
+                    this.observeComponentCreation2((h8, i8) => {
                         ForEach.create();
-                        const h3 = (k3, l3: number) => {
-                            const m3 = k3;
-                            this.observeComponentCreation2((v3, w3) => {
+                        const j8 = (m8, n8: number) => {
+                            const o8 = m8;
+                            this.observeComponentCreation2((x8, y8) => {
                                 Column.create();
                                 Column.width('100%');
                                 Column.padding(16);
@@ -185,13 +190,13 @@ class ConceptDetailPage extends ViewPU {
                                 Column.borderRadius(12);
                                 Column.margin({ bottom: 12 });
                             }, Column);
-                            this.observeComponentCreation2((t3, u3) => {
+                            this.observeComponentCreation2((v8, w8) => {
                                 Row.create();
                                 Row.width('100%');
                                 Row.alignItems(VerticalAlign.Center);
                             }, Row);
-                            this.observeComponentCreation2((r3, s3) => {
-                                Text.create(`${l3 + 1}`);
+                            this.observeComponentCreation2((t8, u8) => {
+                                Text.create(`${n8 + 1}`);
                                 Text.fontSize(12);
                                 Text.fontWeight(FontWeight.Bold);
                                 Text.fontColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -202,8 +207,8 @@ class ConceptDetailPage extends ViewPU {
                                 Text.textAlign(TextAlign.Center);
                             }, Text);
                             Text.pop();
-                            this.observeComponentCreation2((p3, q3) => {
-                                Text.create(m3.title);
+                            this.observeComponentCreation2((r8, s8) => {
+                                Text.create(o8.title);
                                 Text.fontSize(16);
                                 Text.fontWeight(FontWeight.Medium);
                                 Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -212,8 +217,8 @@ class ConceptDetailPage extends ViewPU {
                             }, Text);
                             Text.pop();
                             Row.pop();
-                            this.observeComponentCreation2((n3, o3) => {
-                                Text.create(m3.content);
+                            this.observeComponentCreation2((p8, q8) => {
+                                Text.create(o8.content);
                                 Text.fontSize(14);
                                 Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                 Text.margin({ top: 12 });
@@ -223,7 +228,7 @@ class ConceptDetailPage extends ViewPU {
                             Text.pop();
                             Column.pop();
                         };
-                        this.forEachUpdateFunction(f3, this.conceptInfo.details, h3, (i3: ConceptDetailItem, j3: number) => j3.toString(), true, true);
+                        this.forEachUpdateFunction(h8, this.conceptInfo.details, j8, (k8: ConceptDetailItem, l8: number) => l8.toString(), true, true);
                     }, ForEach);
                     ForEach.pop();
                 });

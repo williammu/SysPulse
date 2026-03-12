@@ -96,20 +96,35 @@ napi_value GetAppMemInfo(napi_env env, napi_callback_info info) {
 
 napi_value GetMemoryLimit(napi_env env, napi_callback_info info) {
     OH_LOG_Print(LOG_APP, LOG_INFO, LOG_PRINT_DOMAIN, LOG_TAG, "GetMemoryLimit called");
-    
+
     napi_value result = CreateObject(env);
-    
+
     HiDebug_MemoryLimit memLimit;
     OH_HiDebug_GetAppMemoryLimit(&memLimit);
-    
-    // 单位 KB
-    SetProperty(env, result, "rssLimit", CreateInt64(env, static_cast<int64_t>(memLimit.rssLimit) * 1024));
-    SetProperty(env, result, "vssLimit", CreateInt64(env, static_cast<int64_t>(memLimit.vssLimit) * 1024));
+
+    // 检测无效值 (0x3FFFFFFFFFFFFFFF 或接近最大值表示无限制)
+    const uint64_t INVALID_LIMIT = 0x3FFFFFFFFFFFFFFF;
+    const uint64_t RSS_LIMIT_THRESHOLD = 0x00FFFFFFFFFFFFFF; // 约 256 TB，超过此值视为无限制
+
+    int64_t rssLimit = static_cast<int64_t>(memLimit.rssLimit) * 1024; // 转换为 bytes
+    int64_t vssLimit = static_cast<int64_t>(memLimit.vssLimit) * 1024;
+
+    // 如果值超过阈值，设置为 -1 表示无限制
+    if (memLimit.rssLimit > RSS_LIMIT_THRESHOLD || memLimit.rssLimit == 0) {
+        rssLimit = -1;
+    }
+    if (memLimit.vssLimit > RSS_LIMIT_THRESHOLD || memLimit.vssLimit == 0) {
+        vssLimit = -1;
+    }
+
+    SetProperty(env, result, "rssLimit", CreateInt64(env, rssLimit));
+    SetProperty(env, result, "vssLimit", CreateInt64(env, vssLimit));
     SetProperty(env, result, "success", CreateBool(env, true));
-    
-    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_PRINT_DOMAIN, LOG_TAG, "MemoryLimit: rssLimit=%{public}lu KB, vssLimit=%{public}lu KB", 
-                 memLimit.rssLimit, memLimit.vssLimit);
-    
+
+    OH_LOG_Print(LOG_APP, LOG_INFO, LOG_PRINT_DOMAIN, LOG_TAG,
+                 "MemoryLimit: rssLimit=%{public}ld bytes, vssLimit=%{public}ld bytes",
+                 rssLimit, vssLimit);
+
     return result;
 }
 
