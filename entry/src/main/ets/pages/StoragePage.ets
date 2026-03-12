@@ -28,6 +28,7 @@ struct StoragePage {
         Text('存储')
           .fontSize(20)
           .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 })
       }
       .width('100%')
@@ -46,6 +47,7 @@ struct StoragePage {
               Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.usedSize) : '未获取')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
             }
             .width('100%')
 
@@ -64,6 +66,7 @@ struct StoragePage {
               Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.freeSize) : '未获取')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
             }
             .width('100%')
 
@@ -75,6 +78,7 @@ struct StoragePage {
               Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.totalSize) : '未获取')
                 .fontSize(16)
                 .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
             }
             .width('100%')
             .margin({ top: 8 })
@@ -82,7 +86,7 @@ struct StoragePage {
           .width('100%')
           .padding(16)
           .borderRadius(12)
-          .backgroundColor($r('app.color.card_bg'))
+          .backgroundColor($r('app.color.background_card'))
 
           SectionHeader({ title: '存储信息' })
 
@@ -103,6 +107,6 @@ struct StoragePage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA')
+    .backgroundColor($r('app.color.background_dark'))
   }
 }

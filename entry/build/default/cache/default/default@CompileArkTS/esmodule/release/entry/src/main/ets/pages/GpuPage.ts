@@ -13,39 +13,39 @@ import { SectionHeader } from "@bundle:com.huawei.sysinfo/entry/ets/components/S
 import hilog from "@ohos:hilog";
 const TAG = 'GpuPage';
 class GpuPage extends ViewPU {
-    constructor(u7, v7, w7, x7 = -1, y7 = undefined, z7) {
-        super(u7, w7, x7, z7);
-        if (typeof y7 === "function") {
-            this.paramsGenerator_ = y7;
+    constructor(n15, o15, p15, q15 = -1, r15 = undefined, s15) {
+        super(n15, p15, q15, s15);
+        if (typeof r15 === "function") {
+            this.paramsGenerator_ = r15;
         }
         this.__gpuVendor = new ObservedPropertySimplePU('未知', this, "gpuVendor");
         this.__gpuRenderer = new ObservedPropertySimplePU('未知', this, "gpuRenderer");
         this.__gpuVersion = new ObservedPropertySimplePU('未知', this, "gpuVersion");
         this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
-        this.setInitiallyProvidedValue(v7);
+        this.setInitiallyProvidedValue(o15);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(t7: GpuPage_Params) {
-        if (t7.gpuVendor !== undefined) {
-            this.gpuVendor = t7.gpuVendor;
+    setInitiallyProvidedValue(m15: GpuPage_Params) {
+        if (m15.gpuVendor !== undefined) {
+            this.gpuVendor = m15.gpuVendor;
         }
-        if (t7.gpuRenderer !== undefined) {
-            this.gpuRenderer = t7.gpuRenderer;
+        if (m15.gpuRenderer !== undefined) {
+            this.gpuRenderer = m15.gpuRenderer;
         }
-        if (t7.gpuVersion !== undefined) {
-            this.gpuVersion = t7.gpuVersion;
+        if (m15.gpuVersion !== undefined) {
+            this.gpuVersion = m15.gpuVersion;
         }
-        if (t7.isLoading !== undefined) {
-            this.isLoading = t7.isLoading;
+        if (m15.isLoading !== undefined) {
+            this.isLoading = m15.isLoading;
         }
     }
-    updateStateVars(s7: GpuPage_Params) {
+    updateStateVars(l15: GpuPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(r7) {
-        this.__gpuVendor.purgeDependencyOnElmtId(r7);
-        this.__gpuRenderer.purgeDependencyOnElmtId(r7);
-        this.__gpuVersion.purgeDependencyOnElmtId(r7);
-        this.__isLoading.purgeDependencyOnElmtId(r7);
+    purgeVariableDependenciesOnElmtId(k15) {
+        this.__gpuVendor.purgeDependencyOnElmtId(k15);
+        this.__gpuRenderer.purgeDependencyOnElmtId(k15);
+        this.__gpuVersion.purgeDependencyOnElmtId(k15);
+        this.__isLoading.purgeDependencyOnElmtId(k15);
     }
     aboutToBeDeleted() {
         this.__gpuVendor.aboutToBeDeleted();
@@ -59,29 +59,29 @@ class GpuPage extends ViewPU {
     get gpuVendor() {
         return this.__gpuVendor.get();
     }
-    set gpuVendor(q7: string) {
-        this.__gpuVendor.set(q7);
+    set gpuVendor(j15: string) {
+        this.__gpuVendor.set(j15);
     }
     private __gpuRenderer: ObservedPropertySimplePU<string>;
     get gpuRenderer() {
         return this.__gpuRenderer.get();
     }
-    set gpuRenderer(p7: string) {
-        this.__gpuRenderer.set(p7);
+    set gpuRenderer(i15: string) {
+        this.__gpuRenderer.set(i15);
     }
     private __gpuVersion: ObservedPropertySimplePU<string>;
     get gpuVersion() {
         return this.__gpuVersion.get();
     }
-    set gpuVersion(o7: string) {
-        this.__gpuVersion.set(o7);
+    set gpuVersion(h15: string) {
+        this.__gpuVersion.set(h15);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(n7: boolean) {
-        this.__isLoading.set(n7);
+    set isLoading(g15: boolean) {
+        this.__isLoading.set(g15);
     }
     aboutToAppear() {
         hilog.info(0x0000, TAG, 'GpuPage aboutToAppear');
@@ -96,13 +96,13 @@ class GpuPage extends ViewPU {
             this.gpuRenderer = 'Mali-G78';
             this.gpuVersion = 'OpenGL ES 3.2';
         }
-        catch (m7) {
-            hilog.error(0x0000, TAG, 'Load GPU info error: %{public}s', String(m7));
+        catch (f15) {
+            hilog.error(0x0000, TAG, 'Load GPU info error: %{public}s', String(f15));
         }
     }
-    DataDescription(i7: string, j7 = null) {
-        this.observeComponentCreation2((k7, l7) => {
-            Text.create(i7);
+    DataDescription(b15: string, c15 = null) {
+        this.observeComponentCreation2((d15, e15) => {
+            Text.create(b15);
             Text.fontSize(12);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ top: 4, bottom: 8 });
@@ -111,18 +111,18 @@ class GpuPage extends ViewPU {
         Text.pop();
     }
     initialRender() {
-        this.observeComponentCreation2((g7, h7) => {
+        this.observeComponentCreation2((z14, a15) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor('#F7F8FA');
+            Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((e7, f7) => {
+        this.observeComponentCreation2((x14, y14) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((c7, d7) => {
+        this.observeComponentCreation2((v14, w14) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -131,28 +131,29 @@ class GpuPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((a7, b7) => {
+        this.observeComponentCreation2((t14, u14) => {
             Text.create('GPU 信息');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
+            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ left: 12 });
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((y6, z6) => {
+        this.observeComponentCreation2((r14, s14) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((w6, x6) => {
+        this.observeComponentCreation2((p14, q14) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((o5, p5) => {
+        this.observeComponentCreation2((h13, i13) => {
             If.create();
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((u6, v6) => {
+                    this.observeComponentCreation2((n14, o14) => {
                         Text.create('加载中...');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -164,19 +165,19 @@ class GpuPage extends ViewPU {
             else {
                 this.ifElseBranchUpdateFunction(1, () => {
                     {
-                        this.observeComponentCreation2((q6, r6) => {
-                            if (r6) {
-                                let s6 = new SectionHeader(this, { title: 'GPU 基本信息' }, undefined, q6, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 76, col: 13 });
-                                ViewPU.create(s6);
-                                let t6 = () => {
+                        this.observeComponentCreation2((j14, k14) => {
+                            if (k14) {
+                                let l14 = new SectionHeader(this, { title: 'GPU 基本信息' }, undefined, j14, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 77, col: 13 });
+                                ViewPU.create(l14);
+                                let m14 = () => {
                                     return {
                                         title: 'GPU 基本信息'
                                     };
                                 };
-                                s6.paramsGenerator_ = t6;
+                                l14.paramsGenerator_ = m14;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(q6, {
+                                this.updateStateVarsOfChildByElmtId(j14, {
                                     title: 'GPU 基本信息'
                                 });
                             }
@@ -184,23 +185,23 @@ class GpuPage extends ViewPU {
                     }
                     this.DataDescription.bind(this)('显示设备的图形处理器(GPU)基本信息。GPU负责图形渲染、图像处理等任务。');
                     {
-                        this.observeComponentCreation2((m6, n6) => {
-                            if (n6) {
-                                let o6 = new InfoCard(this, {
+                        this.observeComponentCreation2((f14, g14) => {
+                            if (g14) {
+                                let h14 = new InfoCard(this, {
                                     title: 'GPU 厂商',
                                     value: this.gpuVendor
-                                }, undefined, m6, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 79, col: 13 });
-                                ViewPU.create(o6);
-                                let p6 = () => {
+                                }, undefined, f14, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 80, col: 13 });
+                                ViewPU.create(h14);
+                                let i14 = () => {
                                     return {
                                         title: 'GPU 厂商',
                                         value: this.gpuVendor
                                     };
                                 };
-                                o6.paramsGenerator_ = p6;
+                                h14.paramsGenerator_ = i14;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(m6, {
+                                this.updateStateVarsOfChildByElmtId(f14, {
                                     title: 'GPU 厂商',
                                     value: this.gpuVendor
                                 });
@@ -208,23 +209,23 @@ class GpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((i6, j6) => {
-                            if (j6) {
-                                let k6 = new InfoCard(this, {
+                        this.observeComponentCreation2((b14, c14) => {
+                            if (c14) {
+                                let d14 = new InfoCard(this, {
                                     title: 'GPU 型号',
                                     value: this.gpuRenderer
-                                }, undefined, i6, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 84, col: 13 });
-                                ViewPU.create(k6);
-                                let l6 = () => {
+                                }, undefined, b14, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 85, col: 13 });
+                                ViewPU.create(d14);
+                                let e14 = () => {
                                     return {
                                         title: 'GPU 型号',
                                         value: this.gpuRenderer
                                     };
                                 };
-                                k6.paramsGenerator_ = l6;
+                                d14.paramsGenerator_ = e14;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(i6, {
+                                this.updateStateVarsOfChildByElmtId(b14, {
                                     title: 'GPU 型号',
                                     value: this.gpuRenderer
                                 });
@@ -232,23 +233,23 @@ class GpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((e6, f6) => {
-                            if (f6) {
-                                let g6 = new InfoCard(this, {
+                        this.observeComponentCreation2((x13, y13) => {
+                            if (y13) {
+                                let z13 = new InfoCard(this, {
                                     title: 'OpenGL ES 版本',
                                     value: this.gpuVersion
-                                }, undefined, e6, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 89, col: 13 });
-                                ViewPU.create(g6);
-                                let h6 = () => {
+                                }, undefined, x13, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 90, col: 13 });
+                                ViewPU.create(z13);
+                                let a14 = () => {
                                     return {
                                         title: 'OpenGL ES 版本',
                                         value: this.gpuVersion
                                     };
                                 };
-                                g6.paramsGenerator_ = h6;
+                                z13.paramsGenerator_ = a14;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(e6, {
+                                this.updateStateVarsOfChildByElmtId(x13, {
                                     title: 'OpenGL ES 版本',
                                     value: this.gpuVersion
                                 });
@@ -256,41 +257,41 @@ class GpuPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((a6, b6) => {
-                            if (b6) {
-                                let c6 = new SectionHeader(this, { title: 'GPU 内存' }, undefined, a6, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 94, col: 13 });
-                                ViewPU.create(c6);
-                                let d6 = () => {
+                        this.observeComponentCreation2((t13, u13) => {
+                            if (u13) {
+                                let v13 = new SectionHeader(this, { title: 'GPU 内存' }, undefined, t13, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 95, col: 13 });
+                                ViewPU.create(v13);
+                                let w13 = () => {
                                     return {
                                         title: 'GPU 内存'
                                     };
                                 };
-                                c6.paramsGenerator_ = d6;
+                                v13.paramsGenerator_ = w13;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(a6, {
+                                this.updateStateVarsOfChildByElmtId(t13, {
                                     title: 'GPU 内存'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('当前 HarmonyOS 版本暂不支持直接获取 GPU 内存使用情况。GPU 内存主要用于纹理、缓冲区、帧缓冲等图形数据存储。');
-                    this.observeComponentCreation2((y5, z5) => {
+                    this.observeComponentCreation2((r13, s13) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(16);
                         Column.borderRadius(12);
-                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((w5, x5) => {
+                    this.observeComponentCreation2((p13, q13) => {
                         Text.create('GPU 内存信息暂不可用');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Text.margin(16);
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((u5, v5) => {
+                    this.observeComponentCreation2((n13, o13) => {
                         Text.create('HiDebug API 当前版本不支持 GPU 内存查询');
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -298,19 +299,19 @@ class GpuPage extends ViewPU {
                     Text.pop();
                     Column.pop();
                     {
-                        this.observeComponentCreation2((q5, r5) => {
-                            if (r5) {
-                                let s5 = new SectionHeader(this, { title: '说明' }, undefined, q5, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 113, col: 13 });
-                                ViewPU.create(s5);
-                                let t5 = () => {
+                        this.observeComponentCreation2((j13, k13) => {
+                            if (k13) {
+                                let l13 = new SectionHeader(this, { title: '说明' }, undefined, j13, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 114, col: 13 });
+                                ViewPU.create(l13);
+                                let m13 = () => {
                                     return {
                                         title: '说明'
                                     };
                                 };
-                                s5.paramsGenerator_ = t5;
+                                l13.paramsGenerator_ = m13;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(q5, {
+                                this.updateStateVarsOfChildByElmtId(j13, {
                                     title: '说明'
                                 });
                             }

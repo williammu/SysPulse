@@ -1,6 +1,6 @@
-# SysInfo - 纯血鸿蒙硬件配置查看器
+# SysPulse - 纯血鸿蒙系统监控工具
 
-基于 HarmonyOS NEXT 开发的原生硬件信息查看应用。
+基于 HarmonyOS NEXT 开发的原生系统监控和硬件信息查看应用。
 
 ---
 
@@ -16,12 +16,31 @@
 
 ## ✨ 功能特性
 
-- 设备概览信息
-- CPU 详细信息
-- 内存和存储信息
-- 屏幕和电池信息
-- 网络和连接信息
-- 摄像头和传感器信息
+### 实时监控
+- CPU 使用率实时监控（200ms刷新）
+- 内存使用率实时监控
+- 应用内存占用监控
+- 电池电量监控
+
+### 硬件信息
+- CPU 详细信息（架构、核心数、型号、制程）
+- 内存详情（总内存、可用内存、PSS/RSS/VSS）
+- 存储信息
+- 屏幕参数（分辨率、刷新率）
+- GPU 信息
+- 电池详情
+
+### 连接与传感器
+- 网络状态（类型、带宽）
+- 摄像头信息
+- 传感器数据（加速度、陀螺仪、光线、距离、磁场、方向）
+
+### 高级功能
+- Native HiDebug API 集成
+- 线程 CPU 使用率
+- 内存限制查询
+- 数据趋势图表
+- 科技感深色 UI
 
 ---
 
@@ -33,19 +52,23 @@ huawei_sysinfo/
 ├── entry/                 # 主模块
 │   └── src/main/
 │       ├── ets/
-│       │   ├── pages/    # 页面文件 (10个功能页面)
+│       │   ├── pages/     # 页面文件 (12个功能页面)
 │       │   ├── components/ # 可复用组件
-│       │   └── utils/    # 工具类
-│       └── resources/    # 资源文件
+│       │   └── utils/     # 工具类
+│       ├── cpp/           # Native C++ 模块
+│       │   ├── hidebug_module.cpp  # HiDebug API 封装
+│       │   └── sensor_module.cpp   # 传感器 API 封装
+│       └── resources/     # 资源文件
 ├── scripts/               # 辅助脚本
-│   ├── sync.sh          # 环境检查脚本
-│   ├── build.sh         # 构建指引脚本
-│   └── install.sh       # HAP 安装脚本
+│   ├── sync.sh           # 环境检查脚本
+│   ├── build.sh          # 构建指引脚本
+│   └── install.sh        # HAP 安装脚本
 ├── build-profile.json5    # 构建配置
 ├── hvigorw               # macOS/Linux 构建脚本
 ├── hvigorw.bat           # Windows 构建脚本
-├── spec.md               # 规格说明书
 ├── BUILD_GUIDE.md        # 详细构建指引 ⭐
+├── TEST_CASE.md          # 测试用例与问题解决记录
+├── NATIVE_BEST_PRACTICES.md  # Native 开发最佳实践
 └── README.md             # 本文件
 ```
 
@@ -71,17 +94,20 @@ open -a /Applications/DevEco-Studio.app /Users/bytedance/dev/huawei_sysinfo
 # 4. 点击运行按钮 ▶️
 ```
 
-### 方式二：使用脚本辅助
+### 方式二：使用命令行构建
 
 ```bash
 # 进入项目目录
 cd /Users/bytedance/dev/huawei_sysinfo
 
-# 检查环境和设备
-./scripts/sync.sh
+# 构建应用
+hvigorw assembleApp --parallel --daemon
 
-# 查看构建指引
-./scripts/build.sh
+# 安装到设备
+hdc install -r entry/build/default/outputs/default/entry-default-signed.hap
+
+# 启动应用
+hdc shell aa start -a EntryAbility -b com.huawei.sysinfo
 ```
 
 ---
@@ -112,11 +138,24 @@ cd /Users/bytedance/dev/huawei_sysinfo
 
 ## 💻 技术栈
 
-- **语言**: ArkTS
+- **语言**: ArkTS / C++
 - **UI框架**: ArkUI
+- **Native API**: HiDebug, Sensor
 - **最低版本**: HarmonyOS NEXT API 12
 - **构建工具**: Hvigor
 - **目标设备**: 手机、平板
+
+---
+
+## 🎨 UI 设计
+
+- **设计风格**: 科技感深色主题
+- **配色方案**: 霓虹蓝 (#00D4FF) + 深蓝紫渐变背景
+- **特色效果**: 
+  - 呼吸灯动画
+  - 发光边框
+  - 实时趋势图表
+  - 按压反馈动效
 
 ---
 
@@ -125,11 +164,11 @@ cd /Users/bytedance/dev/huawei_sysinfo
 - [HarmonyOS 官方文档](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/)
 - [DevEco Studio 使用指南](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-instruction-0000001053541141)
 - [构建指引](./BUILD_GUIDE.md)
-- [规格说明书](./spec.md)
+- [测试用例](./TEST_CASE.md)
+- [Native 开发最佳实践](./NATIVE_BEST_PRACTICES.md)
 
 ---
 
-*项目版本: v1.0*  
-*最后更新: 2026-03-11*
-
-
+*应用名称: SysPulse*  
+*版本: v1.0.0*  
+*最后更新: 2026-03-12*

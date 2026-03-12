@@ -27,6 +27,7 @@ struct BatteryPage {
         Text('电池')
           .fontSize(20)
           .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 })
       }
       .width('100%')
@@ -58,7 +59,7 @@ struct BatteryPage {
           .width('100%')
           .padding(24)
           .borderRadius(12)
-          .backgroundColor($r('app.color.card_bg'))
+          .backgroundColor($r('app.color.background_card'))
           .alignItems(HorizontalAlign.Center)
 
           SectionHeader({ title: '电池信息' })
@@ -100,6 +101,6 @@ struct BatteryPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA')
+    .backgroundColor($r('app.color.background_dark'))
   }
 }

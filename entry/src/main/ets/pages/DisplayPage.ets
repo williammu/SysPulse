@@ -26,6 +26,7 @@ struct DisplayPage {
         Text('屏幕')
           .fontSize(20)
           .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 })
       }
       .width('100%')
@@ -84,6 +85,6 @@ struct DisplayPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA')
+    .backgroundColor($r('app.color.background_dark'))
   }
 }

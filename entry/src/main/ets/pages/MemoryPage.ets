@@ -129,6 +129,7 @@ struct MemoryPage {
         Text('内存')
           .fontSize(20)
           .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 });
       }
       .width('100%')
@@ -157,7 +158,7 @@ struct MemoryPage {
             .width('100%')
             .padding(24)
             .borderRadius(12)
-            .backgroundColor($r('app.color.card_bg'))
+            .backgroundColor($r('app.color.background_card'))
             .alignItems(HorizontalAlign.Center);
           } else {
             // 系统内存概览
@@ -178,7 +179,7 @@ struct MemoryPage {
             .width('100%')
             .padding(24)
             .borderRadius(12)
-            .backgroundColor($r('app.color.card_bg'))
+            .backgroundColor($r('app.color.background_card'))
             .alignItems(HorizontalAlign.Center);
 
             if (this.getMemoryUsagePercent() > 0) {
@@ -218,7 +219,7 @@ struct MemoryPage {
               .width('100%')
               .padding(20)
               .borderRadius(12)
-              .backgroundColor($r('app.color.card_bg'))
+              .backgroundColor($r('app.color.background_card'))
               .alignItems(HorizontalAlign.Center)
               .margin({ bottom: 12 });
             }
@@ -276,6 +277,6 @@ struct MemoryPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA');
+    .backgroundColor($r('app.color.background_dark'));
   }
 }

@@ -2,15 +2,15 @@
   "string": [
     {
       "name": "module_desc",
-      "value": "SysInfo模块"
+      "value": "SysPulse模块"
     },
     {
       "name": "EntryAbility_desc",
-      "value": "SysInfo主入口"
+      "value": "SysPulse主入口"
     },
     {
       "name": "EntryAbility_label",
-      "value": "SysInfo"
+      "value": "SysPulse"
     },
     {
       "name": "permission_reason_network",

@@ -1,9 +1,9 @@
 import router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { FormatUtil } from '../utils/FormatUtil';
-import { InfoCard } from '../components/InfoCard';
+import { TechCard, StatusCard } from '../components/InfoCard';
 import { SysInfoMenuItem } from '../components/MenuItem';
-import { SectionHeader } from '../components/SectionHeader';
+import { TechHeader } from '../components/SectionHeader';
 import { nativeApi, SystemMemInfo, CpuUsage, AppMemInfo } from '../utils/NativeApi';
 import type { DeviceInfoModel, BatteryInfoModel, DisplayInfoModel, StorageInfoModel } from '../model/DeviceInfo';
 
@@ -17,6 +17,7 @@ struct Index {
   @State systemCpuUsage: CpuUsage | null = null;
   @State displayInfo: DisplayInfoModel | null = null;
   @State storageInfo: StorageInfoModel | null = null;
+  @State currentTime: string = '';
   private refreshTimer: number | null = null;
 
   aboutToAppear() {
@@ -32,6 +33,12 @@ struct Index {
     this.refreshTimer = setInterval(() => {
       this.refreshDynamicData();
     }, 200);
+
+    // 更新时间
+    this.updateTime();
+    setInterval(() => {
+      this.updateTime();
+    }, 1000);
   }
 
   aboutToDisappear() {
@@ -52,12 +59,18 @@ struct Index {
     this.batteryInfo = DeviceUtil.getBatteryInfo();
   }
 
+  // 更新时间
+  private updateTime(): void {
+    const now = new Date();
+    this.currentTime = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  }
+
   // 获取CPU使用率显示
   getCpuUsageDisplay(): string {
     if (this.systemCpuUsage?.success) {
-      return `${this.systemCpuUsage.percentage.toFixed(1)}%`;
+      return `${this.systemCpuUsage.percentage.toFixed(1)}`;
     }
-    return '未获取';
+    return '--';
   }
 
   // 获取内存使用率显示
@@ -65,9 +78,9 @@ struct Index {
     if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
       const used = this.systemMemInfo.total - this.systemMemInfo.available;
       const percent = ((used / this.systemMemInfo.total) * 100).toFixed(1);
-      return `${percent}%`;
+      return `${percent}`;
     }
-    return '未获取';
+    return '--';
   }
 
   // 获取总内存显示
@@ -75,7 +88,7 @@ struct Index {
     if (this.systemMemInfo?.success && this.systemMemInfo.total > 0) {
       return FormatUtil.formatBytes(this.systemMemInfo.total);
     }
-    return '未获取';
+    return '--';
   }
 
   // 获取应用内存显示
@@ -83,13 +96,13 @@ struct Index {
     if (this.appMemInfo?.success && this.appMemInfo.pss > 0) {
       return FormatUtil.formatBytes(this.appMemInfo.pss);
     }
-    return '未获取';
+    return '--';
   }
 
   // 获取电池显示
   getBatteryDisplay(): string {
     if (this.batteryInfo) {
-      return `${this.batteryInfo.batterySOC}%`;
+      return `${this.batteryInfo.batterySOC}`;
     }
     return '--';
   }
@@ -99,35 +112,89 @@ struct Index {
     if (this.storageInfo && this.storageInfo.totalSize > 0) {
       return FormatUtil.formatBytes(this.storageInfo.totalSize);
     }
-    return '未获取';
+    return '--';
   }
 
   build() {
     Scroll() {
       Column() {
-        // 设备标题
-        Column() {
-          Text(this.deviceInfo?.marketName || '设备型号')
-            .fontSize(24)
-            .fontWeight(FontWeight.Bold)
-            .fontColor($r('app.color.text_primary'))
+        // 顶部状态栏
+        Row() {
+          Row() {
+            Row()
+              .width(8)
+              .height(8)
+              .backgroundColor($r('app.color.success_color'))
+              .borderRadius(4)
+              .shadow({
+                radius: 6,
+                color: $r('app.color.success_color'),
+                offsetX: 0,
+                offsetY: 0
+              })
 
-          Text(`${this.deviceInfo?.brand || '品牌'} · ${this.deviceInfo?.osFullName || '系统版本'}`)
+            Text('SYSTEM ONLINE')
+              .fontSize(11)
+              .fontColor($r('app.color.success_color'))
+              .margin({ left: 6 })
+              .letterSpacing(1)
+          }
+
+          Text(this.currentTime)
             .fontSize(14)
             .fontColor($r('app.color.text_secondary'))
+            .letterSpacing(2)
+        }
+        .width('100%')
+        .justifyContent(FlexAlign.SpaceBetween)
+        .padding({ top: 12, bottom: 12 })
+
+        // 设备标题区域
+        Column() {
+          // 品牌标识
+          Row() {
+            Text('SYS')
+              .fontSize(32)
+              .fontWeight(FontWeight.Bold)
+              .fontColor($r('app.color.text_primary'))
+
+            Text('PULSE')
+              .fontSize(32)
+              .fontWeight(FontWeight.Bold)
+              .fontColor($r('app.color.primary_color'))
+              .shadow({
+                radius: 10,
+                color: $r('app.color.primary_color'),
+                offsetX: 0,
+                offsetY: 0
+              })
+          }
+
+          Text(this.deviceInfo?.marketName || '设备型号')
+            .fontSize(16)
+            .fontColor($r('app.color.text_secondary'))
+            .margin({ top: 8 })
+
+          Text(`${this.deviceInfo?.brand || '品牌'} · ${this.deviceInfo?.osFullName || '系统版本'}`)
+            .fontSize(12)
+            .fontColor($r('app.color.text_tertiary'))
             .margin({ top: 4 })
         }
         .width('100%')
-        .padding({ top: 20, bottom: 24 })
+        .padding({ top: 16, bottom: 24 })
 
         // 实时状态卡片 - 核心信息
-        SectionHeader({ title: '实时状态' })
+        TechHeader({
+          title: '实时监控',
+          subtitle: 'REAL-TIME MONITORING'
+        })
 
         Grid() {
           GridItem() {
-            InfoCard({
+            TechCard({
               title: 'CPU 使用率',
-              value: this.getCpuUsageDisplay()
+              value: this.getCpuUsageDisplay(),
+              unit: '%'
             })
           }
           .onClick(() => {
@@ -135,9 +202,10 @@ struct Index {
           })
 
           GridItem() {
-            InfoCard({
+            TechCard({
               title: '内存使用率',
-              value: this.getMemoryUsageDisplay()
+              value: this.getMemoryUsageDisplay(),
+              unit: '%'
             })
           }
           .onClick(() => {
@@ -145,9 +213,10 @@ struct Index {
           })
 
           GridItem() {
-            InfoCard({
+            TechCard({
               title: '应用内存',
-              value: this.getAppMemoryDisplay()
+              value: this.getAppMemoryDisplay(),
+              unit: ''
             })
           }
           .onClick(() => {
@@ -155,9 +224,10 @@ struct Index {
           })
 
           GridItem() {
-            InfoCard({
+            TechCard({
               title: '电池电量',
-              value: this.getBatteryDisplay()
+              value: this.getBatteryDisplay(),
+              unit: '%'
             })
           }
           .onClick(() => {
@@ -170,7 +240,10 @@ struct Index {
         .width('100%')
 
         // 硬件信息
-        SectionHeader({ title: '硬件信息' })
+        TechHeader({
+          title: '硬件信息',
+          subtitle: 'HARDWARE INFO'
+        })
 
         SysInfoMenuItem({
           title: '处理器',
@@ -206,7 +279,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '电池',
-          subtitle: `${this.getBatteryDisplay()} · 点击查看详情`,
+          subtitle: `${this.getBatteryDisplay()}% · 点击查看详情`,
           onTap: () => {
             router.pushUrl({ url: 'pages/BatteryPage' });
           }
@@ -221,7 +294,10 @@ struct Index {
         })
 
         // 连接与传感器
-        SectionHeader({ title: '连接与传感器' })
+        TechHeader({
+          title: '连接与传感器',
+          subtitle: 'CONNECTIVITY & SENSORS'
+        })
 
         SysInfoMenuItem({
           title: '网络',
@@ -248,7 +324,10 @@ struct Index {
         })
 
         // 其他
-        SectionHeader({ title: '其他' })
+        TechHeader({
+          title: '其他',
+          subtitle: 'OTHERS'
+        })
 
         SysInfoMenuItem({
           title: '系统信息测试',
@@ -260,17 +339,37 @@ struct Index {
 
         SysInfoMenuItem({
           title: '关于',
-          subtitle: 'SysInfo v1.0.0',
+          subtitle: 'SysPulse v1.0.0',
           onTap: () => {
             router.pushUrl({ url: 'pages/AboutPage' });
           }
         })
+
+        // 底部装饰
+        Row() {
+          Row()
+            .width(60)
+            .height(1)
+            .backgroundColor($r('app.color.border_color'))
+
+          Text('●')
+            .fontSize(8)
+            .fontColor($r('app.color.primary_color'))
+            .margin({ left: 8, right: 8 })
+
+          Row()
+            .width(60)
+            .height(1)
+            .backgroundColor($r('app.color.border_color'))
+        }
+        .justifyContent(FlexAlign.Center)
+        .margin({ top: 32, bottom: 16 })
       }
       .width('100%')
       .padding(16)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA')
+    .backgroundColor($r('app.color.background_dark'))
   }
 }

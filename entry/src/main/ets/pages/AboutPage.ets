@@ -26,6 +26,7 @@ struct AboutPage {
         Text('关于')
           .fontSize(20)
           .fontWeight(FontWeight.Medium)
+          .fontColor($r('app.color.text_primary'))
           .margin({ left: 12 })
       }
       .width('100%')
@@ -34,7 +35,7 @@ struct AboutPage {
       Scroll() {
         Column() {
           Column() {
-            Text('SysInfo')
+            Text('SysPulse')
               .fontSize(24)
               .fontWeight(FontWeight.Bold)
               .margin({ top: 12 })
@@ -93,7 +94,7 @@ struct AboutPage {
           })
 
           Column() {
-            Text('© 2026 SysInfo. All rights reserved.')
+            Text('© 2026 SysPulse. All rights reserved.')
               .fontSize(12)
               .fontColor($r('app.color.text_secondary'))
           }
@@ -108,6 +109,6 @@ struct AboutPage {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F7F8FA')
+    .backgroundColor($r('app.color.background_dark'))
   }
 }

@@ -19,10 +19,10 @@ import hilog from "@ohos:hilog";
 const TAG = 'MemoryPage';
 const REFRESH_INTERVAL = 200;
 class MemoryPage extends ViewPU {
-    constructor(e13, f13, g13, h13 = -1, i13 = undefined, j13) {
-        super(e13, g13, h13, j13);
-        if (typeof i13 === "function") {
-            this.paramsGenerator_ = i13;
+    constructor(f20, g20, h20, i20 = -1, j20 = undefined, k20) {
+        super(f20, h20, i20, k20);
+        if (typeof j20 === "function") {
+            this.paramsGenerator_ = j20;
         }
         this.__systemMemInfo = new ObservedPropertyObjectPU(null, this, "systemMemInfo");
         this.__appMemInfo = new ObservedPropertyObjectPU(null, this, "appMemInfo");
@@ -30,37 +30,37 @@ class MemoryPage extends ViewPU {
         this.__isNativeAvailable = new ObservedPropertySimplePU(false, this, "isNativeAvailable");
         this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
         this.refreshTimer = null;
-        this.setInitiallyProvidedValue(f13);
+        this.setInitiallyProvidedValue(g20);
         this.finalizeConstruction();
     }
-    setInitiallyProvidedValue(d13: MemoryPage_Params) {
-        if (d13.systemMemInfo !== undefined) {
-            this.systemMemInfo = d13.systemMemInfo;
+    setInitiallyProvidedValue(e20: MemoryPage_Params) {
+        if (e20.systemMemInfo !== undefined) {
+            this.systemMemInfo = e20.systemMemInfo;
         }
-        if (d13.appMemInfo !== undefined) {
-            this.appMemInfo = d13.appMemInfo;
+        if (e20.appMemInfo !== undefined) {
+            this.appMemInfo = e20.appMemInfo;
         }
-        if (d13.memoryLimit !== undefined) {
-            this.memoryLimit = d13.memoryLimit;
+        if (e20.memoryLimit !== undefined) {
+            this.memoryLimit = e20.memoryLimit;
         }
-        if (d13.isNativeAvailable !== undefined) {
-            this.isNativeAvailable = d13.isNativeAvailable;
+        if (e20.isNativeAvailable !== undefined) {
+            this.isNativeAvailable = e20.isNativeAvailable;
         }
-        if (d13.isLoading !== undefined) {
-            this.isLoading = d13.isLoading;
+        if (e20.isLoading !== undefined) {
+            this.isLoading = e20.isLoading;
         }
-        if (d13.refreshTimer !== undefined) {
-            this.refreshTimer = d13.refreshTimer;
+        if (e20.refreshTimer !== undefined) {
+            this.refreshTimer = e20.refreshTimer;
         }
     }
-    updateStateVars(c13: MemoryPage_Params) {
+    updateStateVars(d20: MemoryPage_Params) {
     }
-    purgeVariableDependenciesOnElmtId(b13) {
-        this.__systemMemInfo.purgeDependencyOnElmtId(b13);
-        this.__appMemInfo.purgeDependencyOnElmtId(b13);
-        this.__memoryLimit.purgeDependencyOnElmtId(b13);
-        this.__isNativeAvailable.purgeDependencyOnElmtId(b13);
-        this.__isLoading.purgeDependencyOnElmtId(b13);
+    purgeVariableDependenciesOnElmtId(c20) {
+        this.__systemMemInfo.purgeDependencyOnElmtId(c20);
+        this.__appMemInfo.purgeDependencyOnElmtId(c20);
+        this.__memoryLimit.purgeDependencyOnElmtId(c20);
+        this.__isNativeAvailable.purgeDependencyOnElmtId(c20);
+        this.__isLoading.purgeDependencyOnElmtId(c20);
     }
     aboutToBeDeleted() {
         this.__systemMemInfo.aboutToBeDeleted();
@@ -75,36 +75,36 @@ class MemoryPage extends ViewPU {
     get systemMemInfo() {
         return this.__systemMemInfo.get();
     }
-    set systemMemInfo(a13: SystemMemInfo | null) {
-        this.__systemMemInfo.set(a13);
+    set systemMemInfo(b20: SystemMemInfo | null) {
+        this.__systemMemInfo.set(b20);
     }
     private __appMemInfo: ObservedPropertyObjectPU<AppMemInfo | null>;
     get appMemInfo() {
         return this.__appMemInfo.get();
     }
-    set appMemInfo(z12: AppMemInfo | null) {
-        this.__appMemInfo.set(z12);
+    set appMemInfo(a20: AppMemInfo | null) {
+        this.__appMemInfo.set(a20);
     }
     private __memoryLimit: ObservedPropertyObjectPU<MemoryLimit | null>;
     get memoryLimit() {
         return this.__memoryLimit.get();
     }
-    set memoryLimit(y12: MemoryLimit | null) {
-        this.__memoryLimit.set(y12);
+    set memoryLimit(z19: MemoryLimit | null) {
+        this.__memoryLimit.set(z19);
     }
     private __isNativeAvailable: ObservedPropertySimplePU<boolean>;
     get isNativeAvailable() {
         return this.__isNativeAvailable.get();
     }
-    set isNativeAvailable(x12: boolean) {
-        this.__isNativeAvailable.set(x12);
+    set isNativeAvailable(y19: boolean) {
+        this.__isNativeAvailable.set(y19);
     }
     private __isLoading: ObservedPropertySimplePU<boolean>;
     get isLoading() {
         return this.__isLoading.get();
     }
-    set isLoading(w12: boolean) {
-        this.__isLoading.set(w12);
+    set isLoading(x19: boolean) {
+        this.__isLoading.set(x19);
     }
     private refreshTimer: number | null;
     aboutToAppear() {
@@ -147,15 +147,15 @@ class MemoryPage extends ViewPU {
     }
     getUsedMemory(): string {
         if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
-            const v12 = this.systemMemInfo.total - this.systemMemInfo.available;
-            return FormatUtil.formatBytes(v12);
+            const w19 = this.systemMemInfo.total - this.systemMemInfo.available;
+            return FormatUtil.formatBytes(w19);
         }
         return '未获取';
     }
     getMemoryUsagePercent(): number {
         if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
-            const u12 = this.systemMemInfo.total - this.systemMemInfo.available;
-            return Math.round((u12 / this.systemMemInfo.total) * 100);
+            const v19 = this.systemMemInfo.total - this.systemMemInfo.available;
+            return Math.round((v19 / this.systemMemInfo.total) * 100);
         }
         return 0;
     }
@@ -183,9 +183,9 @@ class MemoryPage extends ViewPU {
         }
         return '未获取';
     }
-    DataDescription(q12: string, r12 = null) {
-        this.observeComponentCreation2((s12, t12) => {
-            Text.create(q12);
+    DataDescription(r19: string, s19 = null) {
+        this.observeComponentCreation2((t19, u19) => {
+            Text.create(r19);
             Text.fontSize(12);
             Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ top: 4, bottom: 8 });
@@ -194,18 +194,18 @@ class MemoryPage extends ViewPU {
         Text.pop();
     }
     initialRender() {
-        this.observeComponentCreation2((o12, p12) => {
+        this.observeComponentCreation2((p19, q19) => {
             Column.create();
             Column.width('100%');
             Column.height('100%');
-            Column.backgroundColor('#F7F8FA');
+            Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
         }, Column);
-        this.observeComponentCreation2((m12, n12) => {
+        this.observeComponentCreation2((n19, o19) => {
             Row.create();
             Row.width('100%');
             Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
         }, Row);
-        this.observeComponentCreation2((k12, l12) => {
+        this.observeComponentCreation2((l19, m19) => {
             Text.create('← 返回');
             Text.fontSize(16);
             Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -214,28 +214,29 @@ class MemoryPage extends ViewPU {
             });
         }, Text);
         Text.pop();
-        this.observeComponentCreation2((i12, j12) => {
+        this.observeComponentCreation2((j19, k19) => {
             Text.create('内存');
             Text.fontSize(20);
             Text.fontWeight(FontWeight.Medium);
+            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
             Text.margin({ left: 12 });
         }, Text);
         Text.pop();
         Row.pop();
-        this.observeComponentCreation2((g12, h12) => {
+        this.observeComponentCreation2((h19, i19) => {
             Scroll.create();
             Scroll.layoutWeight(1);
         }, Scroll);
-        this.observeComponentCreation2((e12, f12) => {
+        this.observeComponentCreation2((f19, g19) => {
             Column.create();
             Column.width('100%');
             Column.padding(16);
         }, Column);
-        this.observeComponentCreation2((s8, t8) => {
+        this.observeComponentCreation2((t15, u15) => {
             If.create();
             if (this.isLoading) {
                 this.ifElseBranchUpdateFunction(0, () => {
-                    this.observeComponentCreation2((c12, d12) => {
+                    this.observeComponentCreation2((d19, e19) => {
                         Text.create('加载中...');
                         Text.fontSize(16);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -247,40 +248,40 @@ class MemoryPage extends ViewPU {
             else if (!this.isNativeAvailable) {
                 this.ifElseBranchUpdateFunction(1, () => {
                     {
-                        this.observeComponentCreation2((y11, z11) => {
-                            if (z11) {
-                                let a12 = new SectionHeader(this, { title: '内存状态' }, undefined, y11, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 145, col: 13 });
-                                ViewPU.create(a12);
-                                let b12 = () => {
+                        this.observeComponentCreation2((z18, a19) => {
+                            if (a19) {
+                                let b19 = new SectionHeader(this, { title: '内存状态' }, undefined, z18, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 146, col: 13 });
+                                ViewPU.create(b19);
+                                let c19 = () => {
                                     return {
                                         title: '内存状态'
                                     };
                                 };
-                                a12.paramsGenerator_ = b12;
+                                b19.paramsGenerator_ = c19;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(y11, {
+                                this.updateStateVarsOfChildByElmtId(z18, {
                                     title: '内存状态'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
-                    this.observeComponentCreation2((w11, x11) => {
+                    this.observeComponentCreation2((x18, y18) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(24);
                         Column.borderRadius(12);
-                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((u11, v11) => {
+                    this.observeComponentCreation2((v18, w18) => {
                         Text.create('Native API 不可用');
                         Text.fontSize(18);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Text.margin(24);
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((s11, t11) => {
+                    this.observeComponentCreation2((t18, u18) => {
                         Text.create('请确保 Native 模块已正确编译并打包');
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -292,41 +293,41 @@ class MemoryPage extends ViewPU {
             else {
                 this.ifElseBranchUpdateFunction(2, () => {
                     {
-                        this.observeComponentCreation2((o11, p11) => {
-                            if (p11) {
-                                let q11 = new SectionHeader(this, { title: '系统内存' }, undefined, o11, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 164, col: 13 });
-                                ViewPU.create(q11);
-                                let r11 = () => {
+                        this.observeComponentCreation2((p18, q18) => {
+                            if (q18) {
+                                let r18 = new SectionHeader(this, { title: '系统内存' }, undefined, p18, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 165, col: 13 });
+                                ViewPU.create(r18);
+                                let s18 = () => {
                                     return {
                                         title: '系统内存'
                                     };
                                 };
-                                q11.paramsGenerator_ = r11;
+                                r18.paramsGenerator_ = s18;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(o11, {
+                                this.updateStateVarsOfChildByElmtId(p18, {
                                     title: '系统内存'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('显示设备总内存和使用情况。总内存是设备物理内存的总量，可用内存是当前可分配给应用程序的内存。');
-                    this.observeComponentCreation2((m11, n11) => {
+                    this.observeComponentCreation2((n18, o18) => {
                         Column.create();
                         Column.width('100%');
                         Column.padding(24);
                         Column.borderRadius(12);
-                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                         Column.alignItems(HorizontalAlign.Center);
                     }, Column);
-                    this.observeComponentCreation2((k11, l11) => {
+                    this.observeComponentCreation2((l18, m18) => {
                         Text.create(this.getTotalMemory());
                         Text.fontSize(48);
                         Text.fontWeight(FontWeight.Bold);
                         Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                     }, Text);
                     Text.pop();
-                    this.observeComponentCreation2((i11, j11) => {
+                    this.observeComponentCreation2((j18, k18) => {
                         Text.create('总内存');
                         Text.fontSize(14);
                         Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -334,32 +335,32 @@ class MemoryPage extends ViewPU {
                     }, Text);
                     Text.pop();
                     Column.pop();
-                    this.observeComponentCreation2((a11, b11) => {
+                    this.observeComponentCreation2((b18, c18) => {
                         If.create();
                         if (this.getMemoryUsagePercent() > 0) {
                             this.ifElseBranchUpdateFunction(0, () => {
-                                this.observeComponentCreation2((g11, h11) => {
+                                this.observeComponentCreation2((h18, i18) => {
                                     __Common__.create();
                                     __Common__.margin({ top: 16 });
                                 }, __Common__);
                                 {
-                                    this.observeComponentCreation2((c11, d11) => {
-                                        if (d11) {
-                                            let e11 = new InfoCard(this, {
+                                    this.observeComponentCreation2((d18, e18) => {
+                                        if (e18) {
+                                            let f18 = new InfoCard(this, {
                                                 title: '内存使用率',
                                                 value: `${this.getMemoryUsagePercent()}%`
-                                            }, undefined, c11, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 185, col: 15 });
-                                            ViewPU.create(e11);
-                                            let f11 = () => {
+                                            }, undefined, d18, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 186, col: 15 });
+                                            ViewPU.create(f18);
+                                            let g18 = () => {
                                                 return {
                                                     title: '内存使用率',
                                                     value: `${this.getMemoryUsagePercent()}%`
                                                 };
                                             };
-                                            e11.paramsGenerator_ = f11;
+                                            f18.paramsGenerator_ = g18;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(c11, {
+                                            this.updateStateVarsOfChildByElmtId(d18, {
                                                 title: '内存使用率',
                                                 value: `${this.getMemoryUsagePercent()}%`
                                             });
@@ -376,23 +377,23 @@ class MemoryPage extends ViewPU {
                     }, If);
                     If.pop();
                     {
-                        this.observeComponentCreation2((w10, x10) => {
-                            if (x10) {
-                                let y10 = new InfoCard(this, {
+                        this.observeComponentCreation2((x17, y17) => {
+                            if (y17) {
+                                let z17 = new InfoCard(this, {
                                     title: '可用内存',
                                     value: this.getAvailableMemory()
-                                }, undefined, w10, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 192, col: 13 });
-                                ViewPU.create(y10);
-                                let z10 = () => {
+                                }, undefined, x17, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 193, col: 13 });
+                                ViewPU.create(z17);
+                                let a18 = () => {
                                     return {
                                         title: '可用内存',
                                         value: this.getAvailableMemory()
                                     };
                                 };
-                                y10.paramsGenerator_ = z10;
+                                z17.paramsGenerator_ = a18;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(w10, {
+                                this.updateStateVarsOfChildByElmtId(x17, {
                                     title: '可用内存',
                                     value: this.getAvailableMemory()
                                 });
@@ -400,23 +401,23 @@ class MemoryPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((s10, t10) => {
-                            if (t10) {
-                                let u10 = new InfoCard(this, {
+                        this.observeComponentCreation2((t17, u17) => {
+                            if (u17) {
+                                let v17 = new InfoCard(this, {
                                     title: '已用内存',
                                     value: this.getUsedMemory()
-                                }, undefined, s10, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 197, col: 13 });
-                                ViewPU.create(u10);
-                                let v10 = () => {
+                                }, undefined, t17, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 198, col: 13 });
+                                ViewPU.create(v17);
+                                let w17 = () => {
                                     return {
                                         title: '已用内存',
                                         value: this.getUsedMemory()
                                     };
                                 };
-                                u10.paramsGenerator_ = v10;
+                                v17.paramsGenerator_ = w17;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(s10, {
+                                this.updateStateVarsOfChildByElmtId(t17, {
                                     title: '已用内存',
                                     value: this.getUsedMemory()
                                 });
@@ -424,46 +425,46 @@ class MemoryPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((o10, p10) => {
-                            if (p10) {
-                                let q10 = new SectionHeader(this, { title: '应用内存' }, undefined, o10, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 203, col: 13 });
-                                ViewPU.create(q10);
-                                let r10 = () => {
+                        this.observeComponentCreation2((p17, q17) => {
+                            if (q17) {
+                                let r17 = new SectionHeader(this, { title: '应用内存' }, undefined, p17, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 204, col: 13 });
+                                ViewPU.create(r17);
+                                let s17 = () => {
                                     return {
                                         title: '应用内存'
                                     };
                                 };
-                                q10.paramsGenerator_ = r10;
+                                r17.paramsGenerator_ = s17;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(o10, {
+                                this.updateStateVarsOfChildByElmtId(p17, {
                                     title: '应用内存'
                                 });
                             }
                         }, { name: "SectionHeader" });
                     }
                     this.DataDescription.bind(this)('PSS：实际使用的物理内存。RSS：驻留内存大小。VSS：虚拟内存大小。');
-                    this.observeComponentCreation2((g10, h10) => {
+                    this.observeComponentCreation2((h17, i17) => {
                         If.create();
                         if (this.appMemInfo?.success) {
                             this.ifElseBranchUpdateFunction(0, () => {
-                                this.observeComponentCreation2((m10, n10) => {
+                                this.observeComponentCreation2((n17, o17) => {
                                     Column.create();
                                     Column.width('100%');
                                     Column.padding(20);
                                     Column.borderRadius(12);
-                                    Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                                    Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                     Column.alignItems(HorizontalAlign.Center);
                                     Column.margin({ bottom: 12 });
                                 }, Column);
-                                this.observeComponentCreation2((k10, l10) => {
+                                this.observeComponentCreation2((l17, m17) => {
                                     Text.create(this.getAppPss());
                                     Text.fontSize(36);
                                     Text.fontWeight(FontWeight.Bold);
                                     Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
                                 }, Text);
                                 Text.pop();
-                                this.observeComponentCreation2((i10, j10) => {
+                                this.observeComponentCreation2((j17, k17) => {
                                     Text.create('PSS (实际使用内存)');
                                     Text.fontSize(14);
                                     Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
@@ -480,23 +481,23 @@ class MemoryPage extends ViewPU {
                     }, If);
                     If.pop();
                     {
-                        this.observeComponentCreation2((c10, d10) => {
-                            if (d10) {
-                                let e10 = new InfoCard(this, {
+                        this.observeComponentCreation2((d17, e17) => {
+                            if (e17) {
+                                let f17 = new InfoCard(this, {
                                     title: 'RSS (驻留内存)',
                                     value: this.getAppRss()
-                                }, undefined, c10, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 226, col: 13 });
-                                ViewPU.create(e10);
-                                let f10 = () => {
+                                }, undefined, d17, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 227, col: 13 });
+                                ViewPU.create(f17);
+                                let g17 = () => {
                                     return {
                                         title: 'RSS (驻留内存)',
                                         value: this.getAppRss()
                                     };
                                 };
-                                e10.paramsGenerator_ = f10;
+                                f17.paramsGenerator_ = g17;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(c10, {
+                                this.updateStateVarsOfChildByElmtId(d17, {
                                     title: 'RSS (驻留内存)',
                                     value: this.getAppRss()
                                 });
@@ -504,47 +505,47 @@ class MemoryPage extends ViewPU {
                         }, { name: "InfoCard" });
                     }
                     {
-                        this.observeComponentCreation2((y9, z9) => {
-                            if (z9) {
-                                let a10 = new InfoCard(this, {
+                        this.observeComponentCreation2((z16, a17) => {
+                            if (a17) {
+                                let b17 = new InfoCard(this, {
                                     title: 'VSS (虚拟内存)',
                                     value: this.getAppVss()
-                                }, undefined, y9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 231, col: 13 });
-                                ViewPU.create(a10);
-                                let b10 = () => {
+                                }, undefined, z16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 232, col: 13 });
+                                ViewPU.create(b17);
+                                let c17 = () => {
                                     return {
                                         title: 'VSS (虚拟内存)',
                                         value: this.getAppVss()
                                     };
                                 };
-                                a10.paramsGenerator_ = b10;
+                                b17.paramsGenerator_ = c17;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(y9, {
+                                this.updateStateVarsOfChildByElmtId(z16, {
                                     title: 'VSS (虚拟内存)',
                                     value: this.getAppVss()
                                 });
                             }
                         }, { name: "InfoCard" });
                     }
-                    this.observeComponentCreation2((c9, d9) => {
+                    this.observeComponentCreation2((d16, e16) => {
                         If.create();
                         if (this.appMemInfo?.success) {
                             this.ifElseBranchUpdateFunction(0, () => {
                                 {
-                                    this.observeComponentCreation2((u9, v9) => {
-                                        if (v9) {
-                                            let w9 = new SectionHeader(this, { title: '内存分类' }, undefined, u9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 238, col: 15 });
-                                            ViewPU.create(w9);
-                                            let x9 = () => {
+                                    this.observeComponentCreation2((v16, w16) => {
+                                        if (w16) {
+                                            let x16 = new SectionHeader(this, { title: '内存分类' }, undefined, v16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 239, col: 15 });
+                                            ViewPU.create(x16);
+                                            let y16 = () => {
                                                 return {
                                                     title: '内存分类'
                                                 };
                                             };
-                                            w9.paramsGenerator_ = x9;
+                                            x16.paramsGenerator_ = y16;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(u9, {
+                                            this.updateStateVarsOfChildByElmtId(v16, {
                                                 title: '内存分类'
                                             });
                                         }
@@ -552,23 +553,23 @@ class MemoryPage extends ViewPU {
                                 }
                                 this.DataDescription.bind(this)('Shared：与其他进程共享的内存。Private：进程独占的内存。Clean：未修改的内存页。Dirty：已修改的内存页。');
                                 {
-                                    this.observeComponentCreation2((q9, r9) => {
-                                        if (r9) {
-                                            let s9 = new InfoCard(this, {
+                                    this.observeComponentCreation2((r16, s16) => {
+                                        if (s16) {
+                                            let t16 = new InfoCard(this, {
                                                 title: 'Shared Clean',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
-                                            }, undefined, q9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 241, col: 15 });
-                                            ViewPU.create(s9);
-                                            let t9 = () => {
+                                            }, undefined, r16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 242, col: 15 });
+                                            ViewPU.create(t16);
+                                            let u16 = () => {
                                                 return {
                                                     title: 'Shared Clean',
                                                     value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
                                                 };
                                             };
-                                            s9.paramsGenerator_ = t9;
+                                            t16.paramsGenerator_ = u16;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(q9, {
+                                            this.updateStateVarsOfChildByElmtId(r16, {
                                                 title: 'Shared Clean',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
                                             });
@@ -576,23 +577,23 @@ class MemoryPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((m9, n9) => {
-                                        if (n9) {
-                                            let o9 = new InfoCard(this, {
+                                    this.observeComponentCreation2((n16, o16) => {
+                                        if (o16) {
+                                            let p16 = new InfoCard(this, {
                                                 title: 'Shared Dirty',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
-                                            }, undefined, m9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 246, col: 15 });
-                                            ViewPU.create(o9);
-                                            let p9 = () => {
+                                            }, undefined, n16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 247, col: 15 });
+                                            ViewPU.create(p16);
+                                            let q16 = () => {
                                                 return {
                                                     title: 'Shared Dirty',
                                                     value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
                                                 };
                                             };
-                                            o9.paramsGenerator_ = p9;
+                                            p16.paramsGenerator_ = q16;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(m9, {
+                                            this.updateStateVarsOfChildByElmtId(n16, {
                                                 title: 'Shared Dirty',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
                                             });
@@ -600,23 +601,23 @@ class MemoryPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((i9, j9) => {
-                                        if (j9) {
-                                            let k9 = new InfoCard(this, {
+                                    this.observeComponentCreation2((j16, k16) => {
+                                        if (k16) {
+                                            let l16 = new InfoCard(this, {
                                                 title: 'Private Clean',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
-                                            }, undefined, i9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 251, col: 15 });
-                                            ViewPU.create(k9);
-                                            let l9 = () => {
+                                            }, undefined, j16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 252, col: 15 });
+                                            ViewPU.create(l16);
+                                            let m16 = () => {
                                                 return {
                                                     title: 'Private Clean',
                                                     value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
                                                 };
                                             };
-                                            k9.paramsGenerator_ = l9;
+                                            l16.paramsGenerator_ = m16;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(i9, {
+                                            this.updateStateVarsOfChildByElmtId(j16, {
                                                 title: 'Private Clean',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
                                             });
@@ -624,23 +625,23 @@ class MemoryPage extends ViewPU {
                                     }, { name: "InfoCard" });
                                 }
                                 {
-                                    this.observeComponentCreation2((e9, f9) => {
-                                        if (f9) {
-                                            let g9 = new InfoCard(this, {
+                                    this.observeComponentCreation2((f16, g16) => {
+                                        if (g16) {
+                                            let h16 = new InfoCard(this, {
                                                 title: 'Private Dirty',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
-                                            }, undefined, e9, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 256, col: 15 });
-                                            ViewPU.create(g9);
-                                            let h9 = () => {
+                                            }, undefined, f16, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 257, col: 15 });
+                                            ViewPU.create(h16);
+                                            let i16 = () => {
                                                 return {
                                                     title: 'Private Dirty',
                                                     value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
                                                 };
                                             };
-                                            g9.paramsGenerator_ = h9;
+                                            h16.paramsGenerator_ = i16;
                                         }
                                         else {
-                                            this.updateStateVarsOfChildByElmtId(e9, {
+                                            this.updateStateVarsOfChildByElmtId(f16, {
                                                 title: 'Private Dirty',
                                                 value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
                                             });
@@ -656,19 +657,19 @@ class MemoryPage extends ViewPU {
                     }, If);
                     If.pop();
                     {
-                        this.observeComponentCreation2((y8, z8) => {
-                            if (z8) {
-                                let a9 = new SectionHeader(this, { title: '内存限制' }, undefined, y8, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 263, col: 13 });
-                                ViewPU.create(a9);
-                                let b9 = () => {
+                        this.observeComponentCreation2((z15, a16) => {
+                            if (a16) {
+                                let b16 = new SectionHeader(this, { title: '内存限制' }, undefined, z15, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 264, col: 13 });
+                                ViewPU.create(b16);
+                                let c16 = () => {
                                     return {
                                         title: '内存限制'
                                     };
                                 };
-                                a9.paramsGenerator_ = b9;
+                                b16.paramsGenerator_ = c16;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(y8, {
+                                this.updateStateVarsOfChildByElmtId(z15, {
                                     title: '内存限制'
                                 });
                             }
@@ -676,23 +677,23 @@ class MemoryPage extends ViewPU {
                     }
                     this.DataDescription.bind(this)('系统为每个进程设置的内存使用上限。当应用内存超过限制时，系统可能会触发内存警告或终止应用。');
                     {
-                        this.observeComponentCreation2((u8, v8) => {
-                            if (v8) {
-                                let w8 = new InfoCard(this, {
+                        this.observeComponentCreation2((v15, w15) => {
+                            if (w15) {
+                                let x15 = new InfoCard(this, {
                                     title: 'RSS 限制',
                                     value: this.getMemoryLimit()
-                                }, undefined, u8, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 266, col: 13 });
-                                ViewPU.create(w8);
-                                let x8 = () => {
+                                }, undefined, v15, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 267, col: 13 });
+                                ViewPU.create(x15);
+                                let y15 = () => {
                                     return {
                                         title: 'RSS 限制',
                                         value: this.getMemoryLimit()
                                     };
                                 };
-                                w8.paramsGenerator_ = x8;
+                                x15.paramsGenerator_ = y15;
                             }
                             else {
-                                this.updateStateVarsOfChildByElmtId(u8, {
+                                this.updateStateVarsOfChildByElmtId(v15, {
                                     title: 'RSS 限制',
                                     value: this.getMemoryLimit()
                                 });

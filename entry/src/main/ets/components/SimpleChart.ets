@@ -41,7 +41,7 @@ export struct SimpleChart {
     }
     .width('100%')
     .padding(12)
-    .backgroundColor($r('app.color.card_bg'))
+    .backgroundColor($r('app.color.background_card'))
     .borderRadius(8)
   }
 }
