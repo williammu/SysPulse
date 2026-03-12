@@ -1,0 +1,730 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ#İimport sysinfo from 'libsysinfo.so';
+import hilog from "@ohos.hilog";
+const TAG = 'NativeApi';
+// ============ Native API å°è£…ç±» ============
+export class NativeApi {
+    constructor() {
+        this.isAvailable = false;
+        this.hasInitialized = false;
+        this.checkAvailability();
+    }
+    checkAvailability() {
+        hilog.info(0x0000, TAG, 'Checking Native API availability...');
+        try {
+            // æµ‹è¯• Native æ¨¡å—æ˜¯å¦å¯ç”¨
+            hilog.info(0x0000, TAG, 'About to call sysinfo.getSystemMemInfo()...');
+            const testResult = sysinfo.getSystemMemInfo();
+            hilog.info(0x0000, TAG, 'getSystemMemInfo returned successfully');
+            hilog.info(0x0000, TAG, 'Result type: %{public}s', typeof testResult);
+            hilog.info(0x0000, TAG, 'Result value: %{public}s', JSON.stringify(testResult));
+            this.isAvailable = testResult !== undefined && testResult !== null;
+            this.hasInitialized = true;
+            hilog.info(0x0000, TAG, 'Native API initialized, available: %{public}s', String(this.isAvailable));
+        }
+        catch (e) {
+            this.isAvailable = false;
+            this.hasInitialized = true;
+            hilog.error(0x0000, TAG, 'Native API initialization failed');
+            hilog.error(0x0000, TAG, 'Error: %{public}s', String(e));
+        }
+    }
+    static getInstance() {
+        if (!NativeApi.instance) {
+            NativeApi.instance = new NativeApi();
+        }
+        return NativeApi.instance;
+    }
+    isNativeAvailable() {
+        // å¦‚æœè¿˜æ²¡æœ‰åˆå§‹åŒ–ï¼Œå°è¯•æ£€æŸ¥å¯ç”¨æ€§
+        if (!this.hasInitialized) {
+            this.checkAvailability();
+        }
+        return this.isAvailable;
+    }
+    // ============ HiDebug API ============
+    getSystemMemInfo() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getSystemMemInfo();
+            hilog.debug(0x0000, TAG, 'SystemMemInfo: total=%{public}d, available=%{public}d', result.total, result.available);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getSystemMemInfo error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getAppMemInfo() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getAppMemInfo();
+            hilog.debug(0x0000, TAG, 'AppMemInfo: pss=%{public}d, vss=%{public}d', result.pss, result.vss);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getAppMemInfo error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getMemoryLimit() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getMemoryLimit();
+            hilog.debug(0x0000, TAG, 'MemoryLimit: rssLimit=%{public}d', result.rssLimit);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getMemoryLimit error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getSystemCpuUsage() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getSystemCpuUsage();
+            hilog.debug(0x0000, TAG, 'SystemCpuUsage: %{public}f%%', result.percentage);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getSystemCpuUsage error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getAppCpuUsage() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getAppCpuUsage();
+            hilog.debug(0x0000, TAG, 'AppCpuUsage: %{public}f%%', result.percentage);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getAppCpuUsage error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getCpuUsageAll() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getCpuUsageAll();
+            hilog.debug(0x0000, TAG, 'CpuUsageAll: threads=%{public}d', result.threadCount);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getCpuUsageAll error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getGpuMemoryInfo() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getGpuMemoryInfo();
+            hilog.debug(0x0000, TAG, 'GpuMemoryInfo: total=%{public}d, used=%{public}d', result.total, result.used);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getGpuMemoryInfo error: %{public}s', String(e));
+            return null;
+        }
+    }
+    // ============ Sensor API ============
+    getAllSensorInfos() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getAllSensorInfos();
+            hilog.debug(0x0000, TAG, 'AllSensorInfos: count=%{public}d', result.count);
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getAllSensorInfos error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getAccelerometerData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getAccelerometerData();
+            hilog.debug(0x0000, TAG, 'AccelerometerData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getAccelerometerData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getGyroscopeData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getGyroscopeData();
+            hilog.debug(0x0000, TAG, 'GyroscopeData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getGyroscopeData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getMagnetometerData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getMagnetometerData();
+            hilog.debug(0x0000, TAG, 'MagnetometerData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getMagnetometerData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getLightData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getLightData();
+            hilog.debug(0x0000, TAG, 'LightData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getLightData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getProximityData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getProximityData();
+            hilog.debug(0x0000, TAG, 'ProximityData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getProximityData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getBarometerData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getBarometerData();
+            hilog.debug(0x0000, TAG, 'BarometerData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getBarometerData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getTemperatureData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getTemperatureData();
+            hilog.debug(0x0000, TAG, 'TemperatureData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getTemperatureData error: %{public}s', String(e));
+            return null;
+        }
+    }
+    getHumidityData() {
+        if (!this.isAvailable)
+            return null;
+        try {
+            const result = sysinfo.getHumidityData();
+            hilog.debug(0x0000, TAG, 'HumidityData: values=%{public}s', JSON.stringify(result.values));
+            return result;
+        }
+        catch (e) {
+            hilog.error(0x0000, TAG, 'getHumidityData error: %{public}s', String(e));
+            return null;
+        }
+    }
+}
+// å¯¼å‡ºå•ä¾‹å®ä¾‹
+export const nativeApi = NativeApi.getInstance();
+//# sourceMappingURL=NativeApi.js.mapÂ’¼ hvigor_ignore_libsysinfo.soÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.etsÔrBœªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  ”ÔrC’²hostDependencyName®hostModuleName²../utils/NativeApi¥entryC²../utils/NativeApi¥entryC²../utils/NativeApi¥entryC²../utils/NativeApi¥entryÙ)/Users/bytedance/dev/huawei_sysinfo/entryÔrDÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ*Qimport sysinfo from 'libsysinfo.so';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+
+const TAG = 'NativeApi';
+
+// ============ HiDebug æ•°æ®æ¥å£ ============
+
+export interface SystemMemInfo {
+  total: number;
+  available: number;
+  free: number;
+  buffers: number;
+  cached: number;
+  swapTotal: number;
+  swapFree: number;
+  success: boolean;
+  error?: string;
+}
+
+export interface AppMemInfo {
+  pss: number;
+  vss: number;
+  rss: number;
+  sharedClean: number;
+  sharedDirty: number;
+  privateClean: number;
+  privateDirty: number;
+  success: boolean;
+  error?: string;
+}
+
+export interface MemoryLimit {
+  rssLimit: number;
+  vssLimit: number;
+  success: boolean;
+  error?: string;
+}
+
+export interface CpuUsage {
+  usage: number;
+  percentage: number;
+  success: boolean;
+  error?: string;
+}
+
+export interface ThreadCpuInfo {
+  threadId: number;
+  usage: number;
+  percentage: number;
+}
+
+export interface CpuUsageAll {
+  threadCount: number;
+  threads: ThreadCpuInfo[];
+  success: boolean;
+  error?: string;
+}
+
+export interface GpuMemoryInfo {
+  total: number;
+  used: number;
+  free: number;
+  success: boolean;
+  error?: string;
+}
+
+// ============ Sensor æ•°æ®æ¥å£ ============
+
+export interface SensorInfo {
+  type: number;
+  typeName: string;
+  name: string;
+  vendor: string;
+  version: number;
+  maxRange: number;
+  resolution: number;
+  minDelay: number;
+  maxDelay: number;
+  fifoMaxEventCount: number;
+  fifoReservedEventCount: number;
+}
+
+export interface SensorData {
+  values: number[];
+  timestamp: number;
+  accuracy: number;
+  success: boolean;
+  error?: string;
+}
+
+export interface SensorAxes {
+  x: string;
+  y: string;
+  z: string;
+}
+
+export interface AccelerometerData extends SensorData {
+  axes: SensorAxes;
+  type: string;
+}
+
+export interface GyroscopeData extends SensorData {
+  axes: SensorAxes;
+  type: string;
+}
+
+export interface MagnetometerData extends SensorData {
+  axes: SensorAxes;
+  type: string;
+}
+
+export interface LightData extends SensorData {
+  unit: string;
+  type: string;
+  description: string;
+}
+
+export interface ProximityData extends SensorData {
+  unit: string;
+  type: string;
+  description: string;
+}
+
+export interface BarometerData extends SensorData {
+  unit: string;
+  type: string;
+  description: string;
+}
+
+export interface TemperatureData extends SensorData {
+  unit: string;
+  type: string;
+  description: string;
+}
+
+export interface HumidityData extends SensorData {
+  unit: string;
+  type: string;
+  description: string;
+}
+
+export interface AllSensorInfos {
+  sensors: SensorInfo[];
+  count: number;
+  success: boolean;
+  error?: string;
+}
+
+// ============ Native API å°è£…ç±» ============
+
+export class NativeApi {
+  private static instance: NativeApi;
+  private isAvailable: boolean = false;
+  private hasInitialized: boolean = false;
+
+  private constructor() {
+    this.checkAvailability();
+  }
+
+  private checkAvailability(): void {
+    hilog.info(0x0000, TAG, 'Checking Native API availability...');
+    try {
+      // æµ‹è¯• Native æ¨¡å—æ˜¯å¦å¯ç”¨
+      hilog.info(0x0000, TAG, 'About to call sysinfo.getSystemMemInfo()...');
+      const testResult = sysinfo.getSystemMemInfo();
+      hilog.info(0x0000, TAG, 'getSystemMemInfo returned successfully');
+      hilog.info(0x0000, TAG, 'Result type: %{public}s', typeof testResult);
+      hilog.info(0x0000, TAG, 'Result value: %{public}s', JSON.stringify(testResult));
+      this.isAvailable = testResult !== undefined && testResult !== null;
+      this.hasInitialized = true;
+      hilog.info(0x0000, TAG, 'Native API initialized, available: %{public}s', String(this.isAvailable));
+    } catch (e) {
+      this.isAvailable = false;
+      this.hasInitialized = true;
+      hilog.error(0x0000, TAG, 'Native API initialization failed');
+      hilog.error(0x0000, TAG, 'Error: %{public}s', String(e));
+    }
+  }
+
+  static getInstance(): NativeApi {
+    if (!NativeApi.instance) {
+      NativeApi.instance = new NativeApi();
+    }
+    return NativeApi.instance;
+  }
+
+  isNativeAvailable(): boolean {
+    // å¦‚æœè¿˜æ²¡æœ‰åˆå§‹åŒ–ï¼Œå°è¯•æ£€æŸ¥å¯ç”¨æ€§
+    if (!this.hasInitialized) {
+      this.checkAvailability();
+    }
+    return this.isAvailable;
+  }
+
+  // ============ HiDebug API ============
+
+  getSystemMemInfo(): SystemMemInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getSystemMemInfo() as SystemMemInfo;
+      hilog.debug(0x0000, TAG, 'SystemMemInfo: total=%{public}d, available=%{public}d', result.total, result.available);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getSystemMemInfo error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getAppMemInfo(): AppMemInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getAppMemInfo() as AppMemInfo;
+      hilog.debug(0x0000, TAG, 'AppMemInfo: pss=%{public}d, vss=%{public}d', result.pss, result.vss);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getAppMemInfo error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getMemoryLimit(): MemoryLimit | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getMemoryLimit() as MemoryLimit;
+      hilog.debug(0x0000, TAG, 'MemoryLimit: rssLimit=%{public}d', result.rssLimit);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getMemoryLimit error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getSystemCpuUsage(): CpuUsage | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getSystemCpuUsage() as CpuUsage;
+      hilog.debug(0x0000, TAG, 'SystemCpuUsage: %{public}f%%', result.percentage);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getSystemCpuUsage error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getAppCpuUsage(): CpuUsage | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getAppCpuUsage() as CpuUsage;
+      hilog.debug(0x0000, TAG, 'AppCpuUsage: %{public}f%%', result.percentage);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getAppCpuUsage error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getCpuUsageAll(): CpuUsageAll | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getCpuUsageAll() as CpuUsageAll;
+      hilog.debug(0x0000, TAG, 'CpuUsageAll: threads=%{public}d', result.threadCount);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getCpuUsageAll error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getGpuMemoryInfo(): GpuMemoryInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getGpuMemoryInfo() as GpuMemoryInfo;
+      hilog.debug(0x0000, TAG, 'GpuMemoryInfo: total=%{public}d, used=%{public}d', result.total, result.used);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getGpuMemoryInfo error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  // ============ Sensor API ============
+
+  getAllSensorInfos(): AllSensorInfos | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getAllSensorInfos() as AllSensorInfos;
+      hilog.debug(0x0000, TAG, 'AllSensorInfos: count=%{public}d', result.count);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getAllSensorInfos error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getAccelerometerData(): AccelerometerData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getAccelerometerData() as AccelerometerData;
+      hilog.debug(0x0000, TAG, 'AccelerometerData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getAccelerometerData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getGyroscopeData(): GyroscopeData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getGyroscopeData() as GyroscopeData;
+      hilog.debug(0x0000, TAG, 'GyroscopeData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getGyroscopeData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getMagnetometerData(): MagnetometerData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getMagnetometerData() as MagnetometerData;
+      hilog.debug(0x0000, TAG, 'MagnetometerData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getMagnetometerData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getLightData(): LightData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getLightData() as LightData;
+      hilog.debug(0x0000, TAG, 'LightData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getLightData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getProximityData(): ProximityData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getProximityData() as ProximityData;
+      hilog.debug(0x0000, TAG, 'ProximityData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getProximityData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getBarometerData(): BarometerData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getBarometerData() as BarometerData;
+      hilog.debug(0x0000, TAG, 'BarometerData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getBarometerData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getTemperatureData(): TemperatureData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getTemperatureData() as TemperatureData;
+      hilog.debug(0x0000, TAG, 'TemperatureData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getTemperatureData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getHumidityData(): HumidityData | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getHumidityData() as HumidityData;
+      hilog.debug(0x0000, TAG, 'HumidityData: values=%{public}s', JSON.stringify(result.values));
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getHumidityData error: %{public}s', String(e));
+      return null;
+    }
+  }
+}
+
+// å¯¼å‡ºå•ä¾‹å®ä¾‹
+export const nativeApi = NativeApi.getInstance();
+ÀÔrE’­libsysinfo.so«@ohos.hilogÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃ¼ hvigor_ignore_libsysinfo.soÔrG‘¯hostModulesInfo‘C­libsysinfo.so¥entryÃªoh-resolveÂFAÃÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsAÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings¬NativeApi.js ‘­NativeApi.etsÜ –”    ”  ”  ”  ”#  #”$  $–”   ” 	” ” ” 3”  4–”   ” ”	 	” ” ” ’”  Ì” ”+ Ì”+””  Ì– ” Ì–” Ì–” Ì–‘” Ì›•” Ì˜
+” Ì˜” Ì˜!”  Ì˜&”! Ì˜'•” Ì™
+” Ì™” Ì™$”# Ì™)”$ Ì™*–” Ìœ” Ìœ” Ìœ	” Ìœ”  Ìœ”! Ìœ’” Ì” Ì’” ÌŸ
+” ÌŸœ” Ì ” Ì 	” Ì 
+” Ì ” Ì ” Ì ” Ì ” Ì ”  Ì ”ÌE Ì ÌA”ÌF Ì ÌB”ÌG Ì ÌC’” Ì¡” Ì¡’” Ì¢” Ì¢œ” Ì£” Ì£” Ì£” Ì£” Ì£” Ì£” Ì£”" Ì£”$ Ì£”ÌQ Ì£ÌK”ÌR Ì£ÌL”ÌS Ì£ÌM™” Ì¤” Ì¤” Ì¤” Ì¤”& Ì¤ ”' Ì¤!”7 Ì¤1”9 Ì¤3”: Ì¤4œ” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥”" Ì¥”$ Ì¥”ÌL Ì¥ÌF”ÌM Ì¥ÌG”ÌN Ì¥ÌHŸ” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦”" Ì¦”$ Ì¦”= Ì¦7”? Ì¦9”ÌF Ì¦Ì@”ÌP Ì¦ÌJ”ÌQ Ì¦ÌK”ÌR Ì¦ÌLÜ ” Ì§” Ì§” Ì§” Ì§” Ì§” Ì§” Ì§”" Ì§”$ Ì§”> Ì§8”Ì@ Ì§:”ÌD Ì§>”ÌE Ì§?”ÌN Ì§ÌH”ÌO Ì§ÌI”ÌY Ì§ÌS”ÌZ Ì§ÌT”Ì[ Ì§ÌU”Ì\ Ì§ÌV” Ì¨” Ì¨
+” Ì¨” Ì¨” Ì¨”) Ì¨#”. Ì¨(”7 Ì¨1”; Ì¨5”ÌE Ì¨?”ÌJ Ì¨ÌD”ÌN Ì¨ÌH”ÌO Ì¨ÌI—” Ì©” Ì©
+” Ì©” Ì©”" Ì©”& Ì© ”' Ì©!Ü ” Ìª” Ìª” Ìª” Ìª” Ìª” Ìª” Ìª”" Ìª”$ Ìª”ÌS ÌªÌM”ÌU ÌªÌO”Ì[ ÌªÌU”Ì\ ÌªÌV”Ì` ÌªÌZ”Ìa ÌªÌ[”Ìl ÌªÌf”Ìm ÌªÌg”Ìn ÌªÌh”Ìo ÌªÌi‘”	 Ì«”” Ì«” Ì«” Ì«” Ì«—” Ì¬” Ì¬
+” Ì¬” Ì¬” Ì¬”$ Ì¬”% Ì¬—” Ì­” Ì­
+” Ì­” Ì­”" Ì­”& Ì­ ”' Ì­!œ” Ì®” Ì®” Ì®” Ì®” Ì®” Ì®”  Ì®”# Ì®”% Ì®”ÌG Ì®ÌA”ÌH Ì®ÌB”ÌI Ì®ÌCÜ ” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯”  Ì¯”# Ì¯”% Ì¯”8 Ì¯2”: Ì¯4”Ì@ Ì¯:”ÌA Ì¯;”ÌB Ì¯<”ÌC Ì¯=”ÌD Ì¯>”ÌE Ì¯?‘”	 Ì°’” Ì±” Ì±”” Ì³”
+ Ì³” Ì³	” Ì³—” Ì´” Ì´” Ì´	” Ì´” Ì´” Ì´”! Ì´™” Ìµ” Ìµ” Ìµ” Ìµ”! Ìµ”% Ìµ”. Ìµ(”0 Ìµ*”1 Ìµ+‘”	 Ì¶–” Ì·” Ì·” Ì·” Ì·”! Ì·”" Ì·’” Ì¸” Ì¸’” Ìº” Ìº’” Ì»” Ì»—” Ì¼” Ì¼” Ì¼	” Ì¼” Ì¼”  Ì¼”" Ì¼–” Ì½” Ì½
+” Ì½”" Ì½”$ Ì½”% Ì½‘”	 Ì¾–” Ì¿” Ì¿” Ì¿” Ì¿” Ì¿”  Ì¿’” ÌÀ” ÌÀ’” ÌÂ”, ÌÂ*’” ÌÄ” ÌÄ–” ÌÅ” ÌÅ” ÌÅ	” ÌÅ” ÌÅ” ÌÅ”” ÌÅ” ÌÅ"” ÌÅ&” ÌÅ'’” ÌÆ” ÌÆ™” ÌÇ” ÌÇ” ÌÇ” ÌÇ”" ÌÇ”# ÌÇ”3 ÌÇ-”5 ÌÇÌ@”6 ÌÇÌAÜ ” ÌÈ” ÌÈ” ÌÈ” ÌÈ” ÌÈ” ÌÈ”  ÌÈ”# ÌÈ”% ÌÈ”Ì\ ÌÈÌV”Ì^ ÌÈÌX”Ìd ÌÈÌ^”Ìe ÌÈÌ_”Ìj ÌÈÌd”Ìl ÌÈÌf”Ìr ÌÈÌl”Ìs ÌÈÌm”Ì| ÌÈÌv”Ì} ÌÈÌw”Ì~ ÌÈÌx”” ÌÉ” ÌÉ” ÌÉ” ÌÉ‘”	 ÌÊ”” ÌÊ” ÌÊ” ÌÊ” ÌÊÜ ” ÌË” ÌË” ÌË” ÌË” ÌË” ÌË”  ÌË”# ÌË”% ÌË”ÌI ÌËÌC”ÌK ÌËÌE”ÌQ ÌËÌK”ÌR ÌËÌL”ÌS ÌËÌM”ÌT ÌËÌN”ÌU ÌËÌO”ÌV ÌËÌP”” ÌÌ” ÌÌ” ÌÌ” ÌÌ‘”	 ÌÍ’” ÌÎ” ÌÎ’” ÌĞ” ÌĞ–” ÌÑ” ÌÑ” ÌÑ	” ÌÑ” ÌÑ” ÌÑ”” ÌÑ” ÌÑ"” ÌÑ&” ÌÑ'’” ÌÒ” ÌÒ™” ÌÓ” ÌÓ” ÌÓ” ÌÓ”" ÌÓ”# ÌÓ”0 ÌÓ*”2 ÌÓ:”3 ÌÓ;Ü ” ÌÔ” ÌÔ” ÌÔ” ÌÔ” ÌÔ” ÌÔ”  ÌÔ”# ÌÔ”% ÌÔ”ÌQ ÌÔÌK”ÌS ÌÔÌM”ÌY ÌÔÌS”ÌZ ÌÔÌT”Ì] ÌÔÌW”Ì_ ÌÔÌY”Ìe ÌÔÌ_”Ìf ÌÔÌ`”Ìi ÌÔÌc”Ìj ÌÔÌd”Ìk ÌÔÌe”” ÌÕ” ÌÕ” ÌÕ” ÌÕ‘”	 ÌÖ”” ÌÖ” ÌÖ” ÌÖ” ÌÖÜ ” Ì×” Ì×” Ì×” Ì×” Ì×” Ì×”  Ì×”# Ì×”% Ì×”ÌF Ì×Ì@”ÌH Ì×ÌB”ÌN Ì×ÌH”ÌO Ì×ÌI”ÌP Ì×ÌJ”ÌQ Ì×ÌK”ÌR Ì×ÌL”ÌS Ì×ÌM”” ÌØ” ÌØ” ÌØ” ÌØ‘”	 ÌÙ’” ÌÚ” ÌÚ’” ÌÜ” ÌÜ–” Ìİ” Ìİ” Ìİ	” Ìİ” Ìİ” Ìİ”” Ìİ” Ìİ"” Ìİ&” Ìİ'’” ÌŞ” ÌŞ™” Ìß” Ìß” Ìß” Ìß”" Ìß”# Ìß”1 Ìß+”3 Ìß<”4 Ìß=Ü ” Ìà” Ìà” Ìà” Ìà” Ìà” Ìà”  Ìà”# Ìà”% Ìà”ÌG ÌàÌA”ÌI ÌàÌC”ÌO ÌàÌI”ÌP ÌàÌJ”ÌX ÌàÌR”ÌY ÌàÌS”ÌZ ÌàÌT”” Ìá” Ìá” Ìá” Ìá‘”	 Ìâ”” Ìâ” Ìâ” Ìâ” ÌâÜ ” Ìã” Ìã” Ìã” Ìã” Ìã” Ìã”  Ìã”# Ìã”% Ìã”ÌG ÌãÌA”ÌI ÌãÌC”ÌO ÌãÌI”ÌP ÌãÌJ”ÌQ ÌãÌK”ÌR ÌãÌL”ÌS ÌãÌM”ÌT ÌãÌN”” Ìä” Ìä” Ìä” Ìä‘”	 Ìå’” Ìæ” Ìæ’” Ìè” Ìè–” Ìé” Ìé” Ìé	” Ìé” Ìé” Ìé”” Ìé” Ìé"” Ìé&” Ìé'’” Ìê” Ìê™” Ìë” Ìë” Ìë” Ìë”" Ìë”# Ìë”4 Ìë.”6 Ìë<”7 Ìë=Ü ” Ìì” Ìì” Ìì” Ìì” Ìì” Ìì”  Ìì”# Ìì”% Ìì”ÌC Ìì=”ÌE Ìì?”ÌK ÌìÌE”ÌL ÌìÌF”ÌV ÌìÌP”ÌW ÌìÌQ”ÌX ÌìÌR”” Ìí” Ìí” Ìí” Ìí‘”	 Ìî”” Ìî” Ìî” Ìî” ÌîÜ ” Ìï” Ìï” Ìï” Ìï” Ìï” Ìï”  Ìï”# Ìï”% Ìï”ÌJ ÌïÌD”ÌL ÌïÌF”ÌR ÌïÌL”ÌS ÌïÌM”ÌT ÌïÌN”ÌU ÌïÌO”ÌV ÌïÌP”ÌW ÌïÌQ”” Ìğ” Ìğ” Ìğ” Ìğ‘”	 Ìñ’” Ìò” Ìò’” Ìô” Ìô–” Ìõ” Ìõ” Ìõ	” Ìõ” Ìõ” Ìõ”” Ìõ” Ìõ"” Ìõ&” Ìõ'’” Ìö” Ìö™” Ì÷” Ì÷” Ì÷” Ì÷”" Ì÷”# Ì÷”1 Ì÷+”3 Ì÷9”4 Ì÷:Ü ” Ìø” Ìø” Ìø” Ìø” Ìø” Ìø”  Ìø”# Ìø”% Ìø”Ì@ Ìø:”ÌB Ìø<”ÌH ÌøÌB”ÌI ÌøÌC”ÌS ÌøÌM”ÌT ÌøÌN”ÌU ÌøÌO”” Ìù” Ìù” Ìù” Ìù‘”	 Ìú”” Ìú” Ìú” Ìú” ÌúÜ ” Ìû” Ìû” Ìû” Ìû” Ìû” Ìû”  Ìû”# Ìû”% Ìû”ÌG ÌûÌA”ÌI ÌûÌC”ÌO ÌûÌI”ÌP ÌûÌJ”ÌQ ÌûÌK”ÌR ÌûÌL”ÌS ÌûÌM”ÌT ÌûÌN”” Ìü” Ìü” Ìü” Ìü‘”	 Ìı’” Ìş” Ìş’” Í ” Í –” Í” Í” Í	” Í” Í” Í”” Í” Í"” Í&” Í'’” Í” Í™” Í” Í” Í” Í”" Í”# Í”1 Í+”3 Í<”4 Í=Ü ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌF ÍÌ@”ÌH ÍÌB”ÌN ÍÌH”ÌO ÍÌI”ÌZ ÍÌT”Ì[ ÍÌU”Ì\ ÍÌV”” Í” Í” Í” Í‘”	 Í”” Í” Í” Í” ÍÜ ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌG ÍÌA”ÌI ÍÌC”ÌO ÍÌI”ÌP ÍÌJ”ÌQ ÍÌK”ÌR ÍÌL”ÌS ÍÌM”ÌT ÍÌN”” Í” Í” Í” Í‘”	 Í	’” Í
+” Í
+’” Í” Í–” Í” Í” Í	” Í” Í” Í”” Í” Í"” Í&” Í'’” Í” Í™” Í” Í” Í” Í”" Í”# Í”3 Í-”5 ÍÌ@”6 ÍÌAÜ ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌW ÍÌQ”ÌY ÍÌS”Ì_ ÍÌY”Ì` ÍÌZ”Ìe ÍÌ_”Ìg ÍÌa”Ìm ÍÌg”Ìn ÍÌh”Ìr ÍÌl”Ìs ÍÌm”Ìt ÍÌn”” Í” Í” Í” Í‘”	 Í”” Í” Í” Í” ÍÜ ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌI ÍÌC”ÌK ÍÌE”ÌQ ÍÌK”ÌR ÍÌL”ÌS ÍÌM”ÌT ÍÌN”ÌU ÍÌO”ÌV ÍÌP”” Í” Í” Í” Í‘”	 Í’” Í” Í’” Í”+ Í)’” Í” Í–” Í” Í” Í	” Í” Í” Í”” Í” Í"” Í&” Í'’” Í” Í™” Í” Í” Í” Í”" Í”# Í”4 Í.”6 ÍÌB”7 ÍÌCÜ ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌG ÍÌA”ÌI ÍÌC”ÌO ÍÌI”ÌP ÍÌJ”ÌU ÍÌO”ÌV ÍÌP”ÌW ÍÌQ”” Í” Í” Í” Í‘”	 Í ”” Í ” Í ” Í ” Í Ü ” Í!” Í!” Í!” Í!” Í!” Í!”  Í!”# Í!”% Í!”ÌJ Í!ÌD”ÌL Í!ÌF”ÌR Í!ÌL”ÌS Í!ÌM”ÌT Í!ÌN”ÌU Í!ÌO”ÌV Í!ÌP”ÌW Í!ÌQ”” Í"” Í"” Í"” Í"‘”	 Í#’” Í$” Í$’” Í&” Í&–” Í'” Í'” Í'	” Í'” Í'” Í'”” Í'” Í'"” Í'&” Í''’” Í(” Í(™” Í)” Í)” Í)” Í)”" Í)”# Í)”7 Í)1”9 Í)ÌH”: Í)ÌIÜ ” Í*” Í*” Í*” Í*” Í*” Í*”  Í*”# Í*”% Í*”ÌK Í*ÌE”ÌM Í*ÌG”ÌQ Í*ÌK”ÌR Í*ÌL”Ì[ Í*ÌU”Ì\ Í*ÌV”Ìb Í*Ì\”Ìc Í*Ì]”Ìi Í*Ìc”Ìj Í*Ìd”Ìk Í*Ìe”Ìl Í*Ìf”” Í+” Í+” Í+” Í+‘”	 Í,”” Í,” Í,” Í,” Í,Ü ” Í-” Í-” Í-” Í-” Í-” Í-”  Í-”# Í-”% Í-”ÌM Í-ÌG”ÌO Í-ÌI”ÌU Í-ÌO”ÌV Í-ÌP”ÌW Í-ÌQ”ÌX Í-ÌR”ÌY Í-ÌS”ÌZ Í-ÌT”” Í.” Í.” Í.” Í.‘”	 Í/’” Í0” Í0’” Í2” Í2–” Í3” Í3” Í3	” Í3” Í3” Í3”” Í3” Í3"” Í3&” Í3'’” Í4” Í4™” Í5” Í5” Í5” Í5”" Í5”# Í5”3 Í5-”5 Í5Ì@”6 Í5ÌAÜ ” Í6” Í6” Í6” Í6” Í6” Í6”  Í6”# Í6”% Í6”ÌG Í6ÌA”ÌI Í6ÌC”ÌM Í6ÌG”ÌN Í6ÌH”ÌW Í6ÌQ”ÌX Í6ÌR”Ì^ Í6ÌX”Ì_ Í6ÌY”Ìe Í6Ì_”Ìf Í6Ì`”Ìg Í6Ìa”Ìh Í6Ìb”” Í7” Í7” Í7” Í7‘”	 Í8”” Í8” Í8” Í8” Í8Ü ” Í9” Í9” Í9” Í9” Í9” Í9”  Í9”# Í9”% Í9”ÌI Í9ÌC”ÌK Í9ÌE”ÌQ Í9ÌK”ÌR Í9ÌL”ÌS Í9ÌM”ÌT Í9ÌN”ÌU Í9ÌO”ÌV Í9ÌP”” Í:” Í:” Í:” Í:‘”	 Í;’” Í<” Í<’” Í>” Í>–” Í?” Í?” Í?	” Í?” Í?” Í?”” Í?” Í?"” Í?&” Í?'’” Í@” Í@™” ÍA” ÍA” ÍA” ÍA”" ÍA”# ÍA”6 ÍA0”8 ÍAÌF”9 ÍAÌGÜ ” ÍB” ÍB” ÍB” ÍB” ÍB” ÍB”  ÍB”# ÍB”% ÍB”ÌJ ÍBÌD”ÌL ÍBÌF”ÌP ÍBÌJ”ÌQ ÍBÌK”ÌZ ÍBÌT”Ì[ ÍBÌU”Ìa ÍBÌ[”Ìb ÍBÌ\”Ìh ÍBÌb”Ìi ÍBÌc”Ìj ÍBÌd”Ìk ÍBÌe”” ÍC” ÍC” ÍC” ÍC‘”	 ÍD”” ÍD” ÍD” ÍD” ÍDÜ ” ÍE” ÍE” ÍE” ÍE” ÍE” ÍE”  ÍE”# ÍE”% ÍE”ÌL ÍEÌF”ÌN ÍEÌH”ÌT ÍEÌN”ÌU ÍEÌO”ÌV ÍEÌP”ÌW ÍEÌQ”ÌX ÍEÌR”ÌY ÍEÌS”” ÍF” ÍF” ÍF” ÍF‘”	 ÍG’” ÍH” ÍH’” ÍJ” ÍJ–” ÍK” ÍK” ÍK	” ÍK” ÍK” ÍK”” ÍK” ÍK"” ÍK&” ÍK'’” ÍL” ÍL™” ÍM” ÍM” ÍM” ÍM”" ÍM”# ÍM”/ ÍM)”1 ÍM8”2 ÍM9Ü ” ÍN” ÍN” ÍN” ÍN” ÍN” ÍN”  ÍN”# ÍN”% ÍN”ÌC ÍN=”ÌE ÍN?”ÌI ÍNÌC”ÌJ ÍNÌD”ÌS ÍNÌM”ÌT ÍNÌN”ÌZ ÍNÌT”Ì[ ÍNÌU”Ìa ÍNÌ[”Ìb ÍNÌ\”Ìc ÍNÌ]”Ìd ÍNÌ^”” ÍO” ÍO” ÍO” ÍO‘”	 ÍP”” ÍP” ÍP” ÍP” ÍPÜ ” ÍQ” ÍQ” ÍQ” ÍQ” ÍQ” ÍQ”  ÍQ”# ÍQ”% ÍQ”ÌE ÍQ?”ÌG ÍQÌA”ÌM ÍQÌG”ÌN ÍQÌH”ÌO ÍQÌI”ÌP ÍQÌJ”ÌQ ÍQÌK”ÌR ÍQÌL”” ÍR” ÍR” ÍR” ÍR‘”	 ÍS’” ÍT” ÍT’” ÍV” ÍV–” ÍW” ÍW” ÍW	” ÍW” ÍW” ÍW”” ÍW” ÍW"” ÍW&” ÍW'’” ÍX” ÍX™” ÍY” ÍY” ÍY” ÍY”" ÍY”# ÍY”3 ÍY-”5 ÍYÌ@”6 ÍYÌAÜ ” ÍZ” ÍZ” ÍZ” ÍZ” ÍZ” ÍZ”  ÍZ”# ÍZ”% ÍZ”ÌG ÍZÌA”ÌI ÍZÌC”ÌM ÍZÌG”ÌN ÍZÌH”ÌW ÍZÌQ”ÌX ÍZÌR”Ì^ ÍZÌX”Ì_ ÍZÌY”Ìe ÍZÌ_”Ìf ÍZÌ`”Ìg ÍZÌa”Ìh ÍZÌb”” Í[” Í[” Í[” Í[‘”	 Í\”” Í\” Í\” Í\” Í\Ü ” Í]” Í]” Í]” Í]” Í]” Í]”  Í]”# Í]”% Í]”ÌI Í]ÌC”ÌK Í]ÌE”ÌQ Í]ÌK”ÌR Í]ÌL”ÌS Í]ÌM”ÌT Í]ÌN”ÌU Í]ÌO”ÌV Í]ÌP”” Í^” Í^” Í^” Í^‘”	 Í_’” Í`” Í`’” Íb” Íb–” Íc” Íc” Íc	” Íc” Íc” Íc”” Íc” Íc"” Íc&” Íc'’” Íd” Íd™” Íe” Íe” Íe” Íe”" Íe”# Íe”3 Íe-”5 ÍeÌ@”6 ÍeÌAÜ ” Íf” Íf” Íf” Íf” Íf” Íf”  Íf”# Íf”% Íf”ÌG ÍfÌA”ÌI ÍfÌC”ÌM ÍfÌG”ÌN ÍfÌH”ÌW ÍfÌQ”ÌX ÍfÌR”Ì^ ÍfÌX”Ì_ ÍfÌY”Ìe ÍfÌ_”Ìf ÍfÌ`”Ìg ÍfÌa”Ìh ÍfÌb”” Íg” Íg” Íg” Íg‘”	 Íh”” Íh” Íh” Íh” ÍhÜ ” Íi” Íi” Íi” Íi” Íi” Íi”  Íi”# Íi”% Íi”ÌI ÍiÌC”ÌK ÍiÌE”ÌQ ÍiÌK”ÌR ÍiÌL”ÌS ÍiÌM”ÌT ÍiÌN”ÌU ÍiÌO”ÌV ÍiÌP”” Íj” Íj” Íj” Íj‘”	 Ík’” Íl” Íl’” Ín” Ín–” Ío” Ío” Ío	” Ío” Ío” Ío”” Ío” Ío"” Ío&” Ío'’” Íp” Íp™” Íq” Íq” Íq” Íq”" Íq”# Íq”5 Íq/”7 ÍqÌD”8 ÍqÌEÜ ” Ír” Ír” Ír” Ír” Ír” Ír”  Ír”# Ír”% Ír”ÌI ÍrÌC”ÌK ÍrÌE”ÌO ÍrÌI”ÌP ÍrÌJ”ÌY ÍrÌS”ÌZ ÍrÌT”Ì` ÍrÌZ”Ìa ÍrÌ[”Ìg ÍrÌa”Ìh ÍrÌb”Ìi ÍrÌc”Ìj ÍrÌd”” Ís” Ís” Ís” Ís‘”	 Ít”” Ít” Ít” Ít” ÍtÜ ” Íu” Íu” Íu” Íu” Íu” Íu”  Íu”# Íu”% Íu”ÌK ÍuÌE”ÌM ÍuÌG”ÌS ÍuÌM”ÌT ÍuÌN”ÌU ÍuÌO”ÌV ÍuÌP”ÌW ÍuÌQ”ÌX ÍuÌR”” Ív” Ív” Ív” Ív‘”	 Íw’” Íx” Íx’” Íz” Íz–” Í{” Í{” Í{	” Í{” Í{” Í{”” Í{” Í{"” Í{&” Í{'’” Í|” Í|™” Í}” Í}” Í}” Í}”" Í}”# Í}”2 Í},”4 Í}>”5 Í}?Ü ” Í~” Í~” Í~” Í~” Í~” Í~”  Í~”# Í~”% Í~”ÌF Í~Ì@”ÌH Í~ÌB”ÌL Í~ÌF”ÌM Í~ÌG”ÌV Í~ÌP”ÌW Í~ÌQ”Ì] Í~ÌW”Ì^ Í~ÌX”Ìd Í~Ì^”Ìe Í~Ì_”Ìf Í~Ì`”Ìg Í~Ìa”” Í” Í” Í” Í‘”	 Í€”” Í€” Í€” Í€” Í€Ü ” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌH ÍÌB”ÌJ ÍÌD”ÌP ÍÌJ”ÌQ ÍÌK”ÌR ÍÌL”ÌS ÍÌM”ÌT ÍÌN”ÌU ÍÌO”” Í‚” Í‚” Í‚” Í‚‘”	 Íƒ’” Í„” Í„‘” Í…’”  Í‡ ”	 Í‡	›”  Íˆ ” Íˆ” Íˆ” Íˆ” Íˆ” Íˆ”" Íˆ"”# Íˆ#”. Íˆ.”0 Íˆ0”1 Íˆ1ÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache’ÔrL–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÌÍ#6ÔrM–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÌ–Í#6ÔrN”¤type¥start£end¤nameªIdentifierÌœÌ¥©NativeApiÀÔrO”¤type¥start£end¤body©ClassBodyÌ¦Í#6Ü ÔrP˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÌ­Í/ÂÂNªIdentifierÌ­Ì¸«constructor«constructorÔrQ™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÌ¸Í/ÀÂÂÂO®BlockStatementÌ»Í/“ÔrR”¤type¥start£endªexpression³ExpressionStatementÌÆÌßÔrS–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÌÆÌŞ¡=ÔrT—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÌÆÌÖÔrU“¤type¥start£end®ThisExpressionÌÆÌÊNªIdentifierÌËÌÖ«isAvailableÂÂÔrV•¤type¥start£end¥value£raw§LiteralÌÙÌŞÂ¥falseR³ExpressionStatementÌéÍS´AssignmentExpressionÌéÍ¡=T°MemberExpressionÌéÌüU®ThisExpressionÌéÌíNªIdentifierÌîÌü®hasInitializedÂÂV§LiteralÌÿÍÂ¥falseR³ExpressionStatementÍÍ(ÔrW–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍÍ'T°MemberExpressionÍÍ%U®ThisExpressionÍÍNªIdentifierÍÍ%±checkAvailabilityÂÂÂP°MethodDefinitionÍ5ÍUÂÂNªIdentifierÍ5ÍF±checkAvailability¦methodQ²FunctionExpressionÍFÍUÀÂÂÂO®BlockStatementÍIÍU’R³ExpressionStatementÍTÍ“W®CallExpressionÍTÍ’T°MemberExpressionÍTÍ^NªIdentifierÍTÍY¥hilogNªIdentifierÍZÍ^¤infoÂÂ“V§LiteralÍ_Íe ¦0x0000NªIdentifierÍgÍj£TAGV§LiteralÍlÍ‘Ù#Checking Native API availability...Ù%'Checking Native API availability...'ÂÔrX–¤type¥start£end¥block§handler©finalizer¬TryStatementÍÍNO®BlockStatementÍ¡ÍL˜R³ExpressionStatementÍÑÍW®CallExpressionÍÑÍT°MemberExpressionÍÑÍÛNªIdentifierÍÑÍÖ¥hilogNªIdentifierÍ×ÍÛ¤infoÂÂ“V§LiteralÍÜÍâ ¦0x0000NªIdentifierÍäÍç£TAGV§LiteralÍéÍÙ+About to call sysinfo.getSystemMemInfo()...Ù-'About to call sysinfo.getSystemMemInfo()...'ÂÔrY•¤type¥start£end¬declarations¤kind³VariableDeclarationÍ&ÍT‘ÔrZ•¤type¥start£end¢id¤init²VariableDeclaratorÍ,ÍSNªIdentifierÍ,Í6ªtestResultW®CallExpressionÍ9ÍST°MemberExpressionÍ9ÍQNªIdentifierÍ9Í@§sysinfoNªIdentifierÍAÍQ°getSystemMemInfoÂÂÂ¥constR³ExpressionStatementÍbÍ¤W®CallExpressionÍbÍ£T°MemberExpressionÍbÍlNªIdentifierÍbÍg¥hilogNªIdentifierÍhÍl¤infoÂÂ“V§LiteralÍmÍs ¦0x0000NªIdentifierÍuÍx£TAGV§LiteralÍzÍ¢Ù&getSystemMemInfo returned successfullyÙ('getSystemMemInfo returned successfully'ÂR³ExpressionStatementÍ²ÍøW®CallExpressionÍ²Í÷T°MemberExpressionÍ²Í¼NªIdentifierÍ²Í·¥hilogNªIdentifierÍ¸Í¼¤infoÂÂ”V§LiteralÍ½ÍÃ ¦0x0000NªIdentifierÍÅÍÈ£TAGV§LiteralÍÊÍã·Result type: %{public}s¹'Result type: %{public}s'Ôr[–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍåÍö¦typeofÃNªIdentifierÍìÍöªtestResultÂR³ExpressionStatementÍÍVW®CallExpressionÍÍUT°MemberExpressionÍÍNªIdentifierÍÍ¥hilogNªIdentifierÍÍ¤infoÂÂ”V§LiteralÍÍ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍÍ8¸Result value: %{public}sº'Result value: %{public}s'W®CallExpressionÍ:ÍTT°MemberExpressionÍ:ÍHNªIdentifierÍ:Í>¤JSONNªIdentifierÍ?ÍH©stringifyÂÂ‘NªIdentifierÍIÍSªtestResultÂÂR³ExpressionStatementÍdÍ§S´AssignmentExpressionÍdÍ¦¡=T°MemberExpressionÍdÍtU®ThisExpressionÍdÍhNªIdentifierÍiÍt«isAvailableÂÂÔr\–¤type¥start£end¤left¨operator¥right±LogicalExpressionÍwÍ¦\°BinaryExpressionÍwÍNªIdentifierÍwÍªtestResult£!==NªIdentifierÍ†Í©undefined¢&&\°BinaryExpressionÍ“Í¦NªIdentifierÍ“ÍªtestResult£!==V§LiteralÍ¢Í¦À¤nullR³ExpressionStatementÍµÍĞS´AssignmentExpressionÍµÍÏ¡=T°MemberExpressionÍµÍÈU®ThisExpressionÍµÍ¹NªIdentifierÍºÍÈ®hasInitializedÂÂV§LiteralÍËÍÏÃ¤trueR³ExpressionStatementÍŞÍAW®CallExpressionÍŞÍ@T°MemberExpressionÍŞÍèNªIdentifierÍŞÍã¥hilogNªIdentifierÍäÍè¤infoÂÂ”V§LiteralÍéÍï ¦0x0000NªIdentifierÍñÍô£TAGV§LiteralÍöÍ%Ù-Native API initialized, available: %{public}sÙ/'Native API initialized, available: %{public}s'W®CallExpressionÍ'Í?NªIdentifierÍ'Í-¦String‘T°MemberExpressionÍ.Í>U®ThisExpressionÍ.Í2NªIdentifierÍ3Í>«isAvailableÂÂÂÂÔr]•¤type¥start£end¥param¤body«CatchClauseÍVÍNNªIdentifierÍ]Í^¡eO®BlockStatementÍ`ÍN”R³ExpressionStatementÍoÍˆS´AssignmentExpressionÍoÍ‡¡=T°MemberExpressionÍoÍU®ThisExpressionÍoÍsNªIdentifierÍtÍ«isAvailableÂÂV§LiteralÍ‚Í‡Â¥falseR³ExpressionStatementÍ–Í±S´AssignmentExpressionÍ–Í°¡=T°MemberExpressionÍ–Í©U®ThisExpressionÍ–ÍšNªIdentifierÍ›Í©®hasInitializedÂÂV§LiteralÍ¬Í°Ã¤trueR³ExpressionStatementÍ¿ÍüW®CallExpressionÍ¿ÍûT°MemberExpressionÍ¿ÍÊNªIdentifierÍ¿ÍÄ¥hilogNªIdentifierÍÅÍÊ¥errorÂÂ“V§LiteralÍËÍÑ ¦0x0000NªIdentifierÍÓÍÖ£TAGV§LiteralÍØÍúÙ Native API initialization failedÙ"'Native API initialization failed'ÂR³ExpressionStatementÍ
+ÍCW®CallExpressionÍ
+ÍBT°MemberExpressionÍ
+ÍNªIdentifierÍ
+Í¥hilogNªIdentifierÍÍ¥errorÂÂ”V§LiteralÍÍ ¦0x0000NªIdentifierÍÍ!£TAGV§LiteralÍ#Í6±Error: %{public}s³'Error: %{public}s'W®CallExpressionÍ8ÍANªIdentifierÍ8Í>¦String‘NªIdentifierÍ?Í@¡eÂÂÀP°MethodDefinitionÍ[ÍşÃÂNªIdentifierÍbÍm«getInstance¦methodQ²FunctionExpressionÍmÍşÀÂÂÂO®BlockStatementÍpÍş’Ôr^–¤type¥start£end¤testªconsequent©alternate«IfStatementÍ{ÍÓ[¯UnaryExpressionÍÍ’¡!ÃT°MemberExpressionÍ€Í’NªIdentifierÍ€Í‰©NativeApiNªIdentifierÍŠÍ’¨instanceÂÂO®BlockStatementÍ”ÍÓ‘R³ExpressionStatementÍ£ÍÈS´AssignmentExpressionÍ£ÍÇ¡=T°MemberExpressionÍ£ÍµNªIdentifierÍ£Í¬©NativeApiNªIdentifierÍ­Íµ¨instanceÂÂÔr_•¤type¥start£end¦callee©arguments­NewExpressionÍ¸ÍÇNªIdentifierÍ¼ÍÅ©NativeApiÀÔr`”¤type¥start£end¨argument¯ReturnStatementÍİÍ÷T°MemberExpressionÍäÍöNªIdentifierÍäÍí©NativeApiNªIdentifierÍîÍö¨instanceÂÂP°MethodDefinitionÍÍ¶ÂÂNªIdentifierÍÍ±isNativeAvailable¦methodQ²FunctionExpressionÍÍ¶ÀÂÂÂO®BlockStatementÍÍ¶’^«IfStatementÍ@Í[¯UnaryExpressionÍDÍX¡!ÃT°MemberExpressionÍEÍXU®ThisExpressionÍEÍINªIdentifierÍJÍX®hasInitializedÂÂO®BlockStatementÍZÍ‘R³ExpressionStatementÍiÍ‚W®CallExpressionÍiÍT°MemberExpressionÍiÍU®ThisExpressionÍiÍmNªIdentifierÍnÍ±checkAvailabilityÂÂÂÀ`¯ReturnStatementÍ—Í¯T°MemberExpressionÍÍ®U®ThisExpressionÍÍ¢NªIdentifierÍ£Í®«isAvailableÂÂP°MethodDefinitionÍêÍ¿ÂÂNªIdentifierÍêÍú°getSystemMemInfo¦methodQ²FunctionExpressionÍúÍ¿ÀÂÂÂO®BlockStatementÍıÍ¿’^«IfStatementÍÍ8[¯UnaryExpressionÍÍ¡!ÃT°MemberExpressionÍÍU®ThisExpressionÍÍNªIdentifierÍÍ«isAvailableÂÂ`¯ReturnStatementÍ,Í8V§LiteralÍ3Í7À¤nullÀX¬TryStatementÍBÍ¸O®BlockStatementÍFÍ&“Y³VariableDeclarationÍUÍ‘Z²VariableDeclaratorÍ[Í~NªIdentifierÍ[Ía¦resultW®CallExpressionÍdÍ~T°MemberExpressionÍdÍ|NªIdentifierÍdÍk§sysinfoNªIdentifierÍlÍ|°getSystemMemInfoÂÂÂ¥constR³ExpressionStatementÍÍÿW®CallExpressionÍÍşT°MemberExpressionÍÍ˜NªIdentifierÍÍ’¥hilogNªIdentifierÍ“Í˜¥debugÂÂ•V§LiteralÍ™ÍŸ ¦0x0000NªIdentifierÍ¡Í¤£TAGV§LiteralÍ¦ÍİÙ5SystemMemInfo: total=%{public}d, available=%{public}dÙ7'SystemMemInfo: total=%{public}d, available=%{public}d'T°MemberExpressionÍßÍëNªIdentifierÍßÍå¦resultNªIdentifierÍæÍë¥totalÂÂT°MemberExpressionÍíÍıNªIdentifierÍíÍó¦resultNªIdentifierÍôÍı©availableÂÂÂ`¯ReturnStatementÍÍNªIdentifierÍÍ¦result]«CatchClauseÍ0Í¸NªIdentifierÍ7Í8¡eO®BlockStatementÍ:Í¸’R³ExpressionStatementÍIÍ“W®CallExpressionÍIÍ’T°MemberExpressionÍIÍTNªIdentifierÍIÍN¥hilogNªIdentifierÍOÍT¥errorÂÂ”V§LiteralÍUÍ[ ¦0x0000NªIdentifierÍ]Í`£TAGV§LiteralÍbÍ†Ù"getSystemMemInfo error: %{public}sÙ$'getSystemMemInfo error: %{public}s'W®CallExpressionÍˆÍ‘NªIdentifierÍˆÍ¦String‘NªIdentifierÍÍ¡eÂÂ`¯ReturnStatementÍ¡Í­V§LiteralÍ¨Í¬À¤nullÀP°MethodDefinitionÍÅÍ
+~ÂÂNªIdentifierÍÅÍÒ­getAppMemInfo¦methodQ²FunctionExpressionÍÒÍ
+~ÀÂÂÂO®BlockStatementÍÕÍ
+~’^«IfStatementÍàÍ	[¯UnaryExpressionÍäÍõ¡!ÃT°MemberExpressionÍåÍõU®ThisExpressionÍåÍéNªIdentifierÍêÍõ«isAvailableÂÂ`¯ReturnStatementÍ	Í	V§LiteralÍ	Í	À¤nullÀX¬TryStatementÍ	Í
+wO®BlockStatementÍ	Í	è“Y³VariableDeclarationÍ	-Í	T‘Z²VariableDeclaratorÍ	3Í	SNªIdentifierÍ	3Í	9¦resultW®CallExpressionÍ	<Í	ST°MemberExpressionÍ	<Í	QNªIdentifierÍ	<Í	C§sysinfoNªIdentifierÍ	DÍ	Q­getAppMemInfoÂÂÂ¥constR³ExpressionStatementÍ	bÍ	ÁW®CallExpressionÍ	bÍ	ÀT°MemberExpressionÍ	bÍ	mNªIdentifierÍ	bÍ	g¥hilogNªIdentifierÍ	hÍ	m¥debugÂÂ•V§LiteralÍ	nÍ	t ¦0x0000NªIdentifierÍ	vÍ	y£TAGV§LiteralÍ	{Í	§Ù*AppMemInfo: pss=%{public}d, vss=%{public}dÙ,'AppMemInfo: pss=%{public}d, vss=%{public}d'T°MemberExpressionÍ	©Í	³NªIdentifierÍ	©Í	¯¦resultNªIdentifierÍ	°Í	³£pssÂÂT°MemberExpressionÍ	µÍ	¿NªIdentifierÍ	µÍ	»¦resultNªIdentifierÍ	¼Í	¿£vssÂÂÂ`¯ReturnStatementÍ	ÏÍ	İNªIdentifierÍ	ÖÍ	Ü¦result]«CatchClauseÍ	òÍ
+wNªIdentifierÍ	ùÍ	ú¡eO®BlockStatementÍ	üÍ
+w’R³ExpressionStatementÍ
+Í
+RW®CallExpressionÍ
+Í
+QT°MemberExpressionÍ
+Í
+NªIdentifierÍ
+Í
+¥hilogNªIdentifierÍ
+Í
+¥errorÂÂ”V§LiteralÍ
+Í
+ ¦0x0000NªIdentifierÍ
+Í
+"£TAGV§LiteralÍ
+$Í
+E¿getAppMemInfo error: %{public}sÙ!'getAppMemInfo error: %{public}s'W®CallExpressionÍ
+GÍ
+PNªIdentifierÍ
+GÍ
+M¦String‘NªIdentifierÍ
+NÍ
+O¡eÂÂ`¯ReturnStatementÍ
+`Í
+lV§LiteralÍ
+gÍ
+kÀ¤nullÀP°MethodDefinitionÍ
+„Í/ÂÂNªIdentifierÍ
+„Í
+’®getMemoryLimit¦methodQ²FunctionExpressionÍ
+’Í/ÀÂÂÂO®BlockStatementÍ
+•Í/’^«IfStatementÍ
+ Í
+Ğ[¯UnaryExpressionÍ
+¤Í
+µ¡!ÃT°MemberExpressionÍ
+¥Í
+µU®ThisExpressionÍ
+¥Í
+©NªIdentifierÍ
+ªÍ
+µ«isAvailableÂÂ`¯ReturnStatementÍ
+ÄÍ
+ĞV§LiteralÍ
+ËÍ
+ÏÀ¤nullÀX¬TryStatementÍ
+ÚÍ(O®BlockStatementÍ
+ŞÍ˜“Y³VariableDeclarationÍ
+íÍ‘Z²VariableDeclaratorÍ
+óÍNªIdentifierÍ
+óÍ
+ù¦resultW®CallExpressionÍ
+üÍT°MemberExpressionÍ
+üÍNªIdentifierÍ
+üÍ§sysinfoNªIdentifierÍÍ®getMemoryLimitÂÂÂ¥constR³ExpressionStatementÍ#ÍqW®CallExpressionÍ#ÍpT°MemberExpressionÍ#Í.NªIdentifierÍ#Í(¥hilogNªIdentifierÍ)Í.¥debugÂÂ”V§LiteralÍ/Í5 ¦0x0000NªIdentifierÍ7Í:£TAGV§LiteralÍ<Í^Ù MemoryLimit: rssLimit=%{public}dÙ"'MemoryLimit: rssLimit=%{public}d'T°MemberExpressionÍ`ÍoNªIdentifierÍ`Íf¦resultNªIdentifierÍgÍo¨rssLimitÂÂÂ`¯ReturnStatementÍÍNªIdentifierÍ†ÍŒ¦result]«CatchClauseÍ¢Í(NªIdentifierÍ©Íª¡eO®BlockStatementÍ¬Í(’R³ExpressionStatementÍ»ÍW®CallExpressionÍ»ÍT°MemberExpressionÍ»ÍÆNªIdentifierÍ»ÍÀ¥hilogNªIdentifierÍÁÍÆ¥errorÂÂ”V§LiteralÍÇÍÍ ¦0x0000NªIdentifierÍÏÍÒ£TAGV§LiteralÍÔÍöÙ getMemoryLimit error: %{public}sÙ"'getMemoryLimit error: %{public}s'W®CallExpressionÍøÍNªIdentifierÍøÍş¦String‘NªIdentifierÍÿÍ ¡eÂÂ`¯ReturnStatementÍÍV§LiteralÍÍÀ¤nullÀP°MethodDefinitionÍ5ÍçÂÂNªIdentifierÍ5ÍF±getSystemCpuUsage¦methodQ²FunctionExpressionÍFÍçÀÂÂÂO®BlockStatementÍIÍç’^«IfStatementÍTÍ„[¯UnaryExpressionÍXÍi¡!ÃT°MemberExpressionÍYÍiU®ThisExpressionÍYÍ]NªIdentifierÍ^Íi«isAvailableÂÂ`¯ReturnStatementÍxÍ„V§LiteralÍÍƒÀ¤nullÀX¬TryStatementÍÍàO®BlockStatementÍ’ÍM“Y³VariableDeclarationÍ¡ÍÌ‘Z²VariableDeclaratorÍ§ÍËNªIdentifierÍ§Í­¦resultW®CallExpressionÍ°ÍËT°MemberExpressionÍ°ÍÉNªIdentifierÍ°Í·§sysinfoNªIdentifierÍ¸ÍÉ±getSystemCpuUsageÂÂÂ¥constR³ExpressionStatementÍÚÍ&W®CallExpressionÍÚÍ%T°MemberExpressionÍÚÍåNªIdentifierÍÚÍß¥hilogNªIdentifierÍàÍå¥debugÂÂ”V§LiteralÍæÍì ¦0x0000NªIdentifierÍîÍñ£TAGV§LiteralÍóÍ¼SystemCpuUsage: %{public}f%%¾'SystemCpuUsage: %{public}f%%'T°MemberExpressionÍÍ$NªIdentifierÍÍ¦resultNªIdentifierÍÍ$ªpercentageÂÂÂ`¯ReturnStatementÍ4ÍBNªIdentifierÍ;ÍA¦result]«CatchClauseÍWÍàNªIdentifierÍ^Í_¡eO®BlockStatementÍaÍà’R³ExpressionStatementÍpÍ»W®CallExpressionÍpÍºT°MemberExpressionÍpÍ{NªIdentifierÍpÍu¥hilogNªIdentifierÍvÍ{¥errorÂÂ”V§LiteralÍ|Í‚ ¦0x0000NªIdentifierÍ„Í‡£TAGV§LiteralÍ‰Í®Ù#getSystemCpuUsage error: %{public}sÙ%'getSystemCpuUsage error: %{public}s'W®CallExpressionÍ°Í¹NªIdentifierÍ°Í¶¦String‘NªIdentifierÍ·Í¸¡eÂÂ`¯ReturnStatementÍÉÍÕV§LiteralÍĞÍÔÀ¤nullÀP°MethodDefinitionÍíÍ“ÂÂNªIdentifierÍíÍû®getAppCpuUsage¦methodQ²FunctionExpressionÍûÍ“ÀÂÂÂO®BlockStatementÍşÍ“’^«IfStatementÍ	Í9[¯UnaryExpressionÍÍ¡!ÃT°MemberExpressionÍÍU®ThisExpressionÍÍNªIdentifierÍÍ«isAvailableÂÂ`¯ReturnStatementÍ-Í9V§LiteralÍ4Í8À¤nullÀX¬TryStatementÍCÍŒO®BlockStatementÍGÍü“Y³VariableDeclarationÍVÍ~‘Z²VariableDeclaratorÍ\Í}NªIdentifierÍ\Íb¦resultW®CallExpressionÍeÍ}T°MemberExpressionÍeÍ{NªIdentifierÍeÍl§sysinfoNªIdentifierÍmÍ{®getAppCpuUsageÂÂÂ¥constR³ExpressionStatementÍŒÍÕW®CallExpressionÍŒÍÔT°MemberExpressionÍŒÍ—NªIdentifierÍŒÍ‘¥hilogNªIdentifierÍ’Í—¥debugÂÂ”V§LiteralÍ˜Í ¦0x0000NªIdentifierÍ Í££TAGV§LiteralÍ¥ÍÀ¹AppCpuUsage: %{public}f%%»'AppCpuUsage: %{public}f%%'T°MemberExpressionÍÂÍÓNªIdentifierÍÂÍÈ¦resultNªIdentifierÍÉÍÓªpercentageÂÂÂ`¯ReturnStatementÍãÍñNªIdentifierÍêÍğ¦result]«CatchClauseÍÍŒNªIdentifierÍÍ¡eO®BlockStatementÍÍŒ’R³ExpressionStatementÍÍgW®CallExpressionÍÍfT°MemberExpressionÍÍ*NªIdentifierÍÍ$¥hilogNªIdentifierÍ%Í*¥errorÂÂ”V§LiteralÍ+Í1 ¦0x0000NªIdentifierÍ3Í6£TAGV§LiteralÍ8ÍZÙ getAppCpuUsage error: %{public}sÙ"'getAppCpuUsage error: %{public}s'W®CallExpressionÍ\ÍeNªIdentifierÍ\Íb¦String‘NªIdentifierÍcÍd¡eÂÂ`¯ReturnStatementÍuÍV§LiteralÍ|Í€À¤nullÀP°MethodDefinitionÍ™ÍFÂÂNªIdentifierÍ™Í§®getCpuUsageAll¦methodQ²FunctionExpressionÍ§ÍFÀÂÂÂO®BlockStatementÍªÍF’^«IfStatementÍµÍå[¯UnaryExpressionÍ¹ÍÊ¡!ÃT°MemberExpressionÍºÍÊU®ThisExpressionÍºÍ¾NªIdentifierÍ¿ÍÊ«isAvailableÂÂ`¯ReturnStatementÍÙÍåV§LiteralÍàÍäÀ¤nullÀX¬TryStatementÍïÍ?O®BlockStatementÍóÍ¯“Y³VariableDeclarationÍÍ*‘Z²VariableDeclaratorÍÍ)NªIdentifierÍÍ¦resultW®CallExpressionÍÍ)T°MemberExpressionÍÍ'NªIdentifierÍÍ§sysinfoNªIdentifierÍÍ'®getCpuUsageAllÂÂÂ¥constR³ExpressionStatementÍ8ÍˆW®CallExpressionÍ8Í‡T°MemberExpressionÍ8ÍCNªIdentifierÍ8Í=¥hilogNªIdentifierÍ>ÍC¥debugÂÂ”V§LiteralÍDÍJ ¦0x0000NªIdentifierÍLÍO£TAGV§LiteralÍQÍr¿CpuUsageAll: threads=%{public}dÙ!'CpuUsageAll: threads=%{public}d'T°MemberExpressionÍtÍ†NªIdentifierÍtÍz¦resultNªIdentifierÍ{Í†«threadCountÂÂÂ`¯ReturnStatementÍ–Í¤NªIdentifierÍÍ£¦result]«CatchClauseÍ¹Í?NªIdentifierÍÀÍÁ¡eO®BlockStatementÍÃÍ?’R³ExpressionStatementÍÒÍW®CallExpressionÍÒÍT°MemberExpressionÍÒÍİNªIdentifierÍÒÍ×¥hilogNªIdentifierÍØÍİ¥errorÂÂ”V§LiteralÍŞÍä ¦0x0000NªIdentifierÍæÍé£TAGV§LiteralÍëÍÙ getCpuUsageAll error: %{public}sÙ"'getCpuUsageAll error: %{public}s'W®CallExpressionÍÍNªIdentifierÍÍ¦String‘NªIdentifierÍÍ¡eÂÂ`¯ReturnStatementÍ(Í4V§LiteralÍ/Í3À¤nullÀP°MethodDefinitionÍLÍÂÂNªIdentifierÍLÍ\°getGpuMemoryInfo¦methodQ²FunctionExpressionÍ\ÍÀÂÂÂO®BlockStatementÍ_Í’^«IfStatementÍjÍš[¯UnaryExpressionÍnÍ¡!ÃT°MemberExpressionÍoÍU®ThisExpressionÍoÍsNªIdentifierÍtÍ«isAvailableÂÂ`¯ReturnStatementÍÍšV§LiteralÍ•Í™À¤nullÀX¬TryStatementÍ¤ÍO®BlockStatementÍ¨Í~“Y³VariableDeclarationÍ·Íá‘Z²VariableDeclaratorÍ½ÍàNªIdentifierÍ½ÍÃ¦resultW®CallExpressionÍÆÍàT°MemberExpressionÍÆÍŞNªIdentifierÍÆÍÍ§sysinfoNªIdentifierÍÎÍŞ°getGpuMemoryInfoÂÂÂ¥constR³ExpressionStatementÍïÍWW®CallExpressionÍïÍVT°MemberExpressionÍïÍúNªIdentifierÍïÍô¥hilogNªIdentifierÍõÍú¥debugÂÂ•V§LiteralÍûÍ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍÍ:Ù0GpuMemoryInfo: total=%{public}d, used=%{public}dÙ2'GpuMemoryInfo: total=%{public}d, used=%{public}d'T°MemberExpressionÍ<ÍHNªIdentifierÍ<ÍB¦resultNªIdentifierÍCÍH¥totalÂÂT°MemberExpressionÍJÍUNªIdentifierÍJÍP¦resultNªIdentifierÍQÍU¤usedÂÂÂ`¯ReturnStatementÍeÍsNªIdentifierÍlÍr¦result]«CatchClauseÍˆÍNªIdentifierÍÍ¡eO®BlockStatementÍ’Í’R³ExpressionStatementÍ¡ÍëW®CallExpressionÍ¡ÍêT°MemberExpressionÍ¡Í¬NªIdentifierÍ¡Í¦¥hilogNªIdentifierÍ§Í¬¥errorÂÂ”V§LiteralÍ­Í³ ¦0x0000NªIdentifierÍµÍ¸£TAGV§LiteralÍºÍŞÙ"getGpuMemoryInfo error: %{public}sÙ$'getGpuMemoryInfo error: %{public}s'W®CallExpressionÍàÍéNªIdentifierÍàÍæ¦String‘NªIdentifierÍçÍè¡eÂÂ`¯ReturnStatementÍùÍV§LiteralÍ ÍÀ¤nullÀP°MethodDefinitionÍJÍûÂÂNªIdentifierÍJÍ[±getAllSensorInfos¦methodQ²FunctionExpressionÍ[ÍûÀÂÂÂO®BlockStatementÍ^Íû’^«IfStatementÍiÍ™[¯UnaryExpressionÍmÍ~¡!ÃT°MemberExpressionÍnÍ~U®ThisExpressionÍnÍrNªIdentifierÍsÍ~«isAvailableÂÂ`¯ReturnStatementÍÍ™V§LiteralÍ”Í˜À¤nullÀX¬TryStatementÍ£ÍôO®BlockStatementÍ§Ía“Y³VariableDeclarationÍ¶Íá‘Z²VariableDeclaratorÍ¼ÍàNªIdentifierÍ¼ÍÂ¦resultW®CallExpressionÍÅÍàT°MemberExpressionÍÅÍŞNªIdentifierÍÅÍÌ§sysinfoNªIdentifierÍÍÍŞ±getAllSensorInfosÂÂÂ¥constR³ExpressionStatementÍïÍ:W®CallExpressionÍïÍ9T°MemberExpressionÍïÍúNªIdentifierÍïÍô¥hilogNªIdentifierÍõÍú¥debugÂÂ”V§LiteralÍûÍ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍÍ*Ù AllSensorInfos: count=%{public}dÙ"'AllSensorInfos: count=%{public}d'T°MemberExpressionÍ,Í8NªIdentifierÍ,Í2¦resultNªIdentifierÍ3Í8¥countÂÂÂ`¯ReturnStatementÍHÍVNªIdentifierÍOÍU¦result]«CatchClauseÍkÍôNªIdentifierÍrÍs¡eO®BlockStatementÍuÍô’R³ExpressionStatementÍ„ÍÏW®CallExpressionÍ„ÍÎT°MemberExpressionÍ„ÍNªIdentifierÍ„Í‰¥hilogNªIdentifierÍŠÍ¥errorÂÂ”V§LiteralÍÍ– ¦0x0000NªIdentifierÍ˜Í›£TAGV§LiteralÍÍÂÙ#getAllSensorInfos error: %{public}sÙ%'getAllSensorInfos error: %{public}s'W®CallExpressionÍÄÍÍNªIdentifierÍÄÍÊ¦String‘NªIdentifierÍËÍÌ¡eÂÂ`¯ReturnStatementÍİÍéV§LiteralÍäÍèÀ¤nullÀP°MethodDefinitionÍÍĞÂÂNªIdentifierÍÍ´getAccelerometerData¦methodQ²FunctionExpressionÍÍĞÀÂÂÂO®BlockStatementÍÍĞ’^«IfStatementÍ#ÍS[¯UnaryExpressionÍ'Í8¡!ÃT°MemberExpressionÍ(Í8U®ThisExpressionÍ(Í,NªIdentifierÍ-Í8«isAvailableÂÂ`¯ReturnStatementÍGÍSV§LiteralÍNÍRÀ¤nullÀX¬TryStatementÍ]ÍÉO®BlockStatementÍaÍ3“Y³VariableDeclarationÍpÍ‘Z²VariableDeclaratorÍvÍNªIdentifierÍvÍ|¦resultW®CallExpressionÍÍT°MemberExpressionÍÍ›NªIdentifierÍÍ†§sysinfoNªIdentifierÍ‡Í›´getAccelerometerDataÂÂÂ¥constR³ExpressionStatementÍ¬ÍW®CallExpressionÍ¬ÍT°MemberExpressionÍ¬Í·NªIdentifierÍ¬Í±¥hilogNªIdentifierÍ²Í·¥debugÂÂ”V§LiteralÍ¸Í¾ ¦0x0000NªIdentifierÍÀÍÃ£TAGV§LiteralÍÅÍëÙ$AccelerometerData: values=%{public}sÙ&'AccelerometerData: values=%{public}s'W®CallExpressionÍíÍ
+T°MemberExpressionÍíÍûNªIdentifierÍíÍñ¤JSONNªIdentifierÍòÍû©stringifyÂÂ‘T°MemberExpressionÍüÍ	NªIdentifierÍüÍ¦resultNªIdentifierÍÍ	¦valuesÂÂÂÂ`¯ReturnStatementÍÍ(NªIdentifierÍ!Í'¦result]«CatchClauseÍ=ÍÉNªIdentifierÍDÍE¡eO®BlockStatementÍGÍÉ’R³ExpressionStatementÍVÍ¤W®CallExpressionÍVÍ£T°MemberExpressionÍVÍaNªIdentifierÍVÍ[¥hilogNªIdentifierÍ\Ía¥errorÂÂ”V§LiteralÍbÍh ¦0x0000NªIdentifierÍjÍm£TAGV§LiteralÍoÍ—Ù&getAccelerometerData error: %{public}sÙ('getAccelerometerData error: %{public}s'W®CallExpressionÍ™Í¢NªIdentifierÍ™ÍŸ¦String‘NªIdentifierÍ Í¡¡eÂÂ`¯ReturnStatementÍ²Í¾V§LiteralÍ¹Í½À¤nullÀP°MethodDefinitionÍÖÍ•ÂÂNªIdentifierÍÖÍæ°getGyroscopeData¦methodQ²FunctionExpressionÍæÍ•ÀÂÂÂO®BlockStatementÍéÍ•’^«IfStatementÍôÍ$[¯UnaryExpressionÍøÍ	¡!ÃT°MemberExpressionÍùÍ	U®ThisExpressionÍùÍıNªIdentifierÍşÍ	«isAvailableÂÂ`¯ReturnStatementÍÍ$V§LiteralÍÍ#À¤nullÀX¬TryStatementÍ.ÍO®BlockStatementÍ2Íü“Y³VariableDeclarationÍAÍk‘Z²VariableDeclaratorÍGÍjNªIdentifierÍGÍM¦resultW®CallExpressionÍPÍjT°MemberExpressionÍPÍhNªIdentifierÍPÍW§sysinfoNªIdentifierÍXÍh°getGyroscopeDataÂÂÂ¥constR³ExpressionStatementÍyÍÕW®CallExpressionÍyÍÔT°MemberExpressionÍyÍ„NªIdentifierÍyÍ~¥hilogNªIdentifierÍÍ„¥debugÂÂ”V§LiteralÍ…Í‹ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍ’Í´Ù GyroscopeData: values=%{public}sÙ"'GyroscopeData: values=%{public}s'W®CallExpressionÍ¶ÍÓT°MemberExpressionÍ¶ÍÄNªIdentifierÍ¶Íº¤JSONNªIdentifierÍ»ÍÄ©stringifyÂÂ‘T°MemberExpressionÍÅÍÒNªIdentifierÍÅÍË¦resultNªIdentifierÍÌÍÒ¦valuesÂÂÂÂ`¯ReturnStatementÍãÍñNªIdentifierÍêÍğ¦result]«CatchClauseÍÍNªIdentifierÍÍ¡eO®BlockStatementÍÍ’R³ExpressionStatementÍÍiW®CallExpressionÍÍhT°MemberExpressionÍÍ*NªIdentifierÍÍ$¥hilogNªIdentifierÍ%Í*¥errorÂÂ”V§LiteralÍ+Í1 ¦0x0000NªIdentifierÍ3Í6£TAGV§LiteralÍ8Í\Ù"getGyroscopeData error: %{public}sÙ$'getGyroscopeData error: %{public}s'W®CallExpressionÍ^ÍgNªIdentifierÍ^Íd¦String‘NªIdentifierÍeÍf¡eÂÂ`¯ReturnStatementÍwÍƒV§LiteralÍ~Í‚À¤nullÀP°MethodDefinitionÍ›ÍfÂÂNªIdentifierÍ›Í®³getMagnetometerData¦methodQ²FunctionExpressionÍ®ÍfÀÂÂÂO®BlockStatementÍ±Íf’^«IfStatementÍ¼Íì[¯UnaryExpressionÍÀÍÑ¡!ÃT°MemberExpressionÍÁÍÑU®ThisExpressionÍÁÍÅNªIdentifierÍÆÍÑ«isAvailableÂÂ`¯ReturnStatementÍàÍìV§LiteralÍçÍëÀ¤nullÀX¬TryStatementÍöÍ_O®BlockStatementÍúÍÊ“Y³VariableDeclarationÍ	Í6‘Z²VariableDeclaratorÍÍ5NªIdentifierÍÍ¦resultW®CallExpressionÍÍ5T°MemberExpressionÍÍ3NªIdentifierÍÍ§sysinfoNªIdentifierÍ Í3³getMagnetometerDataÂÂÂ¥constR³ExpressionStatementÍDÍ£W®CallExpressionÍDÍ¢T°MemberExpressionÍDÍONªIdentifierÍDÍI¥hilogNªIdentifierÍJÍO¥debugÂÂ”V§LiteralÍPÍV ¦0x0000NªIdentifierÍXÍ[£TAGV§LiteralÍ]Í‚Ù#MagnetometerData: values=%{public}sÙ%'MagnetometerData: values=%{public}s'W®CallExpressionÍ„Í¡T°MemberExpressionÍ„Í’NªIdentifierÍ„Íˆ¤JSONNªIdentifierÍ‰Í’©stringifyÂÂ‘T°MemberExpressionÍ“Í NªIdentifierÍ“Í™¦resultNªIdentifierÍšÍ ¦valuesÂÂÂÂ`¯ReturnStatementÍ±Í¿NªIdentifierÍ¸Í¾¦result]«CatchClauseÍÔÍ_NªIdentifierÍÛÍÜ¡eO®BlockStatementÍŞÍ_’R³ExpressionStatementÍíÍ:W®CallExpressionÍíÍ9T°MemberExpressionÍíÍøNªIdentifierÍíÍò¥hilogNªIdentifierÍóÍø¥errorÂÂ”V§LiteralÍùÍÿ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍÍ-Ù%getMagnetometerData error: %{public}sÙ''getMagnetometerData error: %{public}s'W®CallExpressionÍ/Í8NªIdentifierÍ/Í5¦String‘NªIdentifierÍ6Í7¡eÂÂ`¯ReturnStatementÍHÍTV§LiteralÍOÍSÀ¤nullÀP°MethodDefinitionÍlÍÂÂNªIdentifierÍlÍx¬getLightData¦methodQ²FunctionExpressionÍxÍÀÂÂÂO®BlockStatementÍ{Í’^«IfStatementÍ†Í¶[¯UnaryExpressionÍŠÍ›¡!ÃT°MemberExpressionÍ‹Í›U®ThisExpressionÍ‹ÍNªIdentifierÍÍ›«isAvailableÂÂ`¯ReturnStatementÍªÍ¶V§LiteralÍ±ÍµÀ¤nullÀX¬TryStatementÍÀÍO®BlockStatementÍÄÍ†“Y³VariableDeclarationÍÓÍù‘Z²VariableDeclaratorÍÙÍøNªIdentifierÍÙÍß¦resultW®CallExpressionÍâÍøT°MemberExpressionÍâÍöNªIdentifierÍâÍé§sysinfoNªIdentifierÍêÍö¬getLightDataÂÂÂ¥constR³ExpressionStatementÍÍ_W®CallExpressionÍÍ^T°MemberExpressionÍÍNªIdentifierÍÍ¥hilogNªIdentifierÍÍ¥debugÂÂ”V§LiteralÍÍ ¦0x0000NªIdentifierÍÍ£TAGV§LiteralÍ Í>¼LightData: values=%{public}s¾'LightData: values=%{public}s'W®CallExpressionÍ@Í]T°MemberExpressionÍ@ÍNNªIdentifierÍ@ÍD¤JSONNªIdentifierÍEÍN©stringifyÂÂ‘T°MemberExpressionÍOÍ\NªIdentifierÍOÍU¦resultNªIdentifierÍVÍ\¦valuesÂÂÂÂ`¯ReturnStatementÍmÍ{NªIdentifierÍtÍz¦result]«CatchClauseÍÍNªIdentifierÍ—Í˜¡eO®BlockStatementÍšÍ’R³ExpressionStatementÍ©ÍïW®CallExpressionÍ©ÍîT°MemberExpressionÍ©Í´NªIdentifierÍ©Í®¥hilogNªIdentifierÍ¯Í´¥errorÂÂ”V§LiteralÍµÍ» ¦0x0000NªIdentifierÍ½ÍÀ£TAGV§LiteralÍÂÍâ¾getLightData error: %{public}sÙ 'getLightData error: %{public}s'W®CallExpressionÍäÍíNªIdentifierÍäÍê¦String‘NªIdentifierÍëÍì¡eÂÂ`¯ReturnStatementÍıÍ	V§LiteralÍÍÀ¤nullÀP°MethodDefinitionÍ!ÍàÂÂNªIdentifierÍ!Í1°getProximityData¦methodQ²FunctionExpressionÍ1ÍàÀÂÂÂO®BlockStatementÍ4Íà’^«IfStatementÍ?Ío[¯UnaryExpressionÍCÍT¡!ÃT°MemberExpressionÍDÍTU®ThisExpressionÍDÍHNªIdentifierÍIÍT«isAvailableÂÂ`¯ReturnStatementÍcÍoV§LiteralÍjÍnÀ¤nullÀX¬TryStatementÍyÍÙO®BlockStatementÍ}ÍG“Y³VariableDeclarationÍŒÍ¶‘Z²VariableDeclaratorÍ’ÍµNªIdentifierÍ’Í˜¦resultW®CallExpressionÍ›ÍµT°MemberExpressionÍ›Í³NªIdentifierÍ›Í¢§sysinfoNªIdentifierÍ£Í³°getProximityDataÂÂÂ¥constR³ExpressionStatementÍÄÍ W®CallExpressionÍÄÍT°MemberExpressionÍÄÍÏNªIdentifierÍÄÍÉ¥hilogNªIdentifierÍÊÍÏ¥debugÂÂ”V§LiteralÍĞÍÖ ¦0x0000NªIdentifierÍØÍÛ£TAGV§LiteralÍİÍÿÙ ProximityData: values=%{public}sÙ"'ProximityData: values=%{public}s'W®CallExpressionÍÍT°MemberExpressionÍÍNªIdentifierÍÍ¤JSONNªIdentifierÍÍ©stringifyÂÂ‘T°MemberExpressionÍÍNªIdentifierÍÍ¦resultNªIdentifierÍÍ¦valuesÂÂÂÂ`¯ReturnStatementÍ.Í<NªIdentifierÍ5Í;¦result]«CatchClauseÍQÍÙNªIdentifierÍXÍY¡eO®BlockStatementÍ[ÍÙ’R³ExpressionStatementÍjÍ´W®CallExpressionÍjÍ³T°MemberExpressionÍjÍuNªIdentifierÍjÍo¥hilogNªIdentifierÍpÍu¥errorÂÂ”V§LiteralÍvÍ| ¦0x0000NªIdentifierÍ~Í£TAGV§LiteralÍƒÍ§Ù"getProximityData error: %{public}sÙ$'getProximityData error: %{public}s'W®CallExpressionÍ©Í²NªIdentifierÍ©Í¯¦String‘NªIdentifierÍ°Í±¡eÂÂ`¯ReturnStatementÍÂÍÎV§LiteralÍÉÍÍÀ¤nullÀP°MethodDefinitionÍæÍ¥ÂÂNªIdentifierÍæÍö°getBarometerData¦methodQ²FunctionExpressionÍöÍ¥ÀÂÂÂO®BlockStatementÍùÍ¥’^«IfStatementÍÍ4[¯UnaryExpressionÍÍ¡!ÃT°MemberExpressionÍ	ÍU®ThisExpressionÍ	ÍNªIdentifierÍÍ«isAvailableÂÂ`¯ReturnStatementÍ(Í4V§LiteralÍ/Í3À¤nullÀX¬TryStatementÍ>ÍO®BlockStatementÍBÍ“Y³VariableDeclarationÍQÍ{‘Z²VariableDeclaratorÍWÍzNªIdentifierÍWÍ]¦resultW®CallExpressionÍ`ÍzT°MemberExpressionÍ`ÍxNªIdentifierÍ`Íg§sysinfoNªIdentifierÍhÍx°getBarometerDataÂÂÂ¥constR³ExpressionStatementÍ‰ÍåW®CallExpressionÍ‰ÍäT°MemberExpressionÍ‰Í”NªIdentifierÍ‰Í¥hilogNªIdentifierÍÍ”¥debugÂÂ”V§LiteralÍ•Í› ¦0x0000NªIdentifierÍÍ £TAGV§LiteralÍ¢ÍÄÙ BarometerData: values=%{public}sÙ"'BarometerData: values=%{public}s'W®CallExpressionÍÆÍãT°MemberExpressionÍÆÍÔNªIdentifierÍÆÍÊ¤JSONNªIdentifierÍËÍÔ©stringifyÂÂ‘T°MemberExpressionÍÕÍâNªIdentifierÍÕÍÛ¦resultNªIdentifierÍÜÍâ¦valuesÂÂÂÂ`¯ReturnStatementÍóÍNªIdentifierÍúÍ ¦result]«CatchClauseÍÍNªIdentifierÍÍ¡eO®BlockStatementÍ Í’R³ExpressionStatementÍ/ÍyW®CallExpressionÍ/ÍxT°MemberExpressionÍ/Í:NªIdentifierÍ/Í4¥hilogNªIdentifierÍ5Í:¥errorÂÂ”V§LiteralÍ;ÍA ¦0x0000NªIdentifierÍCÍF£TAGV§LiteralÍHÍlÙ"getBarometerData error: %{public}sÙ$'getBarometerData error: %{public}s'W®CallExpressionÍnÍwNªIdentifierÍnÍt¦String‘NªIdentifierÍuÍv¡eÂÂ`¯ReturnStatementÍ‡Í“V§LiteralÍÍ’À¤nullÀP°MethodDefinitionÍ«Í!rÂÂNªIdentifierÍ«Í½²getTemperatureData¦methodQ²FunctionExpressionÍ½Í!rÀÂÂÂO®BlockStatementÍÀÍ!r’^«IfStatementÍËÍû[¯UnaryExpressionÍÏÍà¡!ÃT°MemberExpressionÍĞÍàU®ThisExpressionÍĞÍÔNªIdentifierÍÕÍà«isAvailableÂÂ`¯ReturnStatementÍïÍûV§LiteralÍöÍúÀ¤nullÀX¬TryStatementÍ Í!kO®BlockStatementÍ 	Í ×“Y³VariableDeclarationÍ Í D‘Z²VariableDeclaratorÍ Í CNªIdentifierÍ Í $¦resultW®CallExpressionÍ 'Í CT°MemberExpressionÍ 'Í ANªIdentifierÍ 'Í .§sysinfoNªIdentifierÍ /Í A²getTemperatureDataÂÂÂ¥constR³ExpressionStatementÍ RÍ °W®CallExpressionÍ RÍ ¯T°MemberExpressionÍ RÍ ]NªIdentifierÍ RÍ W¥hilogNªIdentifierÍ XÍ ]¥debugÂÂ”V§LiteralÍ ^Í d ¦0x0000NªIdentifierÍ fÍ i£TAGV§LiteralÍ kÍ Ù"TemperatureData: values=%{public}sÙ$'TemperatureData: values=%{public}s'W®CallExpressionÍ ‘Í ®T°MemberExpressionÍ ‘Í ŸNªIdentifierÍ ‘Í •¤JSONNªIdentifierÍ –Í Ÿ©stringifyÂÂ‘T°MemberExpressionÍ  Í ­NªIdentifierÍ  Í ¦¦resultNªIdentifierÍ §Í ­¦valuesÂÂÂÂ`¯ReturnStatementÍ ¾Í ÌNªIdentifierÍ ÅÍ Ë¦result]«CatchClauseÍ áÍ!kNªIdentifierÍ èÍ é¡eO®BlockStatementÍ ëÍ!k’R³ExpressionStatementÍ úÍ!FW®CallExpressionÍ úÍ!ET°MemberExpressionÍ úÍ!NªIdentifierÍ úÍ ÿ¥hilogNªIdentifierÍ! Í!¥errorÂÂ”V§LiteralÍ!Í! ¦0x0000NªIdentifierÍ!Í!£TAGV§LiteralÍ!Í!9Ù$getTemperatureData error: %{public}sÙ&'getTemperatureData error: %{public}s'W®CallExpressionÍ!;Í!DNªIdentifierÍ!;Í!A¦String‘NªIdentifierÍ!BÍ!C¡eÂÂ`¯ReturnStatementÍ!TÍ!`V§LiteralÍ![Í!_À¤nullÀP°MethodDefinitionÍ!xÍ#3ÂÂNªIdentifierÍ!xÍ!‡¯getHumidityData¦methodQ²FunctionExpressionÍ!‡Í#3ÀÂÂÂO®BlockStatementÍ!ŠÍ#3’^«IfStatementÍ!•Í!Å[¯UnaryExpressionÍ!™Í!ª¡!ÃT°MemberExpressionÍ!šÍ!ªU®ThisExpressionÍ!šÍ!NªIdentifierÍ!ŸÍ!ª«isAvailableÂÂ`¯ReturnStatementÍ!¹Í!ÅV§LiteralÍ!ÀÍ!ÄÀ¤nullÀX¬TryStatementÍ!ÏÍ#,O®BlockStatementÍ!ÓÍ"›“Y³VariableDeclarationÍ!âÍ"‘Z²VariableDeclaratorÍ!èÍ"
+NªIdentifierÍ!èÍ!î¦resultW®CallExpressionÍ!ñÍ"
+T°MemberExpressionÍ!ñÍ"NªIdentifierÍ!ñÍ!ø§sysinfoNªIdentifierÍ!ùÍ"¯getHumidityDataÂÂÂ¥constR³ExpressionStatementÍ"Í"tW®CallExpressionÍ"Í"sT°MemberExpressionÍ"Í"$NªIdentifierÍ"Í"¥hilogNªIdentifierÍ"Í"$¥debugÂÂ”V§LiteralÍ"%Í"+ ¦0x0000NªIdentifierÍ"-Í"0£TAGV§LiteralÍ"2Í"S¿HumidityData: values=%{public}sÙ!'HumidityData: values=%{public}s'W®CallExpressionÍ"UÍ"rT°MemberExpressionÍ"UÍ"cNªIdentifierÍ"UÍ"Y¤JSONNªIdentifierÍ"ZÍ"c©stringifyÂÂ‘T°MemberExpressionÍ"dÍ"qNªIdentifierÍ"dÍ"j¦resultNªIdentifierÍ"kÍ"q¦valuesÂÂÂÂ`¯ReturnStatementÍ"‚Í"NªIdentifierÍ"‰Í"¦result]«CatchClauseÍ"¥Í#,NªIdentifierÍ"¬Í"­¡eO®BlockStatementÍ"¯Í#,’R³ExpressionStatementÍ"¾Í#W®CallExpressionÍ"¾Í#T°MemberExpressionÍ"¾Í"ÉNªIdentifierÍ"¾Í"Ã¥hilogNªIdentifierÍ"ÄÍ"É¥errorÂÂ”V§LiteralÍ"ÊÍ"Ğ ¦0x0000NªIdentifierÍ"ÒÍ"Õ£TAGV§LiteralÍ"×Í"úÙ!getHumidityData error: %{public}sÙ#'getHumidityData error: %{public}s'W®CallExpressionÍ"üÍ#NªIdentifierÍ"üÍ#¦String‘NªIdentifierÍ#Í#¡eÂÂ`¯ReturnStatementÍ#Í#!V§LiteralÍ#Í# À¤nullÀÀL¶ExportNamedDeclarationÍ#CÍ#tY³VariableDeclarationÍ#JÍ#t‘Z²VariableDeclaratorÍ#PÍ#sNªIdentifierÍ#PÍ#Y©nativeApiW®CallExpressionÍ#\Í#sT°MemberExpressionÍ#\Í#qNªIdentifierÍ#\Í#e©NativeApiNªIdentifierÍ#fÍ#q«getInstanceÂÂÂ¥constÀ’Ôra•¤type¥start£endªspecifiers¦source±ImportDeclaration $‘Ôrb”¤type¥start£end¥local¶ImportDefaultSpecifierNªIdentifier§sysinfoV§Literal#­libsysinfo.so¯'libsysinfo.so'a±ImportDeclaration&ÌF‘b¶ImportDefaultSpecifier-2NªIdentifier-2¥hilogV§Literal8ÌE«@ohos.hilog­"@ohos.hilog"

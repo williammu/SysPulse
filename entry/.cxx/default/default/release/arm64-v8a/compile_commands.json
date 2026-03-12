@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/Users/bytedance/dev/huawei_sysinfo/entry/.cxx/default/default/release/arm64-v8a",
+  "command": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos --gcc-toolchain=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm --sysroot=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot -Dsysinfo_EXPORTS -I/Applications/DevEco-Studio.app/Contents/sdk/default/hms/native/sysroot/usr/include -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++17 -D__MUSL__ -O2 -DNDEBUG  -fPIC -o CMakeFiles/sysinfo.dir/sysinfo.cpp.o -c /Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/sysinfo.cpp",
+  "file": "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/sysinfo.cpp",
+  "output": "CMakeFiles/sysinfo.dir/sysinfo.cpp.o"
+},
+{
+  "directory": "/Users/bytedance/dev/huawei_sysinfo/entry/.cxx/default/default/release/arm64-v8a",
+  "command": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos --gcc-toolchain=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm --sysroot=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot -Dsysinfo_EXPORTS -I/Applications/DevEco-Studio.app/Contents/sdk/default/hms/native/sysroot/usr/include -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++17 -D__MUSL__ -O2 -DNDEBUG  -fPIC -o CMakeFiles/sysinfo.dir/hidebug_module.cpp.o -c /Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/hidebug_module.cpp",
+  "file": "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/hidebug_module.cpp",
+  "output": "CMakeFiles/sysinfo.dir/hidebug_module.cpp.o"
+},
+{
+  "directory": "/Users/bytedance/dev/huawei_sysinfo/entry/.cxx/default/default/release/arm64-v8a",
+  "command": "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm/bin/clang++ --target=aarch64-linux-ohos --gcc-toolchain=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/llvm --sysroot=/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/native/sysroot -Dsysinfo_EXPORTS -I/Applications/DevEco-Studio.app/Contents/sdk/default/hms/native/sysroot/usr/include -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp -I/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/include -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security  -std=c++17 -D__MUSL__ -O2 -DNDEBUG  -fPIC -o CMakeFiles/sysinfo.dir/sensor_module.cpp.o -c /Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/sensor_module.cpp",
+  "file": "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/sensor_module.cpp",
+  "output": "CMakeFiles/sysinfo.dir/sensor_module.cpp.o"
+}
+]

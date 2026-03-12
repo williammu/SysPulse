@@ -1,0 +1,15 @@
+string EntryAbility_desc 0x01000003
+string EntryAbility_label 0x01000004
+string app_name 0x01000000
+string module_desc 0x01000005
+string permission_reason_bluetooth 0x01000006
+string permission_reason_network 0x01000007
+color card_bg 0x01000008
+color primary_color 0x01000009
+color start_window_background 0x0100000a
+color text_primary 0x0100000b
+color text_secondary 0x0100000c
+media app_icon 0x01000001
+media icon 0x01000002
+media startIcon 0x0100000d
+profile main_pages 0x0100000e

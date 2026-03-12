@@ -1,0 +1,1339 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚvUif (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+import router from '@ohos.router';
+import { SystemInfoCore } from '../utils/SystemInfoCore';
+import { nativeApi } from '../utils/NativeApi';
+import { FormatUtil } from '../utils/FormatUtil';
+import hilog from "@ohos.hilog";
+class TestPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__testResults = new ObservedPropertySimplePU('ç‚¹å‡»ä¸‹æ–¹æŒ‰é’®è¿è¡Œæµ‹è¯•', this, "testResults");
+        this.__deviceInfo = new ObservedPropertyObjectPU(null, this, "deviceInfo");
+        this.__batteryInfo = new ObservedPropertyObjectPU(null, this, "batteryInfo");
+        this.__displayInfo = new ObservedPropertyObjectPU(null, this, "displayInfo");
+        this.__storageInfo = new ObservedPropertyObjectPU(null, this, "storageInfo");
+        this.__networkInfo = new ObservedPropertyObjectPU(null, this, "networkInfo");
+        this.__systemMemInfo = new ObservedPropertyObjectPU(null, this, "systemMemInfo");
+        this.__appMemInfo = new ObservedPropertyObjectPU(null, this, "appMemInfo");
+        this.__memoryLimit = new ObservedPropertyObjectPU(null, this, "memoryLimit");
+        this.__systemCpuUsage = new ObservedPropertyObjectPU(null, this, "systemCpuUsage");
+        this.__appCpuUsage = new ObservedPropertyObjectPU(null, this, "appCpuUsage");
+        this.__cpuUsageAll = new ObservedPropertyObjectPU(null, this, "cpuUsageAll");
+        this.__isNativeAvailable = new ObservedPropertySimplePU(false, this, "isNativeAvailable");
+        this.__isTesting = new ObservedPropertySimplePU(false, this, "isTesting");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.testResults !== undefined) {
+            this.testResults = params.testResults;
+        }
+        if (params.deviceInfo !== undefined) {
+            this.deviceInfo = params.deviceInfo;
+        }
+        if (params.batteryInfo !== undefined) {
+            this.batteryInfo = params.batteryInfo;
+        }
+        if (params.displayInfo !== undefined) {
+            this.displayInfo = params.displayInfo;
+        }
+        if (params.storageInfo !== undefined) {
+            this.storageInfo = params.storageInfo;
+        }
+        if (params.networkInfo !== undefined) {
+            this.networkInfo = params.networkInfo;
+        }
+        if (params.systemMemInfo !== undefined) {
+            this.systemMemInfo = params.systemMemInfo;
+        }
+        if (params.appMemInfo !== undefined) {
+            this.appMemInfo = params.appMemInfo;
+        }
+        if (params.memoryLimit !== undefined) {
+            this.memoryLimit = params.memoryLimit;
+        }
+        if (params.systemCpuUsage !== undefined) {
+            this.systemCpuUsage = params.systemCpuUsage;
+        }
+        if (params.appCpuUsage !== undefined) {
+            this.appCpuUsage = params.appCpuUsage;
+        }
+        if (params.cpuUsageAll !== undefined) {
+            this.cpuUsageAll = params.cpuUsageAll;
+        }
+        if (params.isNativeAvailable !== undefined) {
+            this.isNativeAvailable = params.isNativeAvailable;
+        }
+        if (params.isTesting !== undefined) {
+            this.isTesting = params.isTesting;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__testResults.purgeDependencyOnElmtId(rmElmtId);
+        this.__deviceInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__batteryInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__displayInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__storageInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__networkInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__systemMemInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__appMemInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__memoryLimit.purgeDependencyOnElmtId(rmElmtId);
+        this.__systemCpuUsage.purgeDependencyOnElmtId(rmElmtId);
+        this.__appCpuUsage.purgeDependencyOnElmtId(rmElmtId);
+        this.__cpuUsageAll.purgeDependencyOnElmtId(rmElmtId);
+        this.__isNativeAvailable.purgeDependencyOnElmtId(rmElmtId);
+        this.__isTesting.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__testResults.aboutToBeDeleted();
+        this.__deviceInfo.aboutToBeDeleted();
+        this.__batteryInfo.aboutToBeDeleted();
+        this.__displayInfo.aboutToBeDeleted();
+        this.__storageInfo.aboutToBeDeleted();
+        this.__networkInfo.aboutToBeDeleted();
+        this.__systemMemInfo.aboutToBeDeleted();
+        this.__appMemInfo.aboutToBeDeleted();
+        this.__memoryLimit.aboutToBeDeleted();
+        this.__systemCpuUsage.aboutToBeDeleted();
+        this.__appCpuUsage.aboutToBeDeleted();
+        this.__cpuUsageAll.aboutToBeDeleted();
+        this.__isNativeAvailable.aboutToBeDeleted();
+        this.__isTesting.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get testResults() {
+        return this.__testResults.get();
+    }
+    set testResults(newValue) {
+        this.__testResults.set(newValue);
+    }
+    get deviceInfo() {
+        return this.__deviceInfo.get();
+    }
+    set deviceInfo(newValue) {
+        this.__deviceInfo.set(newValue);
+    }
+    get batteryInfo() {
+        return this.__batteryInfo.get();
+    }
+    set batteryInfo(newValue) {
+        this.__batteryInfo.set(newValue);
+    }
+    get displayInfo() {
+        return this.__displayInfo.get();
+    }
+    set displayInfo(newValue) {
+        this.__displayInfo.set(newValue);
+    }
+    get storageInfo() {
+        return this.__storageInfo.get();
+    }
+    set storageInfo(newValue) {
+        this.__storageInfo.set(newValue);
+    }
+    get networkInfo() {
+        return this.__networkInfo.get();
+    }
+    set networkInfo(newValue) {
+        this.__networkInfo.set(newValue);
+    }
+    get systemMemInfo() {
+        return this.__systemMemInfo.get();
+    }
+    set systemMemInfo(newValue) {
+        this.__systemMemInfo.set(newValue);
+    }
+    get appMemInfo() {
+        return this.__appMemInfo.get();
+    }
+    set appMemInfo(newValue) {
+        this.__appMemInfo.set(newValue);
+    }
+    get memoryLimit() {
+        return this.__memoryLimit.get();
+    }
+    set memoryLimit(newValue) {
+        this.__memoryLimit.set(newValue);
+    }
+    get systemCpuUsage() {
+        return this.__systemCpuUsage.get();
+    }
+    set systemCpuUsage(newValue) {
+        this.__systemCpuUsage.set(newValue);
+    }
+    get appCpuUsage() {
+        return this.__appCpuUsage.get();
+    }
+    set appCpuUsage(newValue) {
+        this.__appCpuUsage.set(newValue);
+    }
+    get cpuUsageAll() {
+        return this.__cpuUsageAll.get();
+    }
+    set cpuUsageAll(newValue) {
+        this.__cpuUsageAll.set(newValue);
+    }
+    get isNativeAvailable() {
+        return this.__isNativeAvailable.get();
+    }
+    set isNativeAvailable(newValue) {
+        this.__isNativeAvailable.set(newValue);
+    }
+    get isTesting() {
+        return this.__isTesting.get();
+    }
+    set isTesting(newValue) {
+        this.__isTesting.set(newValue);
+    }
+    aboutToAppear() {
+        // é¡µé¢åˆå§‹åŒ–æ—¶æ£€æŸ¥ Native API å¯ç”¨æ€§
+        this.isNativeAvailable = nativeApi.isNativeAvailable();
+        hilog.info(0x0000, 'TestPage', 'Native API available in aboutToAppear: %{public}s', String(this.isNativeAvailable));
+        // è‡ªåŠ¨è¿è¡Œæµ‹è¯•
+        this.runTests();
+    }
+    async runTests() {
+        this.isTesting = true;
+        this.testResults = 'æ­£åœ¨è¿è¡Œæµ‹è¯•...';
+        try {
+            console.log('========== å¼€å§‹è¿è¡Œç³»ç»Ÿä¿¡æ¯æµ‹è¯• ==========');
+            await SystemInfoCore.runAllTests();
+            this.deviceInfo = SystemInfoCore.getDeviceInfo();
+            this.batteryInfo = SystemInfoCore.getBatteryInfo();
+            this.displayInfo = await SystemInfoCore.getDisplayInfo();
+            this.storageInfo = SystemInfoCore.getStorageInfo();
+            this.networkInfo = await SystemInfoCore.getNetworkInfo();
+            // èŽ·å– Native API æ•°æ®
+            this.isNativeAvailable = nativeApi.isNativeAvailable();
+            if (this.isNativeAvailable) {
+                this.systemMemInfo = nativeApi.getSystemMemInfo();
+                this.appMemInfo = nativeApi.getAppMemInfo();
+                this.memoryLimit = nativeApi.getMemoryLimit();
+                this.systemCpuUsage = nativeApi.getSystemCpuUsage();
+                this.appCpuUsage = nativeApi.getAppCpuUsage();
+                this.cpuUsageAll = nativeApi.getCpuUsageAll();
+            }
+            this.testResults = 'æµ‹è¯•å®Œæˆï¼è¯·æŸ¥çœ‹ä¸‹æ–¹è¯¦ç»†ä¿¡æ¯';
+        }
+        catch (error) {
+            this.testResults = `æµ‹è¯•å¤±è´¥: ${JSON.stringify(error)}`;
+            console.error('Test error:', error);
+        }
+        this.isTesting = false;
+    }
+    formatBytes(bytes) {
+        if (bytes === undefined || bytes === 0) {
+            return 'æœªèŽ·å–';
+        }
+        return FormatUtil.formatBytes(bytes);
+    }
+    formatPercent(value) {
+        if (value === undefined) {
+            return 'æœªèŽ·å–';
+        }
+        return `${value.toFixed(2)}%`;
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#ffffff');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.height(50);
+            Row.padding({ left: 16, right: 16 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('â† è¿”å›ž');
+            Text.fontSize(18);
+            Text.onClick(() => {
+                router.back();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+            Blank.layoutWeight(1);
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('ç³»ç»Ÿä¿¡æ¯æµ‹è¯•');
+            Text.fontSize(20);
+            Text.fontWeight(FontWeight.Bold);
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+            Blank.layoutWeight(1);
+        }, Blank);
+        Blank.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Blank.create();
+        }, Blank);
+        Blank.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.layoutWeight(1);
+            Scroll.width('100%');
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 16 });
+            Column.padding(16);
+            Column.width('100%');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('æµ‹è¯•æŽ§åˆ¶');
+            Text.fontSize(18);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Button.createWithLabel(this.isTesting ? 'æµ‹è¯•ä¸­...' : 'è¿è¡Œæ‰€æœ‰æµ‹è¯•');
+            Button.width('100%');
+            Button.height(50);
+            Button.enabled(!this.isTesting);
+            Button.onClick(() => {
+                this.runTests();
+            });
+        }, Button);
+        Button.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(this.testResults);
+            Text.fontSize(14);
+            Text.width('100%');
+            Text.padding(12);
+            Text.backgroundColor('#f5f5f5');
+            Text.borderRadius(8);
+        }, Text);
+        Text.pop();
+        // Native API çŠ¶æ€
+        this.buildNativeApiStatusSection.bind(this)();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.systemMemInfo?.success) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildSystemMemSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.appMemInfo?.success) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildAppMemSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.systemCpuUsage?.success) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildCpuSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.deviceInfo) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildDeviceInfoSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.batteryInfo) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildBatteryInfoSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.displayInfo) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildDisplayInfoSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.storageInfo) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildStorageInfoSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.networkInfo) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildNetworkInfoSection.bind(this)();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Column.pop();
+        Scroll.pop();
+        Column.pop();
+    }
+    buildNativeApiStatusSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#e6f7ff');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('Native API çŠ¶æ€');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('Native API å¯ç”¨', this.isNativeAvailable ? 'æ˜¯' : 'å¦');
+        this.buildInfoItem.bind(this)('HiDebug æ¨¡å—', this.isNativeAvailable ? 'å·²åŠ è½½' : 'æœªåŠ è½½');
+        this.buildInfoItem.bind(this)('çŠ¶æ€å€¼', String(this.isNativeAvailable));
+        Column.pop();
+    }
+    getUsedMemoryText() {
+        if (this.systemMemInfo && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+            const used = this.systemMemInfo.total - this.systemMemInfo.available;
+            const percent = ((used / this.systemMemInfo.total) * 100).toFixed(1);
+            return `${this.formatBytes(used)} (${percent}%)`;
+        }
+        return 'æœªèŽ·å–';
+    }
+    buildSystemMemSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#f6ffed');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('ç³»ç»Ÿå†…å­˜ (Native API)');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('æ€»å†…å­˜', this.formatBytes(this.systemMemInfo?.total));
+        this.buildInfoItem.bind(this)('å¯ç”¨å†…å­˜', this.formatBytes(this.systemMemInfo?.available));
+        this.buildInfoItem.bind(this)('ç©ºé—²å†…å­˜', this.formatBytes(this.systemMemInfo?.free));
+        this.buildInfoItem.bind(this)('å·²ç”¨å†…å­˜', this.getUsedMemoryText());
+        Column.pop();
+    }
+    buildAppMemSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#fff7e6');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('åº”ç”¨å†…å­˜ (Native API)');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('PSS', this.formatBytes(this.appMemInfo?.pss));
+        this.buildInfoItem.bind(this)('RSS', this.formatBytes(this.appMemInfo?.rss));
+        this.buildInfoItem.bind(this)('VSS', this.formatBytes(this.appMemInfo?.vss));
+        this.buildInfoItem.bind(this)('Shared Clean', this.formatBytes(this.appMemInfo?.sharedClean));
+        this.buildInfoItem.bind(this)('Shared Dirty', this.formatBytes(this.appMemInfo?.sharedDirty));
+        this.buildInfoItem.bind(this)('Private Clean', this.formatBytes(this.appMemInfo?.privateClean));
+        this.buildInfoItem.bind(this)('Private Dirty', this.formatBytes(this.appMemInfo?.privateDirty));
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.memoryLimit?.success) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildInfoItem.bind(this)('RSS é™åˆ¶', this.formatBytes(this.memoryLimit?.rssLimit));
+                    this.buildInfoItem.bind(this)('VSS é™åˆ¶', this.formatBytes(this.memoryLimit?.vssLimit));
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Column.pop();
+    }
+    buildCpuSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#f9f0ff');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('CPU ä¿¡æ¯ (Native API)');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('ç³»ç»Ÿ CPU ä½¿ç”¨çŽ‡', this.formatPercent(this.systemCpuUsage?.percentage));
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.appCpuUsage?.success) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildInfoItem.bind(this)('åº”ç”¨ CPU ä½¿ç”¨çŽ‡', this.formatPercent(this.appCpuUsage?.percentage));
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.cpuUsageAll?.success && this.cpuUsageAll.threads.length > 0) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.buildInfoItem.bind(this)('çº¿ç¨‹æ•°é‡', this.cpuUsageAll.threadCount.toString());
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        // æ˜¾ç¤ºå‰ 5 ä¸ªçº¿ç¨‹
+                        ForEach.create();
+                        const forEachItemGenFunction = _item => {
+                            const thread = _item;
+                            this.buildInfoItem.bind(this)(`çº¿ç¨‹ ${thread.threadId}`, `${thread.percentage.toFixed(2)}%`);
+                        };
+                        this.forEachUpdateFunction(elmtId, this.cpuUsageAll.threads.slice(0, 5), forEachItemGenFunction, (thread) => thread.threadId.toString(), false, false);
+                    }, ForEach);
+                    // æ˜¾ç¤ºå‰ 5 ä¸ªçº¿ç¨‹
+                    ForEach.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                });
+            }
+        }, If);
+        If.pop();
+        Column.pop();
+    }
+    buildDeviceInfoSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#f0f8ff');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('è®¾å¤‡ä¿¡æ¯');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('è®¾å¤‡ç±»åž‹', this.deviceInfo?.deviceType || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('è®¾å¤‡åŽ‚å®¶', this.deviceInfo?.manufacture || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('è®¾å¤‡å“ç‰Œ', this.deviceInfo?.brand || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('å¸‚åœºåç§°', this.deviceInfo?.marketName || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('äº§å“ç³»åˆ—', this.deviceInfo?.productSeries || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('äº§å“åž‹å·', this.deviceInfo?.productModel || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('ç³»ç»Ÿç‰ˆæœ¬', this.deviceInfo?.osFullName || 'æœªçŸ¥');
+        this.buildInfoItem.bind(this)('API ç‰ˆæœ¬', (this.deviceInfo?.sdkApiVersion || 0).toString());
+        this.buildInfoItem.bind(this)('CPU æž¶æž„', this.deviceInfo?.abiList || 'æœªèŽ·å–');
+        Column.pop();
+    }
+    buildBatteryInfoSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#fff8f0');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('ç”µæ± ä¿¡æ¯');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('ç”µé‡', `${this.batteryInfo?.batterySOC || 0}%`);
+        this.buildInfoItem.bind(this)('å……ç”µçŠ¶æ€', this.batteryInfo?.chargingStatus.toString() || '0');
+        this.buildInfoItem.bind(this)('å¥åº·çŠ¶æ€', this.batteryInfo?.healthStatus.toString() || '0');
+        this.buildInfoItem.bind(this)('æ¸©åº¦', `${((this.batteryInfo?.batteryTemperature || 0) / 10).toFixed(1)}Â°C`);
+        this.buildInfoItem.bind(this)('ç”µåŽ‹', `${this.batteryInfo?.voltage || 0} Î¼V`);
+        this.buildInfoItem.bind(this)('æŠ€æœ¯', this.batteryInfo?.technology || 'æœªçŸ¥');
+        Column.pop();
+    }
+    buildDisplayInfoSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#f0fff0');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å±å¹•ä¿¡æ¯');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('åˆ†è¾¨çŽ‡', `${this.displayInfo?.width || 0} Ã— ${this.displayInfo?.height || 0}`);
+        this.buildInfoItem.bind(this)('åƒç´ å¯†åº¦', `${this.displayInfo?.densityDPI || 0} DPI`);
+        this.buildInfoItem.bind(this)('åˆ·æ–°çŽ‡', `${this.displayInfo?.refreshRate || 0} Hz`);
+        this.buildInfoItem.bind(this)('æ—‹è½¬è§’åº¦', `${this.displayInfo?.rotation || 0}Â°`);
+        this.buildInfoItem.bind(this)('X DPI', `${this.displayInfo?.xDPI || 0}`);
+        this.buildInfoItem.bind(this)('Y DPI', `${this.displayInfo?.yDPI || 0}`);
+        Column.pop();
+    }
+    buildStorageInfoSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#fff0f0');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å­˜å‚¨ä¿¡æ¯');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('æ€»å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.totalSize));
+        this.buildInfoItem.bind(this)('å¯ç”¨å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.freeSize));
+        this.buildInfoItem.bind(this)('å·²ç”¨å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.usedSize));
+        Column.pop();
+    }
+    buildNetworkInfoSection(parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create({ space: 8 });
+            Column.width('100%');
+            Column.padding(12);
+            Column.backgroundColor('#f0f0ff');
+            Column.borderRadius(8);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('ç½‘ç»œä¿¡æ¯');
+            Text.fontSize(16);
+            Text.fontWeight(FontWeight.Bold);
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+        this.buildInfoItem.bind(this)('ç½‘ç»œç±»åž‹', this.networkInfo?.netType || 'æœªçŸ¥');
+        Column.pop();
+    }
+    buildInfoItem(label, value, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(label);
+            Text.fontSize(14);
+            Text.width(140);
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(value);
+            Text.fontSize(14);
+            Text.layoutWeight(1);
+        }, Text);
+        Text.pop();
+        Row.pop();
+    }
+    formatStorageSize(bytes) {
+        const gb = (bytes / 1024 / 1024 / 1024).toFixed(2);
+        return `${gb} GB`;
+    }
+    getStorageDisplayValue(bytes) {
+        if (bytes === undefined || bytes === 0) {
+            return 'æœªèŽ·å–';
+        }
+        return this.formatStorageSize(bytes);
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "TestPage";
+    }
+}
+registerNamedRoute(() => new TestPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/TestPage", pageFullPath: "entry/src/main/ets/pages/TestPage", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=TestPage.js.mapÂ•Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙO/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.etsÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.etsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsÙI/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ2import router from '@ohos.router';
+import { SystemInfoCore } from '../utils/SystemInfoCore';
+import { nativeApi, SystemMemInfo, AppMemInfo, MemoryLimit, CpuUsage, CpuUsageAll, ThreadCpuInfo } from '../utils/NativeApi';
+import { FormatUtil } from '../utils/FormatUtil';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import type {
+  DeviceInfoModel,
+  BatteryInfoModel,
+  DisplayInfoModel,
+  StorageInfoModel,
+  NetworkInfoModel
+} from '../model/DeviceInfo';
+
+@Entry
+@Component
+struct TestPage {
+  @State testResults: string = 'ç‚¹å‡»ä¸‹æ–¹æŒ‰é’®è¿è¡Œæµ‹è¯•';
+  @State deviceInfo: DeviceInfoModel | null = null;
+  @State batteryInfo: BatteryInfoModel | null = null;
+  @State displayInfo: DisplayInfoModel | null = null;
+  @State storageInfo: StorageInfoModel | null = null;
+  @State networkInfo: NetworkInfoModel | null = null;
+
+  // Native API æ•°æ®
+  @State systemMemInfo: SystemMemInfo | null = null;
+  @State appMemInfo: AppMemInfo | null = null;
+  @State memoryLimit: MemoryLimit | null = null;
+  @State systemCpuUsage: CpuUsage | null = null;
+  @State appCpuUsage: CpuUsage | null = null;
+  @State cpuUsageAll: CpuUsageAll | null = null;
+  @State isNativeAvailable: boolean = false;
+
+  @State isTesting: boolean = false;
+
+  aboutToAppear() {
+    // é¡µé¢åˆå§‹åŒ–æ—¶æ£€æŸ¥ Native API å¯ç”¨æ€§
+    this.isNativeAvailable = nativeApi.isNativeAvailable();
+    hilog.info(0x0000, 'TestPage', 'Native API available in aboutToAppear: %{public}s', String(this.isNativeAvailable));
+    
+    // è‡ªåŠ¨è¿è¡Œæµ‹è¯•
+    this.runTests();
+  }
+
+  async runTests() {
+    this.isTesting = true;
+    this.testResults = 'æ­£åœ¨è¿è¡Œæµ‹è¯•...';
+
+    try {
+      console.log('========== å¼€å§‹è¿è¡Œç³»ç»Ÿä¿¡æ¯æµ‹è¯• ==========');
+      await SystemInfoCore.runAllTests();
+
+      this.deviceInfo = SystemInfoCore.getDeviceInfo();
+      this.batteryInfo = SystemInfoCore.getBatteryInfo();
+      this.displayInfo = await SystemInfoCore.getDisplayInfo();
+      this.storageInfo = SystemInfoCore.getStorageInfo();
+      this.networkInfo = await SystemInfoCore.getNetworkInfo();
+
+      // èŽ·å– Native API æ•°æ®
+      this.isNativeAvailable = nativeApi.isNativeAvailable();
+      if (this.isNativeAvailable) {
+        this.systemMemInfo = nativeApi.getSystemMemInfo();
+        this.appMemInfo = nativeApi.getAppMemInfo();
+        this.memoryLimit = nativeApi.getMemoryLimit();
+        this.systemCpuUsage = nativeApi.getSystemCpuUsage();
+        this.appCpuUsage = nativeApi.getAppCpuUsage();
+        this.cpuUsageAll = nativeApi.getCpuUsageAll();
+      }
+
+      this.testResults = 'æµ‹è¯•å®Œæˆï¼è¯·æŸ¥çœ‹ä¸‹æ–¹è¯¦ç»†ä¿¡æ¯';
+    } catch (error) {
+      this.testResults = `æµ‹è¯•å¤±è´¥: ${JSON.stringify(error)}`;
+      console.error('Test error:', error);
+    }
+
+    this.isTesting = false;
+  }
+
+  formatBytes(bytes: number | undefined): string {
+    if (bytes === undefined || bytes === 0) {
+      return 'æœªèŽ·å–';
+    }
+    return FormatUtil.formatBytes(bytes);
+  }
+
+  formatPercent(value: number | undefined): string {
+    if (value === undefined) {
+      return 'æœªèŽ·å–';
+    }
+    return `${value.toFixed(2)}%`;
+  }
+
+  build() {
+    Column() {
+      Row() {
+        Text('â† è¿”å›ž')
+          .fontSize(18)
+          .onClick(() => {
+            router.back();
+          })
+        Blank()
+          .layoutWeight(1)
+        Text('ç³»ç»Ÿä¿¡æ¯æµ‹è¯•')
+          .fontSize(20)
+          .fontWeight(FontWeight.Bold)
+        Blank()
+          .layoutWeight(1)
+        Blank()
+      }
+      .width('100%')
+      .height(50)
+      .padding({ left: 16, right: 16 })
+
+      Scroll() {
+        Column({ space: 16 }) {
+          Text('æµ‹è¯•æŽ§åˆ¶')
+            .fontSize(18)
+            .fontWeight(FontWeight.Bold)
+            .width('100%')
+
+          Button(this.isTesting ? 'æµ‹è¯•ä¸­...' : 'è¿è¡Œæ‰€æœ‰æµ‹è¯•')
+            .width('100%')
+            .height(50)
+            .enabled(!this.isTesting)
+            .onClick(() => {
+              this.runTests();
+            })
+
+          Text(this.testResults)
+            .fontSize(14)
+            .width('100%')
+            .padding(12)
+            .backgroundColor('#f5f5f5')
+            .borderRadius(8)
+
+          // Native API çŠ¶æ€
+          this.buildNativeApiStatusSection()
+
+          if (this.systemMemInfo?.success) {
+            this.buildSystemMemSection()
+          }
+
+          if (this.appMemInfo?.success) {
+            this.buildAppMemSection()
+          }
+
+          if (this.systemCpuUsage?.success) {
+            this.buildCpuSection()
+          }
+
+          if (this.deviceInfo) {
+            this.buildDeviceInfoSection()
+          }
+
+          if (this.batteryInfo) {
+            this.buildBatteryInfoSection()
+          }
+
+          if (this.displayInfo) {
+            this.buildDisplayInfoSection()
+          }
+
+          if (this.storageInfo) {
+            this.buildStorageInfoSection()
+          }
+
+          if (this.networkInfo) {
+            this.buildNetworkInfoSection()
+          }
+        }
+        .padding(16)
+        .width('100%')
+      }
+      .layoutWeight(1)
+      .width('100%')
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#ffffff')
+  }
+
+  @Builder
+  buildNativeApiStatusSection() {
+    Column({ space: 8 }) {
+      Text('Native API çŠ¶æ€')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('Native API å¯ç”¨', this.isNativeAvailable ? 'æ˜¯' : 'å¦')
+      this.buildInfoItem('HiDebug æ¨¡å—', this.isNativeAvailable ? 'å·²åŠ è½½' : 'æœªåŠ è½½')
+      this.buildInfoItem('çŠ¶æ€å€¼', String(this.isNativeAvailable))
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#e6f7ff')
+    .borderRadius(8)
+  }
+
+  getUsedMemoryText(): string {
+    if (this.systemMemInfo && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+      const used: number = this.systemMemInfo.total - this.systemMemInfo.available;
+      const percent: string = ((used / this.systemMemInfo.total) * 100).toFixed(1);
+      return `${this.formatBytes(used)} (${percent}%)`;
+    }
+    return 'æœªèŽ·å–';
+  }
+
+  @Builder
+  buildSystemMemSection() {
+    Column({ space: 8 }) {
+      Text('ç³»ç»Ÿå†…å­˜ (Native API)')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('æ€»å†…å­˜', this.formatBytes(this.systemMemInfo?.total))
+      this.buildInfoItem('å¯ç”¨å†…å­˜', this.formatBytes(this.systemMemInfo?.available))
+      this.buildInfoItem('ç©ºé—²å†…å­˜', this.formatBytes(this.systemMemInfo?.free))
+      this.buildInfoItem('å·²ç”¨å†…å­˜', this.getUsedMemoryText())
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#f6ffed')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildAppMemSection() {
+    Column({ space: 8 }) {
+      Text('åº”ç”¨å†…å­˜ (Native API)')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('PSS', this.formatBytes(this.appMemInfo?.pss))
+      this.buildInfoItem('RSS', this.formatBytes(this.appMemInfo?.rss))
+      this.buildInfoItem('VSS', this.formatBytes(this.appMemInfo?.vss))
+      this.buildInfoItem('Shared Clean', this.formatBytes(this.appMemInfo?.sharedClean))
+      this.buildInfoItem('Shared Dirty', this.formatBytes(this.appMemInfo?.sharedDirty))
+      this.buildInfoItem('Private Clean', this.formatBytes(this.appMemInfo?.privateClean))
+      this.buildInfoItem('Private Dirty', this.formatBytes(this.appMemInfo?.privateDirty))
+
+      if (this.memoryLimit?.success) {
+        this.buildInfoItem('RSS é™åˆ¶', this.formatBytes(this.memoryLimit?.rssLimit))
+        this.buildInfoItem('VSS é™åˆ¶', this.formatBytes(this.memoryLimit?.vssLimit))
+      }
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#fff7e6')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildCpuSection() {
+    Column({ space: 8 }) {
+      Text('CPU ä¿¡æ¯ (Native API)')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('ç³»ç»Ÿ CPU ä½¿ç”¨çŽ‡', this.formatPercent(this.systemCpuUsage?.percentage))
+
+      if (this.appCpuUsage?.success) {
+        this.buildInfoItem('åº”ç”¨ CPU ä½¿ç”¨çŽ‡', this.formatPercent(this.appCpuUsage?.percentage))
+      }
+
+      if (this.cpuUsageAll?.success && this.cpuUsageAll.threads.length > 0) {
+        this.buildInfoItem('çº¿ç¨‹æ•°é‡', this.cpuUsageAll.threadCount.toString())
+
+        // æ˜¾ç¤ºå‰ 5 ä¸ªçº¿ç¨‹
+        ForEach(this.cpuUsageAll.threads.slice(0, 5), (thread: ThreadCpuInfo) => {
+          this.buildInfoItem(`çº¿ç¨‹ ${thread.threadId}`, `${thread.percentage.toFixed(2)}%`)
+        }, (thread: ThreadCpuInfo) => thread.threadId.toString())
+      }
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#f9f0ff')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildDeviceInfoSection() {
+    Column({ space: 8 }) {
+      Text('è®¾å¤‡ä¿¡æ¯')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('è®¾å¤‡ç±»åž‹', this.deviceInfo?.deviceType || 'æœªçŸ¥')
+      this.buildInfoItem('è®¾å¤‡åŽ‚å®¶', this.deviceInfo?.manufacture || 'æœªçŸ¥')
+      this.buildInfoItem('è®¾å¤‡å“ç‰Œ', this.deviceInfo?.brand || 'æœªçŸ¥')
+      this.buildInfoItem('å¸‚åœºåç§°', this.deviceInfo?.marketName || 'æœªçŸ¥')
+      this.buildInfoItem('äº§å“ç³»åˆ—', this.deviceInfo?.productSeries || 'æœªçŸ¥')
+      this.buildInfoItem('äº§å“åž‹å·', this.deviceInfo?.productModel || 'æœªçŸ¥')
+      this.buildInfoItem('ç³»ç»Ÿç‰ˆæœ¬', this.deviceInfo?.osFullName || 'æœªçŸ¥')
+      this.buildInfoItem('API ç‰ˆæœ¬', (this.deviceInfo?.sdkApiVersion || 0).toString())
+      this.buildInfoItem('CPU æž¶æž„', this.deviceInfo?.abiList || 'æœªèŽ·å–')
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#f0f8ff')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildBatteryInfoSection() {
+    Column({ space: 8 }) {
+      Text('ç”µæ± ä¿¡æ¯')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('ç”µé‡', `${this.batteryInfo?.batterySOC || 0}%`)
+      this.buildInfoItem('å……ç”µçŠ¶æ€', this.batteryInfo?.chargingStatus.toString() || '0')
+      this.buildInfoItem('å¥åº·çŠ¶æ€', this.batteryInfo?.healthStatus.toString() || '0')
+      this.buildInfoItem('æ¸©åº¦', `${((this.batteryInfo?.batteryTemperature || 0) / 10).toFixed(1)}Â°C`)
+      this.buildInfoItem('ç”µåŽ‹', `${this.batteryInfo?.voltage || 0} Î¼V`)
+      this.buildInfoItem('æŠ€æœ¯', this.batteryInfo?.technology || 'æœªçŸ¥')
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#fff8f0')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildDisplayInfoSection() {
+    Column({ space: 8 }) {
+      Text('å±å¹•ä¿¡æ¯')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('åˆ†è¾¨çŽ‡', `${this.displayInfo?.width || 0} Ã— ${this.displayInfo?.height || 0}`)
+      this.buildInfoItem('åƒç´ å¯†åº¦', `${this.displayInfo?.densityDPI || 0} DPI`)
+      this.buildInfoItem('åˆ·æ–°çŽ‡', `${this.displayInfo?.refreshRate || 0} Hz`)
+      this.buildInfoItem('æ—‹è½¬è§’åº¦', `${this.displayInfo?.rotation || 0}Â°`)
+      this.buildInfoItem('X DPI', `${this.displayInfo?.xDPI || 0}`)
+      this.buildInfoItem('Y DPI', `${this.displayInfo?.yDPI || 0}`)
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#f0fff0')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildStorageInfoSection() {
+    Column({ space: 8 }) {
+      Text('å­˜å‚¨ä¿¡æ¯')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('æ€»å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.totalSize))
+      this.buildInfoItem('å¯ç”¨å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.freeSize))
+      this.buildInfoItem('å·²ç”¨å­˜å‚¨', this.getStorageDisplayValue(this.storageInfo?.usedSize))
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#fff0f0')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildNetworkInfoSection() {
+    Column({ space: 8 }) {
+      Text('ç½‘ç»œä¿¡æ¯')
+        .fontSize(16)
+        .fontWeight(FontWeight.Bold)
+        .width('100%')
+
+      this.buildInfoItem('ç½‘ç»œç±»åž‹', this.networkInfo?.netType || 'æœªçŸ¥')
+    }
+    .width('100%')
+    .padding(12)
+    .backgroundColor('#f0f0ff')
+    .borderRadius(8)
+  }
+
+  @Builder
+  buildInfoItem(label: string, value: string) {
+    Row() {
+      Text(label)
+        .fontSize(14)
+        .width(140)
+      Text(value)
+        .fontSize(14)
+        .layoutWeight(1)
+    }
+    .width('100%')
+  }
+
+  formatStorageSize(bytes: number): string {
+    const gb = (bytes / 1024 / 1024 / 1024).toFixed(2);
+    return `${gb} GB`;
+  }
+
+  getStorageDisplayValue(bytes: number | undefined): string {
+    if (bytes === undefined || bytes === 0) {
+      return 'æœªèŽ·å–';
+    }
+    return this.formatStorageSize(bytes);
+  }
+}
+ÀÔrD•¬@ohos.router«@ohos.hilog²../utils/NativeApi³../utils/FormatUtil·../utils/SystemInfoCoreÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÃÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsAÃªoh-resolveÂEAÂÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.etsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsAÃªoh-resolveÂEAÂÙO/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings«TestPage.js ‘¬TestPage.etsÜÈ–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”8 8”9 9˜”   ” ”	 	” ” Ìb” Ìh”. Ì|”/ Ì}˜”   ” ”	 	” ” ” ”0 0”1 1–”   ” 	” ” ” 3”  4’” ” ‘”  ’”: ”ÌF +’”9 .”= 2’”: 0”> 4’”: 0”> 4’”: 0”> 4’”: 0”> 4’”< /”Ì@ 3’”9 )”= -’”: +”> /’”= +”ÌA /’”: (”> ,’”: +”> /’”Ì@ &”ÌE +’”8  ”=  #‘” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’”  	”  ’”  	”  ’” "” "’” #”" #š” $” $” $	” $”! $”* $&”+ $'”< $8”> $:”? $;Ü ” %” %	” %
+” %” %” %” %”% %!”' %#”ÌZ %ÌV”Ì\ %ÌX”Ìb %Ì^”Ìc %Ì_”Ìg %Ìc”Ìh %Ìd”Ìy %Ìu”Ìz %Ìv”Ì{ %Ìw”Ì| %Ìx’” '” '–” (” (” (	” (” (” (’” )” )”” +”	 +”
+ +” +—” ,” ,” ,	” ,” ,” ,” ,—” -” -” -	” -” -”& -"”' -#’” /” /˜” 0” 0” 0” 0” 0”: 04”; 05”< 06—” 1” 1”  1”! 1”, 1&”. 1(”/ 1)š” 3” 3
+” 3” 3” 3”, 3&”- 3'”: 34”< 36”= 37š” 4” 4
+” 4” 4” 4”- 4'”. 4(”< 46”> 48”? 49›” 5” 5
+” 5” 5” 5”% 5”3 5-”4 5.”ÌB 5<”ÌD 5>”ÌE 5?š” 6” 6
+” 6” 6” 6”- 6'”. 6(”< 66”> 68”? 69›” 7” 7
+” 7” 7” 7”% 7”3 7-”4 7.”ÌB 7<”ÌD 7>”ÌE 7?’” 9” 9š” :” :
+” :”" :”% :”. :(”/ :)”Ì@ ::”ÌB :<”ÌC :=–” ;” ;
+” ;” ;”& ; ”( ;"š” <” <” <”" <”% <”. <&”/ <'”? <7”ÌA <9”ÌB <:š” =” =” =” =”" =”+ =#”, =$”9 =1”; =3”< =4š” >” >” >”  >”# >”, >$”- >%”; >3”= >5”> >6š” ?” ?” ?”# ?”& ?”/ ?'”0 ?(”ÌA ?9”ÌC ?;”ÌD ?<š” Ì@” Ì@” Ì@”  Ì@”# Ì@”, Ì@$”- Ì@%”; Ì@3”= Ì@5”> Ì@6š” ÌA” ÌA” ÌA”  ÌA”# ÌA”, ÌA$”- ÌA%”; ÌA3”= ÌA5”> ÌA6‘” ÌB—” ÌD” ÌD
+” ÌD” ÌD” ÌD”/ ÌD)”0 ÌD*‘”	 ÌE”” ÌE” ÌE” ÌE” ÌEž” ÌF” ÌF
+” ÌF” ÌF” ÌF”( ÌF"”, ÌF&”- ÌF'”6 ÌF0”7 ÌF1”< ÌF6”= ÌF7”? ÌF9”Ì@ ÌF:š” ÌG” ÌG” ÌG” ÌG” ÌG”' ÌG!”) ÌG#”. ÌG(”/ ÌG)”0 ÌG*‘”	 ÌH—” ÌJ” ÌJ” ÌJ	” ÌJ” ÌJ” ÌJ” ÌJ’” ÌK” ÌK”” ÌM” ÌM” ÌM” ÌM'š” ÌN” ÌN” ÌN” ÌN” ÌN”# ÌN”( ÌN$”- ÌN)”. ÌN*”0 ÌN,”” ÌO” ÌO” ÌO” ÌO‘”	 ÌP™” ÌQ” ÌQ” ÌQ” ÌQ”% ÌQ!”& ÌQ"”+ ÌQ'”, ÌQ(”- ÌQ)’” ÌR” ÌR”” ÌT” ÌT” ÌT” ÌT)–” ÌU” ÌU” ÌU” ÌU” ÌU”! ÌU”” ÌV” ÌV” ÌV” ÌV‘”	 ÌW›” ÌX” ÌX” ÌX” ÌX” ÌX” ÌX”  ÌX”! ÌX”" ÌX”% ÌX!”& ÌX"’” ÌY” ÌY‘” Ì[’” Ì\” Ì\
+–” Ì\” Ì\
+” Ì¯” Ì¯
+” Ì¯” Ì¯–” Ì\” Ì\
+” Ì°” Ì°” Ì°”  Ì°–” Ì\” Ì\
+” Ì±”" Ì±”# Ì±”, Ì±’” Ì]” Ì]	–” Ì]” Ì]	” Ìl” Ìl” Ìl” Ìl–” Ì]” Ì]	” Ìm” Ìm” Ìm” Ìmž” Ì]” Ì]	” Ìn” Ìn” Ìn” Ìn” Ìn”  Ìn”" Ìn”$ Ìn”) Ìn ”+ Ìn"”- Ìn$”/ Ìn&”” Ì^” Ì^” Ì^” Ì^–” Ì^” Ì^” Ì_” Ì_” Ì_” Ì_—” Ì^” Ì^” Ì`” Ì`” Ì`” Ì`” Ì`–” Ìa” Ìa” Ìa” Ìa” Ìa” Ìa’” Ìb
+” Ìb’” Ì^” Ì^’” Ìc” Ìc–” Ìc” Ìc” Ìd” Ìd” Ìd”  Ìd’” Ìc” Ìc”” Ìe” Ìe” Ìe”  Ìe–” Ìe” Ìe” Ìf” Ìf” Ìf” Ìf˜” Ìe” Ìe” Ìg” Ìg” Ìg”& Ìg ”' Ìg!”+ Ìg%’” Ìe” Ìe’” Ìh” Ìh–” Ìh” Ìh” Ìi” Ìi” Ìi”  Ìi’” Ìh” Ìh’” Ìj” Ìj’” Ìj” Ìj’” Ì]” Ì]	’” Ìp” Ìp–” Ìp” Ìp” Ì¬” Ì¬”  Ì¬”! Ì¬–” Ìp” Ìp” Ì­” Ì­” Ì­” Ì­˜” Ìq” Ìq” Ìq” Ìq”! Ìq”# Ìq”% Ìq”' Ìq–” Ìq” Ìq” Ì©	” Ì©” Ì©” Ì©–” Ìq” Ìq” Ìª	” Ìª” Ìª” Ìª”” Ìr
+” Ìr” Ìr” Ìr–” Ìr
+” Ìr” Ìs” Ìs” Ìs” Ìs˜” Ìr
+” Ìr” Ìt” Ìt” Ìt”& Ìt"”' Ìt#”+ Ìt'–” Ìr
+” Ìr” Ìu” Ìu” Ìu” Ìu’” Ìr
+” Ìrž” Ìw
+” Ìw”# Ìw”' Ìw”( Ìw”1 Ìw”2 Ìw ”3 Ìw!”4 Ìw"”< Ìw*”= Ìw+”> Ìw,”? Ìw-”ÌG Ìw5–” Ìw
+” Ìw” Ìx” Ìx” Ìx” Ìx–” Ìw
+” Ìw” Ìy” Ìy” Ìy” Ìy™” Ìw
+” Ìw” Ìz” Ìz” Ìz” Ìz”  Ìz”! Ìz”* Ìz$—” Ìw
+” Ìw” Ì{” Ì{” Ì{” Ì{”  Ì{–” Ì|” Ì|” Ì|” Ì|” Ì|”  Ì|’” Ì}” Ì}’” Ìw
+” Ìw–” Ì
+” Ì” Ì” Ì” Ì”( Ì–” Ì
+” Ì” Ì€” Ì€” Ì€” Ì€–” Ì
+” Ì” Ì” Ì” Ì” Ì–” Ì
+” Ì” Ì‚” Ì‚” Ì‚” Ì‚–” Ì
+” Ì” Ìƒ”  Ìƒ”! Ìƒ”* Ìƒ&–” Ì
+” Ì” Ì„” Ì„” Ì„” Ì„’” Ì
+” Ì’” Ì†
+” Ì†•” Ì‡
+” Ì‡” Ì‡”( Ì‡*”5 Ì‡,˜” Ì‰
+” Ì‰” Ì‰” Ì‰”" Ì‰ ”$ Ì‰"”+ Ì‰)”- Ì‰+•” ÌŠ” ÌŠ” ÌŠ”. ÌŠ&”; ÌŠ(‘” Ì‹‘” Ì‹˜” Ì
+” Ì” Ì” Ì” Ì”! Ì”( Ì&”* Ì(•” ÌŽ” ÌŽ” ÌŽ”+ ÌŽ#”8 ÌŽ%‘” Ì‘” Ì˜” Ì‘
+” Ì‘” Ì‘” Ì‘”# Ì‘!”% Ì‘#”, Ì‘*”. Ì‘,•” Ì’” Ì’” Ì’”( Ì’ ”5 Ì’"‘” Ì“‘” Ì“–” Ì•
+” Ì•” Ì•” Ì•” Ì•”! Ì••” Ì–” Ì–” Ì–”/ Ì–'”< Ì–)‘” Ì—‘” Ì—–” Ì™
+” Ì™” Ì™” Ì™”  Ì™”" Ì™ •” Ìš” Ìš” Ìš”0 Ìš(”= Ìš*‘” Ì›‘” Ì›–” Ì
+” Ì” Ì” Ì”  Ì”" Ì •” Ìž” Ìž” Ìž”0 Ìž(”= Ìž*‘” ÌŸ‘” ÌŸ–” Ì¡
+” Ì¡” Ì¡” Ì¡”  Ì¡”" Ì¡ •” Ì¢” Ì¢” Ì¢”0 Ì¢(”= Ì¢*‘” Ì£‘” Ì£–” Ì¥
+” Ì¥” Ì¥” Ì¥”  Ì¥”" Ì¥ •” Ì¦” Ì¦” Ì¦”0 Ì¦(”= Ì¦*‘” Ì§‘” Ì§’” Ìq” Ìq’” Ìp” Ìp’” Ì\” Ì\
+‘” Ì²’” Ìµ” Ìµ˜” Ì¶” Ì¶
+” Ì¶” Ì¶”! Ì¶”# Ì¶”$ Ì¶”& Ì¶–” Ì¶” Ì¶
+” ÌÀ” ÌÀ
+” ÌÀ” ÌÀ–” Ì¶” Ì¶
+” ÌÁ” ÌÁ” ÌÁ” ÌÁ–” Ì¶” Ì¶
+” ÌÂ”" ÌÂ”# ÌÂ”, ÌÂ–” Ì¶” Ì¶
+” ÌÃ” ÌÃ”  ÌÃ”! ÌÃ”” Ì·” Ì·
+” Ì·”' Ì·–” Ì·” Ì·
+” Ì¸	” Ì¸” Ì¸” Ì¸˜” Ì·” Ì·
+” Ì¹	” Ì¹” Ì¹”& Ì¹”' Ì¹”+ Ì¹#–” Ì·” Ì·
+” Ìº	” Ìº” Ìº” Ìº’” Ì·” Ì·
+Ü ” Ì¼” Ì¼
+” Ì¼” Ì¼”& Ì¼”5 Ì¼(”7 Ì¼*”; Ì¼.”< Ì¼/”ÌM Ì¼Ì@”ÌN Ì¼ÌA”ÌO Ì¼ÌB”ÌP Ì¼ÌC”ÌS Ì¼ÌF”ÌT Ì¼ÌG”ÌU Ì¼ÌH”ÌV Ì¼ÌI”ÌY Ì¼ÌL”ÌZ Ì¼ÌMÜ ” Ì½” Ì½
+” Ì½” Ì½”& Ì½”2 Ì½%”4 Ì½'”8 Ì½+”9 Ì½,”ÌJ Ì½=”ÌK Ì½>”ÌL Ì½?”ÌM Ì½Ì@”ÌR Ì½ÌE”ÌS Ì½ÌF”ÌT Ì½ÌG”ÌU Ì½ÌH”ÌZ Ì½ÌM”Ì[ Ì½ÌNž” Ì¾” Ì¾
+” Ì¾” Ì¾”& Ì¾”+ Ì¾”- Ì¾ ”3 Ì¾&”4 Ì¾'”8 Ì¾+”9 Ì¾,”ÌJ Ì¾=”ÌK Ì¾>”ÌL Ì¾?’” Ì¶” Ì¶
+‘” ÌÄ’” ÌÆ” ÌÆÜ ” ÌÇ” ÌÇ” ÌÇ” ÌÇ” ÌÇ”" ÌÇ”& ÌÇ"”' ÌÇ#”4 ÌÇ0”5 ÌÇ1”: ÌÇ6”= ÌÇ9”> ÌÇ:”ÌB ÌÇ>”ÌF ÌÇÌB”ÌG ÌÇÌC”ÌT ÌÇÌP”ÌU ÌÇÌQ”Ì^ ÌÇÌZ”Ìa ÌÇÌ]”Ìb ÌÇÌ^”Ìd ÌÇÌ`Ü ” ÌÈ” ÌÈ” ÌÈ” ÌÈ” ÌÈ” ÌÈ ”+ ÌÈ-”, ÌÈ.”1 ÌÈ3”4 ÌÈ6”8 ÌÈ:”9 ÌÈ;”ÌF ÌÈÌH”ÌG ÌÈÌI”ÌP ÌÈÌR”ÌQ ÌÈÌSÜ ” ÌÉ” ÌÉ” ÌÉ” ÌÉ” ÌÉ” ÌÉ ”" ÌÉ$”% ÌÉ'”) ÌÉ+”* ÌÉ,”7 ÌÉ9”8 ÌÉ:”= ÌÉ?”> ÌÉÌ@”ÌA ÌÉÌC”ÌD ÌÉÌF”ÌE ÌÉÌG”ÌF ÌÉÌH”ÌM ÌÉÌO”ÌN ÌÉÌP”ÌO ÌÉÌQ”ÌP ÌÉÌR”ÌQ ÌÉÌS” ÌÊ” ÌÊ” ÌÊ” ÌÊ” ÌÊ”& ÌÊ ”' ÌÊ!”+ ÌÊ%”, ÌÊ&”1 ÌÊ+”8 ÌÊ2”< ÌÊ6”= ÌÊ7‘”	 ÌË”” ÌÌ” ÌÌ” ÌÌ” ÌÌ’” ÌÍ” ÌÍ’” ÌÐ” ÌÐ˜” ÌÑ” ÌÑ
+” ÌÑ” ÌÑ”! ÌÑ”# ÌÑ”$ ÌÑ”& ÌÑ–” ÌÑ” ÌÑ
+” ÌÜ” ÌÜ
+” ÌÜ” ÌÜ–” ÌÑ” ÌÑ
+” ÌÝ” ÌÝ” ÌÝ” ÌÝ–” ÌÑ” ÌÑ
+” ÌÞ”" ÌÞ”# ÌÞ”, ÌÞ–” ÌÑ” ÌÑ
+” Ìß” Ìß”  Ìß”! Ìß”” ÌÒ” ÌÒ
+” ÌÒ”+ ÌÒ–” ÌÒ” ÌÒ
+” ÌÓ	” ÌÓ” ÌÓ” ÌÓ˜” ÌÒ” ÌÒ
+” ÌÔ	” ÌÔ” ÌÔ”& ÌÔ”' ÌÔ”+ ÌÔ#–” ÌÒ” ÌÒ
+” ÌÕ	” ÌÕ” ÌÕ” ÌÕ’” ÌÒ” ÌÒ
+Ü ” Ì×” Ì×
+” Ì×” Ì×”& Ì×”+ Ì×”- Ì× ”1 Ì×$”2 Ì×%”= Ì×0”> Ì×1”ÌB Ì×5”ÌC Ì×6”ÌP Ì×ÌC”ÌR Ì×ÌE”ÌW Ì×ÌJ”ÌX Ì×ÌK”ÌY Ì×ÌLÜ ” ÌØ” ÌØ
+” ÌØ” ÌØ”& ÌØ”, ÌØ”. ÌØ!”2 ÌØ%”3 ÌØ&”> ÌØ1”? ÌØ2”ÌC ÌØ6”ÌD ÌØ7”ÌQ ÌØÌD”ÌS ÌØÌF”Ì\ ÌØÌO”Ì] ÌØÌP”Ì^ ÌØÌQÜ ” ÌÙ” ÌÙ
+” ÌÙ” ÌÙ”& ÌÙ”, ÌÙ”. ÌÙ!”2 ÌÙ%”3 ÌÙ&”> ÌÙ1”? ÌÙ2”ÌC ÌÙ6”ÌD ÌÙ7”ÌQ ÌÙÌD”ÌS ÌÙÌF”ÌW ÌÙÌJ”ÌX ÌÙÌK”ÌY ÌÙÌLœ” ÌÚ” ÌÚ
+” ÌÚ” ÌÚ”& ÌÚ”, ÌÚ”. ÌÚ!”2 ÌÚ%”3 ÌÚ&”ÌD ÌÚ7”ÌF ÌÚ9”ÌG ÌÚ:’” ÌÑ” ÌÑ
+‘” Ìà’” Ìã” Ìã˜” Ìä” Ìä
+” Ìä” Ìä”! Ìä”# Ìä”$ Ìä”& Ìä–” Ìä” Ìä
+” Ì÷” Ì÷
+” Ì÷” Ì÷–” Ìä” Ìä
+” Ìø” Ìø” Ìø” Ìø–” Ìä” Ìä
+” Ìù”" Ìù”# Ìù”, Ìù–” Ìä” Ìä
+” Ìú” Ìú”  Ìú”! Ìú”” Ìå” Ìå
+” Ìå”+ Ìå–” Ìå” Ìå
+” Ìæ	” Ìæ” Ìæ” Ìæ˜” Ìå” Ìå
+” Ìç	” Ìç” Ìç”& Ìç”' Ìç”+ Ìç#–” Ìå” Ìå
+” Ìè	” Ìè” Ìè” Ìè’” Ìå” Ìå
+Ü ” Ìê” Ìê
+” Ìê” Ìê”& Ìê”+ Ìê”- Ìê ”1 Ìê$”2 Ìê%”= Ìê0”> Ìê1”ÌB Ìê5”ÌC Ìê6”ÌM ÌêÌ@”ÌO ÌêÌB”ÌR ÌêÌE”ÌS ÌêÌF”ÌT ÌêÌGÜ ” Ìë” Ìë
+” Ìë” Ìë”& Ìë”+ Ìë”- Ìë ”1 Ìë$”2 Ìë%”= Ìë0”> Ìë1”ÌB Ìë5”ÌC Ìë6”ÌM ÌëÌ@”ÌO ÌëÌB”ÌR ÌëÌE”ÌS ÌëÌF”ÌT ÌëÌGÜ ” Ìì” Ìì
+” Ìì” Ìì”& Ìì”+ Ìì”- Ìì ”1 Ìì$”2 Ìì%”= Ìì0”> Ìì1”ÌB Ìì5”ÌC Ìì6”ÌM ÌìÌ@”ÌO ÌìÌB”ÌR ÌìÌE”ÌS ÌìÌF”ÌT ÌìÌGÜ ” Ìí” Ìí
+” Ìí” Ìí”& Ìí”4 Ìí'”6 Ìí)”: Ìí-”; Ìí.”ÌF Ìí9”ÌG Ìí:”ÌK Ìí>”ÌL Ìí?”ÌV ÌíÌI”ÌX ÌíÌK”Ìc ÌíÌV”Ìd ÌíÌW”Ìe ÌíÌXÜ ” Ìî” Ìî
+” Ìî” Ìî”& Ìî”4 Ìî'”6 Ìî)”: Ìî-”; Ìî.”ÌF Ìî9”ÌG Ìî:”ÌK Ìî>”ÌL Ìî?”ÌV ÌîÌI”ÌX ÌîÌK”Ìc ÌîÌV”Ìd ÌîÌW”Ìe ÌîÌXÜ ” Ìï” Ìï
+” Ìï” Ìï”& Ìï”5 Ìï(”7 Ìï*”; Ìï.”< Ìï/”ÌG Ìï:”ÌH Ìï;”ÌL Ìï?”ÌM ÌïÌ@”ÌW ÌïÌJ”ÌY ÌïÌL”Ìe ÌïÌX”Ìf ÌïÌY”Ìg ÌïÌZÜ ” Ìð” Ìð
+” Ìð” Ìð”& Ìð”5 Ìð(”7 Ìð*”; Ìð.”< Ìð/”ÌG Ìð:”ÌH Ìð;”ÌL Ìð?”ÌM ÌðÌ@”ÌW ÌðÌJ”ÌY ÌðÌL”Ìe ÌðÌX”Ìf ÌðÌY”Ìg ÌðÌZ˜” Ìò” Ìò
+” Ìò” Ìò”  Ìò”" Ìò”) Ìò#”+ Ìò%Ü ” Ìó” Ìó” Ìó”& Ìó”2 Ìó”: Ìó#”< Ìó%”Ì@ Ìó)”ÌA Ìó*”ÌL Ìó5”ÌM Ìó6”ÌQ Ìó:”ÌR Ìó;”Ì] ÌóÌF”Ì_ ÌóÌH”Ìg ÌóÌP”Ìh ÌóÌQ”Ìi ÌóÌRÜ ” Ìô” Ìô” Ìô”& Ìô”2 Ìô”: Ìô#”< Ìô%”Ì@ Ìô)”ÌA Ìô*”ÌL Ìô5”ÌM Ìô6”ÌQ Ìô:”ÌR Ìô;”Ì] ÌôÌF”Ì_ ÌôÌH”Ìg ÌôÌP”Ìh ÌôÌQ”Ìi ÌôÌR‘” Ìõ‘” Ìõ’” Ìä” Ìä
+‘” Ìû’” Ìþ” Ìþ˜” Ìÿ” Ìÿ
+” Ìÿ” Ìÿ”! Ìÿ”# Ìÿ”$ Ìÿ”& Ìÿ–” Ìÿ” Ìÿ
+” Í” Í
+” Í” Í–” Ìÿ” Ìÿ
+” Í” Í” Í” Í–” Ìÿ” Ìÿ
+” Í”" Í”# Í”, Í–” Ìÿ” Ìÿ
+” Í” Í”  Í”! Í”” Í ” Í 
+” Í ”- Í  –” Í ” Í 
+” Í	” Í” Í” Í˜” Í ” Í 
+” Í	” Í” Í”& Í”' Í”+ Í#–” Í ” Í 
+” Í	” Í” Í” Í’” Í ” Í 
+Ü ” Í” Í
+” Í” Í”& Í”2 Í%”4 Í'”8 Í+”9 Í,”ÌF Í9”ÌG Í:”ÌK Í>”ÌL Í?”ÌZ ÍÌM”Ì\ ÍÌO”Ìf ÍÌY”Ìg ÍÌZ”Ìh ÍÌ[˜” Í” Í
+” Í” Í”  Í”" Í”) Í#”+ Í%Ü ” Í” Í” Í”& Í”2 Í”> Í'”Ì@ Í)”ÌD Í-”ÌE Í.”ÌR Í;”ÌS Í<”ÌW ÍÌ@”ÌX ÍÌA”Ìc ÍÌL”Ìe ÍÌN”Ìo ÍÌX”Ìp ÍÌY”Ìq ÍÌZ‘” Í	‘” Í	Ü ” Í” Í
+” Í” Í”  Í”" Í”) Í#”- Í'”1 Í+”2 Í,”= Í7”> Í8”ÌE Í?”ÌF ÍÌ@”ÌL ÍÌF”ÌO ÍÌI”ÌP ÍÌJ”ÌR ÍÌLÜ ” Í” Í” Í”& Í”2 Í”8 Í!”: Í#”> Í'”? Í(”ÌJ Í3”ÌK Í4”ÌV Í?”ÌW ÍÌ@”Ì_ ÍÌH”Ìa ÍÌJ”Ìb ÍÌK’” Í”$ Í’” Í” ÍÜ ” Í
+”  Í”! Í”. Í”: Í”Ì@ Í#”ÌF Í)”ÌG Í*”ÌO Í2”ÌQ Í4”ÌS Í6”ÌV Í9”Ì\ Í?”Ì] ÍÌ@”Ìg ÍÌJ”Ìh ÍÌK”Ìo ÍÌR”Ìp ÍÌS”Ìq ÍÌT”Ìr ÍÌU”Ìu ÍÌX”Ìv ÍÌYÜ ”; Í”? Í”Ì@ Í”ÌK Í ”ÌL Í!”ÌS Í(”ÌT Í)”ÌY Í.”ÌZ Í/”Ì[ Í0”Ì] Í2”Ì^ Í3”Ì_ Í4”Ìy Í”Ìz Í”Ì€ Í!”Ì‚ Í#”Ì„ Í%”Ì… Í&”Ì‹ Í,”ÌŒ Í-”Ì” Í5”Ì• Í6”Ì Í>”ÌŸ ÍÌ@’” Í”  Í’” Í” Í‘” Í‘” Í’” Ìÿ” Ìÿ
+‘” Í’” Í” Í˜” Í” Í
+” Í” Í”! Í”# Í”$ Í”& Í–” Í” Í
+” Í,” Í,
+” Í,” Í,–” Í” Í
+” Í-” Í-” Í-” Í-–” Í” Í
+” Í.”" Í.”# Í.”, Í.–” Í” Í
+” Í/” Í/”  Í/”! Í/”” Í” Í
+” Í” Í–” Í” Í
+” Í	” Í” Í” Í˜” Í” Í
+” Í	” Í” Í”& Í”' Í”+ Í#–” Í” Í
+” Í 	” Í ” Í ” Í ’” Í” Í
+Ÿ” Í"” Í"
+” Í"” Í"”& Í"”, Í"”. Í"!”2 Í"%”3 Í"&”= Í"0”? Í"2”ÌI Í"<”ÌM Í"Ì@”ÌQ Í"ÌD”ÌR Í"ÌEŸ” Í#” Í#
+” Í#” Í#”& Í#”, Í#”. Í#!”2 Í#%”3 Í#&”= Í#0”? Í#2”ÌJ Í#=”ÌN Í#ÌA”ÌR Í#ÌE”ÌS Í#ÌFŸ” Í$” Í$
+” Í$” Í$”& Í$”, Í$”. Í$!”2 Í$%”3 Í$&”= Í$0”? Í$2”ÌD Í$7”ÌH Í$;”ÌL Í$?”ÌM Í$Ì@Ÿ” Í%” Í%
+” Í%” Í%”& Í%”, Í%”. Í%!”2 Í%%”3 Í%&”= Í%0”? Í%2”ÌI Í%<”ÌM Í%Ì@”ÌQ Í%ÌD”ÌR Í%ÌEŸ” Í&” Í&
+” Í&” Í&”& Í&”, Í&”. Í&!”2 Í&%”3 Í&&”= Í&0”? Í&2”ÌL Í&?”ÌP Í&ÌC”ÌT Í&ÌG”ÌU Í&ÌHŸ” Í'” Í'
+” Í'” Í'”& Í'”, Í'”. Í'!”2 Í'%”3 Í'&”= Í'0”? Í'2”ÌK Í'>”ÌO Í'ÌB”ÌS Í'ÌF”ÌT Í'ÌGŸ” Í(” Í(
+” Í(” Í(”& Í(”, Í(”. Í(!”2 Í(%”3 Í(&”= Í(0”? Í(2”ÌI Í(<”ÌM Í(Ì@”ÌQ Í(ÌD”ÌR Í(ÌEÜ ” Í)” Í)
+” Í)” Í)”& Í)”. Í)!”0 Í)#”1 Í)$”5 Í)(”6 Í))”Ì@ Í)3”ÌB Í)5”ÌO Í)ÌB”ÌS Í)ÌF”ÌT Í)ÌG”ÌU Í)ÌH”ÌV Í)ÌI”Ì^ Í)ÌQ”Ì` Í)ÌS”Ìa Í)ÌTŸ” Í*” Í*
+” Í*” Í*”& Í*”. Í*!”0 Í*#”4 Í*'”5 Í*(”? Í*2”ÌA Í*4”ÌH Í*;”ÌL Í*?”ÌQ Í*ÌD”ÌR Í*ÌE’” Í” Í
+‘” Í0’” Í3” Í3˜” Í4” Í4
+” Í4” Í4”! Í4”# Í4”$ Í4”& Í4–” Í4” Í4
+” ÍA” ÍA
+” ÍA” ÍA–” Í4” Í4
+” ÍB” ÍB” ÍB” ÍB–” Í4” Í4
+” ÍC”" ÍC”# ÍC”, ÍC–” Í4” Í4
+” ÍD” ÍD”  ÍD”! ÍD”” Í5” Í5
+” Í5” Í5–” Í5” Í5
+” Í6	” Í6” Í6” Í6˜” Í5” Í5
+” Í7	” Í7” Í7”& Í7”' Í7”+ Í7#–” Í5” Í5
+” Í8	” Í8” Í8” Í8’” Í5” Í5
+Ü ” Í:” Í:
+” Í:” Í:”& Í:”* Í:”, Í:”/ Í:"”3 Í:&”4 Í:'”? Í:2”ÌA Í:4”ÌK Í:>”ÌO Í:ÌB”ÌP Í:ÌC”ÌS Í:ÌF”ÌT Í:ÌGÜ ” Í;” Í;
+” Í;” Í;”& Í;”, Í;”. Í;!”2 Í;%”3 Í;&”> Í;1”Ì@ Í;3”ÌN Í;ÌA”ÌO Í;ÌB”ÌW Í;ÌJ”ÌY Í;ÌL”Ì] Í;ÌP”Ì` Í;ÌS”Ìa Í;ÌTÜ ” Í<” Í<
+” Í<” Í<”& Í<”, Í<”. Í<!”2 Í<%”3 Í<&”> Í<1”Ì@ Í<3”ÌL Í<?”ÌM Í<Ì@”ÌU Í<ÌH”ÌW Í<ÌJ”Ì[ Í<ÌN”Ì^ Í<ÌQ”Ì_ Í<ÌRÜ ” Í=” Í=
+” Í=” Í=”& Í=”* Í=”, Í=”/ Í="”0 Í=#”1 Í=$”5 Í=(”6 Í=)”ÌA Í=4”ÌC Í=6”ÌU Í=ÌH”ÌY Í=ÌL”ÌZ Í=ÌM”Ì[ Í=ÌN”Ì^ Í=ÌQ”Ì` Í=ÌS”Ìa Í=ÌT”Ìb Í=ÌU”Ìi Í=Ì\”Ìj Í=Ì]”Ìk Í=Ì^”Ìl Í=Ì_”Ìp Í=Ìc”Ìq Í=ÌdÜ ” Í>” Í>
+” Í>” Í>”& Í>”* Í>”, Í>”/ Í>"”3 Í>&”4 Í>'”? Í>2”ÌA Í>4”ÌH Í>;”ÌL Í>?”ÌM Í>Ì@”ÌR Í>ÌE”ÌS Í>ÌFŸ” Í?” Í?
+” Í?” Í?”& Í?”* Í?”, Í?”0 Í?#”1 Í?$”< Í?/”> Í?1”ÌH Í?;”ÌL Í??”ÌP Í?ÌC”ÌQ Í?ÌD’” Í4” Í4
+‘” ÍE’” ÍH” ÍH˜” ÍI” ÍI
+” ÍI” ÍI”! ÍI”# ÍI”$ ÍI”& ÍI–” ÍI” ÍI
+” ÍV” ÍV
+” ÍV” ÍV–” ÍI” ÍI
+” ÍW” ÍW” ÍW” ÍW–” ÍI” ÍI
+” ÍX”" ÍX”# ÍX”, ÍX–” ÍI” ÍI
+” ÍY” ÍY”  ÍY”! ÍY”” ÍJ” ÍJ
+” ÍJ” ÍJ–” ÍJ” ÍJ
+” ÍK	” ÍK” ÍK” ÍK˜” ÍJ” ÍJ
+” ÍL	” ÍL” ÍL”& ÍL”' ÍL”+ ÍL#–” ÍJ” ÍJ
+” ÍM	” ÍM” ÍM” ÍM’” ÍJ” ÍJ
+Ü ” ÍO” ÍO
+” ÍO” ÍO”& ÍO”+ ÍO”- ÍO ”0 ÍO#”4 ÍO'”5 ÍO(”Ì@ ÍO3”ÌB ÍO5”ÌG ÍO:”ÌK ÍO>”ÌL ÍO?”ÌR ÍOÌE”ÌV ÍOÌI”ÌW ÍOÌJ”Ìb ÍOÌU”Ìd ÍOÌW”Ìj ÍOÌ]”Ìn ÍOÌa”Ìo ÍOÌb”Ìq ÍOÌd”Ìr ÍOÌeÜ ” ÍP” ÍP
+” ÍP” ÍP”& ÍP”, ÍP”. ÍP!”1 ÍP$”5 ÍP(”6 ÍP)”ÌA ÍP4”ÌC ÍP6”ÌM ÍPÌ@”ÌQ ÍPÌD”ÌR ÍPÌE”ÌX ÍPÌK”ÌY ÍPÌLÜ ” ÍQ” ÍQ
+” ÍQ” ÍQ”& ÍQ”+ ÍQ”- ÍQ ”0 ÍQ#”4 ÍQ'”5 ÍQ(”Ì@ ÍQ3”ÌB ÍQ5”ÌM ÍQÌ@”ÌQ ÍQÌD”ÌR ÍQÌE”ÌW ÍQÌJ”ÌX ÍQÌKÜ ” ÍR” ÍR
+” ÍR” ÍR”& ÍR”, ÍR”. ÍR!”1 ÍR$”5 ÍR(”6 ÍR)”ÌA ÍR4”ÌC ÍR6”ÌK ÍR>”ÌO ÍRÌB”ÌP ÍRÌC”ÌS ÍRÌF”ÌT ÍRÌGÜ ” ÍS” ÍS
+” ÍS” ÍS”& ÍS”- ÍS ”/ ÍS"”2 ÍS%”6 ÍS)”7 ÍS*”ÌB ÍS5”ÌD ÍS7”ÌH ÍS;”ÌL ÍS?”ÌM ÍSÌ@”ÌO ÍSÌB”ÌP ÍSÌCÜ ” ÍT” ÍT
+” ÍT” ÍT”& ÍT”- ÍT ”/ ÍT"”2 ÍT%”6 ÍT)”7 ÍT*”ÌB ÍT5”ÌD ÍT7”ÌH ÍT;”ÌL ÍT?”ÌM ÍTÌ@”ÌO ÍTÌB”ÌP ÍTÌC’” ÍI” ÍI
+‘” ÍZ’” Í]” Í]˜” Í^” Í^
+” Í^” Í^”! Í^”# Í^”$ Í^”& Í^–” Í^” Í^
+” Íh” Íh
+” Íh” Íh–” Í^” Í^
+” Íi” Íi” Íi” Íi–” Í^” Í^
+” Íj”" Íj”# Íj”, Íj–” Í^” Í^
+” Ík” Ík”  Ík”! Ík”” Í_” Í_
+” Í_” Í_–” Í_” Í_
+” Í`	” Í`” Í`” Í`˜” Í_” Í_
+” Ía	” Ía” Ía”& Ía”' Ía”+ Ía#–” Í_” Í_
+” Íb	” Íb” Íb” Íb’” Í_” Í_
+Ü ” Íd” Íd
+” Íd” Íd”& Íd”+ Íd”- Íd ”1 Íd$”2 Íd%”ÌH Íd;”ÌI Íd<”ÌM ÍdÌ@”ÌN ÍdÌA”ÌY ÍdÌL”Ì[ ÍdÌN”Ìd ÍdÌW”Ìe ÍdÌX”Ìf ÍdÌYÜ ” Íe” Íe
+” Íe” Íe”& Íe”, Íe”. Íe!”2 Íe%”3 Íe&”ÌI Íe<”ÌJ Íe=”ÌN ÍeÌA”ÌO ÍeÌB”ÌZ ÍeÌM”Ì\ ÍeÌO”Ìd ÍeÌW”Ìe ÍeÌX”Ìf ÍeÌYÜ ” Íf” Íf
+” Íf” Íf”& Íf”, Íf”. Íf!”2 Íf%”3 Íf&”ÌI Íf<”ÌJ Íf=”ÌN ÍfÌA”ÌO ÍfÌB”ÌZ ÍfÌM”Ì\ ÍfÌO”Ìd ÍfÌW”Ìe ÍfÌX”Ìf ÍfÌY’” Í^” Í^
+‘” Íl’” Ío” Ío˜” Íp” Íp
+” Íp” Íp”! Íp”# Íp”$ Íp”& Íp–” Íp” Íp
+” Íx” Íx
+” Íx” Íx–” Íp” Íp
+” Íy” Íy” Íy” Íy–” Íp” Íp
+” Íz”" Íz”# Íz”, Íz–” Íp” Íp
+” Í{” Í{”  Í{”! Í{”” Íq” Íq
+” Íq” Íq–” Íq” Íq
+” Ír	” Ír” Ír” Ír˜” Íq” Íq
+” Ís	” Ís” Ís”& Ís”' Ís”+ Ís#–” Íq” Íq
+” Ít	” Ít” Ít” Ít’” Íq” Íq
+Ÿ” Ív” Ív
+” Ív” Ív”& Ív”, Ív”. Ív!”2 Ív%”3 Ív&”> Ív1”Ì@ Ív3”ÌG Ív:”ÌK Ív>”ÌO ÍvÌB”ÌP ÍvÌC’” Íp” Íp
+‘” Í|–” Í” Í” Í” Í” Í” Í,’” Í€” Í€–” Í€” Í€” Íˆ” Íˆ
+” Íˆ” Íˆ”” Í” Í
+” Í” Í–” Í” Í
+” Í‚	” Í‚” Í‚” Í‚–” Í” Í
+” Íƒ	” Íƒ” Íƒ” Íƒ’” Í” Í
+”” Í„” Í„
+” Í„” Í„–” Í„” Í„
+” Í…	” Í…” Í…” Í…–” Í„” Í„
+” Í†	” Í†” Í†” Í†’” Í„” Í„
+’” Í€” Í€‘” Í‰”” Í‹” Í‹” Í‹” Í‹!Ü ” ÍŒ” ÍŒ
+” ÍŒ” ÍŒ” ÍŒ” ÍŒ” ÍŒ”  ÍŒ”# ÍŒ”' ÍŒ#”* ÍŒ&”. ÍŒ*”/ ÍŒ+”0 ÍŒ,”7 ÍŒ3”8 ÍŒ4”9 ÍŒ5”: ÍŒ6”; ÍŒ7–” Í” Í” Í” Í” Í” Í’” ÍŽ” ÍŽ”” Í” Í” Í”  Í2š” Í‘” Í‘” Í‘” Í‘” Í‘”# Í‘”( Í‘$”- Í‘)”. Í‘*”0 Í‘,”” Í’” Í’” Í’” Í’‘”	 Í“™” Í”” Í”” Í”” Í””% Í”!”& Í”"”+ Í”'”, Í”(”- Í”)’” Í•” Í•ÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜÑ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  ÌŽ ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ìž ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌÐ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  ÌÝ ‘”  ÌÞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìð ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìý ‘”  Ìþ ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Íž ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ‘”  ÍÏ ‘”  ÍÐ ‘”  ÍÑ ‘”  ÍÒ ‘”  ÍÓ ‘”  ÍÔ ‘”  ÍÕ ‘”  ÍÖ ‘”  Í× ‘”  ÍØ ‘”  ÍÙ ‘”  ÍÚ ‘”  ÍÛ ‘”  ÍÜ ‘”  ÍÝ ‘”  ÍÞ ‘”  Íß ‘”  Íà ‘”  Íá ‘”  Íâ ‘”  Íã ‘”  Íä ‘”  Íå ‘”  Íæ ‘”  Íç ‘”  Íè ‘”  Íé ‘”  Íê ‘”  Íë ‘”  Íì ‘”  Íí ‘”  Íî ‘”  Íï ‘”  Íð ‘”  Íñ ‘”  Íò ‘”  Íó ‘”  Íô ‘”  Íõ ‘”  Íö ‘”  Í÷ ‘”  Íø ‘”  Íù ‘”  Íú ‘”  Íû ‘”  Íü ‘”  Íý ‘”  Íþ ‘”  Íÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  ÍŽ ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Íž ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ‘”  ÍÏ ‘”  ÍÐ ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache•ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÝ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì»LªIdentifierÌ­Ì»®SystemInfoCoreLªIdentifierÌ­Ì»®SystemInfoCoreM§LiteralÌÃÌÜ·../utils/SystemInfoCore¹'../utils/SystemInfoCore'J±ImportDeclarationÌßÍ‘N¯ImportSpecifierÌèÌñLªIdentifierÌèÌñ©nativeApiLªIdentifierÌèÌñ©nativeApiM§LiteralÌùÍ²../utils/NativeApi´'../utils/NativeApi'J±ImportDeclarationÍÍA‘N¯ImportSpecifierÍÍ#LªIdentifierÍÍ#ªFormatUtilLªIdentifierÍÍ#ªFormatUtilM§LiteralÍ+Í@³../utils/FormatUtilµ'../utils/FormatUtil'J±ImportDeclarationÍCÍc‘K¶ImportDefaultSpecifierÍJÍOLªIdentifierÍJÍO¥hilogM§LiteralÍUÍb«@ohos.hilog­"@ohos.hilog"

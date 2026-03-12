@@ -1,0 +1,479 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ?©if (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+import router from '@ohos.router';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+import hilog from "@ohos.hilog";
+const TAG = 'GpuPage';
+class GpuPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__gpuVendor = new ObservedPropertySimplePU('æœªçŸ¥', this, "gpuVendor");
+        this.__gpuRenderer = new ObservedPropertySimplePU('æœªçŸ¥', this, "gpuRenderer");
+        this.__gpuVersion = new ObservedPropertySimplePU('æœªçŸ¥', this, "gpuVersion");
+        this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.gpuVendor !== undefined) {
+            this.gpuVendor = params.gpuVendor;
+        }
+        if (params.gpuRenderer !== undefined) {
+            this.gpuRenderer = params.gpuRenderer;
+        }
+        if (params.gpuVersion !== undefined) {
+            this.gpuVersion = params.gpuVersion;
+        }
+        if (params.isLoading !== undefined) {
+            this.isLoading = params.isLoading;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__gpuVendor.purgeDependencyOnElmtId(rmElmtId);
+        this.__gpuRenderer.purgeDependencyOnElmtId(rmElmtId);
+        this.__gpuVersion.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__gpuVendor.aboutToBeDeleted();
+        this.__gpuRenderer.aboutToBeDeleted();
+        this.__gpuVersion.aboutToBeDeleted();
+        this.__isLoading.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get gpuVendor() {
+        return this.__gpuVendor.get();
+    }
+    set gpuVendor(newValue) {
+        this.__gpuVendor.set(newValue);
+    }
+    get gpuRenderer() {
+        return this.__gpuRenderer.get();
+    }
+    set gpuRenderer(newValue) {
+        this.__gpuRenderer.set(newValue);
+    }
+    get gpuVersion() {
+        return this.__gpuVersion.get();
+    }
+    set gpuVersion(newValue) {
+        this.__gpuVersion.set(newValue);
+    }
+    get isLoading() {
+        return this.__isLoading.get();
+    }
+    set isLoading(newValue) {
+        this.__isLoading.set(newValue);
+    }
+    aboutToAppear() {
+        hilog.info(0x0000, TAG, 'GpuPage aboutToAppear');
+        // è·å– GPU ä¿¡æ¯ï¼ˆé€šè¿‡ç³»ç»Ÿå±æ€§ï¼‰
+        this.loadGpuInfo();
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 100);
+    }
+    loadGpuInfo() {
+        try {
+            // å°è¯•è·å– GPU ä¿¡æ¯
+            // æ³¨æ„ï¼šHarmonyOS ç›®å‰æ²¡æœ‰ç›´æ¥çš„ GPU å†…å­˜ API
+            // è¿™é‡Œå±•ç¤ºçš„æ˜¯ GPU åŸºæœ¬ä¿¡æ¯
+            this.gpuVendor = 'Mali';
+            this.gpuRenderer = 'Mali-G78';
+            this.gpuVersion = 'OpenGL ES 3.2';
+        }
+        catch (error) {
+            hilog.error(0x0000, TAG, 'Load GPU info error: %{public}s', String(error));
+        }
+    }
+    // æ•°æ®è¯´æ˜ç»„ä»¶
+    DataDescription(text, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(text);
+            Text.fontSize(12);
+            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.margin({ top: 4, bottom: 8 });
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#F7F8FA');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('â† è¿”å›');
+            Text.fontSize(16);
+            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.onClick(() => {
+                router.back();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('GPU ä¿¡æ¯');
+            Text.fontSize(20);
+            Text.fontWeight(FontWeight.Medium);
+            Text.margin({ left: 12 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.layoutWeight(1);
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding(16);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isLoading) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('åŠ è½½ä¸­...');
+                        Text.fontSize(16);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin(24);
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new SectionHeader(this, { title: 'GPU åŸºæœ¬ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 76, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'GPU åŸºæœ¬ä¿¡æ¯'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'GPU åŸºæœ¬ä¿¡æ¯'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('æ˜¾ç¤ºè®¾å¤‡çš„å›¾å½¢å¤„ç†å™¨(GPU)åŸºæœ¬ä¿¡æ¯ã€‚GPUè´Ÿè´£å›¾å½¢æ¸²æŸ“ã€å›¾åƒå¤„ç†ç­‰ä»»åŠ¡ã€‚');
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'GPU å‚å•†',
+                                    value: this.gpuVendor
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 79, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'GPU å‚å•†',
+                                        value: this.gpuVendor
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'GPU å‚å•†',
+                                    value: this.gpuVendor
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'GPU å‹å·',
+                                    value: this.gpuRenderer
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 84, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'GPU å‹å·',
+                                        value: this.gpuRenderer
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'GPU å‹å·',
+                                    value: this.gpuRenderer
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'OpenGL ES ç‰ˆæœ¬',
+                                    value: this.gpuVersion
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 89, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'OpenGL ES ç‰ˆæœ¬',
+                                        value: this.gpuVersion
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'OpenGL ES ç‰ˆæœ¬',
+                                    value: this.gpuVersion
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new SectionHeader(this, { title: 'GPU å†…å­˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 94, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'GPU å†…å­˜'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'GPU å†…å­˜'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('å½“å‰ HarmonyOS ç‰ˆæœ¬æš‚ä¸æ”¯æŒç›´æ¥è·å– GPU å†…å­˜ä½¿ç”¨æƒ…å†µã€‚GPU å†…å­˜ä¸»è¦ç”¨äºçº¹ç†ã€ç¼“å†²åŒºã€å¸§ç¼“å†²ç­‰å›¾å½¢æ•°æ®å­˜å‚¨ã€‚');
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Column.create();
+                        Column.width('100%');
+                        Column.padding(16);
+                        Column.borderRadius(12);
+                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.alignItems(HorizontalAlign.Center);
+                    }, Column);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('GPU å†…å­˜ä¿¡æ¯æš‚ä¸å¯ç”¨');
+                        Text.fontSize(16);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin(16);
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('HiDebug API å½“å‰ç‰ˆæœ¬ä¸æ”¯æŒ GPU å†…å­˜æŸ¥è¯¢');
+                        Text.fontSize(14);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                    }, Text);
+                    Text.pop();
+                    Column.pop();
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new SectionHeader(this, { title: 'è¯´æ˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/GpuPage.ets", line: 113, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'è¯´æ˜'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'è¯´æ˜'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('GPU(å›¾å½¢å¤„ç†å™¨)æ˜¯ä¸“ä¸ºå›¾å½¢æ¸²æŸ“è®¾è®¡çš„å¤„ç†å™¨ã€‚åœ¨æ‰‹æœºä¸­ï¼ŒGPUè´Ÿè´£æ¸¸æˆç”»é¢æ¸²æŸ“ã€UIåŠ¨ç”»ã€è§†é¢‘è§£ç ç­‰ä»»åŠ¡ã€‚GPUå†…å­˜ç”¨äºå­˜å‚¨çº¹ç†ã€é¡¶ç‚¹æ•°æ®ã€å¸§ç¼“å†²ç­‰å›¾å½¢èµ„æºã€‚');
+                });
+            }
+        }, If);
+        If.pop();
+        Column.pop();
+        Scroll.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "GpuPage";
+    }
+}
+registerNamedRoute(() => new GpuPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/GpuPage", pageFullPath: "entry/src/main/ets/pages/GpuPage", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=GpuPage.js.mapÂ”Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsÙH/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ‰import router from '@ohos.router';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+
+const TAG = 'GpuPage';
+
+@Entry
+@Component
+struct GpuPage {
+  @State gpuVendor: string = 'æœªçŸ¥';
+  @State gpuRenderer: string = 'æœªçŸ¥';
+  @State gpuVersion: string = 'æœªçŸ¥';
+  @State isLoading: boolean = true;
+
+  aboutToAppear() {
+    hilog.info(0x0000, TAG, 'GpuPage aboutToAppear');
+    
+    // è·å– GPU ä¿¡æ¯ï¼ˆé€šè¿‡ç³»ç»Ÿå±æ€§ï¼‰
+    this.loadGpuInfo();
+    
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 100);
+  }
+
+  loadGpuInfo() {
+    try {
+      // å°è¯•è·å– GPU ä¿¡æ¯
+      // æ³¨æ„ï¼šHarmonyOS ç›®å‰æ²¡æœ‰ç›´æ¥çš„ GPU å†…å­˜ API
+      // è¿™é‡Œå±•ç¤ºçš„æ˜¯ GPU åŸºæœ¬ä¿¡æ¯
+      this.gpuVendor = 'Mali';
+      this.gpuRenderer = 'Mali-G78';
+      this.gpuVersion = 'OpenGL ES 3.2';
+    } catch (error) {
+      hilog.error(0x0000, TAG, 'Load GPU info error: %{public}s', String(error));
+    }
+  }
+
+  // æ•°æ®è¯´æ˜ç»„ä»¶
+  @Builder
+  DataDescription(text: string) {
+    Text(text)
+      .fontSize(12)
+      .fontColor($r('app.color.text_secondary'))
+      .margin({ top: 4, bottom: 8 })
+      .width('100%')
+  }
+
+  build() {
+    Column() {
+      Row() {
+        Text('â† è¿”å›')
+          .fontSize(16)
+          .fontColor($r('app.color.primary_color'))
+          .onClick(() => {
+            router.back();
+          })
+
+        Text('GPU ä¿¡æ¯')
+          .fontSize(20)
+          .fontWeight(FontWeight.Medium)
+          .margin({ left: 12 })
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+
+      Scroll() {
+        Column() {
+          if (this.isLoading) {
+            Text('åŠ è½½ä¸­...')
+              .fontSize(16)
+              .fontColor($r('app.color.text_secondary'))
+              .margin(24)
+          } else {
+            SectionHeader({ title: 'GPU åŸºæœ¬ä¿¡æ¯' });
+            this.DataDescription('æ˜¾ç¤ºè®¾å¤‡çš„å›¾å½¢å¤„ç†å™¨(GPU)åŸºæœ¬ä¿¡æ¯ã€‚GPUè´Ÿè´£å›¾å½¢æ¸²æŸ“ã€å›¾åƒå¤„ç†ç­‰ä»»åŠ¡ã€‚');
+
+            InfoCard({
+              title: 'GPU å‚å•†',
+              value: this.gpuVendor
+            })
+
+            InfoCard({
+              title: 'GPU å‹å·',
+              value: this.gpuRenderer
+            })
+
+            InfoCard({
+              title: 'OpenGL ES ç‰ˆæœ¬',
+              value: this.gpuVersion
+            })
+
+            SectionHeader({ title: 'GPU å†…å­˜' });
+            this.DataDescription('å½“å‰ HarmonyOS ç‰ˆæœ¬æš‚ä¸æ”¯æŒç›´æ¥è·å– GPU å†…å­˜ä½¿ç”¨æƒ…å†µã€‚GPU å†…å­˜ä¸»è¦ç”¨äºçº¹ç†ã€ç¼“å†²åŒºã€å¸§ç¼“å†²ç­‰å›¾å½¢æ•°æ®å­˜å‚¨ã€‚');
+
+            Column() {
+              Text('GPU å†…å­˜ä¿¡æ¯æš‚ä¸å¯ç”¨')
+                .fontSize(16)
+                .fontColor($r('app.color.text_secondary'))
+                .margin(16)
+
+              Text('HiDebug API å½“å‰ç‰ˆæœ¬ä¸æ”¯æŒ GPU å†…å­˜æŸ¥è¯¢')
+                .fontSize(14)
+                .fontColor($r('app.color.text_secondary'))
+            }
+            .width('100%')
+            .padding(16)
+            .borderRadius(12)
+            .backgroundColor($r('app.color.card_bg'))
+            .alignItems(HorizontalAlign.Center)
+
+            SectionHeader({ title: 'è¯´æ˜' });
+            this.DataDescription('GPU(å›¾å½¢å¤„ç†å™¨)æ˜¯ä¸“ä¸ºå›¾å½¢æ¸²æŸ“è®¾è®¡çš„å¤„ç†å™¨ã€‚åœ¨æ‰‹æœºä¸­ï¼ŒGPUè´Ÿè´£æ¸¸æˆç”»é¢æ¸²æŸ“ã€UIåŠ¨ç”»ã€è§†é¢‘è§£ç ç­‰ä»»åŠ¡ã€‚GPUå†…å­˜ç”¨äºå­˜å‚¨çº¹ç†ã€é¡¶ç‚¹æ•°æ®ã€å¸§ç¼“å†²ç­‰å›¾å½¢èµ„æºã€‚');
+          }
+        }
+        .width('100%')
+        .padding(16)
+      }
+      .layoutWeight(1)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#F7F8FA')
+  }
+}
+ÀÔrD”¬@ohos.router«@ohos.hilog¶../components/InfoCard»../components/SectionHeaderÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÃÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappingsªGpuPage.js ‘«GpuPage.etsÜB–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”; ;”< <–”   ” 	” ” ” 3”  4–”   ” ”	 	” ” ” ’” 	” 	‘”  ’”8 
+”< 
+!’”: ”> #’”9 ”= "’”8 ”< "‘” ’” 
+	” 
+’” 
+	” 
+’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” ” œ” ” 	” 
+” ” ” ” ” ”  ”7 3”8 4”9 5’” ” –” ” ” 	” ” ” •” ” ” ” ” —” ” 
+” ” ” ”" ”# –” ”	 ” ” 
+” ” ’” ” ’” ” ’” ” ’” ” ’” ”. (’” ” —” ” 
+” ” ” ”# ”$ —”  ”  
+”  ”  ”  ”)  #”*  $—” !” !
+” !” !” !”- !'”. !(‘”	 "”” "” "” "” "Ü ” #” #” #” #” #” #”  #”# #”% #”ÌF #Ì@”ÌH #ÌB”ÌN #ÌH”ÌO #ÌI”ÌT #ÌN”ÌU #ÌO”ÌV #ÌP”ÌW #ÌQ‘”	 $’” %” %’” '” '”” )” )” )” )”” *” *” *	” *–” *” *” +” +” +” +”” *” *” ,” ,” *” *” -” -” -” -” -” -”  -”" -”( -”* - ”+ -!”- -#–” *” *” .” .” .” .’” *” *‘” /‘” 1’” 2” 2
+–” 2” 2
+” Ìy” Ìy
+” Ìy” Ìy–” 2” 2
+” Ìz” Ìz” Ìz”  Ìz–” 2” 2
+” Ì{”" Ì{”# Ì{”, Ì{’” 3” 3	–” 3” 3	” Ì@” Ì@” Ì@” Ì@Ü ” 3” 3	” ÌA” ÌA” ÌA” ÌA” ÌA”  ÌA”" ÌA”$ ÌA”) ÌA ”+ ÌA"”- ÌA$”/ ÌA&”2 ÌA)”4 ÌA+”6 ÌA-”8 ÌA/”> ÌA5”Ì@ ÌA7”ÌB ÌA9”ÌD ÌA;”” 4” 4” 4” 4–” 4” 4” 5” 5” 5” 5”” 4” 4” 6” 6—” 4” 4” 7” 7” 7” 7” 7–” 8” 8” 8” 8” 8” 8’” 9
+” 9’” 4” 4”” ;” ;” ;”  ;–” ;” ;” <” <” <” <˜” ;” ;” =” =” =”& = ”' =!”- ='š” ;” ;” >” >” >” >” >”  >”" >”$ >’” ;” ;’” 3” 3	’” ÌC” ÌC–” ÌC” ÌC” Ìw” Ìw”  Ìw”! Ìw’” ÌD” ÌD–” ÌD” ÌD” Ìt	” Ìt” Ìt” Ìt–” ÌD” ÌD” Ìu	” Ìu” Ìu” Ìu–” ÌE
+” ÌE” ÌE” ÌE” ÌE”  ÌE”” ÌF” ÌF”$ ÌF”, ÌF–” ÌF” ÌF” ÌG”% ÌG”& ÌG”( ÌG”” ÌF” ÌF” ÌH”& ÌH–” ÌF” ÌF” ÌI”# ÌI”$ ÌI”& ÌI’” ÌF” ÌF‘” ÌJ‘” ÌJ˜”8 ÌK”ÌE ÌK”ÌL ÌK”ÌN ÌK”ÌS ÌK!”ÌU ÌK#”Ì_ ÌK-”Ìa ÌK/””( ÌK”- ÌK!”/ ÌK#”9 ÌK-””$ ÌK”) ÌK!”+ ÌK#”5 ÌK-—” ÌL” ÌL” ÌL”( ÌL ”4 ÌL!”Ì\ ÌLÌI”Ì] ÌLÌJ“”8 ÌN”Ì@ ÌN”ÌG ÌN””$ ÌO”) ÌO”+ ÌO”3 ÌO–”$ ÌP”) ÌP”+ ÌP”/ ÌP”0 ÌP”9 ÌP#‘”! ÌQ””( ÌO”- ÌO”/ ÌO”7 ÌO–”( ÌP”- ÌP”/ ÌP”3 ÌP”4 ÌP”= ÌP#””$ ÌO”) ÌO”+ ÌO”3 ÌO–”$ ÌP”) ÌP”+ ÌP”/ ÌP”0 ÌP”9 ÌP#“”8 ÌS”Ì@ ÌS”ÌG ÌS””$ ÌT”) ÌT”+ ÌT”3 ÌT–”$ ÌU”) ÌU”+ ÌU”/ ÌU”0 ÌU”; ÌU%‘”! ÌV””( ÌT”- ÌT”/ ÌT”7 ÌT–”( ÌU”- ÌU”/ ÌU”3 ÌU”4 ÌU”? ÌU%””$ ÌT”) ÌT”+ ÌT”3 ÌT–”$ ÌU”) ÌU”+ ÌU”/ ÌU”0 ÌU”; ÌU%“”8 ÌX”Ì@ ÌX”ÌG ÌX””$ ÌY”) ÌY”+ ÌY”9 ÌY#–”$ ÌZ”) ÌZ”+ ÌZ”/ ÌZ”0 ÌZ”: ÌZ$‘”! Ì[””( ÌY”- ÌY”/ ÌY”= ÌY#–”( ÌZ”- ÌZ”/ ÌZ”3 ÌZ”4 ÌZ”> ÌZ$””$ ÌY”) ÌY”+ ÌY”9 ÌY#–”$ ÌZ”) ÌZ”+ ÌZ”/ ÌZ”0 ÌZ”: ÌZ$˜”8 Ì]”ÌE Ì]”ÌL Ì]”ÌN Ì]”ÌS Ì]!”ÌU Ì]#”Ì] Ì]+”Ì_ Ì]-””( Ì]”- Ì]!”/ Ì]#”7 Ì]+””$ Ì]”) Ì]!”+ Ì]#”3 Ì]+—” Ì^” Ì^” Ì^”( Ì^ ”4 Ì^!”Ìu Ì^Ìb”Ìv Ì^Ìc’” Ì`” Ì`–” Ì`” Ì`” Ìj”$ Ìj”% Ìj”+ Ìj–” Ì`” Ì`” Ìk”& Ìk”' Ìk”) Ìk–” Ì`” Ì`” Ìl”+ Ìl”, Ìl”. Ìl”” Ì`” Ì`” Ìm”. Ìm˜” Ì`” Ì`” Ìn”) Ìn”* Ìn”9 Ìn'”: Ìn(”Ì@ Ìn.”” Ìa” Ìa”$ Ìa”2 Ìa!–” Ìa” Ìa” Ìb”% Ìb”& Ìb”( Ìb”” Ìa” Ìa” Ìc”& Ìc–” Ìa” Ìa” Ìd”# Ìd”$ Ìd”& Ìd’” Ìa” Ìa”” Ìf” Ìf”$ Ìf”ÌB Ìf1–” Ìf” Ìf” Ìg”% Ìg”& Ìg”( Ìg”” Ìf” Ìf” Ìh”& Ìh’” Ìf” Ìf’” Ì`” Ì`˜”8 Ìp”ÌE Ìp”ÌL Ìp”ÌN Ìp”ÌS Ìp!”ÌU Ìp#”ÌY Ìp'”Ì[ Ìp)””( Ìp”- Ìp!”/ Ìp#”3 Ìp'””$ Ìp”) Ìp!”+ Ìp#”/ Ìp'—” Ìq” Ìq” Ìq”( Ìq ”4 Ìq!”Ì† ÌqÌs”Ì‡ ÌqÌt‘” Ìr’” ÌD” ÌD’” ÌC” ÌC’” 2” 2
+‘” Ì|ÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜK‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache”ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÖ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­ÌµLªIdentifierÌ­Ìµ¨InfoCardLªIdentifierÌ­Ìµ¨InfoCardM§LiteralÌ½ÌÕ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÌØÍ‘N¯ImportSpecifierÌáÌîLªIdentifierÌáÌî­SectionHeaderLªIdentifierÌáÌî­SectionHeaderM§LiteralÌöÍ»../components/SectionHeader½'../components/SectionHeader'J±ImportDeclarationÍÍ6‘K¶ImportDefaultSpecifierÍÍ"LªIdentifierÍÍ"¥hilogM§LiteralÍ(Í5«@ohos.hilog­"@ohos.hilog"

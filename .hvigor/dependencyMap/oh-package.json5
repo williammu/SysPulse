@@ -1,0 +1,1 @@
+{"name":"huawei_sysinfo","version":"1.0.0","description":"HarmonyOS SysInfo App","main":"","author":"","license":"","dependencies":{},"devDependencies":{"@ohos/hypium":"1.0.16"},"dynamicDependencies":{},"modelVersion":"5.0.0"}

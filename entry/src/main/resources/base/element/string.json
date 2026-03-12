@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "SysInfo模块"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "SysInfo主入口"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "SysInfo"
+    },
+    {
+      "name": "permission_reason_network",
+      "value": "用于获取网络信息"
+    },
+    {
+      "name": "permission_reason_bluetooth",
+      "value": "用于获取蓝牙信息"
+    }
+  ]
+}

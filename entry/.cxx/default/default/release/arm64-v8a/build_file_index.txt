@@ -1,0 +1,1 @@
+/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/CMakeLists.txt

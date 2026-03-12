@@ -1,0 +1,6 @@
+{
+  "name": "libsysinfo.so",
+  "types": "./index.d.ts",
+  "version": "1.0.0",
+  "description": "Native API for SysInfo - HiDebug and Sensor modules"
+}

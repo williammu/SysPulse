@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "ohos-module-entry": {
+    "SELECT_TARGET": "default",
+    "MODULE_BUILD_DIR": "/Users/bytedance/dev/huawei_sysinfo/entry/build",
+    "TARGETS": {
+      "default": {
+        "SOURCE_ROOT": "/Users/bytedance/dev/huawei_sysinfo/entry/src/main",
+        "RESOURCES_PATH": [
+          "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/resources"
+        ],
+        "BUILD_PATH": {
+          "OUTPUT_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/outputs/default",
+          "INTERMEDIA_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates",
+          "JS_ASSETS_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/loader_out/default",
+          "JS_LITE_ASSETS_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/loader_out_lite/default",
+          "RES_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/res/default",
+          "RES_PROFILE_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/res/default/resources/base/profile",
+          "ETS_SUPER_VISUAL_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/cache/default/default@CompileArkTS/esmodule",
+          "JS_SUPER_VISUAL_PATH": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/cache/default/default@CompileJS/jsbundle",
+          "WORKER_LOADER": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/loader/default/loader.json",
+          "MANIFEST_JSON": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/manifest/default",
+          "OUTPUT_METADATA_JSON": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/hap_metadata/default/output_metadata.json",
+          "SOURCE_MAP_DIR": "/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/source_map/default"
+        },
+        "BUILD_OPTION": {
+          "debuggable": true
+        }
+      }
+    },
+    "BUILD_OPTION": {
+      "default-default": {
+        "debuggable": true,
+        "copyFrom": "default"
+      }
+    },
+    "BUILD_PROFILE_OPT": {
+      "apiType": "stageMode",
+      "buildOption": {},
+      "targets": [
+        {
+          "name": "default",
+          "runtimeOS": "HarmonyOS"
+        }
+      ]
+    },
+    "BUILD_CACHE_DIR": ""
+  },
+  "ohos-project": {
+    "SELECT_PRODUCT_NAME": "default",
+    "MODULE_BUILD_DIR": "/Users/bytedance/dev/huawei_sysinfo/build",
+    "BUNDLE_NAME": "com.huawei.sysinfo",
+    "VERSION_CODE": 1000000,
+    "VERSION_NAME": "1.0.0",
+    "BUILD_PATH": {
+      "OUTPUT_PATH": "/Users/bytedance/dev/huawei_sysinfo/build/outputs/default"
+    },
+    "MODULES": [
+      {
+        "name": "entry",
+        "srcPath": "/Users/bytedance/dev/huawei_sysinfo/entry",
+        "targets": [
+          {
+            "name": "default",
+            "applyToProducts": [
+              "default"
+            ]
+          }
+        ],
+        "belongProjectPath": "/Users/bytedance/dev/huawei_sysinfo"
+      }
+    ],
+    "PROFILE_OPT": {
+      "app": {
+        "signingConfigs": [
+          {
+            "name": "default",
+            "type": "HarmonyOS",
+            "material": {
+              "certpath": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.cer",
+              "keyAlias": "debugKey",
+              "keyPassword": "0000001BC91D92CC289AD64093D53534C25E395AC133DDEC165CFCFB367B61C0D13E2A8246AC8DE45F4178",
+              "profile": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.p7b",
+              "signAlg": "SHA256withECDSA",
+              "storeFile": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.p12",
+              "storePassword": "0000001B1D9FE4476C84F50D4806C69CDA757684B54799D3806A6D304202168808D52456BAE8FAC2D046A9"
+            }
+          }
+        ],
+        "products": [
+          {
+            "name": "default",
+            "signingConfig": "default",
+            "compatibleSdkVersion": "5.0.0(12)",
+            "runtimeOS": "HarmonyOS",
+            "targetSdkVersion": "6.0.2(22)"
+          }
+        ],
+        "buildModeSet": [
+          {
+            "name": "debug"
+          },
+          {
+            "name": "release"
+          }
+        ]
+      },
+      "modules": [
+        {
+          "name": "entry",
+          "srcPath": "./entry",
+          "targets": [
+            {
+              "name": "default",
+              "applyToProducts": [
+                "default"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "CONFIG_PROPERTIES": {
+      "enableSignTask": true,
+      "skipNativeIncremental": false,
+      "hvigor.keepDependency": true
+    },
+    "OVERALL_PROJECT_PATHS": [
+      "/Users/bytedance/dev/huawei_sysinfo"
+    ],
+    "BUILD_CACHE_DIR": ""
+  }
+}

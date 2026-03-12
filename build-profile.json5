@@ -1,0 +1,50 @@
+{
+  "app": {
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001BC91D92CC289AD64093D53534C25E395AC133DDEC165CFCFB367B61C0D13E2A8246AC8DE45F4178",
+          "profile": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "/Users/bytedance/.ohos/config/default_huawei_sysinfo_ZxWr1NYzJIVo1-rePRuMc7AL1ofIo8E8Qc-n2y7DaTQ=.p12",
+          "storePassword": "0000001B1D9FE4476C84F50D4806C69CDA757684B54799D3806A6D304202168808D52456BAE8FAC2D046A9"
+        }
+      }
+    ],
+    "products": [
+      {
+        "name": "default",
+        "signingConfig": "default",
+        "compatibleSdkVersion": "5.0.0(12)",
+        "runtimeOS": "HarmonyOS",
+        "targetSdkVersion": "6.0.2(22)"
+      }
+    ],
+    "buildModeSet": [
+      {
+        "name": "debug"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "modules": [
+    {
+      "name": "entry",
+      "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    }
+  ]
+}

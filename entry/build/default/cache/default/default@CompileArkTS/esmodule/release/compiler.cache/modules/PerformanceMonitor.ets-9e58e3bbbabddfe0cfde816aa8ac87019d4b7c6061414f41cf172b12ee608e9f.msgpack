@@ -1,0 +1,813 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ2Âimport hilog from '@ohos.hilog';
+import deviceInfo from '@ohos.deviceInfo';
+import batteryInfo from '@ohos.batteryInfo';
+import display from '@ohos.display';
+import statvfs from '@ohos.file.statvfs';
+import connection from '@ohos.net.connection';
+const TAG = 'PerformanceMonitor';
+const DOMAIN = 0x0000;
+// æµ‹è¯•ç”¨ä¾‹æœŸæœ›å€¼ï¼ˆåŸºäº HarmonyOS NEXT API æ–‡æ¡£ï¼‰
+const TEST_CASES = {
+    deviceInfo: {
+        apiVersionRange: { min: 12, max: 30 },
+        osVersionPattern: /^HarmonyOS|^OpenHarmony/
+    },
+    batteryInfo: {
+        socRange: { min: 0, max: 100 },
+        chargingStatusValues: [0, 1, 2, 3, 4, 5],
+        temperatureRange: { min: -500, max: 800 }
+    },
+    displayInfo: {
+        minResolution: { width: 320, height: 240 },
+        densityRange: { min: 80, max: 640 },
+        refreshRateValues: [30, 60, 90, 120, 144]
+    },
+    storageInfo: {
+        minTotalSize: 1024 * 1024 * 1024
+    }
+};
+export class PerformanceMonitor {
+    static async collectMetrics() {
+        try {
+            const timestamp = Date.now();
+            const deviceMetrics = {
+                deviceType: deviceInfo.deviceType || 'unknown',
+                brand: deviceInfo.brand || 'unknown',
+                marketName: deviceInfo.marketName || 'unknown',
+                osFullName: deviceInfo.osFullName || 'unknown',
+                sdkApiVersion: deviceInfo.sdkApiVersion || 0
+            };
+            const batteryMetrics = {
+                batterySOC: batteryInfo.batterySOC ?? -1,
+                chargingStatus: batteryInfo.chargingStatus ?? -1,
+                batteryTemperature: batteryInfo.batteryTemperature ?? -1
+            };
+            let displayMetrics = {
+                screenWidth: 0,
+                screenHeight: 0,
+                densityDPI: 0,
+                refreshRate: 0
+            };
+            try {
+                const displayInfo = await display.getDefaultDisplay();
+                displayMetrics = {
+                    screenWidth: displayInfo.width,
+                    screenHeight: displayInfo.height,
+                    densityDPI: displayInfo.densityDPI,
+                    refreshRate: displayInfo.refreshRate
+                };
+            }
+            catch (e) {
+                hilog.warn(DOMAIN, TAG, 'Failed to get display info: %{public}s', JSON.stringify(e));
+            }
+            let storageMetrics = {
+                totalStorage: 0,
+                freeStorage: 0
+            };
+            try {
+                const context = getContext();
+                const dataPath = context.filesDir;
+                const totalSize = statvfs.getTotalSizeSync(dataPath);
+                const freeSize = statvfs.getFreeSizeSync(dataPath);
+                storageMetrics = {
+                    totalStorage: totalSize,
+                    freeStorage: freeSize
+                };
+                // å¦‚æœè·å–åˆ°çš„å­˜å‚¨ä¸º0ï¼Œå¯èƒ½æ˜¯æƒé™é—®é¢˜ï¼Œæ ‡è®°ä¸ºè­¦å‘Š
+                if (totalSize === 0 || freeSize === 0) {
+                    hilog.warn(DOMAIN, TAG, 'Storage info returned 0, may need permission or API not supported on this device');
+                }
+            }
+            catch (e) {
+                hilog.warn(DOMAIN, TAG, 'Failed to get storage info: %{public}s', JSON.stringify(e));
+            }
+            let networkType = 'unknown';
+            try {
+                const netHandle = await connection.getDefaultNet();
+                const netCapabilities = await connection.getNetCapabilities(netHandle);
+                networkType = netCapabilities.bearerTypes?.join(',') || 'unknown';
+            }
+            catch (e) {
+                hilog.warn(DOMAIN, TAG, 'Failed to get network info: %{public}s', JSON.stringify(e));
+            }
+            const metrics = {
+                timestamp,
+                deviceType: deviceMetrics.deviceType,
+                brand: deviceMetrics.brand,
+                marketName: deviceMetrics.marketName,
+                osFullName: deviceMetrics.osFullName,
+                sdkApiVersion: deviceMetrics.sdkApiVersion,
+                batterySOC: batteryMetrics.batterySOC,
+                chargingStatus: batteryMetrics.chargingStatus,
+                batteryTemperature: batteryMetrics.batteryTemperature,
+                screenWidth: displayMetrics.screenWidth,
+                screenHeight: displayMetrics.screenHeight,
+                densityDPI: displayMetrics.densityDPI,
+                refreshRate: displayMetrics.refreshRate,
+                totalStorage: storageMetrics.totalStorage,
+                freeStorage: storageMetrics.freeStorage,
+                networkType: networkType
+            };
+            return metrics;
+        }
+        catch (error) {
+            hilog.error(DOMAIN, TAG, 'Failed to collect metrics: %{public}s', JSON.stringify(error));
+            return null;
+        }
+    }
+    static validateMetrics(metrics) {
+        const results = [];
+        results.push({
+            field: 'deviceType',
+            expected: 'éç©ºå­—ç¬¦ä¸²',
+            actual: metrics.deviceType,
+            status: metrics.deviceType && metrics.deviceType !== 'unknown' ? 'PASS' : 'FAIL'
+        });
+        results.push({
+            field: 'brand',
+            expected: 'éç©ºå­—ç¬¦ä¸²',
+            actual: metrics.brand,
+            status: metrics.brand && metrics.brand !== 'unknown' ? 'PASS' : 'FAIL'
+        });
+        results.push({
+            field: 'marketName',
+            expected: 'éç©ºå­—ç¬¦ä¸²',
+            actual: metrics.marketName,
+            status: metrics.marketName && metrics.marketName !== 'unknown' ? 'PASS' : 'FAIL'
+        });
+        results.push({
+            field: 'osFullName',
+            expected: 'ç¬¦åˆ HarmonyOS/OpenHarmony æ ¼å¼',
+            actual: metrics.osFullName,
+            status: TEST_CASES.deviceInfo.osVersionPattern.test(metrics.osFullName) ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'sdkApiVersion',
+            expected: 'èŒƒå›´ 12-14',
+            actual: metrics.sdkApiVersion.toString(),
+            status: metrics.sdkApiVersion >= TEST_CASES.deviceInfo.apiVersionRange.min &&
+                metrics.sdkApiVersion <= TEST_CASES.deviceInfo.apiVersionRange.max ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'batterySOC',
+            expected: 'èŒƒå›´ 0-100%',
+            actual: metrics.batterySOC + '%',
+            status: metrics.batterySOC >= TEST_CASES.batteryInfo.socRange.min &&
+                metrics.batterySOC <= TEST_CASES.batteryInfo.socRange.max ? 'PASS' : 'FAIL'
+        });
+        results.push({
+            field: 'chargingStatus',
+            expected: 'æœ‰æ•ˆå€¼ä¹‹ä¸€: 0,1,2,3,4,5',
+            actual: metrics.chargingStatus.toString(),
+            status: TEST_CASES.batteryInfo.chargingStatusValues.includes(metrics.chargingStatus) ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'batteryTemperature',
+            expected: 'èŒƒå›´ -500-800 (0.1Â°C)',
+            actual: metrics.batteryTemperature + ' (' + (metrics.batteryTemperature / 10).toFixed(1) + 'Â°C)',
+            status: metrics.batteryTemperature >= TEST_CASES.batteryInfo.temperatureRange.min &&
+                metrics.batteryTemperature <= TEST_CASES.batteryInfo.temperatureRange.max ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'screenResolution',
+            expected: 'æœ€å° 320x240',
+            actual: metrics.screenWidth + 'x' + metrics.screenHeight,
+            status: metrics.screenWidth >= TEST_CASES.displayInfo.minResolution.width &&
+                metrics.screenHeight >= TEST_CASES.displayInfo.minResolution.height ? 'PASS' : 'FAIL'
+        });
+        results.push({
+            field: 'densityDPI',
+            expected: 'èŒƒå›´ 80-640',
+            actual: metrics.densityDPI.toString(),
+            status: metrics.densityDPI >= TEST_CASES.displayInfo.densityRange.min &&
+                metrics.densityDPI <= TEST_CASES.displayInfo.densityRange.max ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'refreshRate',
+            expected: 'å¸¸è§å€¼ä¹‹ä¸€: 30,60,90,120,144Hz',
+            actual: metrics.refreshRate + 'Hz',
+            status: TEST_CASES.displayInfo.refreshRateValues.includes(metrics.refreshRate) ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'totalStorage',
+            expected: 'æœ€å° 1GB (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)',
+            actual: metrics.totalStorage > 0 ? (metrics.totalStorage / 1024 / 1024 / 1024).toFixed(2) + 'GB' : 'æ— æ³•è·å–',
+            status: metrics.totalStorage >= TEST_CASES.storageInfo.minTotalSize ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'freeStorage',
+            expected: 'å¤§äº 0 (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)',
+            actual: metrics.freeStorage > 0 ? (metrics.freeStorage / 1024 / 1024 / 1024).toFixed(2) + 'GB' : 'æ— æ³•è·å–',
+            status: metrics.freeStorage > 0 ? 'PASS' : 'WARNING'
+        });
+        results.push({
+            field: 'networkType',
+            expected: 'éç©ºå­—ç¬¦ä¸²',
+            actual: metrics.networkType,
+            status: metrics.networkType && metrics.networkType !== 'unknown' ? 'PASS' : 'WARNING'
+        });
+        return results;
+    }
+    static async runPerformanceCheck() {
+        hilog.info(DOMAIN, TAG, '========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å¼€å§‹ ==========');
+        const startTime = Date.now();
+        const metrics = await PerformanceMonitor.collectMetrics();
+        if (!metrics) {
+            hilog.error(DOMAIN, TAG, 'æ€§èƒ½æŒ‡æ ‡æ”¶é›†å¤±è´¥');
+            return;
+        }
+        const collectTime = Date.now() - startTime;
+        hilog.info(DOMAIN, TAG, 'æŒ‡æ ‡æ”¶é›†è€—æ—¶: %{public}d ms', collectTime);
+        hilog.info(DOMAIN, TAG, 'ã€æ”¶é›†åˆ°çš„æ€§èƒ½æŒ‡æ ‡ã€‘');
+        hilog.info(DOMAIN, TAG, 'è®¾å¤‡ç±»å‹: %{public}s', metrics.deviceType);
+        hilog.info(DOMAIN, TAG, 'è®¾å¤‡å“ç‰Œ: %{public}s', metrics.brand);
+        hilog.info(DOMAIN, TAG, 'è®¾å¤‡å‹å·: %{public}s', metrics.marketName);
+        hilog.info(DOMAIN, TAG, 'ç³»ç»Ÿç‰ˆæœ¬: %{public}s', metrics.osFullName);
+        hilog.info(DOMAIN, TAG, 'API ç‰ˆæœ¬: %{public}d', metrics.sdkApiVersion);
+        hilog.info(DOMAIN, TAG, 'ç”µæ± ç”µé‡: %{public}d%%', metrics.batterySOC);
+        hilog.info(DOMAIN, TAG, 'å……ç”µçŠ¶æ€: %{public}d', metrics.chargingStatus);
+        hilog.info(DOMAIN, TAG, 'ç”µæ± æ¸©åº¦: %{public}sÂ°C', (metrics.batteryTemperature / 10).toFixed(1));
+        hilog.info(DOMAIN, TAG, 'å±å¹•åˆ†è¾¨ç‡: %{public}d x %{public}d', metrics.screenWidth, metrics.screenHeight);
+        hilog.info(DOMAIN, TAG, 'åƒç´ å¯†åº¦: %{public}d DPI', metrics.densityDPI);
+        hilog.info(DOMAIN, TAG, 'åˆ·æ–°ç‡: %{public}d Hz', metrics.refreshRate);
+        hilog.info(DOMAIN, TAG, 'æ€»å­˜å‚¨: %{public}s GB', (metrics.totalStorage / 1024 / 1024 / 1024).toFixed(2));
+        hilog.info(DOMAIN, TAG, 'å¯ç”¨å­˜å‚¨: %{public}s GB', (metrics.freeStorage / 1024 / 1024 / 1024).toFixed(2));
+        hilog.info(DOMAIN, TAG, 'ç½‘ç»œç±»å‹: %{public}s', metrics.networkType);
+        hilog.info(DOMAIN, TAG, 'ã€æµ‹è¯•ç”¨ä¾‹éªŒè¯ç»“æœã€‘');
+        const validationResults = PerformanceMonitor.validateMetrics(metrics);
+        let passCount = 0;
+        let failCount = 0;
+        let warningCount = 0;
+        for (const result of validationResults) {
+            const statusIcon = result.status === 'PASS' ? 'PASS' : result.status === 'FAIL' ? 'FAIL' : 'WARN';
+            hilog.info(DOMAIN, TAG, '[%{public}s] %{public}s: %{public}s (æœŸæœ›å€¼: %{public}s, å®é™…å€¼: %{public}s)', statusIcon, result.field, result.status, result.expected, result.actual);
+            if (result.status === 'PASS')
+                passCount++;
+            else if (result.status === 'FAIL')
+                failCount++;
+            else
+                warningCount++;
+        }
+        hilog.info(DOMAIN, TAG, 'ã€æµ‹è¯•ç»“æœæ±‡æ€»ã€‘');
+        hilog.info(DOMAIN, TAG, 'é€šè¿‡: %{public}d', passCount);
+        hilog.info(DOMAIN, TAG, 'å¤±è´¥: %{public}d', failCount);
+        hilog.info(DOMAIN, TAG, 'è­¦å‘Š: %{public}d', warningCount);
+        hilog.info(DOMAIN, TAG, 'æ€»è®¡: %{public}d', validationResults.length);
+        const totalTime = Date.now() - startTime;
+        hilog.info(DOMAIN, TAG, 'æ€»è€—æ—¶: %{public}d ms', totalTime);
+        hilog.info(DOMAIN, TAG, '========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å®Œæˆ ==========');
+        if (failCount > 0) {
+            hilog.error(DOMAIN, TAG, 'è­¦å‘Š: æœ‰ %{public}d é¡¹æµ‹è¯•å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç³»ç»Ÿä¿¡æ¯è·å–æ˜¯å¦æ­£å¸¸', failCount);
+        }
+    }
+}
+//# sourceMappingURL=PerformanceMonitor.js.mapÂ–Ùh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsÙm hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.deviceInfo.d.tsÙn hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.batteryInfo.d.tsÙj hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.display.d.tsÙo hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.file.statvfs.d.tsÙq hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.net.connection.d.tsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/PerformanceMonitor.etsÔrBœªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  ‘ÔrC’²hostDependencyName®hostModuleName»../utils/PerformanceMonitor¥entryÙ)/Users/bytedance/dev/huawei_sysinfo/entryÔrDÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ4Gimport hilog from '@ohos.hilog';
+import deviceInfo from '@ohos.deviceInfo';
+import batteryInfo from '@ohos.batteryInfo';
+import display from '@ohos.display';
+import statvfs from '@ohos.file.statvfs';
+import connection from '@ohos.net.connection';
+
+interface PerformanceMetrics {
+  timestamp: number;
+  deviceType: string;
+  brand: string;
+  marketName: string;
+  osFullName: string;
+  sdkApiVersion: number;
+  batterySOC: number;
+  chargingStatus: number;
+  batteryTemperature: number;
+  screenWidth: number;
+  screenHeight: number;
+  densityDPI: number;
+  refreshRate: number;
+  totalStorage: number;
+  freeStorage: number;
+  networkType: string;
+}
+
+interface TestCaseExpectation {
+  field: string;
+  expected: string;
+  actual: string;
+  status: 'PASS' | 'FAIL' | 'WARNING';
+}
+
+interface DeviceMetrics {
+  deviceType: string;
+  brand: string;
+  marketName: string;
+  osFullName: string;
+  sdkApiVersion: number;
+}
+
+interface BatteryMetrics {
+  batterySOC: number;
+  chargingStatus: number;
+  batteryTemperature: number;
+}
+
+interface DisplayMetrics {
+  screenWidth: number;
+  screenHeight: number;
+  densityDPI: number;
+  refreshRate: number;
+}
+
+interface StorageMetrics {
+  totalStorage: number;
+  freeStorage: number;
+}
+
+interface ApiVersionRange {
+  min: number;
+  max: number;
+}
+
+interface SocRange {
+  min: number;
+  max: number;
+}
+
+interface TemperatureRange {
+  min: number;
+  max: number;
+}
+
+interface MinResolution {
+  width: number;
+  height: number;
+}
+
+interface DensityRange {
+  min: number;
+  max: number;
+}
+
+interface DeviceInfoTestCase {
+  apiVersionRange: ApiVersionRange;
+  osVersionPattern: RegExp;
+}
+
+interface BatteryInfoTestCase {
+  socRange: SocRange;
+  chargingStatusValues: number[];
+  temperatureRange: TemperatureRange;
+}
+
+interface DisplayInfoTestCase {
+  minResolution: MinResolution;
+  densityRange: DensityRange;
+  refreshRateValues: number[];
+}
+
+interface StorageInfoTestCase {
+  minTotalSize: number;
+}
+
+interface TestCases {
+  deviceInfo: DeviceInfoTestCase;
+  batteryInfo: BatteryInfoTestCase;
+  displayInfo: DisplayInfoTestCase;
+  storageInfo: StorageInfoTestCase;
+}
+
+const TAG = 'PerformanceMonitor';
+const DOMAIN = 0x0000;
+
+// æµ‹è¯•ç”¨ä¾‹æœŸæœ›å€¼ï¼ˆåŸºäº HarmonyOS NEXT API æ–‡æ¡£ï¼‰
+const TEST_CASES: TestCases = {
+  deviceInfo: {
+    apiVersionRange: { min: 12, max: 30 },
+    osVersionPattern: /^HarmonyOS|^OpenHarmony/
+  },
+  batteryInfo: {
+    socRange: { min: 0, max: 100 },
+    chargingStatusValues: [0, 1, 2, 3, 4, 5],
+    temperatureRange: { min: -500, max: 800 }
+  },
+  displayInfo: {
+    minResolution: { width: 320, height: 240 },
+    densityRange: { min: 80, max: 640 },
+    refreshRateValues: [30, 60, 90, 120, 144]
+  },
+  storageInfo: {
+    minTotalSize: 1024 * 1024 * 1024
+  }
+};
+
+export class PerformanceMonitor {
+  static async collectMetrics(): Promise<PerformanceMetrics | null> {
+    try {
+      const timestamp = Date.now();
+
+      const deviceMetrics: DeviceMetrics = {
+        deviceType: deviceInfo.deviceType || 'unknown',
+        brand: deviceInfo.brand || 'unknown',
+        marketName: deviceInfo.marketName || 'unknown',
+        osFullName: deviceInfo.osFullName || 'unknown',
+        sdkApiVersion: deviceInfo.sdkApiVersion || 0
+      };
+
+      const batteryMetrics: BatteryMetrics = {
+        batterySOC: batteryInfo.batterySOC ?? -1,
+        chargingStatus: batteryInfo.chargingStatus ?? -1,
+        batteryTemperature: batteryInfo.batteryTemperature ?? -1
+      };
+
+      let displayMetrics: DisplayMetrics = {
+        screenWidth: 0,
+        screenHeight: 0,
+        densityDPI: 0,
+        refreshRate: 0
+      };
+
+      try {
+        const displayInfo = await display.getDefaultDisplay();
+        displayMetrics = {
+          screenWidth: displayInfo.width,
+          screenHeight: displayInfo.height,
+          densityDPI: displayInfo.densityDPI,
+          refreshRate: displayInfo.refreshRate
+        };
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'Failed to get display info: %{public}s', JSON.stringify(e));
+      }
+
+      let storageMetrics: StorageMetrics = {
+        totalStorage: 0,
+        freeStorage: 0
+      };
+
+      try {
+        const context: Context = getContext();
+        const dataPath = context.filesDir;
+        const totalSize = statvfs.getTotalSizeSync(dataPath);
+        const freeSize = statvfs.getFreeSizeSync(dataPath);
+        storageMetrics = {
+          totalStorage: totalSize,
+          freeStorage: freeSize
+        };
+        
+        // å¦‚æœè·å–åˆ°çš„å­˜å‚¨ä¸º0ï¼Œå¯èƒ½æ˜¯æƒé™é—®é¢˜ï¼Œæ ‡è®°ä¸ºè­¦å‘Š
+        if (totalSize === 0 || freeSize === 0) {
+          hilog.warn(DOMAIN, TAG, 'Storage info returned 0, may need permission or API not supported on this device');
+        }
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'Failed to get storage info: %{public}s', JSON.stringify(e));
+      }
+
+      let networkType = 'unknown';
+      try {
+        const netHandle = await connection.getDefaultNet();
+        const netCapabilities = await connection.getNetCapabilities(netHandle);
+        networkType = netCapabilities.bearerTypes?.join(',') || 'unknown';
+      } catch (e) {
+        hilog.warn(DOMAIN, TAG, 'Failed to get network info: %{public}s', JSON.stringify(e));
+      }
+
+      const metrics: PerformanceMetrics = {
+        timestamp,
+        deviceType: deviceMetrics.deviceType,
+        brand: deviceMetrics.brand,
+        marketName: deviceMetrics.marketName,
+        osFullName: deviceMetrics.osFullName,
+        sdkApiVersion: deviceMetrics.sdkApiVersion,
+        batterySOC: batteryMetrics.batterySOC,
+        chargingStatus: batteryMetrics.chargingStatus,
+        batteryTemperature: batteryMetrics.batteryTemperature,
+        screenWidth: displayMetrics.screenWidth,
+        screenHeight: displayMetrics.screenHeight,
+        densityDPI: displayMetrics.densityDPI,
+        refreshRate: displayMetrics.refreshRate,
+        totalStorage: storageMetrics.totalStorage,
+        freeStorage: storageMetrics.freeStorage,
+        networkType: networkType
+      };
+
+      return metrics;
+    } catch (error) {
+      hilog.error(DOMAIN, TAG, 'Failed to collect metrics: %{public}s', JSON.stringify(error));
+      return null;
+    }
+  }
+
+  static validateMetrics(metrics: PerformanceMetrics): TestCaseExpectation[] {
+    const results: TestCaseExpectation[] = [];
+
+    results.push({
+      field: 'deviceType',
+      expected: 'éç©ºå­—ç¬¦ä¸²',
+      actual: metrics.deviceType,
+      status: metrics.deviceType && metrics.deviceType !== 'unknown' ? 'PASS' : 'FAIL'
+    });
+
+    results.push({
+      field: 'brand',
+      expected: 'éç©ºå­—ç¬¦ä¸²',
+      actual: metrics.brand,
+      status: metrics.brand && metrics.brand !== 'unknown' ? 'PASS' : 'FAIL'
+    });
+
+    results.push({
+      field: 'marketName',
+      expected: 'éç©ºå­—ç¬¦ä¸²',
+      actual: metrics.marketName,
+      status: metrics.marketName && metrics.marketName !== 'unknown' ? 'PASS' : 'FAIL'
+    });
+
+    results.push({
+      field: 'osFullName',
+      expected: 'ç¬¦åˆ HarmonyOS/OpenHarmony æ ¼å¼',
+      actual: metrics.osFullName,
+      status: TEST_CASES.deviceInfo.osVersionPattern.test(metrics.osFullName) ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'sdkApiVersion',
+      expected: 'èŒƒå›´ 12-14',
+      actual: metrics.sdkApiVersion.toString(),
+      status: metrics.sdkApiVersion >= TEST_CASES.deviceInfo.apiVersionRange.min &&
+              metrics.sdkApiVersion <= TEST_CASES.deviceInfo.apiVersionRange.max ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'batterySOC',
+      expected: 'èŒƒå›´ 0-100%',
+      actual: metrics.batterySOC + '%',
+      status: metrics.batterySOC >= TEST_CASES.batteryInfo.socRange.min &&
+              metrics.batterySOC <= TEST_CASES.batteryInfo.socRange.max ? 'PASS' : 'FAIL'
+    });
+
+    results.push({
+      field: 'chargingStatus',
+      expected: 'æœ‰æ•ˆå€¼ä¹‹ä¸€: 0,1,2,3,4,5',
+      actual: metrics.chargingStatus.toString(),
+      status: TEST_CASES.batteryInfo.chargingStatusValues.includes(metrics.chargingStatus) ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'batteryTemperature',
+      expected: 'èŒƒå›´ -500-800 (0.1Â°C)',
+      actual: metrics.batteryTemperature + ' (' + (metrics.batteryTemperature / 10).toFixed(1) + 'Â°C)',
+      status: metrics.batteryTemperature >= TEST_CASES.batteryInfo.temperatureRange.min &&
+              metrics.batteryTemperature <= TEST_CASES.batteryInfo.temperatureRange.max ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'screenResolution',
+      expected: 'æœ€å° 320x240',
+      actual: metrics.screenWidth + 'x' + metrics.screenHeight,
+      status: metrics.screenWidth >= TEST_CASES.displayInfo.minResolution.width &&
+              metrics.screenHeight >= TEST_CASES.displayInfo.minResolution.height ? 'PASS' : 'FAIL'
+    });
+
+    results.push({
+      field: 'densityDPI',
+      expected: 'èŒƒå›´ 80-640',
+      actual: metrics.densityDPI.toString(),
+      status: metrics.densityDPI >= TEST_CASES.displayInfo.densityRange.min &&
+              metrics.densityDPI <= TEST_CASES.displayInfo.densityRange.max ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'refreshRate',
+      expected: 'å¸¸è§å€¼ä¹‹ä¸€: 30,60,90,120,144Hz',
+      actual: metrics.refreshRate + 'Hz',
+      status: TEST_CASES.displayInfo.refreshRateValues.includes(metrics.refreshRate) ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'totalStorage',
+      expected: 'æœ€å° 1GB (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)',
+      actual: metrics.totalStorage > 0 ? (metrics.totalStorage / 1024 / 1024 / 1024).toFixed(2) + 'GB' : 'æ— æ³•è·å–',
+      status: metrics.totalStorage >= TEST_CASES.storageInfo.minTotalSize ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'freeStorage',
+      expected: 'å¤§äº 0 (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)',
+      actual: metrics.freeStorage > 0 ? (metrics.freeStorage / 1024 / 1024 / 1024).toFixed(2) + 'GB' : 'æ— æ³•è·å–',
+      status: metrics.freeStorage > 0 ? 'PASS' : 'WARNING'
+    });
+
+    results.push({
+      field: 'networkType',
+      expected: 'éç©ºå­—ç¬¦ä¸²',
+      actual: metrics.networkType,
+      status: metrics.networkType && metrics.networkType !== 'unknown' ? 'PASS' : 'WARNING'
+    });
+
+    return results;
+  }
+
+  static async runPerformanceCheck(): Promise<void> {
+    hilog.info(DOMAIN, TAG, '========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å¼€å§‹ ==========');
+
+    const startTime = Date.now();
+
+    const metrics = await PerformanceMonitor.collectMetrics();
+
+    if (!metrics) {
+      hilog.error(DOMAIN, TAG, 'æ€§èƒ½æŒ‡æ ‡æ”¶é›†å¤±è´¥');
+      return;
+    }
+
+    const collectTime = Date.now() - startTime;
+    hilog.info(DOMAIN, TAG, 'æŒ‡æ ‡æ”¶é›†è€—æ—¶: %{public}d ms', collectTime);
+
+    hilog.info(DOMAIN, TAG, 'ã€æ”¶é›†åˆ°çš„æ€§èƒ½æŒ‡æ ‡ã€‘');
+    hilog.info(DOMAIN, TAG, 'è®¾å¤‡ç±»å‹: %{public}s', metrics.deviceType);
+    hilog.info(DOMAIN, TAG, 'è®¾å¤‡å“ç‰Œ: %{public}s', metrics.brand);
+    hilog.info(DOMAIN, TAG, 'è®¾å¤‡å‹å·: %{public}s', metrics.marketName);
+    hilog.info(DOMAIN, TAG, 'ç³»ç»Ÿç‰ˆæœ¬: %{public}s', metrics.osFullName);
+    hilog.info(DOMAIN, TAG, 'API ç‰ˆæœ¬: %{public}d', metrics.sdkApiVersion);
+    hilog.info(DOMAIN, TAG, 'ç”µæ± ç”µé‡: %{public}d%%', metrics.batterySOC);
+    hilog.info(DOMAIN, TAG, 'å……ç”µçŠ¶æ€: %{public}d', metrics.chargingStatus);
+    hilog.info(DOMAIN, TAG, 'ç”µæ± æ¸©åº¦: %{public}sÂ°C', (metrics.batteryTemperature / 10).toFixed(1));
+    hilog.info(DOMAIN, TAG, 'å±å¹•åˆ†è¾¨ç‡: %{public}d x %{public}d', metrics.screenWidth, metrics.screenHeight);
+    hilog.info(DOMAIN, TAG, 'åƒç´ å¯†åº¦: %{public}d DPI', metrics.densityDPI);
+    hilog.info(DOMAIN, TAG, 'åˆ·æ–°ç‡: %{public}d Hz', metrics.refreshRate);
+    hilog.info(DOMAIN, TAG, 'æ€»å­˜å‚¨: %{public}s GB', (metrics.totalStorage / 1024 / 1024 / 1024).toFixed(2));
+    hilog.info(DOMAIN, TAG, 'å¯ç”¨å­˜å‚¨: %{public}s GB', (metrics.freeStorage / 1024 / 1024 / 1024).toFixed(2));
+    hilog.info(DOMAIN, TAG, 'ç½‘ç»œç±»å‹: %{public}s', metrics.networkType);
+
+    hilog.info(DOMAIN, TAG, 'ã€æµ‹è¯•ç”¨ä¾‹éªŒè¯ç»“æœã€‘');
+    const validationResults = PerformanceMonitor.validateMetrics(metrics);
+
+    let passCount = 0;
+    let failCount = 0;
+    let warningCount = 0;
+
+    for (const result of validationResults) {
+      const statusIcon = result.status === 'PASS' ? 'PASS' : result.status === 'FAIL' ? 'FAIL' : 'WARN';
+      hilog.info(DOMAIN, TAG, '[%{public}s] %{public}s: %{public}s (æœŸæœ›å€¼: %{public}s, å®é™…å€¼: %{public}s)',
+        statusIcon, result.field, result.status, result.expected, result.actual);
+
+      if (result.status === 'PASS') passCount++;
+      else if (result.status === 'FAIL') failCount++;
+      else warningCount++;
+    }
+
+    hilog.info(DOMAIN, TAG, 'ã€æµ‹è¯•ç»“æœæ±‡æ€»ã€‘');
+    hilog.info(DOMAIN, TAG, 'é€šè¿‡: %{public}d', passCount);
+    hilog.info(DOMAIN, TAG, 'å¤±è´¥: %{public}d', failCount);
+    hilog.info(DOMAIN, TAG, 'è­¦å‘Š: %{public}d', warningCount);
+    hilog.info(DOMAIN, TAG, 'æ€»è®¡: %{public}d', validationResults.length);
+
+    const totalTime = Date.now() - startTime;
+    hilog.info(DOMAIN, TAG, 'æ€»è€—æ—¶: %{public}d ms', totalTime);
+    hilog.info(DOMAIN, TAG, '========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å®Œæˆ ==========');
+
+    if (failCount > 0) {
+      hilog.error(DOMAIN, TAG, 'è­¦å‘Š: æœ‰ %{public}d é¡¹æµ‹è¯•å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç³»ç»Ÿä¿¡æ¯è·å–æ˜¯å¦æ­£å¸¸', failCount);
+    }
+  }
+}
+ÀÔrE–«@ohos.hilog°@ohos.deviceInfo±@ohos.batteryInfo­@ohos.display²@ohos.file.statvfs´@ohos.net.connectionÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsAÃªoh-resolveÂFAÃÙm hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.deviceInfo.d.tsAÃªoh-resolveÂFAÃÙn hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.batteryInfo.d.tsAÃªoh-resolveÂFAÃÙj hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.display.d.tsAÃªoh-resolveÂFAÃÙo hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.file.statvfs.d.tsAÃªoh-resolveÂFAÃÙq hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.net.connection.d.tsÔrG‘¯hostModulesInfo’C´@ohos.net.connection¥entryC´@ohos.net.connection¥entryÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappingsµPerformanceMonitor.js ‘¶PerformanceMonitor.etsÜ–”    ”  ”  ”  ”  ”    –”   ” ” ” ”) )”* *–”   ” ” ” ”+ +”, ,–”   ” ” ” ”# #”$ $–”   ” ” ” ”( (”) )–”   ” ” ” ”- -”. .–”  Ìp ” Ìp”	 Ìp	” Ìp”  Ìp ”! Ìp!–”  Ìq ” Ìq” Ìq” Ìq” Ìq” Ìq’”  Ìs ”$ Ìs$””  Ìt ” Ìt” Ìt” Ìt“” Ìu” Ìu” Ìuœ” Ìv” Ìv” Ìv” Ìv” Ìv”  Ìv”" Ìv”$ Ìv ”' Ìv#”) Ìv%”+ Ìv'”- Ìv)”” Ìw” Ìw” Ìw”3 Ìw/‘” Ìx“” Ìy” Ìy” Ìyœ” Ìz” Ìz” Ìz” Ìz” Ìz” Ìz” Ìz” Ìz” Ìz”! Ìz”$ Ìz ”& Ìz"Ü ” Ì{” Ì{” Ì{” Ì{”  Ì{”" Ì{”# Ì{”% Ì{!”& Ì{"”( Ì{$”) Ì{%”+ Ì{'”, Ì{(”. Ì{*”/ Ì{+”0 Ì{,” Ì|” Ì|” Ì|” Ì|” Ì|”! Ì|”" Ì|”% Ì|!”' Ì|#”* Ì|&”, Ì|(”/ Ì|+”1 Ì|-‘” Ì}“” Ì~” Ì~” Ì~œ” Ì” Ì” Ì” Ì” Ì”  Ì”# Ì”% Ì!”+ Ì'”- Ì)”0 Ì,”2 Ì.œ” Ì€” Ì€” Ì€” Ì€” Ì€” Ì€” Ì€”! Ì€”$ Ì€ ”& Ì€"”) Ì€%”+ Ì€'” Ì” Ì” Ì” Ì” Ì”  Ì”" Ì”$ Ì ”& Ì"”( Ì$”+ Ì'”- Ì)”0 Ì,”1 Ì-‘” Ì‚“” Ìƒ” Ìƒ” Ìƒ˜” Ì„” Ì„” Ì„” Ì„” Ì„”! Ì„”$ Ì„ ”( Ì„$‘” Ì…’” Ì†” Ì†””  Ìˆ ” Ìˆ” Ìˆ” Ìˆ–” Ì‰”
+ Ì‰” Ì‰	” Ì‰” Ì‰” Ì‰’” ÌŠ” ÌŠ™” Ì‹” Ì‹” Ì‹” Ì‹”" Ì‹”# Ì‹”& Ì‹ ”( Ì‹"”) Ì‹#”” Ì” Ì” Ì”" Ì+˜” Ì” Ì” Ì”& Ì”' Ì”1 Ì)”5 Ì-”> Ì6˜” Ì” Ì” Ì”! Ì”" Ì”' Ì”+ Ì#”4 Ì,˜” Ì” Ì” Ì”& Ì”' Ì”1 Ì)”5 Ì-”> Ì6˜” Ì‘” Ì‘” Ì‘”& Ì‘”' Ì‘”1 Ì‘)”5 Ì‘-”> Ì‘6˜” Ì’” Ì’” Ì’”) Ì’!”* Ì’"”7 Ì’/”; Ì’3”< Ì’4’” Ì“” Ì“”” Ì•” Ì•”  Ì•”# Ì•-™” Ì–” Ì–” Ì–”' Ì–”( Ì– ”2 Ì–*”6 Ì–.”7 Ì–/”8 Ì–0™” Ì—” Ì—”  Ì—”+ Ì—#”, Ì—$”: Ì—2”> Ì—6”? Ì—7”Ì@ Ì—8™” Ì˜”" Ì˜”$ Ì˜”/ Ì˜'”0 Ì˜(”ÌB Ì˜:”ÌF Ì˜>”ÌG Ì˜?”ÌH Ì˜Ì@’” Ì™” Ì™”” Ì›” Ì›
+” Ì›”! Ì›+”” Ìœ” Ìœ” Ìœ” Ìœ”” Ì” Ì” Ì” Ì”” Ì” Ì” Ì” Ì”” ÌŸ” ÌŸ” ÌŸ” ÌŸ’” Ì ” Ì ’” Ì¢” Ì¢
+š” Ì£” Ì£”! Ì£”$ Ì£”* Ì£"”1 Ì£)”2 Ì£*”ÌC Ì£;”ÌE Ì£=”ÌF Ì£>“” Ì¤” Ì¤”! Ì¤–” Ì¥
+” Ì¥”! Ì¥”, Ì¥"”- Ì¥#”2 Ì¥(–” Ì¦
+”  Ì¦”" Ì¦”- Ì¦#”. Ì¦$”4 Ì¦*–” Ì§
+” Ì§”  Ì§”+ Ì§!”, Ì§"”6 Ì§,–” Ì¨
+” Ì¨”! Ì¨”, Ì¨"”- Ì¨#”8 Ì¨.’” Ì©	” Ì©
+‘” Ìª”” Ìª” Ìª” Ìª” ÌªÜ ” Ì«” Ì«” Ì«” Ì«” Ì«”! Ì«”# Ì«”& Ì«”( Ì« ”ÌP Ì«ÌH”ÌR Ì«ÌJ”ÌV Ì«ÌN”ÌW Ì«ÌO”Ì` Ì«ÌX”Ìa Ì«ÌY”Ìb Ì«ÌZ”Ìc Ì«Ì[”Ìd Ì«Ì\”Ìe Ì«Ì]‘” Ì¬”” Ì®” Ì®
+” Ì®”! Ì®+”” Ì¯” Ì¯” Ì¯” Ì¯”” Ì°” Ì°” Ì°” Ì°’” Ì±” Ì±’” Ì³” Ì³
+—” Ì´” Ì´” Ì´”  Ì´!”* Ì´+”, Ì´-”- Ì´.˜” Ìµ” Ìµ” Ìµ”! Ìµ”( Ìµ ”) Ìµ!”1 Ìµ)”2 Ìµ*›” Ì¶” Ì¶” Ì¶”" Ì¶”) Ì¶!”* Ì¶"”: Ì¶2”; Ì¶3”ÌC Ì¶;”ÌD Ì¶<”ÌE Ì¶=›” Ì·” Ì·” Ì·”! Ì·”( Ì· ”) Ì·!”8 Ì·0”9 Ì·1”ÌA Ì·9”ÌB Ì·:”ÌC Ì·;“” Ì¸” Ì¸”! Ì¸”” Ì¹
+”  Ì¹”" Ì¹”+ Ì¹!”” Ìº
+” Ìº”! Ìº”) Ìº’” Ì»	” Ì»
+’” Ì½”+ Ì½#š” Ì¾” Ì¾” Ì¾”" Ì¾”# Ì¾”' Ì¾”/ Ì¾'”4 Ì¾,”5 Ì¾-”7 Ì¾/œ” Ì¿
+” Ì¿” Ì¿” Ì¿” Ì¿”% Ì¿”' Ì¿”* Ì¿ ”, Ì¿"”Ì~ Ì¿Ìt”Ì Ì¿Ìu”Ì€ Ì¿Ìv‘” ÌÀ	‘” ÌÁ”” ÌÁ” ÌÁ” ÌÁ” ÌÁÜ ” ÌÂ” ÌÂ” ÌÂ” ÌÂ” ÌÂ”! ÌÂ”# ÌÂ”& ÌÂ”( ÌÂ ”ÌP ÌÂÌH”ÌR ÌÂÌJ”ÌV ÌÂÌN”ÌW ÌÂÌO”Ì` ÌÂÌX”Ìa ÌÂÌY”Ìb ÌÂÌZ”Ìc ÌÂÌ[”Ìd ÌÂÌ\”Ìe ÌÂÌ]‘” ÌÃ–” ÌÅ” ÌÅ
+” ÌÅ” ÌÅ”' ÌÅ!”( ÌÅ"’” ÌÆ” ÌÆ
+š” ÌÇ” ÌÇ” ÌÇ”" ÌÇ”( ÌÇ ”2 ÌÇ*”3 ÌÇ+”Ì@ ÌÇ8”ÌB ÌÇ:”ÌC ÌÇ;œ” ÌÈ” ÌÈ”% ÌÈ”( ÌÈ ”. ÌÈ&”8 ÌÈ0”9 ÌÈ1”ÌK ÌÈÌC”ÌL ÌÈÌD”ÌU ÌÈÌM”ÌV ÌÈÌN”ÌW ÌÈÌO” ÌÉ” ÌÉ” ÌÉ”- ÌÉ%”. ÌÉ&”9 ÌÉ1”; ÌÉ3”? ÌÉ7”Ì@ ÌÉ8”ÌC ÌÉ;”ÌD ÌÉ<”ÌH ÌÉÌ@”ÌQ ÌÉÌI”ÌR ÌÉÌJ‘” ÌÊ”” ÌÊ” ÌÊ” ÌÊ” ÌÊÜ ” ÌË” ÌË” ÌË” ÌË” ÌË”! ÌË”# ÌË”& ÌË”( ÌË ”ÌP ÌËÌH”ÌR ÌËÌJ”ÌV ÌËÌN”ÌW ÌËÌO”Ì` ÌËÌX”Ìa ÌËÌY”Ìb ÌËÌZ”Ìc ÌËÌ[”Ìd ÌËÌ\”Ìe ÌËÌ]‘” ÌÌ”” ÌÎ” ÌÎ” ÌÎ” ÌÎ*’” ÌÏ” ÌÏ–” ÌĞ” ÌĞ” ÌĞ”) ÌĞ!”* ÌĞ"”4 ÌĞ,–” ÌÑ” ÌÑ” ÌÑ”$ ÌÑ”% ÌÑ”* ÌÑ"–” ÌÒ” ÌÒ” ÌÒ”) ÌÒ!”* ÌÒ"”4 ÌÒ,–” ÌÓ” ÌÓ” ÌÓ”) ÌÓ!”* ÌÓ"”4 ÌÓ,–” ÌÔ” ÌÔ” ÌÔ”, ÌÔ$”- ÌÔ%”: ÌÔ2–” ÌÕ” ÌÕ” ÌÕ”* ÌÕ"”+ ÌÕ#”5 ÌÕ-–” ÌÖ” ÌÖ”  ÌÖ”. ÌÖ&”/ ÌÖ'”= ÌÖ5–” Ì×”" Ì×”$ Ì×”2 Ì×*”3 Ì×+”ÌE Ì×=–” ÌØ” ÌØ” ÌØ”+ ÌØ#”, ÌØ$”7 ÌØ/–” ÌÙ” ÌÙ” ÌÙ”, ÌÙ$”- ÌÙ%”9 ÌÙ1–” ÌÚ” ÌÚ” ÌÚ”* ÌÚ"”+ ÌÚ#”5 ÌÚ-–” ÌÛ” ÌÛ” ÌÛ”+ ÌÛ#”, ÌÛ$”7 ÌÛ/–” ÌÜ” ÌÜ” ÌÜ”, ÌÜ$”- ÌÜ%”9 ÌÜ1–” Ìİ” Ìİ” Ìİ”+ Ìİ#”, Ìİ$”7 Ìİ/”” ÌŞ” ÌŞ” ÌŞ”( ÌŞ ’” Ìß” Ìß”” Ìá” Ìá” Ìá” Ìá‘”	 Ìâ”” Ìâ” Ìâ” Ìâ” ÌâÜ ” Ìã” Ìã” Ìã” Ìã” Ìã” Ìã”  Ìã”# Ìã”% Ìã”ÌL ÌãÌF”ÌN ÌãÌH”ÌR ÌãÌL”ÌS ÌãÌM”Ì\ ÌãÌV”Ì] ÌãÌW”Ìb ÌãÌ\”Ìc ÌãÌ]”Ìd ÌãÌ^”Ìe ÌãÌ_”” Ìä” Ìä” Ìä” Ìä‘”	 Ìå’” Ìæ” Ìæ–” Ìè”
+ Ìè” Ìè	” Ìè” Ìè”" Ìè4–” Ìé” Ìé
+” Ìé” Ìé+” Ìé-” Ìé.•” Ìë” Ìë” Ìë” Ìë” Ìë”” Ìì” Ìì” Ìì” Ìì”” Ìí” Ìí” Ìí” Ìí–” Ìî” Ìî” Ìî” Ìî” Ìî”& Ìî Ü ” Ìï” Ìï” Ìï” Ìï” Ìï”& Ìï ”* Ìï$”1 Ìï+”2 Ìï,”< Ìï6”ÌA Ìï;”ÌJ ÌïÌD”ÌK ÌïÌE”ÌL ÌïÌF”ÌM ÌïÌG”ÌS ÌïÌM”ÌT ÌïÌN”ÌU ÌïÌO”ÌV ÌïÌP”Ì\ ÌïÌV“”	 Ìğ”
+ Ìğ” Ìğ•” Ìò” Ìò” Ìò” Ìò” Ìò”” Ìó” Ìó” Ìó” Ìó”” Ìô” Ìô” Ìô” Ìô–” Ìõ” Ìõ” Ìõ” Ìõ” Ìõ”! ÌõÜ ” Ìö” Ìö” Ìö” Ìö” Ìö”! Ìö”% Ìö”, Ìö&”- Ìö'”2 Ìö,”7 Ìö1”Ì@ Ìö:”ÌA Ìö;”ÌB Ìö<”ÌC Ìö=”ÌI ÌöÌC”ÌJ ÌöÌD”ÌK ÌöÌE”ÌL ÌöÌF”ÌR ÌöÌL“”	 Ì÷”
+ Ì÷” Ì÷•” Ìù” Ìù” Ìù” Ìù” Ìù”” Ìú” Ìú” Ìú” Ìú”” Ìû” Ìû” Ìû” Ìû–” Ìü” Ìü” Ìü” Ìü” Ìü”& Ìü Ü ” Ìı” Ìı” Ìı” Ìı” Ìı”& Ìı ”* Ìı$”1 Ìı+”2 Ìı,”< Ìı6”ÌA Ìı;”ÌJ ÌıÌD”ÌK ÌıÌE”ÌL ÌıÌF”ÌM ÌıÌG”ÌS ÌıÌM”ÌT ÌıÌN”ÌU ÌıÌO”ÌV ÌıÌP”Ì\ ÌıÌV“”	 Ìş”
+ Ìş” Ìş•” Í ” Í ” Í ” Í ” Í ”” Í” Í” Í” Í”” Í” Í” Í”3 Í-–” Í” Í” Í” Í” Í”& Í Ü ” Í” Í” Í” Í” Í”) Í#”* Í$”: Í4”; Í5”? Í9”Ì@ Í:”ÌG ÍÌA”ÌH ÍÌB”ÌR ÍÌL”ÌS ÍÌM”ÌT ÍÌN”ÌU ÍÌO”ÌV ÍÌP”Ì\ ÍÌV”Ì] ÍÌW”Ì^ ÍÌX”Ì_ ÍÌY”Ìh ÍÌb“”	 Í”
+ Í” Í•” Í” Í” Í” Í” Í”” Í” Í” Í”" Í”” Í	” Í	” Í	”  Í	™” Í
+” Í
+” Í
+” Í
+” Í
+”) Í
+#”* Í
+$”2 Í
+,”4 Í
+.” Í” Í” Í” Í” Í”) Í#”- Í'”7 Í1”8 Í2”ÌB Í<”ÌC Í=”ÌR ÍÌL”ÌS ÍÌM”ÌV ÍÌPÜ ” Í” Í” Í”% Í#”) Í'”3 Í1”4 Í2”> Í<”? Í=”ÌN ÍÌL”ÌO ÍÌM”ÌR ÍÌP”ÌS ÍÌQ”ÌT ÍÌR”ÌU ÍÌS”Ì[ ÍÌY”Ì\ ÍÌZ”Ì] ÍÌ[”Ì^ ÍÌ\”Ìg ÍÌe“”	 Í”
+ Í” Í•” Í” Í” Í” Í” Í”” Í” Í” Í” Í”” Í” Í” Í”! Í˜” Í” Í” Í” Í” Í”& Í ”) Í#”, Í&” Í” Í” Í” Í” Í”& Í ”* Í$”4 Í.”5 Í/”Ì@ Í:”ÌA Í;”ÌI ÍÌC”ÌJ ÍÌD”ÌM ÍÌGÜ ” Í” Í” Í”" Í ”& Í$”0 Í.”1 Í/”< Í:”= Í;”ÌE ÍÌC”ÌF ÍÌD”ÌI ÍÌG”ÌJ ÍÌH”ÌK ÍÌI”ÌL ÍÌJ”ÌR ÍÌP”ÌS ÍÌQ”ÌT ÍÌR”ÌU ÍÌS”Ì[ ÍÌY“”	 Í”
+ Í” Í•” Í” Í” Í” Í” Í”” Í” Í” Í”# Í”” Í” Í” Í”* Í$™” Í” Í” Í” Í” Í”* Í$”+ Í%”3 Í-”5 Í/Ü ” Í” Í” Í” Í” Í”* Í$”+ Í%”? Í9”Ì@ Í:”ÌH ÍÌB”ÌI ÍÌC”ÌP ÍÌJ”ÌQ ÍÌK”Ì_ ÍÌY”Ì` ÍÌZ”Ìa ÍÌ[”Ìb ÍÌ\”Ìc ÍÌ]”Ìi ÍÌc”Ìj ÍÌd”Ìk ÍÌe”Ìl ÍÌf”Ìu ÍÌo“”	 Í”
+ Í” Í•” Í” Í” Í” Í” Í”” Í” Í” Í”' Í!”” Í ” Í ” Í ”+ Í %Ü ” Í!” Í!” Í!” Í!” Í!”. Í!(”1 Í!+”5 Í!/”8 Í!2”9 Í!3”Ì@ Í!:”ÌA Í!;”ÌS Í!ÌM”ÌV Í!ÌP”ÌX Í!ÌR”ÌY Í!ÌS”ÌZ Í!ÌT”Ìa Í!Ì[”Ìb Í!Ì\”Ìc Í!Ì]”Ìd Í!Ì^”Ìg Í!Ìa”Ìl Í!Ìf” Í"” Í"” Í"” Í"” Í"”. Í"(”2 Í",”< Í"6”= Í"7”ÌH Í"ÌB”ÌI Í"ÌC”ÌY Í"ÌS”ÌZ Í"ÌT”Ì] Í"ÌWÜ ” Í#” Í#” Í#”* Í#(”. Í#,”8 Í#6”9 Í#7”ÌD Í#ÌB”ÌE Í#ÌC”ÌU Í#ÌS”ÌV Í#ÌT”ÌY Í#ÌW”ÌZ Í#ÌX”Ì[ Í#ÌY”Ì\ Í#ÌZ”Ìb Í#Ì`”Ìc Í#Ìa”Ìd Í#Ìb”Ìe Í#Ìc”Ìn Í#Ìl“”	 Í$”
+ Í$” Í$•” Í&” Í&” Í&” Í&” Í&”” Í'” Í'” Í'”% Í'”” Í(” Í(” Í(”" Í(œ” Í)” Í)” Í)” Í)” Í)”' Í)!”* Í)$”- Í)'”0 Í)*”7 Í)1”8 Í)2”ÌD Í)>” Í*” Í*” Í*” Í*” Í*”' Í*!”+ Í*%”5 Í*/”6 Í*0”ÌA Í*;”ÌB Í*<”ÌO Í*ÌI”ÌP Í*ÌJ”ÌU Í*ÌOÜ ” Í+” Í+” Í+”$ Í+"”( Í+&”2 Í+0”3 Í+1”> Í+<”? Í+=”ÌL Í+ÌJ”ÌM Í+ÌK”ÌS Í+ÌQ”ÌT Í+ÌR”ÌU Í+ÌS”ÌV Í+ÌT”Ì\ Í+ÌZ”Ì] Í+Ì[”Ì^ Í+Ì\”Ì_ Í+Ì]”Ìe Í+Ìc“”	 Í,”
+ Í,” Í,•” Í.” Í.” Í.” Í.” Í.”” Í/” Í/” Í/” Í/”” Í0” Í0” Í0”! Í0™” Í1” Í1” Í1” Í1” Í1”& Í1 ”' Í1!”/ Í1)”1 Í1+” Í2” Í2” Í2” Í2” Í2”& Í2 ”* Í2$”4 Í2.”5 Í2/”Ì@ Í2:”ÌA Í2;”ÌM Í2ÌG”ÌN Í2ÌH”ÌQ Í2ÌKÜ ” Í3” Í3” Í3”" Í3 ”& Í3$”0 Í3.”1 Í3/”< Í3:”= Í3;”ÌI Í3ÌG”ÌJ Í3ÌH”ÌM Í3ÌK”ÌN Í3ÌL”ÌO Í3ÌM”ÌP Í3ÌN”ÌV Í3ÌT”ÌW Í3ÌU”ÌX Í3ÌV”ÌY Í3ÌW”Ìb Í3Ì`“”	 Í4”
+ Í4” Í4•” Í6” Í6” Í6” Í6” Í6”” Í7” Í7” Í7”  Í7”” Í8” Í8” Í8”1 Í8+˜” Í9” Í9” Í9” Í9” Í9”' Í9!”* Í9$”. Í9(Ü ” Í:” Í:” Í:” Í:” Í:”* Í:$”+ Í:%”< Í:6”= Í:7”ÌE Í:?”ÌF Í:Ì@”ÌM Í:ÌG”ÌN Í:ÌH”ÌY Í:ÌS”ÌZ Í:ÌT”Ì[ Í:ÌU”Ì\ Í:ÌV”Ì] Í:ÌW”Ìc Í:Ì]”Ìd Í:Ì^”Ìe Í:Ì_”Ìf Í:Ì`”Ìo Í:Ìi“”	 Í;”
+ Í;” Í;•” Í=” Í=” Í=” Í=” Í=”” Í>” Í>” Í>”! Í>”” Í?” Í?” Í?”+ Í?%Ü !” Í@” Í@” Í@” Í@” Í@”( Í@"”+ Í@%”, Í@&”- Í@'”. Í@(”/ Í@)”0 Í@*”7 Í@1”8 Í@2”ÌD Í@>”ÌG Í@ÌA”ÌK Í@ÌE”ÌN Í@ÌH”ÌR Í@ÌL”ÌU Í@ÌO”ÌY Í@ÌS”ÌZ Í@ÌT”Ì[ Í@ÌU”Ìb Í@Ì\”Ìc Í@Ì]”Ìd Í@Ì^”Ìe Í@Ì_”Ìh Í@Ìb”Ìl Í@Ìf”Ìm Í@Ìg”Ìn Í@Ìh”Ìo Í@Ìi”Ìu Í@ÌoÜ ” ÍA” ÍA” ÍA” ÍA” ÍA”( ÍA"”, ÍA&”6 ÍA0”7 ÍA1”ÌB ÍA<”ÌC ÍA=”ÌO ÍAÌI”ÌP ÍAÌJ”ÌQ ÍAÌK”ÌR ÍAÌL”ÌX ÍAÌR”ÌY ÍAÌS”ÌZ ÍAÌT”Ì[ ÍAÌU”Ìd ÍAÌ^“”	 ÍB”
+ ÍB” ÍB•” ÍD” ÍD” ÍD” ÍD” ÍD”” ÍE” ÍE” ÍE”  ÍE”” ÍF” ÍF” ÍF”) ÍF#Ü !” ÍG” ÍG” ÍG” ÍG” ÍG”' ÍG!”* ÍG$”+ ÍG%”, ÍG&”- ÍG'”. ÍG(”/ ÍG)”6 ÍG0”7 ÍG1”ÌB ÍG<”ÌE ÍG?”ÌI ÍGÌC”ÌL ÍGÌF”ÌP ÍGÌJ”ÌS ÍGÌM”ÌW ÍGÌQ”ÌX ÍGÌR”ÌY ÍGÌS”Ì` ÍGÌZ”Ìa ÍGÌ[”Ìb ÍGÌ\”Ìc ÍGÌ]”Ìf ÍGÌ`”Ìj ÍGÌd”Ìk ÍGÌe”Ìl ÍGÌf”Ìm ÍGÌg”Ìs ÍGÌmÜ ” ÍH” ÍH” ÍH” ÍH” ÍH”' ÍH!”* ÍH$”+ ÍH%”, ÍH&”- ÍH'”. ÍH(”4 ÍH.”5 ÍH/”6 ÍH0”7 ÍH1”Ì@ ÍH:“”	 ÍI”
+ ÍI” ÍI•” ÍK” ÍK” ÍK” ÍK” ÍK”” ÍL” ÍL” ÍL”  ÍL”” ÍM” ÍM” ÍM” ÍM–” ÍN” ÍN” ÍN” ÍN” ÍN”' ÍN!Ü ” ÍO” ÍO” ÍO” ÍO” ÍO”' ÍO!”+ ÍO%”2 ÍO,”3 ÍO-”> ÍO8”ÌC ÍO=”ÌL ÍOÌF”ÌM ÍOÌG”ÌN ÍOÌH”ÌO ÍOÌI”ÌU ÍOÌO”ÌV ÍOÌP”ÌW ÍOÌQ”ÌX ÍOÌR”Ìa ÍOÌ[“”	 ÍP”
+ ÍP” ÍP”” ÍR” ÍR” ÍR” ÍR’” ÍS” ÍS–” ÍU”
+ ÍU” ÍU	” ÍU” ÍU”$ ÍU"œ” ÍV” ÍV	” ÍV
+” ÍV” ÍV” ÍV” ÍV” ÍV”  ÍV”ÌA ÍV=”ÌB ÍV>”ÌC ÍV?™” ÍX” ÍX
+” ÍX” ÍX” ÍX” ÍX”" ÍX”$ ÍX ”% ÍX!š” ÍZ” ÍZ
+” ÍZ” ÍZ” ÍZ”0 ÍZ,”1 ÍZ-”? ÍZ;”ÌA ÍZ=”ÌB ÍZ>•” Í\” Í\” Í\	” Í\” Í\œ” Í]” Í]” Í]” Í]” Í]” Í]”  Í]”# Í]”% Í]”/ Í])”0 Í]*”1 Í]+’” Í^” Í^‘”	 Í_›” Ía” Ía
+” Ía” Ía”  Ía”! Ía”$ Ía ”& Ía"”) Ía%”2 Ía.”3 Ía/” Íb” Íb	” Íb
+” Íb” Íb” Íb” Íb” Íb”  Íb”7 Íb3”9 Íb5”ÌD ÍbÌ@”ÌE ÍbÌA”ÌF ÍbÌBœ” Íd” Íd	” Íd
+” Íd” Íd” Íd” Íd” Íd”  Íd”, Íd(”- Íd)”. Íd*Ü ” Íe” Íe	” Íe
+” Íe” Íe” Íe” Íe” Íe”  Íe”2 Íe.”4 Íe0”; Íe7”< Íe8”ÌF ÍeÌB”ÌG ÍeÌC”ÌH ÍeÌDÜ ” Íf” Íf	” Íf
+” Íf” Íf” Íf” Íf” Íf”  Íf”2 Íf.”4 Íf0”; Íf7”< Íf8”ÌA Íf=”ÌB Íf>”ÌC Íf?Ü ” Íg” Íg	” Íg
+” Íg” Íg” Íg” Íg” Íg”  Íg”2 Íg.”4 Íg0”; Íg7”< Íg8”ÌF ÍgÌB”ÌG ÍgÌC”ÌH ÍgÌDÜ ” Íh” Íh	” Íh
+” Íh” Íh” Íh” Íh” Íh”  Íh”2 Íh.”4 Íh0”; Íh7”< Íh8”ÌF ÍhÌB”ÌG ÍhÌC”ÌH ÍhÌDÜ ” Íi” Íi	” Íi
+” Íi” Íi” Íi” Íi” Íi”  Íi”4 Íi0”6 Íi2”= Íi9”> Íi:”ÌK ÍiÌG”ÌL ÍiÌH”ÌM ÍiÌIÜ ” Íj” Íj	” Íj
+” Íj” Íj” Íj” Íj” Íj”  Íj”4 Íj0”6 Íj2”= Íj9”> Íj:”ÌH ÍjÌD”ÌI ÍjÌE”ÌJ ÍjÌFÜ ” Ík” Ík	” Ík
+” Ík” Ík” Ík” Ík” Ík”  Ík”2 Ík.”4 Ík0”; Ík7”< Ík8”ÌJ ÍkÌF”ÌK ÍkÌG”ÌL ÍkÌHÜ ” Íl” Íl	” Íl
+” Íl” Íl” Íl” Íl” Íl”  Íl”4 Íl0”6 Íl2”7 Íl3”> Íl:”? Íl;”ÌQ ÍlÌM”ÌT ÍlÌP”ÌV ÍlÌR”ÌW ÍlÌS”ÌX ÍlÌT”Ì_ ÍlÌ[”Ì` ÍlÌ\”Ìa ÍlÌ]”Ìb ÍlÌ^”Ìc ÍlÌ_”Ìd ÍlÌ`Ü ” Ím” Ím	” Ím
+” Ím” Ím” Ím” Ím” Ím”  Ím”Ì@ Ím<”ÌB Ím>”ÌI ÍmÌE”ÌJ ÍmÌF”ÌU ÍmÌQ”ÌW ÍmÌS”Ì^ ÍmÌZ”Ì_ ÍmÌ[”Ìk ÍmÌg”Ìl ÍmÌh”Ìm ÍmÌiÜ ” Ín” Ín	” Ín
+” Ín” Ín” Ín” Ín” Ín”  Ín”6 Ín2”8 Ín4”? Ín;”Ì@ Ín<”ÌJ ÍnÌF”ÌK ÍnÌG”ÌL ÍnÌHÜ ” Ío” Ío	” Ío
+” Ío” Ío” Ío” Ío” Ío”  Ío”4 Ío0”6 Ío2”= Ío9”> Ío:”ÌI ÍoÌE”ÌJ ÍoÌF”ÌK ÍoÌGÜ ” Íp” Íp	” Íp
+” Íp” Íp” Íp” Íp” Íp”  Íp”4 Íp0”6 Íp2”7 Íp3”> Íp:”? Íp;”ÌK ÍpÌG”ÌN ÍpÌJ”ÌR ÍpÌN”ÌU ÍpÌQ”ÌY ÍpÌU”Ì\ ÍpÌX”Ì` ÍpÌ\”Ìa ÍpÌ]”Ìb ÍpÌ^”Ìi ÍpÌe”Ìj ÍpÌf”Ìk ÍpÌg”Ìl ÍpÌh”Ìm ÍpÌi”Ìn ÍpÌjÜ ” Íq” Íq	” Íq
+” Íq” Íq” Íq” Íq” Íq”  Íq”5 Íq1”7 Íq3”8 Íq4”? Íq;”Ì@ Íq<”ÌK ÍqÌG”ÌN ÍqÌJ”ÌR ÍqÌN”ÌU ÍqÌQ”ÌY ÍqÌU”Ì\ ÍqÌX”Ì` ÍqÌ\”Ìa ÍqÌ]”Ìb ÍqÌ^”Ìi ÍqÌe”Ìj ÍqÌf”Ìk ÍqÌg”Ìl ÍqÌh”Ìm ÍqÌi”Ìn ÍqÌjÜ ” Ír” Ír	” Ír
+” Ír” Ír” Ír” Ír” Ír”  Ír”2 Ír.”4 Ír0”; Ír7”< Ír8”ÌG ÍrÌC”ÌH ÍrÌD”ÌI ÍrÌEœ” Ít” Ít	” Ít
+” Ít” Ít” Ít” Ít” Ít”  Ít”, Ít(”- Ít)”. Ít*›” Íu” Íu
+” Íu”" Íu”4 Íu0”5 Íu1”ÌD ÍuÌ@”ÌE ÍuÌA”ÌL ÍuÌH”ÌM ÍuÌI”ÌN ÍuÌJ–” Íw” Íw” Íw” Íw” Íw” Íw–” Íx” Íx” Íx” Íx” Íx” Íx–” Íy” Íy” Íy” Íy” Íy” Íy—” Í{” Í{	” Í{” Í{” Í{”. Í{*”0 Í{,Ü ” Í|” Í|” Í|” Í|”% Í|”& Í| ”, Í|&”1 Í|+”7 Í|1”8 Í|2”9 Í|3”: Í|4”Ì@ Í|:”ÌA Í|;”ÌB Í|<”ÌC Í|=”ÌI Í|ÌC”ÌJ Í|ÌD”ÌP Í|ÌJ”ÌU Í|ÌO”Ì[ Í|ÌU”Ì\ Í|ÌV”Ì] Í|ÌW”Ì^ Í|ÌX”Ìd Í|Ì^”Ìe Í|Ì_”Ìf Í|Ì`”Ìg Í|Ìa”Ìm Í|Ìg”Ìn Í|ÌhÜ ” Í}” Í}” Í}” Í}” Í}” Í}” Í}”" Í}”$ Í}”Ìl Í}Ìf”Ìn Í~”Ìx Í~”Ìz Í~”Ì€ Í~”Ì Í~”Ì† Í~ ”Ìˆ Í~"”Ì Í~(”Ì Í~)”Ì• Í~/”Ì— Í~1”Ì Í~7”Ì Í~8”Ì¦ Í~Ì@”Ì¨ Í~ÌB”Ì® Í~ÌH”Ì¯ Í~ÌI”Ìµ Í~ÌO”Ì¶ Í~ÌP”Ì· Í~ÌQ—” Í€” Í€
+” Í€” Í€” Í€”" Í€”( Í€"”” Í€$” Í€-” Í€/” Í€0—” Í” Í” Í” Í”" Í”' Í!”- Í'”” Í)” Í2” Í4” Í5”” Í‚” Í‚” Í‚” Í‚‘”	 Íƒœ” Í…” Í…	” Í…
+” Í…” Í…” Í…” Í…” Í…”  Í…”* Í…&”+ Í…'”, Í…(” Í†” Í†	” Í†
+” Í†” Í†” Í†” Í†” Í†”  Í†”0 Í†,”2 Í†.”; Í†7”< Í†8”= Í†9” Í‡” Í‡	” Í‡
+” Í‡” Í‡” Í‡” Í‡” Í‡”  Í‡”0 Í‡,”2 Í‡.”; Í‡7”< Í‡8”= Í‡9” Íˆ” Íˆ	” Íˆ
+” Íˆ” Íˆ” Íˆ” Íˆ” Íˆ”  Íˆ”0 Íˆ,”2 Íˆ.”> Íˆ:”? Íˆ;”Ì@ Íˆ<Ü ” Í‰” Í‰	” Í‰
+” Í‰” Í‰” Í‰” Í‰” Í‰”  Í‰”0 Í‰,”2 Í‰.”ÌC Í‰?”ÌD Í‰Ì@”ÌJ Í‰ÌF”ÌK Í‰ÌG”ÌL Í‰ÌH›” Í‹” Í‹
+” Í‹” Í‹” Í‹” Í‹”" Í‹”$ Í‹ ”' Í‹#”0 Í‹,”1 Í‹-” ÍŒ” ÍŒ	” ÍŒ
+” ÍŒ” ÍŒ” ÍŒ” ÍŒ” ÍŒ”  ÍŒ”4 ÍŒ0”6 ÍŒ2”? ÍŒ;”Ì@ ÍŒ<”ÌA ÍŒ=œ” Í” Í	” Í
+” Í” Í” Í” Í” Í”  Í”ÌA Í=”ÌB Í>”ÌC Í?–” Í” Í” Í” Í” Í” Í” Í” Í” Í” Í” Í” Í”  Í”# Í”% Í”ÌK ÍÌE”ÌM ÍÌG”ÌV ÍÌP”ÌW ÍÌQ”ÌX ÍÌR‘”	 Í‘’” Í’” Í’‘” Í“ÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrL–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÍšÍ0ÔrM–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÍ¡Í0ÔrN”¤type¥start£end¤nameªIdentifierÍ§Í¹²PerformanceMonitorÀÔrO”¤type¥start£end¤body©ClassBodyÍºÍ0“ÔrP˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÍÁÍ2ÃÂNªIdentifierÍÎÍÜ®collectMetrics¦methodÔrQ™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍÜÍ2ÀÂÂÃO®BlockStatementÍßÍ2‘ÔrR–¤type¥start£end¥block§handler©finalizer¬TryStatementÍêÍ+O®BlockStatementÍîÍ†›ÔrS•¤type¥start£end¬declarations¤kind³VariableDeclarationÍıÍ‘ÔrT•¤type¥start£end¢id¤init²VariableDeclaratorÍÍNªIdentifierÍÍ©timestampÔrU–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍÍÔrV—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍÍNªIdentifierÍÍ¤DateNªIdentifierÍÍ£nowÂÂÂ¥constS³VariableDeclarationÍ(Í‡‘T²VariableDeclaratorÍ.Í†NªIdentifierÍ.Í;­deviceMetricsÔrW”¤type¥start£endªproperties°ObjectExpressionÍ>Í†•ÔrX™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍQÍÂÂÂNªIdentifierÍQÍ[ªdeviceTypeÔrY–¤type¥start£end¤left¨operator¥right±LogicalExpressionÍ]ÍV°MemberExpressionÍ]ÍrNªIdentifierÍ]ÍgªdeviceInfoNªIdentifierÍhÍrªdeviceTypeÂÂ¢||ÔrZ•¤type¥start£end¥value£raw§LiteralÍvÍ§unknown©'unknown'¤initX¨PropertyÍ’Í¶ÂÂÂNªIdentifierÍ’Í—¥brandY±LogicalExpressionÍ™Í¶V°MemberExpressionÍ™Í©NªIdentifierÍ™Í£ªdeviceInfoNªIdentifierÍ¤Í©¥brandÂÂ¢||Z§LiteralÍ­Í¶§unknown©'unknown'¤initX¨PropertyÍÉÍ÷ÂÂÂNªIdentifierÍÉÍÓªmarketNameY±LogicalExpressionÍÕÍ÷V°MemberExpressionÍÕÍêNªIdentifierÍÕÍßªdeviceInfoNªIdentifierÍàÍêªmarketNameÂÂ¢||Z§LiteralÍîÍ÷§unknown©'unknown'¤initX¨PropertyÍ
+Í8ÂÂÂNªIdentifierÍ
+ÍªosFullNameY±LogicalExpressionÍÍ8V°MemberExpressionÍÍ+NªIdentifierÍÍ ªdeviceInfoNªIdentifierÍ!Í+ªosFullNameÂÂ¢||Z§LiteralÍ/Í8§unknown©'unknown'¤initX¨PropertyÍKÍwÂÂÂNªIdentifierÍKÍX­sdkApiVersionY±LogicalExpressionÍZÍwV°MemberExpressionÍZÍrNªIdentifierÍZÍdªdeviceInfoNªIdentifierÍeÍr­sdkApiVersionÂÂ¢||Z§LiteralÍvÍw ¡0¤init¥constS³VariableDeclarationÍ•Í…‘T²VariableDeclaratorÍ›Í„NªIdentifierÍ›Í©®batteryMetricsW°ObjectExpressionÍ¬Í„“X¨PropertyÍ¿ÍçÂÂÂNªIdentifierÍ¿ÍÉªbatterySOCY±LogicalExpressionÍËÍçV°MemberExpressionÍËÍáNªIdentifierÍËÍÖ«batteryInfoNªIdentifierÍ×ÍáªbatterySOCÂÂ¢??Ôr[–¤type¥start£end¨operator¦prefix¨argument¯UnaryExpressionÍåÍç¡-ÃZ§LiteralÍæÍç¡1¤initX¨PropertyÍúÍ*ÂÂÂNªIdentifierÍúÍ®chargingStatusY±LogicalExpressionÍ
+Í*V°MemberExpressionÍ
+Í$NªIdentifierÍ
+Í«batteryInfoNªIdentifierÍÍ$®chargingStatusÂÂ¢??[¯UnaryExpressionÍ(Í*¡-ÃZ§LiteralÍ)Í*¡1¤initX¨PropertyÍ=ÍuÂÂÂNªIdentifierÍ=ÍO²batteryTemperatureY±LogicalExpressionÍQÍuV°MemberExpressionÍQÍoNªIdentifierÍQÍ\«batteryInfoNªIdentifierÍ]Ío²batteryTemperatureÂÂ¢??[¯UnaryExpressionÍsÍu¡-ÃZ§LiteralÍtÍu¡1¤init¥constS³VariableDeclarationÍ“Í<‘T²VariableDeclaratorÍ—Í;NªIdentifierÍ—Í¥®displayMetricsW°ObjectExpressionÍ¨Í;”X¨PropertyÍ»ÍÉÂÂÂNªIdentifierÍ»ÍÆ«screenWidthZ§LiteralÍÈÍÉ ¡0¤initX¨PropertyÍÜÍëÂÂÂNªIdentifierÍÜÍè¬screenHeightZ§LiteralÍêÍë ¡0¤initX¨PropertyÍşÍÂÂÂNªIdentifierÍşÍªdensityDPIZ§LiteralÍ
+Í ¡0¤initX¨PropertyÍÍ,ÂÂÂNªIdentifierÍÍ)«refreshRateZ§LiteralÍ+Í, ¡0¤init£letR¬TryStatementÍJÍ	LO®BlockStatementÍNÍ½’S³VariableDeclarationÍaÍ—‘T²VariableDeclaratorÍgÍ–NªIdentifierÍgÍr«displayInfoÔr\”¤type¥start£end¨argument¯AwaitExpressionÍuÍ–U®CallExpressionÍ{Í–V°MemberExpressionÍ{Í”NªIdentifierÍ{Í‚§displayNªIdentifierÍƒÍ”±getDefaultDisplayÂÂÂ¥constÔr]”¤type¥start£endªexpression³ExpressionStatementÍ©Í®Ôr^–¤type¥start£end¨operator¤left¥right´AssignmentExpressionÍ©Í­¡=NªIdentifierÍ©Í·®displayMetricsW°ObjectExpressionÍºÍ­”X¨PropertyÍÑÍïÂÂÂNªIdentifierÍÑÍÜ«screenWidthV°MemberExpressionÍŞÍïNªIdentifierÍŞÍé«displayInfoNªIdentifierÍêÍï¥widthÂÂ¤initX¨PropertyÍÍ&ÂÂÂNªIdentifierÍÍ¬screenHeightV°MemberExpressionÍÍ&NªIdentifierÍÍ«displayInfoNªIdentifierÍ Í&¦heightÂÂ¤initX¨PropertyÍ=Í_ÂÂÂNªIdentifierÍ=ÍGªdensityDPIV°MemberExpressionÍIÍ_NªIdentifierÍIÍT«displayInfoNªIdentifierÍUÍ_ªdensityDPIÂÂ¤initX¨PropertyÍvÍšÂÂÂNªIdentifierÍvÍ«refreshRateV°MemberExpressionÍƒÍšNªIdentifierÍƒÍ«displayInfoNªIdentifierÍÍš«refreshRateÂÂ¤initÔr_•¤type¥start£end¥param¤body«CatchClauseÍËÍ	LNªIdentifierÍÒÍÓ¡eO®BlockStatementÍÕÍ	L‘]³ExpressionStatementÍèÍ	=U®CallExpressionÍèÍ	<V°MemberExpressionÍèÍòNªIdentifierÍèÍí¥hilogNªIdentifierÍîÍò¤warnÂÂ”NªIdentifierÍóÍù¦DOMAINNªIdentifierÍûÍş£TAGZ§LiteralÍ	 Í	(Ù&Failed to get display info: %{public}sÙ('Failed to get display info: %{public}s'U®CallExpressionÍ	*Í	;V°MemberExpressionÍ	*Í	8NªIdentifierÍ	*Í	.¤JSONNªIdentifierÍ	/Í	8©stringifyÂÂ‘NªIdentifierÍ	9Í	:¡eÂÂÀS³VariableDeclarationÍ	ZÍ	Â‘T²VariableDeclaratorÍ	^Í	ÁNªIdentifierÍ	^Í	l®storageMetricsW°ObjectExpressionÍ	oÍ	Á’X¨PropertyÍ	‚Í	‘ÂÂÂNªIdentifierÍ	‚Í	¬totalStorageZ§LiteralÍ	Í	‘ ¡0¤initX¨PropertyÍ	¤Í	²ÂÂÂNªIdentifierÍ	¤Í	¯«freeStorageZ§LiteralÍ	±Í	² ¡0¤init£letR¬TryStatementÍ	ĞÍïO®BlockStatementÍ	ÔÍ`–S³VariableDeclarationÍ	çÍ
+‘T²VariableDeclaratorÍ	íÍ
+NªIdentifierÍ	íÍ	ô§contextU®CallExpressionÍ	÷Í
+NªIdentifierÍ	÷Í
+ªgetContextÂ¥constS³VariableDeclarationÍ
+Í
+8‘T²VariableDeclaratorÍ
+Í
+7NªIdentifierÍ
+Í
+$¨dataPathV°MemberExpressionÍ
+'Í
+7NªIdentifierÍ
+'Í
+.§contextNªIdentifierÍ
+/Í
+7¨filesDirÂÂ¥constS³VariableDeclarationÍ
+JÍ
+‘T²VariableDeclaratorÍ
+PÍ
+~NªIdentifierÍ
+PÍ
+Y©totalSizeU®CallExpressionÍ
+\Í
+~V°MemberExpressionÍ
+\Í
+tNªIdentifierÍ
+\Í
+c§statvfsNªIdentifierÍ
+dÍ
+t°getTotalSizeSyncÂÂ‘NªIdentifierÍ
+uÍ
+}¨dataPathÂ¥constS³VariableDeclarationÍ
+‘Í
+Ä‘T²VariableDeclaratorÍ
+—Í
+ÃNªIdentifierÍ
+—Í
+Ÿ¨freeSizeU®CallExpressionÍ
+¢Í
+ÃV°MemberExpressionÍ
+¢Í
+¹NªIdentifierÍ
+¢Í
+©§statvfsNªIdentifierÍ
+ªÍ
+¹¯getFreeSizeSyncÂÂ‘NªIdentifierÍ
+ºÍ
+Â¨dataPathÂ¥const]³ExpressionStatementÍ
+ÖÍU^´AssignmentExpressionÍ
+ÖÍT¡=NªIdentifierÍ
+ÖÍ
+ä®storageMetricsW°ObjectExpressionÍ
+çÍT’X¨PropertyÍ
+şÍÂÂÂNªIdentifierÍ
+şÍ
+¬totalStorageNªIdentifierÍÍ©totalSize¤initX¨PropertyÍ,ÍAÂÂÂNªIdentifierÍ,Í7«freeStorageNªIdentifierÍ9ÍA¨freeSize¤initÔr`–¤type¥start£end¤testªconsequent©alternate«IfStatementÍ”ÍQY±LogicalExpressionÍ˜Í¹Y°BinaryExpressionÍ˜Í§NªIdentifierÍ˜Í¡©totalSize£===Z§LiteralÍ¦Í§ ¡0¢||Y°BinaryExpressionÍ«Í¹NªIdentifierÍ«Í³¨freeSize£===Z§LiteralÍ¸Í¹ ¡0O®BlockStatementÍ»ÍQ‘]³ExpressionStatementÍÒÍ>U®CallExpressionÍÒÍ=V°MemberExpressionÍÒÍÜNªIdentifierÍÒÍ×¥hilogNªIdentifierÍØÍÜ¤warnÂÂ“NªIdentifierÍİÍã¦DOMAINNªIdentifierÍåÍè£TAGZ§LiteralÍêÍ<ÙPStorage info returned 0, may need permission or API not supported on this deviceÙR'Storage info returned 0, may need permission or API not supported on this device'ÂÀ_«CatchClauseÍnÍïNªIdentifierÍuÍv¡eO®BlockStatementÍxÍï‘]³ExpressionStatementÍ‹ÍàU®CallExpressionÍ‹ÍßV°MemberExpressionÍ‹Í•NªIdentifierÍ‹Í¥hilogNªIdentifierÍ‘Í•¤warnÂÂ”NªIdentifierÍ–Íœ¦DOMAINNªIdentifierÍÍ¡£TAGZ§LiteralÍ£ÍËÙ&Failed to get storage info: %{public}sÙ('Failed to get storage info: %{public}s'U®CallExpressionÍÍÍŞV°MemberExpressionÍÍÍÛNªIdentifierÍÍÍÑ¤JSONNªIdentifierÍÒÍÛ©stringifyÂÂ‘NªIdentifierÍÜÍİ¡eÂÂÀS³VariableDeclarationÍıÍ‘T²VariableDeclaratorÍÍNªIdentifierÍÍ«networkTypeZ§LiteralÍÍ§unknown©'unknown'£letR¬TryStatementÍ'Í¼O®BlockStatementÍ+Í-“S³VariableDeclarationÍ>Íq‘T²VariableDeclaratorÍDÍpNªIdentifierÍDÍM©netHandle\¯AwaitExpressionÍPÍpU®CallExpressionÍVÍpV°MemberExpressionÍVÍnNªIdentifierÍVÍ`ªconnectionNªIdentifierÍaÍn­getDefaultNetÂÂÂ¥constS³VariableDeclarationÍƒÍÊ‘T²VariableDeclaratorÍ‰ÍÉNªIdentifierÍ‰Í˜¯netCapabilities\¯AwaitExpressionÍ›ÍÉU®CallExpressionÍ¡ÍÉV°MemberExpressionÍ¡Í¾NªIdentifierÍ¡Í«ªconnectionNªIdentifierÍ¬Í¾²getNetCapabilitiesÂÂ‘NªIdentifierÍ¿ÍÈ©netHandleÂ¥const]³ExpressionStatementÍÜÍ^´AssignmentExpressionÍÜÍ¡=NªIdentifierÍÜÍç«networkTypeY±LogicalExpressionÍêÍ]¯ChainExpressionÍêÍU®CallExpressionÍêÍV°MemberExpressionÍêÍV°MemberExpressionÍêÍNªIdentifierÍêÍù¯netCapabilitiesNªIdentifierÍúÍ«bearerTypesÂÂNªIdentifierÍÍ¤joinÂÃ‘Z§LiteralÍÍ¡,£','Â¢||Z§LiteralÍÍ§unknown©'unknown'_«CatchClauseÍ;Í¼NªIdentifierÍBÍC¡eO®BlockStatementÍEÍ¼‘]³ExpressionStatementÍXÍ­U®CallExpressionÍXÍ¬V°MemberExpressionÍXÍbNªIdentifierÍXÍ]¥hilogNªIdentifierÍ^Íb¤warnÂÂ”NªIdentifierÍcÍi¦DOMAINNªIdentifierÍkÍn£TAGZ§LiteralÍpÍ˜Ù&Failed to get network info: %{public}sÙ('Failed to get network info: %{public}s'U®CallExpressionÍšÍ«V°MemberExpressionÍšÍ¨NªIdentifierÍšÍ¤JSONNªIdentifierÍŸÍ¨©stringifyÂÂ‘NªIdentifierÍ©Íª¡eÂÂÀS³VariableDeclarationÍÊÍ^‘T²VariableDeclaratorÍĞÍ]NªIdentifierÍĞÍ×§metricsW°ObjectExpressionÍÚÍ]Ü Ôra™¤type¥start£end¦method©shorthand¨computed£key¤kind¥value¨PropertyÍíÍöÂÃÂNªIdentifierÍíÍö©timestamp¤initNªIdentifierÍíÍö©timestampX¨PropertyÍ	Í-ÂÂÂNªIdentifierÍ	ÍªdeviceTypeV°MemberExpressionÍÍ-NªIdentifierÍÍ"­deviceMetricsNªIdentifierÍ#Í-ªdeviceTypeÂÂ¤initX¨PropertyÍ@ÍZÂÂÂNªIdentifierÍ@ÍE¥brandV°MemberExpressionÍGÍZNªIdentifierÍGÍT­deviceMetricsNªIdentifierÍUÍZ¥brandÂÂ¤initX¨PropertyÍmÍ‘ÂÂÂNªIdentifierÍmÍwªmarketNameV°MemberExpressionÍyÍ‘NªIdentifierÍyÍ†­deviceMetricsNªIdentifierÍ‡Í‘ªmarketNameÂÂ¤initX¨PropertyÍ¤ÍÈÂÂÂNªIdentifierÍ¤Í®ªosFullNameV°MemberExpressionÍ°ÍÈNªIdentifierÍ°Í½­deviceMetricsNªIdentifierÍ¾ÍÈªosFullNameÂÂ¤initX¨PropertyÍÛÍÂÂÂNªIdentifierÍÛÍè­sdkApiVersionV°MemberExpressionÍêÍNªIdentifierÍêÍ÷­deviceMetricsNªIdentifierÍøÍ­sdkApiVersionÂÂ¤initX¨PropertyÍÍ=ÂÂÂNªIdentifierÍÍ"ªbatterySOCV°MemberExpressionÍ$Í=NªIdentifierÍ$Í2®batteryMetricsNªIdentifierÍ3Í=ªbatterySOCÂÂ¤initX¨PropertyÍPÍ}ÂÂÂNªIdentifierÍPÍ^®chargingStatusV°MemberExpressionÍ`Í}NªIdentifierÍ`Ín®batteryMetricsNªIdentifierÍoÍ}®chargingStatusÂÂ¤initX¨PropertyÍÍÅÂÂÂNªIdentifierÍÍ¢²batteryTemperatureV°MemberExpressionÍ¤ÍÅNªIdentifierÍ¤Í²®batteryMetricsNªIdentifierÍ³ÍÅ²batteryTemperatureÂÂ¤initX¨PropertyÍØÍÿÂÂÂNªIdentifierÍØÍã«screenWidthV°MemberExpressionÍåÍÿNªIdentifierÍåÍó®displayMetricsNªIdentifierÍôÍÿ«screenWidthÂÂ¤initX¨PropertyÍÍ;ÂÂÂNªIdentifierÍÍ¬screenHeightV°MemberExpressionÍ Í;NªIdentifierÍ Í.®displayMetricsNªIdentifierÍ/Í;¬screenHeightÂÂ¤initX¨PropertyÍNÍsÂÂÂNªIdentifierÍNÍXªdensityDPIV°MemberExpressionÍZÍsNªIdentifierÍZÍh®displayMetricsNªIdentifierÍiÍsªdensityDPIÂÂ¤initX¨PropertyÍ†Í­ÂÂÂNªIdentifierÍ†Í‘«refreshRateV°MemberExpressionÍ“Í­NªIdentifierÍ“Í¡®displayMetricsNªIdentifierÍ¢Í­«refreshRateÂÂ¤initX¨PropertyÍÀÍéÂÂÂNªIdentifierÍÀÍÌ¬totalStorageV°MemberExpressionÍÎÍéNªIdentifierÍÎÍÜ®storageMetricsNªIdentifierÍİÍé¬totalStorageÂÂ¤initX¨PropertyÍüÍ#ÂÂÂNªIdentifierÍüÍ«freeStorageV°MemberExpressionÍ	Í#NªIdentifierÍ	Í®storageMetricsNªIdentifierÍÍ#«freeStorageÂÂ¤initX¨PropertyÍ6ÍNÂÂÂNªIdentifierÍ6ÍA«networkTypeNªIdentifierÍCÍN«networkType¤init¥const\¯ReturnStatementÍlÍ{NªIdentifierÍsÍz§metrics_«CatchClauseÍÍ+NªIdentifierÍ—Íœ¥errorO®BlockStatementÍÍ+’]³ExpressionStatementÍ­ÍU®CallExpressionÍ­ÍV°MemberExpressionÍ­Í¸NªIdentifierÍ­Í²¥hilogNªIdentifierÍ³Í¸¥errorÂÂ”NªIdentifierÍ¹Í¿¦DOMAINNªIdentifierÍÁÍÄ£TAGZ§LiteralÍÆÍíÙ%Failed to collect metrics: %{public}sÙ''Failed to collect metrics: %{public}s'U®CallExpressionÍïÍV°MemberExpressionÍïÍıNªIdentifierÍïÍó¤JSONNªIdentifierÍôÍı©stringifyÂÂ‘NªIdentifierÍşÍ¥errorÂÂ\¯ReturnStatementÍÍ Z§LiteralÍÍÀ¤nullÀP°MethodDefinitionÍ8Í$YÃÂNªIdentifierÍ?ÍN¯validateMetrics¦methodQ²FunctionExpressionÍNÍ$YÀÂÂÂ‘NªIdentifierÍOÍV§metricsO®BlockStatementÍXÍ$YÜ S³VariableDeclarationÍcÍv‘T²VariableDeclaratorÍiÍuNªIdentifierÍiÍp§resultsÔrb”¤type¥start£end¨elements¯ArrayExpressionÍsÍu¥const]³ExpressionStatementÍ€ÍdU®CallExpressionÍ€ÍcV°MemberExpressionÍ€ÍŒNªIdentifierÍ€Í‡§resultsNªIdentifierÍˆÍŒ¤pushÂÂ‘W°ObjectExpressionÍÍb”X¨PropertyÍœÍ¯ÂÂÂNªIdentifierÍœÍ¡¥fieldZ§LiteralÍ£Í¯ªdeviceType¬'deviceType'¤initX¨PropertyÍ¾ÍÏÂÂÂNªIdentifierÍ¾ÍÆ¨expectedZ§LiteralÍÈÍÏ¯éç©ºå­—ç¬¦ä¸²±'éç©ºå­—ç¬¦ä¸²'¤initX¨PropertyÍŞÍøÂÂÂNªIdentifierÍŞÍä¦actualV°MemberExpressionÍæÍøNªIdentifierÍæÍí§metricsNªIdentifierÍîÍøªdeviceTypeÂÂ¤initX¨PropertyÍÍWÂÂÂNªIdentifierÍÍ¦status`µConditionalExpressionÍÍWY±LogicalExpressionÍÍEV°MemberExpressionÍÍ!NªIdentifierÍÍ§metricsNªIdentifierÍÍ!ªdeviceTypeÂÂ¢&&Y°BinaryExpressionÍ%ÍEV°MemberExpressionÍ%Í7NªIdentifierÍ%Í,§metricsNªIdentifierÍ-Í7ªdeviceTypeÂÂ£!==Z§LiteralÍ<ÍE§unknown©'unknown'Z§LiteralÍHÍN¤PASS¦'PASS'Z§LiteralÍQÍW¤FAIL¦'FAIL'¤initÂ]³ExpressionStatementÍnÍ>U®CallExpressionÍnÍ=V°MemberExpressionÍnÍzNªIdentifierÍnÍu§resultsNªIdentifierÍvÍz¤pushÂÂ‘W°ObjectExpressionÍ{Í<”X¨PropertyÍŠÍ˜ÂÂÂNªIdentifierÍŠÍ¥fieldZ§LiteralÍ‘Í˜¥brand§'brand'¤initX¨PropertyÍ§Í¸ÂÂÂNªIdentifierÍ§Í¯¨expectedZ§LiteralÍ±Í¸¯éç©ºå­—ç¬¦ä¸²±'éç©ºå­—ç¬¦ä¸²'¤initX¨PropertyÍÇÍÜÂÂÂNªIdentifierÍÇÍÍ¦actualV°MemberExpressionÍÏÍÜNªIdentifierÍÏÍÖ§metricsNªIdentifierÍ×ÍÜ¥brandÂÂ¤initX¨PropertyÍëÍ1ÂÂÂNªIdentifierÍëÍñ¦status`µConditionalExpressionÍóÍ1Y±LogicalExpressionÍóÍV°MemberExpressionÍóÍ NªIdentifierÍóÍú§metricsNªIdentifierÍûÍ ¥brandÂÂ¢&&Y°BinaryExpressionÍÍV°MemberExpressionÍÍNªIdentifierÍÍ§metricsNªIdentifierÍÍ¥brandÂÂ£!==Z§LiteralÍÍ§unknown©'unknown'Z§LiteralÍ"Í(¤PASS¦'PASS'Z§LiteralÍ+Í1¤FAIL¦'FAIL'¤initÂ]³ExpressionStatementÍHÍ,U®CallExpressionÍHÍ+V°MemberExpressionÍHÍTNªIdentifierÍHÍO§resultsNªIdentifierÍPÍT¤pushÂÂ‘W°ObjectExpressionÍUÍ*”X¨PropertyÍdÍwÂÂÂNªIdentifierÍdÍi¥fieldZ§LiteralÍkÍwªmarketName¬'marketName'¤initX¨PropertyÍ†Í—ÂÂÂNªIdentifierÍ†Í¨expectedZ§LiteralÍÍ—¯éç©ºå­—ç¬¦ä¸²±'éç©ºå­—ç¬¦ä¸²'¤initX¨PropertyÍ¦ÍÀÂÂÂNªIdentifierÍ¦Í¬¦actualV°MemberExpressionÍ®ÍÀNªIdentifierÍ®Íµ§metricsNªIdentifierÍ¶ÍÀªmarketNameÂÂ¤initX¨PropertyÍÏÍÂÂÂNªIdentifierÍÏÍÕ¦status`µConditionalExpressionÍ×ÍY±LogicalExpressionÍ×ÍV°MemberExpressionÍ×ÍéNªIdentifierÍ×ÍŞ§metricsNªIdentifierÍßÍéªmarketNameÂÂ¢&&Y°BinaryExpressionÍíÍV°MemberExpressionÍíÍÿNªIdentifierÍíÍô§metricsNªIdentifierÍõÍÿªmarketNameÂÂ£!==Z§LiteralÍÍ§unknown©'unknown'Z§LiteralÍÍ¤PASS¦'PASS'Z§LiteralÍÍ¤FAIL¦'FAIL'¤initÂ]³ExpressionStatementÍ6Í<U®CallExpressionÍ6Í;V°MemberExpressionÍ6ÍBNªIdentifierÍ6Í=§resultsNªIdentifierÍ>ÍB¤pushÂÂ‘W°ObjectExpressionÍCÍ:”X¨PropertyÍRÍeÂÂÂNªIdentifierÍRÍW¥fieldZ§LiteralÍYÍeªosFullName¬'osFullName'¤initX¨PropertyÍtÍ›ÂÂÂNªIdentifierÍtÍ|¨expectedZ§LiteralÍ~Í›Ù#ç¬¦åˆ HarmonyOS/OpenHarmony æ ¼å¼Ù%'ç¬¦åˆ HarmonyOS/OpenHarmony æ ¼å¼'¤initX¨PropertyÍªÍÄÂÂÂNªIdentifierÍªÍ°¦actualV°MemberExpressionÍ²ÍÄNªIdentifierÍ²Í¹§metricsNªIdentifierÍºÍÄªosFullNameÂÂ¤initX¨PropertyÍÓÍ/ÂÂÂNªIdentifierÍÓÍÙ¦status`µConditionalExpressionÍÛÍ/U®CallExpressionÍÛÍV°MemberExpressionÍÛÍV°MemberExpressionÍÛÍV°MemberExpressionÍÛÍğNªIdentifierÍÛÍåªTEST_CASESNªIdentifierÍæÍğªdeviceInfoÂÂNªIdentifierÍñÍ°osVersionPatternÂÂNªIdentifierÍÍ¤testÂÂ‘V°MemberExpressionÍÍNªIdentifierÍÍ§metricsNªIdentifierÍÍªosFullNameÂÂÂZ§LiteralÍÍ#¤PASS¦'PASS'Z§LiteralÍ&Í/§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍFÍ¤U®CallExpressionÍFÍ£V°MemberExpressionÍFÍRNªIdentifierÍFÍM§resultsNªIdentifierÍNÍR¤pushÂÂ‘W°ObjectExpressionÍSÍ¢”X¨PropertyÍbÍxÂÂÂNªIdentifierÍbÍg¥fieldZ§LiteralÍiÍx­sdkApiVersion¯'sdkApiVersion'¤initX¨PropertyÍ‡Í›ÂÂÂNªIdentifierÍ‡Í¨expectedZ§LiteralÍ‘Í›¬èŒƒå›´ 12-14®'èŒƒå›´ 12-14'¤initX¨PropertyÍªÍÒÂÂÂNªIdentifierÍªÍ°¦actualU®CallExpressionÍ²ÍÒV°MemberExpressionÍ²ÍĞV°MemberExpressionÍ²ÍÇNªIdentifierÍ²Í¹§metricsNªIdentifierÍºÍÇ­sdkApiVersionÂÂNªIdentifierÍÈÍĞ¨toStringÂÂÂ¤initX¨PropertyÍáÍ—ÂÂÂNªIdentifierÍáÍç¦status`µConditionalExpressionÍéÍ—Y±LogicalExpressionÍéÍ‚Y°BinaryExpressionÍéÍ+V°MemberExpressionÍéÍşNªIdentifierÍéÍğ§metricsNªIdentifierÍñÍş­sdkApiVersionÂÂ¢>=V°MemberExpressionÍÍ+V°MemberExpressionÍÍ'V°MemberExpressionÍÍNªIdentifierÍÍªTEST_CASESNªIdentifierÍÍªdeviceInfoÂÂNªIdentifierÍÍ'¯apiVersionRangeÂÂNªIdentifierÍ(Í+£minÂÂ¢&&Y°BinaryExpressionÍ@Í‚V°MemberExpressionÍ@ÍUNªIdentifierÍ@ÍG§metricsNªIdentifierÍHÍU­sdkApiVersionÂÂ¢<=V°MemberExpressionÍYÍ‚V°MemberExpressionÍYÍ~V°MemberExpressionÍYÍnNªIdentifierÍYÍcªTEST_CASESNªIdentifierÍdÍnªdeviceInfoÂÂNªIdentifierÍoÍ~¯apiVersionRangeÂÂNªIdentifierÍÍ‚£maxÂÂZ§LiteralÍ…Í‹¤PASS¦'PASS'Z§LiteralÍÍ—§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍ®ÍíU®CallExpressionÍ®ÍìV°MemberExpressionÍ®ÍºNªIdentifierÍ®Íµ§resultsNªIdentifierÍ¶Íº¤pushÂÂ‘W°ObjectExpressionÍ»Íë”X¨PropertyÍÊÍİÂÂÂNªIdentifierÍÊÍÏ¥fieldZ§LiteralÍÑÍİªbatterySOC¬'batterySOC'¤initX¨PropertyÍìÍÂÂÂNªIdentifierÍìÍô¨expectedZ§LiteralÍöÍ­èŒƒå›´ 0-100%¯'èŒƒå›´ 0-100%'¤initX¨PropertyÍÍ0ÂÂÂNªIdentifierÍÍ¦actualY°BinaryExpressionÍÍ0V°MemberExpressionÍÍ*NªIdentifierÍÍ§metricsNªIdentifierÍ Í*ªbatterySOCÂÂ¡+Z§LiteralÍ-Í0¡%£'%'¤initX¨PropertyÍ?ÍàÂÂÂNªIdentifierÍ?ÍE¦status`µConditionalExpressionÍGÍàY±LogicalExpressionÍGÍÎY°BinaryExpressionÍGÍ€V°MemberExpressionÍGÍYNªIdentifierÍGÍN§metricsNªIdentifierÍOÍYªbatterySOCÂÂ¢>=V°MemberExpressionÍ]Í€V°MemberExpressionÍ]Í|V°MemberExpressionÍ]ÍsNªIdentifierÍ]ÍgªTEST_CASESNªIdentifierÍhÍs«batteryInfoÂÂNªIdentifierÍtÍ|¨socRangeÂÂNªIdentifierÍ}Í€£minÂÂ¢&&Y°BinaryExpressionÍ•ÍÎV°MemberExpressionÍ•Í§NªIdentifierÍ•Íœ§metricsNªIdentifierÍÍ§ªbatterySOCÂÂ¢<=V°MemberExpressionÍ«ÍÎV°MemberExpressionÍ«ÍÊV°MemberExpressionÍ«ÍÁNªIdentifierÍ«ÍµªTEST_CASESNªIdentifierÍ¶ÍÁ«batteryInfoÂÂNªIdentifierÍÂÍÊ¨socRangeÂÂNªIdentifierÍËÍÎ£maxÂÂZ§LiteralÍÑÍ×¤PASS¦'PASS'Z§LiteralÍÚÍà¤FAIL¦'FAIL'¤initÂ]³ExpressionStatementÍ÷ÍU®CallExpressionÍ÷ÍV°MemberExpressionÍ÷ÍNªIdentifierÍ÷Íş§resultsNªIdentifierÍÿÍ¤pushÂÂ‘W°ObjectExpressionÍÍ”X¨PropertyÍÍ*ÂÂÂNªIdentifierÍÍ¥fieldZ§LiteralÍÍ*®chargingStatus°'chargingStatus'¤initX¨PropertyÍ9ÍWÂÂÂNªIdentifierÍ9ÍA¨expectedZ§LiteralÍCÍW¼æœ‰æ•ˆå€¼ä¹‹ä¸€: 0,1,2,3,4,5¾'æœ‰æ•ˆå€¼ä¹‹ä¸€: 0,1,2,3,4,5'¤initX¨PropertyÍfÍÂÂÂNªIdentifierÍfÍl¦actualU®CallExpressionÍnÍV°MemberExpressionÍnÍV°MemberExpressionÍnÍ„NªIdentifierÍnÍu§metricsNªIdentifierÍvÍ„®chargingStatusÂÂNªIdentifierÍ…Í¨toStringÂÂÂ¤initX¨PropertyÍÍÂÂÂNªIdentifierÍÍ¤¦status`µConditionalExpressionÍ¦ÍU®CallExpressionÍ¦ÍòV°MemberExpressionÍ¦ÍÚV°MemberExpressionÍ¦ÍÑV°MemberExpressionÍ¦Í¼NªIdentifierÍ¦Í°ªTEST_CASESNªIdentifierÍ±Í¼«batteryInfoÂÂNªIdentifierÍ½ÍÑ´chargingStatusValuesÂÂNªIdentifierÍÒÍÚ¨includesÂÂ‘V°MemberExpressionÍÛÍñNªIdentifierÍÛÍâ§metricsNªIdentifierÍãÍñ®chargingStatusÂÂÂZ§LiteralÍõÍû¤PASS¦'PASS'Z§LiteralÍşÍ§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍÍÒU®CallExpressionÍÍÑV°MemberExpressionÍÍ*NªIdentifierÍÍ%§resultsNªIdentifierÍ&Í*¤pushÂÂ‘W°ObjectExpressionÍ+ÍĞ”X¨PropertyÍ:ÍUÂÂÂNªIdentifierÍ:Í?¥fieldZ§LiteralÍAÍU²batteryTemperature´'batteryTemperature'¤initX¨PropertyÍdÍƒÂÂÂNªIdentifierÍdÍl¨expectedZ§LiteralÍnÍƒ¸èŒƒå›´ -500-800 (0.1Â°C)º'èŒƒå›´ -500-800 (0.1Â°C)'¤initX¨PropertyÍ’ÍòÂÂÂNªIdentifierÍ’Í˜¦actualY°BinaryExpressionÍšÍòY°BinaryExpressionÍšÍêY°BinaryExpressionÍšÍ»V°MemberExpressionÍšÍ´NªIdentifierÍšÍ¡§metricsNªIdentifierÍ¢Í´²batteryTemperatureÂÂ¡+Z§LiteralÍ·Í»¢ (¤' ('¡+U®CallExpressionÍ¾ÍêV°MemberExpressionÍ¾ÍçY°BinaryExpressionÍ¿ÍŞV°MemberExpressionÍ¿ÍÙNªIdentifierÍ¿ÍÆ§metricsNªIdentifierÍÇÍÙ²batteryTemperatureÂÂ¡/Z§LiteralÍÜÍŞ
+¢10NªIdentifierÍàÍç§toFixedÂÂ‘Z§LiteralÍèÍé¡1Â¡+Z§LiteralÍíÍò¤Â°C)¦'Â°C)'¤initX¨PropertyÍÍÅÂÂÂNªIdentifierÍÍ¦status`µConditionalExpressionÍ	ÍÅY±LogicalExpressionÍ	Í°Y°BinaryExpressionÍ	ÍRV°MemberExpressionÍ	Í#NªIdentifierÍ	Í§metricsNªIdentifierÍÍ#²batteryTemperatureÂÂ¢>=V°MemberExpressionÍ'ÍRV°MemberExpressionÍ'ÍNV°MemberExpressionÍ'Í=NªIdentifierÍ'Í1ªTEST_CASESNªIdentifierÍ2Í=«batteryInfoÂÂNªIdentifierÍ>ÍN°temperatureRangeÂÂNªIdentifierÍOÍR£minÂÂ¢&&Y°BinaryExpressionÍgÍ°V°MemberExpressionÍgÍNªIdentifierÍgÍn§metricsNªIdentifierÍoÍ²batteryTemperatureÂÂ¢<=V°MemberExpressionÍ…Í°V°MemberExpressionÍ…Í¬V°MemberExpressionÍ…Í›NªIdentifierÍ…ÍªTEST_CASESNªIdentifierÍÍ›«batteryInfoÂÂNªIdentifierÍœÍ¬°temperatureRangeÂÂNªIdentifierÍ­Í°£maxÂÂZ§LiteralÍ³Í¹¤PASS¦'PASS'Z§LiteralÍ¼ÍÅ§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍÜÍLU®CallExpressionÍÜÍKV°MemberExpressionÍÜÍèNªIdentifierÍÜÍã§resultsNªIdentifierÍäÍè¤pushÂÂ‘W°ObjectExpressionÍéÍJ”X¨PropertyÍøÍÂÂÂNªIdentifierÍøÍı¥fieldZ§LiteralÍÿÍ°screenResolution²'screenResolution'¤initX¨PropertyÍ Í6ÂÂÂNªIdentifierÍ Í(¨expectedZ§LiteralÍ*Í6®æœ€å° 320x240°'æœ€å° 320x240'¤initX¨PropertyÍEÍ}ÂÂÂNªIdentifierÍEÍK¦actualY°BinaryExpressionÍMÍ}Y°BinaryExpressionÍMÍfV°MemberExpressionÍMÍ`NªIdentifierÍMÍT§metricsNªIdentifierÍUÍ`«screenWidthÂÂ¡+Z§LiteralÍcÍf¡x£'x'¡+V°MemberExpressionÍiÍ}NªIdentifierÍiÍp§metricsNªIdentifierÍqÍ}¬screenHeightÂÂ¤initX¨PropertyÍŒÍ?ÂÂÂNªIdentifierÍŒÍ’¦status`µConditionalExpressionÍ”Í?Y±LogicalExpressionÍ”Í-Y°BinaryExpressionÍ”ÍÕV°MemberExpressionÍ”Í§NªIdentifierÍ”Í›§metricsNªIdentifierÍœÍ§«screenWidthÂÂ¢>=V°MemberExpressionÍ«ÍÕV°MemberExpressionÍ«ÍÏV°MemberExpressionÍ«ÍÁNªIdentifierÍ«ÍµªTEST_CASESNªIdentifierÍ¶ÍÁ«displayInfoÂÂNªIdentifierÍÂÍÏ­minResolutionÂÂNªIdentifierÍĞÍÕ¥widthÂÂ¢&&Y°BinaryExpressionÍêÍ-V°MemberExpressionÍêÍşNªIdentifierÍêÍñ§metricsNªIdentifierÍòÍş¬screenHeightÂÂ¢>=V°MemberExpressionÍÍ-V°MemberExpressionÍÍ&V°MemberExpressionÍÍNªIdentifierÍÍªTEST_CASESNªIdentifierÍÍ«displayInfoÂÂNªIdentifierÍÍ&­minResolutionÂÂNªIdentifierÍ'Í-¦heightÂÂZ§LiteralÍ0Í6¤PASS¦'PASS'Z§LiteralÍ9Í?¤FAIL¦'FAIL'¤initÂ]³ExpressionStatementÍVÍ¥U®CallExpressionÍVÍ¤V°MemberExpressionÍVÍbNªIdentifierÍVÍ]§resultsNªIdentifierÍ^Íb¤pushÂÂ‘W°ObjectExpressionÍcÍ£”X¨PropertyÍrÍ…ÂÂÂNªIdentifierÍrÍw¥fieldZ§LiteralÍyÍ…ªdensityDPI¬'densityDPI'¤initX¨PropertyÍ”Í©ÂÂÂNªIdentifierÍ”Íœ¨expectedZ§LiteralÍÍ©­èŒƒå›´ 80-640¯'èŒƒå›´ 80-640'¤initX¨PropertyÍ¸ÍİÂÂÂNªIdentifierÍ¸Í¾¦actualU®CallExpressionÍÀÍİV°MemberExpressionÍÀÍÛV°MemberExpressionÍÀÍÒNªIdentifierÍÀÍÇ§metricsNªIdentifierÍÈÍÒªdensityDPIÂÂNªIdentifierÍÓÍÛ¨toStringÂÂÂ¤initX¨PropertyÍìÍ˜ÂÂÂNªIdentifierÍìÍò¦status`µConditionalExpressionÍôÍ˜Y±LogicalExpressionÍôÍƒY°BinaryExpressionÍôÍ1V°MemberExpressionÍôÍNªIdentifierÍôÍû§metricsNªIdentifierÍüÍªdensityDPIÂÂ¢>=V°MemberExpressionÍ
+Í1V°MemberExpressionÍ
+Í-V°MemberExpressionÍ
+Í NªIdentifierÍ
+ÍªTEST_CASESNªIdentifierÍÍ «displayInfoÂÂNªIdentifierÍ!Í-¬densityRangeÂÂNªIdentifierÍ.Í1£minÂÂ¢&&Y°BinaryExpressionÍFÍƒV°MemberExpressionÍFÍXNªIdentifierÍFÍM§metricsNªIdentifierÍNÍXªdensityDPIÂÂ¢<=V°MemberExpressionÍ\ÍƒV°MemberExpressionÍ\ÍV°MemberExpressionÍ\ÍrNªIdentifierÍ\ÍfªTEST_CASESNªIdentifierÍgÍr«displayInfoÂÂNªIdentifierÍsÍ¬densityRangeÂÂNªIdentifierÍ€Íƒ£maxÂÂZ§LiteralÍ†ÍŒ¤PASS¦'PASS'Z§LiteralÍÍ˜§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍ¯Í ÃU®CallExpressionÍ¯Í ÂV°MemberExpressionÍ¯Í»NªIdentifierÍ¯Í¶§resultsNªIdentifierÍ·Í»¤pushÂÂ‘W°ObjectExpressionÍ¼Í Á”X¨PropertyÍËÍßÂÂÂNªIdentifierÍËÍĞ¥fieldZ§LiteralÍÒÍß«refreshRate­'refreshRate'¤initX¨PropertyÍîÍ ÂÂÂNªIdentifierÍîÍö¨expectedZ§LiteralÍøÍ Ù#å¸¸è§å€¼ä¹‹ä¸€: 30,60,90,120,144HzÙ%'å¸¸è§å€¼ä¹‹ä¸€: 30,60,90,120,144Hz'¤initX¨PropertyÍ "Í DÂÂÂNªIdentifierÍ "Í (¦actualY°BinaryExpressionÍ *Í DV°MemberExpressionÍ *Í =NªIdentifierÍ *Í 1§metricsNªIdentifierÍ 2Í =«refreshRateÂÂ¡+Z§LiteralÍ @Í D¢Hz¤'Hz'¤initX¨PropertyÍ SÍ ¶ÂÂÂNªIdentifierÍ SÍ Y¦status`µConditionalExpressionÍ [Í ¶U®CallExpressionÍ [Í ¡V°MemberExpressionÍ [Í ŒV°MemberExpressionÍ [Í ƒV°MemberExpressionÍ [Í qNªIdentifierÍ [Í eªTEST_CASESNªIdentifierÍ fÍ q«displayInfoÂÂNªIdentifierÍ rÍ ƒ±refreshRateValuesÂÂNªIdentifierÍ „Í Œ¨includesÂÂ‘V°MemberExpressionÍ Í  NªIdentifierÍ Í ”§metricsNªIdentifierÍ •Í  «refreshRateÂÂÂZ§LiteralÍ ¤Í ª¤PASS¦'PASS'Z§LiteralÍ ­Í ¶§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍ ÍÍ"U®CallExpressionÍ ÍÍ"V°MemberExpressionÍ ÍÍ ÙNªIdentifierÍ ÍÍ Ô§resultsNªIdentifierÍ ÕÍ Ù¤pushÂÂ‘W°ObjectExpressionÍ ÚÍ"”X¨PropertyÍ éÍ şÂÂÂNªIdentifierÍ éÍ î¥fieldZ§LiteralÍ ğÍ ş¬totalStorage®'totalStorage'¤initX¨PropertyÍ!Í!,ÂÂÂNªIdentifierÍ!Í!¨expectedZ§LiteralÍ!Í!,Ù+æœ€å° 1GB (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)Ù-'æœ€å° 1GB (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)'¤initX¨PropertyÍ!;Í!¤ÂÂÂNªIdentifierÍ!;Í!A¦actual`µConditionalExpressionÍ!CÍ!¤Y°BinaryExpressionÍ!CÍ![V°MemberExpressionÍ!CÍ!WNªIdentifierÍ!CÍ!J§metricsNªIdentifierÍ!KÍ!W¬totalStorageÂÂ¡>Z§LiteralÍ!ZÍ![ ¡0Y°BinaryExpressionÍ!^Í!›U®CallExpressionÍ!^Í!”V°MemberExpressionÍ!^Í!‘Y°BinaryExpressionÍ!_Í!ˆY°BinaryExpressionÍ!_Í!Y°BinaryExpressionÍ!_Í!zV°MemberExpressionÍ!_Í!sNªIdentifierÍ!_Í!f§metricsNªIdentifierÍ!gÍ!s¬totalStorageÂÂ¡/Z§LiteralÍ!vÍ!zÍ ¤1024¡/Z§LiteralÍ!}Í!Í ¤1024¡/Z§LiteralÍ!„Í!ˆÍ ¤1024NªIdentifierÍ!ŠÍ!‘§toFixedÂÂ‘Z§LiteralÍ!’Í!“¡2Â¡+Z§LiteralÍ!—Í!›¢GB¤'GB'Z§LiteralÍ!Í!¤¬æ— æ³•è·å–®'æ— æ³•è·å–'¤initX¨PropertyÍ!³Í"ÂÂÂNªIdentifierÍ!³Í!¹¦status`µConditionalExpressionÍ!»Í"Y°BinaryExpressionÍ!»Í!öV°MemberExpressionÍ!»Í!ÏNªIdentifierÍ!»Í!Â§metricsNªIdentifierÍ!ÃÍ!Ï¬totalStorageÂÂ¢>=V°MemberExpressionÍ!ÓÍ!öV°MemberExpressionÍ!ÓÍ!éNªIdentifierÍ!ÓÍ!İªTEST_CASESNªIdentifierÍ!ŞÍ!é«storageInfoÂÂNªIdentifierÍ!êÍ!ö¬minTotalSizeÂÂZ§LiteralÍ!ùÍ!ÿ¤PASS¦'PASS'Z§LiteralÍ"Í"§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍ""Í#DU®CallExpressionÍ""Í#CV°MemberExpressionÍ""Í".NªIdentifierÍ""Í")§resultsNªIdentifierÍ"*Í".¤pushÂÂ‘W°ObjectExpressionÍ"/Í#B”X¨PropertyÍ">Í"RÂÂÂNªIdentifierÍ">Í"C¥fieldZ§LiteralÍ"EÍ"R«freeStorage­'freeStorage'¤initX¨PropertyÍ"aÍ"~ÂÂÂNªIdentifierÍ"aÍ"i¨expectedZ§LiteralÍ"kÍ"~Ù)å¤§äº 0 (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)Ù+'å¤§äº 0 (éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–)'¤initX¨PropertyÍ"Í"ôÂÂÂNªIdentifierÍ"Í"“¦actual`µConditionalExpressionÍ"•Í"ôY°BinaryExpressionÍ"•Í"¬V°MemberExpressionÍ"•Í"¨NªIdentifierÍ"•Í"œ§metricsNªIdentifierÍ"Í"¨«freeStorageÂÂ¡>Z§LiteralÍ"«Í"¬ ¡0Y°BinaryExpressionÍ"¯Í"ëU®CallExpressionÍ"¯Í"äV°MemberExpressionÍ"¯Í"áY°BinaryExpressionÍ"°Í"ØY°BinaryExpressionÍ"°Í"ÑY°BinaryExpressionÍ"°Í"ÊV°MemberExpressionÍ"°Í"ÃNªIdentifierÍ"°Í"·§metricsNªIdentifierÍ"¸Í"Ã«freeStorageÂÂ¡/Z§LiteralÍ"ÆÍ"ÊÍ ¤1024¡/Z§LiteralÍ"ÍÍ"ÑÍ ¤1024¡/Z§LiteralÍ"ÔÍ"ØÍ ¤1024NªIdentifierÍ"ÚÍ"á§toFixedÂÂ‘Z§LiteralÍ"âÍ"ã¡2Â¡+Z§LiteralÍ"çÍ"ë¢GB¤'GB'Z§LiteralÍ"îÍ"ô¬æ— æ³•è·å–®'æ— æ³•è·å–'¤initX¨PropertyÍ#Í#7ÂÂÂNªIdentifierÍ#Í#	¦status`µConditionalExpressionÍ#Í#7Y°BinaryExpressionÍ#Í#"V°MemberExpressionÍ#Í#NªIdentifierÍ#Í#§metricsNªIdentifierÍ#Í#«freeStorageÂÂ¡>Z§LiteralÍ#!Í#" ¡0Z§LiteralÍ#%Í#+¤PASS¦'PASS'Z§LiteralÍ#.Í#7§WARNING©'WARNING'¤initÂ]³ExpressionStatementÍ#NÍ$9U®CallExpressionÍ#NÍ$8V°MemberExpressionÍ#NÍ#ZNªIdentifierÍ#NÍ#U§resultsNªIdentifierÍ#VÍ#Z¤pushÂÂ‘W°ObjectExpressionÍ#[Í$7”X¨PropertyÍ#jÍ#~ÂÂÂNªIdentifierÍ#jÍ#o¥fieldZ§LiteralÍ#qÍ#~«networkType­'networkType'¤initX¨PropertyÍ#Í#ÂÂÂNªIdentifierÍ#Í#•¨expectedZ§LiteralÍ#—Í#¯éç©ºå­—ç¬¦ä¸²±'éç©ºå­—ç¬¦ä¸²'¤initX¨PropertyÍ#­Í#ÈÂÂÂNªIdentifierÍ#­Í#³¦actualV°MemberExpressionÍ#µÍ#ÈNªIdentifierÍ#µÍ#¼§metricsNªIdentifierÍ#½Í#È«networkTypeÂÂ¤initX¨PropertyÍ#×Í$,ÂÂÂNªIdentifierÍ#×Í#İ¦status`µConditionalExpressionÍ#ßÍ$,Y±LogicalExpressionÍ#ßÍ$V°MemberExpressionÍ#ßÍ#òNªIdentifierÍ#ßÍ#æ§metricsNªIdentifierÍ#çÍ#ò«networkTypeÂÂ¢&&Y°BinaryExpressionÍ#öÍ$V°MemberExpressionÍ#öÍ$	NªIdentifierÍ#öÍ#ı§metricsNªIdentifierÍ#şÍ$	«networkTypeÂÂ£!==Z§LiteralÍ$Í$§unknown©'unknown'Z§LiteralÍ$Í$ ¤PASS¦'PASS'Z§LiteralÍ$#Í$,§WARNING©'WARNING'¤initÂ\¯ReturnStatementÍ$CÍ$RNªIdentifierÍ$JÍ$Q§resultsP°MethodDefinitionÍ$_Í0|ÃÂNªIdentifierÍ$lÍ$³runPerformanceCheck¦methodQ²FunctionExpressionÍ$Í0|ÀÂÂÃO®BlockStatementÍ$‚Í0|Ü $]³ExpressionStatementÍ$Í$ÈU®CallExpressionÍ$Í$ÇV°MemberExpressionÍ$Í$—NªIdentifierÍ$Í$’¥hilogNªIdentifierÍ$“Í$—¤infoÂÂ“NªIdentifierÍ$˜Í$¦DOMAINNªIdentifierÍ$ Í$££TAGZ§LiteralÍ$¥Í$ÆÙ1========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å¼€å§‹ ==========Ù3'========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å¼€å§‹ =========='ÂS³VariableDeclarationÍ$ÒÍ$ï‘T²VariableDeclaratorÍ$ØÍ$îNªIdentifierÍ$ØÍ$á©startTimeU®CallExpressionÍ$äÍ$îV°MemberExpressionÍ$äÍ$ìNªIdentifierÍ$äÍ$è¤DateNªIdentifierÍ$éÍ$ì£nowÂÂÂ¥constS³VariableDeclarationÍ$ùÍ%3‘T²VariableDeclaratorÍ$ÿÍ%2NªIdentifierÍ$ÿÍ%§metrics\¯AwaitExpressionÍ%	Í%2U®CallExpressionÍ%Í%2V°MemberExpressionÍ%Í%0NªIdentifierÍ%Í%!²PerformanceMonitorNªIdentifierÍ%"Í%0®collectMetricsÂÂÂ¥const`«IfStatementÍ%=Í%Ÿ[¯UnaryExpressionÍ%AÍ%I¡!ÃNªIdentifierÍ%BÍ%I§metricsO®BlockStatementÍ%KÍ%Ÿ’]³ExpressionStatementÍ%ZÍ%U®CallExpressionÍ%ZÍ%~V°MemberExpressionÍ%ZÍ%eNªIdentifierÍ%ZÍ%_¥hilogNªIdentifierÍ%`Í%e¥errorÂÂ“NªIdentifierÍ%fÍ%l¦DOMAINNªIdentifierÍ%nÍ%q£TAGZ§LiteralÍ%sÍ%}¸æ€§èƒ½æŒ‡æ ‡æ”¶é›†å¤±è´¥º'æ€§èƒ½æŒ‡æ ‡æ”¶é›†å¤±è´¥'Â\¯ReturnStatementÍ%Í%”ÀÀS³VariableDeclarationÍ%©Í%Ô‘T²VariableDeclaratorÍ%¯Í%ÓNªIdentifierÍ%¯Í%º«collectTimeY°BinaryExpressionÍ%½Í%ÓU®CallExpressionÍ%½Í%ÇV°MemberExpressionÍ%½Í%ÅNªIdentifierÍ%½Í%Á¤DateNªIdentifierÍ%ÂÍ%Å£nowÂÂÂ¡-NªIdentifierÍ%ÊÍ%Ó©startTime¥const]³ExpressionStatementÍ%ŞÍ&U®CallExpressionÍ%ŞÍ&V°MemberExpressionÍ%ŞÍ%èNªIdentifierÍ%ŞÍ%ã¥hilogNªIdentifierÍ%äÍ%è¤infoÂÂ”NªIdentifierÍ%éÍ%ï¦DOMAINNªIdentifierÍ%ñÍ%ô£TAGZ§LiteralÍ%öÍ&Ù!æŒ‡æ ‡æ”¶é›†è€—æ—¶: %{public}d msÙ#'æŒ‡æ ‡æ”¶é›†è€—æ—¶: %{public}d ms'NªIdentifierÍ&Í&«collectTimeÂ]³ExpressionStatementÍ&&Í&LU®CallExpressionÍ&&Í&KV°MemberExpressionÍ&&Í&0NªIdentifierÍ&&Í&+¥hilogNªIdentifierÍ&,Í&0¤infoÂÂ“NªIdentifierÍ&1Í&7¦DOMAINNªIdentifierÍ&9Í&<£TAGZ§LiteralÍ&>Í&J¾ã€æ”¶é›†åˆ°çš„æ€§èƒ½æŒ‡æ ‡ã€‘Ù 'ã€æ”¶é›†åˆ°çš„æ€§èƒ½æŒ‡æ ‡ã€‘'Â]³ExpressionStatementÍ&VÍ&–U®CallExpressionÍ&VÍ&•V°MemberExpressionÍ&VÍ&`NªIdentifierÍ&VÍ&[¥hilogNªIdentifierÍ&\Í&`¤infoÂÂ”NªIdentifierÍ&aÍ&g¦DOMAINNªIdentifierÍ&iÍ&l£TAGZ§LiteralÍ&nÍ&€¸è®¾å¤‡ç±»å‹: %{public}sº'è®¾å¤‡ç±»å‹: %{public}s'V°MemberExpressionÍ&‚Í&”NªIdentifierÍ&‚Í&‰§metricsNªIdentifierÍ&ŠÍ&”ªdeviceTypeÂÂÂ]³ExpressionStatementÍ& Í&ÛU®CallExpressionÍ& Í&ÚV°MemberExpressionÍ& Í&ªNªIdentifierÍ& Í&¥¥hilogNªIdentifierÍ&¦Í&ª¤infoÂÂ”NªIdentifierÍ&«Í&±¦DOMAINNªIdentifierÍ&³Í&¶£TAGZ§LiteralÍ&¸Í&Ê¸è®¾å¤‡å“ç‰Œ: %{public}sº'è®¾å¤‡å“ç‰Œ: %{public}s'V°MemberExpressionÍ&ÌÍ&ÙNªIdentifierÍ&ÌÍ&Ó§metricsNªIdentifierÍ&ÔÍ&Ù¥brandÂÂÂ]³ExpressionStatementÍ&åÍ'%U®CallExpressionÍ&åÍ'$V°MemberExpressionÍ&åÍ&ïNªIdentifierÍ&åÍ&ê¥hilogNªIdentifierÍ&ëÍ&ï¤infoÂÂ”NªIdentifierÍ&ğÍ&ö¦DOMAINNªIdentifierÍ&øÍ&û£TAGZ§LiteralÍ&ıÍ'¸è®¾å¤‡å‹å·: %{public}sº'è®¾å¤‡å‹å·: %{public}s'V°MemberExpressionÍ'Í'#NªIdentifierÍ'Í'§metricsNªIdentifierÍ'Í'#ªmarketNameÂÂÂ]³ExpressionStatementÍ'/Í'oU®CallExpressionÍ'/Í'nV°MemberExpressionÍ'/Í'9NªIdentifierÍ'/Í'4¥hilogNªIdentifierÍ'5Í'9¤infoÂÂ”NªIdentifierÍ':Í'@¦DOMAINNªIdentifierÍ'BÍ'E£TAGZ§LiteralÍ'GÍ'Y¸ç³»ç»Ÿç‰ˆæœ¬: %{public}sº'ç³»ç»Ÿç‰ˆæœ¬: %{public}s'V°MemberExpressionÍ'[Í'mNªIdentifierÍ'[Í'b§metricsNªIdentifierÍ'cÍ'mªosFullNameÂÂÂ]³ExpressionStatementÍ'yÍ'¾U®CallExpressionÍ'yÍ'½V°MemberExpressionÍ'yÍ'ƒNªIdentifierÍ'yÍ'~¥hilogNªIdentifierÍ'Í'ƒ¤infoÂÂ”NªIdentifierÍ'„Í'Š¦DOMAINNªIdentifierÍ'ŒÍ'£TAGZ§LiteralÍ'‘Í'¥¶API ç‰ˆæœ¬: %{public}d¸'API ç‰ˆæœ¬: %{public}d'V°MemberExpressionÍ'§Í'¼NªIdentifierÍ'§Í'®§metricsNªIdentifierÍ'¯Í'¼­sdkApiVersionÂÂÂ]³ExpressionStatementÍ'ÈÍ(
+U®CallExpressionÍ'ÈÍ(	V°MemberExpressionÍ'ÈÍ'ÒNªIdentifierÍ'ÈÍ'Í¥hilogNªIdentifierÍ'ÎÍ'Ò¤infoÂÂ”NªIdentifierÍ'ÓÍ'Ù¦DOMAINNªIdentifierÍ'ÛÍ'Ş£TAGZ§LiteralÍ'àÍ'ôºç”µæ± ç”µé‡: %{public}d%%¼'ç”µæ± ç”µé‡: %{public}d%%'V°MemberExpressionÍ'öÍ(NªIdentifierÍ'öÍ'ı§metricsNªIdentifierÍ'şÍ(ªbatterySOCÂÂÂ]³ExpressionStatementÍ(Í(XU®CallExpressionÍ(Í(WV°MemberExpressionÍ(Í(NªIdentifierÍ(Í(¥hilogNªIdentifierÍ(Í(¤infoÂÂ”NªIdentifierÍ(Í(%¦DOMAINNªIdentifierÍ('Í(*£TAGZ§LiteralÍ(,Í(>¸å……ç”µçŠ¶æ€: %{public}dº'å……ç”µçŠ¶æ€: %{public}d'V°MemberExpressionÍ(@Í(VNªIdentifierÍ(@Í(G§metricsNªIdentifierÍ(HÍ(V®chargingStatusÂÂÂ]³ExpressionStatementÍ(bÍ(¾U®CallExpressionÍ(bÍ(½V°MemberExpressionÍ(bÍ(lNªIdentifierÍ(bÍ(g¥hilogNªIdentifierÍ(hÍ(l¤infoÂÂ”NªIdentifierÍ(mÍ(s¦DOMAINNªIdentifierÍ(uÍ(x£TAGZ§LiteralÍ(zÍ(»ç”µæ± æ¸©åº¦: %{public}sÂ°C½'ç”µæ± æ¸©åº¦: %{public}sÂ°C'U®CallExpressionÍ(Í(¼V°MemberExpressionÍ(Í(¹Y°BinaryExpressionÍ(‘Í(°V°MemberExpressionÍ(‘Í(«NªIdentifierÍ(‘Í(˜§metricsNªIdentifierÍ(™Í(«²batteryTemperatureÂÂ¡/Z§LiteralÍ(®Í(°
+¢10NªIdentifierÍ(²Í(¹§toFixedÂÂ‘Z§LiteralÍ(ºÍ(»¡1ÂÂ]³ExpressionStatementÍ(ÈÍ)-U®CallExpressionÍ(ÈÍ),V°MemberExpressionÍ(ÈÍ(ÒNªIdentifierÍ(ÈÍ(Í¥hilogNªIdentifierÍ(ÎÍ(Ò¤infoÂÂ•NªIdentifierÍ(ÓÍ(Ù¦DOMAINNªIdentifierÍ(ÛÍ(Ş£TAGZ§LiteralÍ(àÍ) Ù(å±å¹•åˆ†è¾¨ç‡: %{public}d x %{public}dÙ*'å±å¹•åˆ†è¾¨ç‡: %{public}d x %{public}d'V°MemberExpressionÍ)Í)NªIdentifierÍ)Í)	§metricsNªIdentifierÍ)
+Í)«screenWidthÂÂV°MemberExpressionÍ)Í)+NªIdentifierÍ)Í)§metricsNªIdentifierÍ)Í)+¬screenHeightÂÂÂ]³ExpressionStatementÍ)7Í){U®CallExpressionÍ)7Í)zV°MemberExpressionÍ)7Í)ANªIdentifierÍ)7Í)<¥hilogNªIdentifierÍ)=Í)A¤infoÂÂ”NªIdentifierÍ)BÍ)H¦DOMAINNªIdentifierÍ)JÍ)M£TAGZ§LiteralÍ)OÍ)e¼åƒç´ å¯†åº¦: %{public}d DPI¾'åƒç´ å¯†åº¦: %{public}d DPI'V°MemberExpressionÍ)gÍ)yNªIdentifierÍ)gÍ)n§metricsNªIdentifierÍ)oÍ)yªdensityDPIÂÂÂ]³ExpressionStatementÍ)…Í)ÈU®CallExpressionÍ)…Í)ÇV°MemberExpressionÍ)…Í)NªIdentifierÍ)…Í)Š¥hilogNªIdentifierÍ)‹Í)¤infoÂÂ”NªIdentifierÍ)Í)–¦DOMAINNªIdentifierÍ)˜Í)›£TAGZ§LiteralÍ)Í)±¸åˆ·æ–°ç‡: %{public}d Hzº'åˆ·æ–°ç‡: %{public}d Hz'V°MemberExpressionÍ)³Í)ÆNªIdentifierÍ)³Í)º§metricsNªIdentifierÍ)»Í)Æ«refreshRateÂÂÂ]³ExpressionStatementÍ)ÒÍ*8U®CallExpressionÍ)ÒÍ*7V°MemberExpressionÍ)ÒÍ)ÜNªIdentifierÍ)ÒÍ)×¥hilogNªIdentifierÍ)ØÍ)Ü¤infoÂÂ”NªIdentifierÍ)İÍ)ã¦DOMAINNªIdentifierÍ)åÍ)è£TAGZ§LiteralÍ)êÍ)ş¸æ€»å­˜å‚¨: %{public}s GBº'æ€»å­˜å‚¨: %{public}s GB'U®CallExpressionÍ* Í*6V°MemberExpressionÍ* Í*3Y°BinaryExpressionÍ*Í**Y°BinaryExpressionÍ*Í*#Y°BinaryExpressionÍ*Í*V°MemberExpressionÍ*Í*NªIdentifierÍ*Í*§metricsNªIdentifierÍ*	Í*¬totalStorageÂÂ¡/Z§LiteralÍ*Í*Í ¤1024¡/Z§LiteralÍ*Í*#Í ¤1024¡/Z§LiteralÍ*&Í**Í ¤1024NªIdentifierÍ*,Í*3§toFixedÂÂ‘Z§LiteralÍ*4Í*5¡2ÂÂ]³ExpressionStatementÍ*BÍ*¨U®CallExpressionÍ*BÍ*§V°MemberExpressionÍ*BÍ*LNªIdentifierÍ*BÍ*G¥hilogNªIdentifierÍ*HÍ*L¤infoÂÂ”NªIdentifierÍ*MÍ*S¦DOMAINNªIdentifierÍ*UÍ*X£TAGZ§LiteralÍ*ZÍ*o»å¯ç”¨å­˜å‚¨: %{public}s GB½'å¯ç”¨å­˜å‚¨: %{public}s GB'U®CallExpressionÍ*qÍ*¦V°MemberExpressionÍ*qÍ*£Y°BinaryExpressionÍ*rÍ*šY°BinaryExpressionÍ*rÍ*“Y°BinaryExpressionÍ*rÍ*ŒV°MemberExpressionÍ*rÍ*…NªIdentifierÍ*rÍ*y§metricsNªIdentifierÍ*zÍ*…«freeStorageÂÂ¡/Z§LiteralÍ*ˆÍ*ŒÍ ¤1024¡/Z§LiteralÍ*Í*“Í ¤1024¡/Z§LiteralÍ*–Í*šÍ ¤1024NªIdentifierÍ*œÍ*£§toFixedÂÂ‘Z§LiteralÍ*¤Í*¥¡2ÂÂ]³ExpressionStatementÍ*²Í*óU®CallExpressionÍ*²Í*òV°MemberExpressionÍ*²Í*¼NªIdentifierÍ*²Í*·¥hilogNªIdentifierÍ*¸Í*¼¤infoÂÂ”NªIdentifierÍ*½Í*Ã¦DOMAINNªIdentifierÍ*ÅÍ*È£TAGZ§LiteralÍ*ÊÍ*Ü¸ç½‘ç»œç±»å‹: %{public}sº'ç½‘ç»œç±»å‹: %{public}s'V°MemberExpressionÍ*ŞÍ*ñNªIdentifierÍ*ŞÍ*å§metricsNªIdentifierÍ*æÍ*ñ«networkTypeÂÂÂ]³ExpressionStatementÍ*ıÍ+#U®CallExpressionÍ*ıÍ+"V°MemberExpressionÍ*ıÍ+NªIdentifierÍ*ıÍ+¥hilogNªIdentifierÍ+Í+¤infoÂÂ“NªIdentifierÍ+Í+¦DOMAINNªIdentifierÍ+Í+£TAGZ§LiteralÍ+Í+!¾ã€æµ‹è¯•ç”¨ä¾‹éªŒè¯ç»“æœã€‘Ù 'ã€æµ‹è¯•ç”¨ä¾‹éªŒè¯ç»“æœã€‘'ÂS³VariableDeclarationÍ+-Í+s‘T²VariableDeclaratorÍ+3Í+rNªIdentifierÍ+3Í+D±validationResultsU®CallExpressionÍ+GÍ+rV°MemberExpressionÍ+GÍ+iNªIdentifierÍ+GÍ+Y²PerformanceMonitorNªIdentifierÍ+ZÍ+i¯validateMetricsÂÂ‘NªIdentifierÍ+jÍ+q§metricsÂ¥constS³VariableDeclarationÍ+}Í+‘T²VariableDeclaratorÍ+Í+NªIdentifierÍ+Í+Š©passCountZ§LiteralÍ+Í+ ¡0£letS³VariableDeclarationÍ+™Í+«‘T²VariableDeclaratorÍ+Í+ªNªIdentifierÍ+Í+¦©failCountZ§LiteralÍ+©Í+ª ¡0£letS³VariableDeclarationÍ+µÍ+Ê‘T²VariableDeclaratorÍ+¹Í+ÉNªIdentifierÍ+¹Í+Å¬warningCountZ§LiteralÍ+ÈÍ+É ¡0£letÔrc—¤type¥start£end¥await¤left¥right¤body®ForOfStatementÍ+ÔÍ-ûÂS³VariableDeclarationÍ+ÙÍ+å‘T²VariableDeclaratorÍ+ßÍ+åNªIdentifierÍ+ßÍ+å¦resultÀ¥constNªIdentifierÍ+éÍ+ú±validationResultsO®BlockStatementÍ+üÍ-û“S³VariableDeclarationÍ,Í,m‘T²VariableDeclaratorÍ,Í,lNªIdentifierÍ,Í,ªstatusIcon`µConditionalExpressionÍ,Í,lY°BinaryExpressionÍ,Í,6V°MemberExpressionÍ,Í,+NªIdentifierÍ,Í,$¦resultNªIdentifierÍ,%Í,+¦statusÂÂ£===Z§LiteralÍ,0Í,6¤PASS¦'PASS'Z§LiteralÍ,9Í,?¤PASS¦'PASS'`µConditionalExpressionÍ,BÍ,lY°BinaryExpressionÍ,BÍ,ZV°MemberExpressionÍ,BÍ,ONªIdentifierÍ,BÍ,H¦resultNªIdentifierÍ,IÍ,O¦statusÂÂ£===Z§LiteralÍ,TÍ,Z¤FAIL¦'FAIL'Z§LiteralÍ,]Í,c¤FAIL¦'FAIL'Z§LiteralÍ,fÍ,l¤WARN¦'WARN'¥const]³ExpressionStatementÍ,{Í-&U®CallExpressionÍ,{Í-%V°MemberExpressionÍ,{Í,…NªIdentifierÍ,{Í,€¥hilogNªIdentifierÍ,Í,…¤infoÂÂ˜NªIdentifierÍ,†Í,Œ¦DOMAINNªIdentifierÍ,Í,‘£TAGZ§LiteralÍ,“Í,ÛÙR[%{public}s] %{public}s: %{public}s (æœŸæœ›å€¼: %{public}s, å®é™…å€¼: %{public}s)ÙT'[%{public}s] %{public}s: %{public}s (æœŸæœ›å€¼: %{public}s, å®é™…å€¼: %{public}s)'NªIdentifierÍ,İÍ,çªstatusIconV°MemberExpressionÍ,éÍ,õNªIdentifierÍ,éÍ,ï¦resultNªIdentifierÍ,ğÍ,õ¥fieldÂÂV°MemberExpressionÍ,÷Í-NªIdentifierÍ,÷Í,ı¦resultNªIdentifierÍ,şÍ-¦statusÂÂV°MemberExpressionÍ-Í-NªIdentifierÍ-Í-¦resultNªIdentifierÍ-Í-¨expectedÂÂV°MemberExpressionÍ-Í-$NªIdentifierÍ-Í-¦resultNªIdentifierÍ-Í-$¦actualÂÂÂ`«IfStatementÍ-4Í-ğY°BinaryExpressionÍ-8Í-PV°MemberExpressionÍ-8Í-ENªIdentifierÍ-8Í->¦resultNªIdentifierÍ-?Í-E¦statusÂÂ£===Z§LiteralÍ-JÍ-P¤PASS¦'PASS']³ExpressionStatementÍ-cÍ-o[°UpdateExpressionÍ-cÍ-n¢++ÂNªIdentifierÍ-cÍ-l©passCount`«IfStatementÍ-‚Í-ğY°BinaryExpressionÍ-†Í-V°MemberExpressionÍ-†Í-“NªIdentifierÍ-†Í-Œ¦resultNªIdentifierÍ-Í-“¦statusÂÂ£===Z§LiteralÍ-˜Í-¤FAIL¦'FAIL']³ExpressionStatementÍ-±Í-½[°UpdateExpressionÍ-±Í-¼¢++ÂNªIdentifierÍ-±Í-º©failCount]³ExpressionStatementÍ-áÍ-ğ[°UpdateExpressionÍ-áÍ-ï¢++ÂNªIdentifierÍ-áÍ-í¬warningCount]³ExpressionStatementÍ.Í.)U®CallExpressionÍ.Í.(V°MemberExpressionÍ.Í.NªIdentifierÍ.Í.
+¥hilogNªIdentifierÍ.Í.¤infoÂÂ“NªIdentifierÍ.Í.¦DOMAINNªIdentifierÍ.Í.£TAGZ§LiteralÍ.Í.'¸ã€æµ‹è¯•ç»“æœæ±‡æ€»ã€‘º'ã€æµ‹è¯•ç»“æœæ±‡æ€»ã€‘'Â]³ExpressionStatementÍ.3Í.hU®CallExpressionÍ.3Í.gV°MemberExpressionÍ.3Í.=NªIdentifierÍ.3Í.8¥hilogNªIdentifierÍ.9Í.=¤infoÂÂ”NªIdentifierÍ.>Í.D¦DOMAINNªIdentifierÍ.FÍ.I£TAGZ§LiteralÍ.KÍ.[²é€šè¿‡: %{public}d´'é€šè¿‡: %{public}d'NªIdentifierÍ.]Í.f©passCountÂ]³ExpressionStatementÍ.rÍ.§U®CallExpressionÍ.rÍ.¦V°MemberExpressionÍ.rÍ.|NªIdentifierÍ.rÍ.w¥hilogNªIdentifierÍ.xÍ.|¤infoÂÂ”NªIdentifierÍ.}Í.ƒ¦DOMAINNªIdentifierÍ.…Í.ˆ£TAGZ§LiteralÍ.ŠÍ.š²å¤±è´¥: %{public}d´'å¤±è´¥: %{public}d'NªIdentifierÍ.œÍ.¥©failCountÂ]³ExpressionStatementÍ.±Í.éU®CallExpressionÍ.±Í.èV°MemberExpressionÍ.±Í.»NªIdentifierÍ.±Í.¶¥hilogNªIdentifierÍ.·Í.»¤infoÂÂ”NªIdentifierÍ.¼Í.Â¦DOMAINNªIdentifierÍ.ÄÍ.Ç£TAGZ§LiteralÍ.ÉÍ.Ù²è­¦å‘Š: %{public}d´'è­¦å‘Š: %{public}d'NªIdentifierÍ.ÛÍ.ç¬warningCountÂ]³ExpressionStatementÍ.óÍ/7U®CallExpressionÍ.óÍ/6V°MemberExpressionÍ.óÍ.ıNªIdentifierÍ.óÍ.ø¥hilogNªIdentifierÍ.ùÍ.ı¤infoÂÂ”NªIdentifierÍ.şÍ/¦DOMAINNªIdentifierÍ/Í/	£TAGZ§LiteralÍ/Í/²æ€»è®¡: %{public}d´'æ€»è®¡: %{public}d'V°MemberExpressionÍ/Í/5NªIdentifierÍ/Í/.±validationResultsNªIdentifierÍ//Í/5¦lengthÂÂÂS³VariableDeclarationÍ/AÍ/j‘T²VariableDeclaratorÍ/GÍ/iNªIdentifierÍ/GÍ/P©totalTimeY°BinaryExpressionÍ/SÍ/iU®CallExpressionÍ/SÍ/]V°MemberExpressionÍ/SÍ/[NªIdentifierÍ/SÍ/W¤DateNªIdentifierÍ/XÍ/[£nowÂÂÂ¡-NªIdentifierÍ/`Í/i©startTime¥const]³ExpressionStatementÍ/tÍ/­U®CallExpressionÍ/tÍ/¬V°MemberExpressionÍ/tÍ/~NªIdentifierÍ/tÍ/y¥hilogNªIdentifierÍ/zÍ/~¤infoÂÂ”NªIdentifierÍ/Í/…¦DOMAINNªIdentifierÍ/‡Í/Š£TAGZ§LiteralÍ/ŒÍ/ ¸æ€»è€—æ—¶: %{public}d msº'æ€»è€—æ—¶: %{public}d ms'NªIdentifierÍ/¢Í/«©totalTimeÂ]³ExpressionStatementÍ/·Í/òU®CallExpressionÍ/·Í/ñV°MemberExpressionÍ/·Í/ÁNªIdentifierÍ/·Í/¼¥hilogNªIdentifierÍ/½Í/Á¤infoÂÂ“NªIdentifierÍ/ÂÍ/È¦DOMAINNªIdentifierÍ/ÊÍ/Í£TAGZ§LiteralÍ/ÏÍ/ğÙ1========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å®Œæˆ ==========Ù3'========== æ€§èƒ½ç›‘æ§å’Œæµ‹è¯•å®Œæˆ =========='Â`«IfStatementÍ/üÍ0uY°BinaryExpressionÍ0 Í0NªIdentifierÍ0 Í0	©failCount¡>Z§LiteralÍ0Í0 ¡0O®BlockStatementÍ0Í0u‘]³ExpressionStatementÍ0Í0jU®CallExpressionÍ0Í0iV°MemberExpressionÍ0Í0)NªIdentifierÍ0Í0#¥hilogNªIdentifierÍ0$Í0)¥errorÂÂ”NªIdentifierÍ0*Í00¦DOMAINNªIdentifierÍ02Í05£TAGZ§LiteralÍ07Í0]ÙPè­¦å‘Š: æœ‰ %{public}d é¡¹æµ‹è¯•å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç³»ç»Ÿä¿¡æ¯è·å–æ˜¯å¦æ­£å¸¸ÙR'è­¦å‘Š: æœ‰ %{public}d é¡¹æµ‹è¯•å¤±è´¥ï¼Œè¯·æ£€æŸ¥ç³»ç»Ÿä¿¡æ¯è·å–æ˜¯å¦æ­£å¸¸'NªIdentifierÍ0_Í0h©failCountÂÀÀ–Ôrd•¤type¥start£endªspecifiers¦source±ImportDeclaration  ‘Ôre”¤type¥start£end¥local¶ImportDefaultSpecifierNªIdentifier¥hilogZ§Literal«@ohos.hilog­'@ohos.hilog'd±ImportDeclaration"ÌL‘e¶ImportDefaultSpecifier)3NªIdentifier)3ªdeviceInfoZ§Literal9ÌK°@ohos.deviceInfo²'@ohos.deviceInfo'd±ImportDeclarationÌNÌz‘e¶ImportDefaultSpecifierÌUÌ`NªIdentifierÌUÌ`«batteryInfoZ§LiteralÌfÌy±@ohos.batteryInfo³'@ohos.batteryInfo'd±ImportDeclarationÌ|Ì ‘e¶ImportDefaultSpecifierÌƒÌŠNªIdentifierÌƒÌŠ§displayZ§LiteralÌÌŸ­@ohos.display¯'@ohos.display'd±ImportDeclarationÌ¢ÌË‘e¶ImportDefaultSpecifierÌ©Ì°NªIdentifierÌ©Ì°§statvfsZ§LiteralÌ¶ÌÊ²@ohos.file.statvfs´'@ohos.file.statvfs'd±ImportDeclarationÌÍÌû‘e¶ImportDefaultSpecifierÌÔÌŞNªIdentifierÌÔÌŞªconnectionZ§LiteralÌäÌú´@ohos.net.connection¶'@ohos.net.connection'

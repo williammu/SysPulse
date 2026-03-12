@@ -1,0 +1,16 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/CpuPage",
+    "pages/MemoryPage",
+    "pages/GpuPage",
+    "pages/StoragePage",
+    "pages/DisplayPage",
+    "pages/BatteryPage",
+    "pages/NetworkPage",
+    "pages/CameraPage",
+    "pages/SensorPage",
+    "pages/AboutPage",
+    "pages/TestPage"
+  ]
+}

@@ -1,0 +1,498 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ=şif (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+import router from '@ohos.router';
+import { DeviceUtil } from '../utils/DeviceUtil';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+class AboutPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__deviceInfo = new ObservedPropertyObjectPU(null, this, "deviceInfo");
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.deviceInfo !== undefined) {
+            this.deviceInfo = params.deviceInfo;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__deviceInfo.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__deviceInfo.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get deviceInfo() {
+        return this.__deviceInfo.get();
+    }
+    set deviceInfo(newValue) {
+        this.__deviceInfo.set(newValue);
+    }
+    aboutToAppear() {
+        this.deviceInfo = DeviceUtil.getDeviceInfo();
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#F7F8FA');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('â† è¿”å›');
+            Text.fontSize(16);
+            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.onClick(() => {
+                router.back();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å…³äº');
+            Text.fontSize(20);
+            Text.fontWeight(FontWeight.Medium);
+            Text.margin({ left: 12 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.layoutWeight(1);
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding(16);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding(24);
+            Column.alignItems(HorizontalAlign.Center);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('SysInfo');
+            Text.fontSize(24);
+            Text.fontWeight(FontWeight.Bold);
+            Text.margin({ top: 12 });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('v1.0.0');
+            Text.fontSize(16);
+            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.margin({ top: 4 });
+        }, Text);
+        Text.pop();
+        Column.pop();
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new SectionHeader(this, { title: 'è®¾å¤‡ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 51, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'è®¾å¤‡ä¿¡æ¯'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'è®¾å¤‡ä¿¡æ¯'
+                    });
+                }
+            }, { name: "SectionHeader" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'è®¾å¤‡å‹å·',
+                        value: this.deviceInfo?.marketName || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 53, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'è®¾å¤‡å‹å·',
+                            value: this.deviceInfo?.marketName || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'è®¾å¤‡å‹å·',
+                        value: this.deviceInfo?.marketName || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'å“ç‰Œ',
+                        value: this.deviceInfo?.brand || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 58, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'å“ç‰Œ',
+                            value: this.deviceInfo?.brand || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'å“ç‰Œ',
+                        value: this.deviceInfo?.brand || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'åˆ¶é€ å•†',
+                        value: this.deviceInfo?.manufacture || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 63, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'åˆ¶é€ å•†',
+                            value: this.deviceInfo?.manufacture || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'åˆ¶é€ å•†',
+                        value: this.deviceInfo?.manufacture || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new SectionHeader(this, { title: 'ç³»ç»Ÿä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 68, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'ç³»ç»Ÿä¿¡æ¯'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'ç³»ç»Ÿä¿¡æ¯'
+                    });
+                }
+            }, { name: "SectionHeader" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'ç³»ç»Ÿç‰ˆæœ¬',
+                        value: this.deviceInfo?.osFullName || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 70, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'ç³»ç»Ÿç‰ˆæœ¬',
+                            value: this.deviceInfo?.osFullName || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'ç³»ç»Ÿç‰ˆæœ¬',
+                        value: this.deviceInfo?.osFullName || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'ç³»ç»Ÿç±»å‹',
+                        value: 'HarmonyOS'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 75, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'ç³»ç»Ÿç±»å‹',
+                            value: 'HarmonyOS'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'ç³»ç»Ÿç±»å‹',
+                        value: 'HarmonyOS'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'API ç‰ˆæœ¬',
+                        value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 80, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'API ç‰ˆæœ¬',
+                            value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'API ç‰ˆæœ¬',
+                        value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'è®¾å¤‡ç±»å‹',
+                        value: this.deviceInfo?.deviceType || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 85, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'è®¾å¤‡ç±»å‹',
+                            value: this.deviceInfo?.deviceType || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'è®¾å¤‡ç±»å‹',
+                        value: this.deviceInfo?.deviceType || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        {
+            this.observeComponentCreation2((elmtId, isInitialRender) => {
+                if (isInitialRender) {
+                    let componentCall = new InfoCard(this, {
+                        title: 'ç¼–è¯‘ç±»å‹',
+                        value: this.deviceInfo?.buildType || '--'
+                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/AboutPage.ets", line: 90, col: 11 });
+                    ViewPU.create(componentCall);
+                    let paramsLambda = () => {
+                        return {
+                            title: 'ç¼–è¯‘ç±»å‹',
+                            value: this.deviceInfo?.buildType || '--'
+                        };
+                    };
+                    componentCall.paramsGenerator_ = paramsLambda;
+                }
+                else {
+                    this.updateStateVarsOfChildByElmtId(elmtId, {
+                        title: 'ç¼–è¯‘ç±»å‹',
+                        value: this.deviceInfo?.buildType || '--'
+                    });
+                }
+            }, { name: "InfoCard" });
+        }
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding({ top: 24, bottom: 24 });
+            Column.alignItems(HorizontalAlign.Center);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('Â© 2026 SysInfo. All rights reserved.');
+            Text.fontSize(12);
+            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+        }, Text);
+        Text.pop();
+        Column.pop();
+        Column.pop();
+        Scroll.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "AboutPage";
+    }
+}
+registerNamedRoute(() => new AboutPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/AboutPage", pageFullPath: "entry/src/main/ets/pages/AboutPage", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=AboutPage.js.mapÂ”Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ)import router from '@ohos.router';
+import { DeviceUtil } from '../utils/DeviceUtil';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+import type { DeviceInfoModel } from '../model/DeviceInfo';
+
+@Entry
+@Component
+struct AboutPage {
+  @State deviceInfo: DeviceInfoModel | null = null;
+
+  aboutToAppear() {
+    this.deviceInfo = DeviceUtil.getDeviceInfo();
+  }
+
+  build() {
+    Column() {
+      Row() {
+        Text('â† è¿”å›')
+          .fontSize(16)
+          .fontColor($r('app.color.primary_color'))
+          .onClick(() => {
+            router.back();
+          })
+
+        Text('å…³äº')
+          .fontSize(20)
+          .fontWeight(FontWeight.Medium)
+          .margin({ left: 12 })
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 12 })
+
+      Scroll() {
+        Column() {
+          Column() {
+            Text('SysInfo')
+              .fontSize(24)
+              .fontWeight(FontWeight.Bold)
+              .margin({ top: 12 })
+
+            Text('v1.0.0')
+              .fontSize(16)
+              .fontColor($r('app.color.text_secondary'))
+              .margin({ top: 4 })
+          }
+          .width('100%')
+          .padding(24)
+          .alignItems(HorizontalAlign.Center)
+
+          SectionHeader({ title: 'è®¾å¤‡ä¿¡æ¯' })
+
+          InfoCard({
+            title: 'è®¾å¤‡å‹å·',
+            value: this.deviceInfo?.marketName || '--'
+          })
+
+          InfoCard({
+            title: 'å“ç‰Œ',
+            value: this.deviceInfo?.brand || '--'
+          })
+
+          InfoCard({
+            title: 'åˆ¶é€ å•†',
+            value: this.deviceInfo?.manufacture || '--'
+          })
+
+          SectionHeader({ title: 'ç³»ç»Ÿä¿¡æ¯' })
+
+          InfoCard({
+            title: 'ç³»ç»Ÿç‰ˆæœ¬',
+            value: this.deviceInfo?.osFullName || '--'
+          })
+
+          InfoCard({
+            title: 'ç³»ç»Ÿç±»å‹',
+            value: 'HarmonyOS'
+          })
+
+          InfoCard({
+            title: 'API ç‰ˆæœ¬',
+            value: this.deviceInfo?.sdkApiVersion ? `API ${this.deviceInfo.sdkApiVersion}` : '--'
+          })
+
+          InfoCard({
+            title: 'è®¾å¤‡ç±»å‹',
+            value: this.deviceInfo?.deviceType || '--'
+          })
+
+          InfoCard({
+            title: 'ç¼–è¯‘ç±»å‹',
+            value: this.deviceInfo?.buildType || '--'
+          })
+
+          Column() {
+            Text('Â© 2026 SysInfo. All rights reserved.')
+              .fontSize(12)
+              .fontColor($r('app.color.text_secondary'))
+          }
+          .width('100%')
+          .padding({ top: 24, bottom: 24 })
+          .alignItems(HorizontalAlign.Center)
+        }
+        .width('100%')
+        .padding(16)
+      }
+      .layoutWeight(1)
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#F7F8FA')
+  }
+}
+ÀÔrD”¬@ohos.router³../utils/DeviceUtil¶../components/InfoCard»../components/SectionHeaderÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings¬AboutPage.js ‘­AboutPage.etsÜ[–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”; ;”< <’” ” ‘”  ’”9 	.”= 	2‘” ;’” 		” 	’” 		” 	’” ” š” ” ” 	” ” ”$  ”% !”2 .”4 0”5 1’” ” ‘” ’” ” 
+–” ” 
+” Ìl” Ìl
+” Ìl” Ìl–” ” 
+” Ìm” Ìm” Ìm”  Ìm–” ” 
+” Ìn”" Ìn”# Ìn”, Ìn’” ” 	–” ” 	” ” ” ” Ü ” ” 	” ” ” ” ” ”  ”" ”$ ”)  ”+ "”- $”/ &”2 )”4 +”6 -”8 /”> 5”Ì@ 7”ÌB 9”ÌD ;”” ” ” ” –” ” ” ” ” ” ”” ” ” ” —” ” ” ” ” ” ” –” ” ” ” ” ” ’” 
+” ’” ” ”” ” ” ” –” ” ” ” ” ” ˜” ” ” ” ” ”&  ”' !”- 'š” ” ” ” ” ” ” ”  ”" ”$ ’” ” ’” ” 	’” !” !–” !” !” Ìj” Ìj”  Ìj”! Ìj’” "” "–” "” "” Ìg	” Ìg” Ìg” Ìg–” "” "” Ìh	” Ìh” Ìh” Ìh’” #
+” #–” #
+” #” .” .” .” .–” #
+” #” /” /” /” /˜” #
+” #” 0” 0” 0”- 0%”. 0&”4 0,”” $” $” $”! $–” $” $” %” %” %” %˜” $” $” &” &” &”& &$”' &%”+ &)š” $” $” '” '” '” '” '” '”! '”# '!’” $” $”” )” )” )”  )–” )” )” *” *” *” *”” )” )” +” +š” )” )” ,” ,” ,” ,” ,” ,”  ,”" , ’” )” )’” #
+” #˜”, 2
+”9 2”Ì@ 2”ÌB 2”ÌG 2”ÌI 2!”ÌO 2'”ÌQ 2)”” 2”! 2”# 2!”) 2'”” 2” 2” 2!”% 2'“”, 4
+”4 4”; 4”” 5” 5” 5”% 5š” 6” 6” 6”# 6”$ 6”. 6"”0 6$”: 6.”> 62”ÌB 66‘” 7”” 5”! 5”# 5”) 5š” 6”! 6”# 6”' 6”( 6”2 6"”4 6$”> 6.”ÌB 62”ÌF 66”” 5” 5” 5”% 5š” 6” 6” 6”# 6”$ 6”. 6"”0 6$”: 6.”> 62”ÌB 66“”, 9
+”4 9”; 9”” :” :” :”# :š” ;” ;” ;”# ;”$ ;”. ;"”0 ;$”5 ;)”9 ;-”= ;1‘” <”” :”! :”# :”' :š” ;”! ;”# ;”' ;”( ;”2 ;"”4 ;$”9 ;)”= ;-”ÌA ;1”” :” :” :”# :š” ;” ;” ;”# ;”$ ;”. ;"”0 ;$”5 ;)”9 ;-”= ;1“”, >
+”4 >”; >”” ?” ?” ?”$ ?š” Ì@” Ì@” Ì@”# Ì@”$ Ì@”. Ì@"”0 Ì@$”; Ì@/”? Ì@3”ÌC Ì@7‘” ÌA”” ?”! ?”# ?”( ?š” Ì@”! Ì@”# Ì@”' Ì@”( Ì@”2 Ì@"”4 Ì@$”? Ì@/”ÌC Ì@3”ÌG Ì@7”” ?” ?” ?”$ ?š” Ì@” Ì@” Ì@”# Ì@”$ Ì@”. Ì@"”0 Ì@$”; Ì@/”? Ì@3”ÌC Ì@7˜”, ÌC
+”9 ÌC”Ì@ ÌC”ÌB ÌC”ÌG ÌC”ÌI ÌC!”ÌO ÌC'”ÌQ ÌC)”” ÌC”! ÌC”# ÌC!”) ÌC'”” ÌC” ÌC” ÌC!”% ÌC'“”, ÌE
+”4 ÌE”; ÌE”” ÌF” ÌF” ÌF”% ÌFš” ÌG” ÌG” ÌG”# ÌG”$ ÌG”. ÌG"”0 ÌG$”: ÌG.”> ÌG2”ÌB ÌG6‘” ÌH”” ÌF”! ÌF”# ÌF”) ÌFš” ÌG”! ÌG”# ÌG”' ÌG”( ÌG”2 ÌG"”4 ÌG$”> ÌG.”ÌB ÌG2”ÌF ÌG6”” ÌF” ÌF” ÌF”% ÌFš” ÌG” ÌG” ÌG”# ÌG”$ ÌG”. ÌG"”0 ÌG$”: ÌG.”> ÌG2”ÌB ÌG6“”, ÌJ
+”4 ÌJ”; ÌJ”” ÌK” ÌK” ÌK”% ÌK”” ÌL” ÌL” ÌL”* ÌL‘” ÌM”” ÌK”! ÌK”# ÌK”) ÌK”” ÌL”! ÌL”# ÌL”. ÌL”” ÌK” ÌK” ÌK”% ÌK”” ÌL” ÌL” ÌL”* ÌL“”, ÌO
+”4 ÌO”; ÌO”” ÌP” ÌP” ÌP”' ÌPÜ ” ÌQ” ÌQ” ÌQ”# ÌQ”$ ÌQ”. ÌQ"”0 ÌQ$”= ÌQ1”> ÌQ2”? ÌQ3”Ì@ ÌQ4”ÌG ÌQ;”ÌK ÌQ?”ÌL ÌQÌ@”ÌV ÌQÌJ”ÌW ÌQÌK”Ìd ÌQÌX”Ìf ÌQÌZ”Ìg ÌQÌ[”Ìh ÌQÌ\”Ìi ÌQÌ]”Ìm ÌQÌa‘” ÌR”” ÌP”! ÌP”# ÌP”+ ÌPÜ ” ÌQ”! ÌQ”# ÌQ”' ÌQ”( ÌQ”2 ÌQ"”4 ÌQ$”ÌA ÌQ1”ÌB ÌQ2”ÌC ÌQ3”ÌD ÌQ4”ÌK ÌQ;”ÌO ÌQ?”ÌP ÌQÌ@”ÌZ ÌQÌJ”Ì[ ÌQÌK”Ìh ÌQÌX”Ìj ÌQÌZ”Ìk ÌQÌ[”Ìl ÌQÌ\”Ìm ÌQÌ]”Ìq ÌQÌa”” ÌP” ÌP” ÌP”' ÌPÜ ” ÌQ” ÌQ” ÌQ”# ÌQ”$ ÌQ”. ÌQ"”0 ÌQ$”= ÌQ1”> ÌQ2”? ÌQ3”Ì@ ÌQ4”ÌG ÌQ;”ÌK ÌQ?”ÌL ÌQÌ@”ÌV ÌQÌJ”ÌW ÌQÌK”Ìd ÌQÌX”Ìf ÌQÌZ”Ìg ÌQÌ[”Ìh ÌQÌ\”Ìi ÌQÌ]”Ìm ÌQÌa“”, ÌT
+”4 ÌT”; ÌT”” ÌU” ÌU” ÌU”% ÌUš” ÌV” ÌV” ÌV”# ÌV”$ ÌV”. ÌV"”0 ÌV$”: ÌV.”> ÌV2”ÌB ÌV6‘” ÌW”” ÌU”! ÌU”# ÌU”) ÌUš” ÌV”! ÌV”# ÌV”' ÌV”( ÌV”2 ÌV"”4 ÌV$”> ÌV.”ÌB ÌV2”ÌF ÌV6”” ÌU” ÌU” ÌU”% ÌUš” ÌV” ÌV” ÌV”# ÌV”$ ÌV”. ÌV"”0 ÌV$”: ÌV.”> ÌV2”ÌB ÌV6“”, ÌY
+”4 ÌY”; ÌY”” ÌZ” ÌZ” ÌZ”% ÌZš” Ì[” Ì[” Ì[”# Ì[”$ Ì[”. Ì["”0 Ì[$”9 Ì[-”= Ì[1”ÌA Ì[5‘” Ì\”” ÌZ”! ÌZ”# ÌZ”) ÌZš” Ì[”! Ì[”# Ì[”' Ì[”( Ì[”2 Ì["”4 Ì[$”= Ì[-”ÌA Ì[1”ÌE Ì[5”” ÌZ” ÌZ” ÌZ”% ÌZš” Ì[” Ì[” Ì[”# Ì[”$ Ì[”. Ì["”0 Ì[$”9 Ì[-”= Ì[1”ÌA Ì[5’” Ì^
+” Ì^–” Ì^
+” Ì^” Ìc” Ìc” Ìc” Ìc” Ì^
+” Ì^” Ìd” Ìd” Ìd” Ìd”  Ìd”" Ìd”$ Ìd”& Ìd”, Ìd$”. Ìd&”0 Ìd(”2 Ìd*˜” Ì^
+” Ì^” Ìe” Ìe” Ìe”- Ìe%”. Ìe&”4 Ìe,”” Ì_” Ì_” Ì_”> Ì_7–” Ì_” Ì_” Ì`” Ì`” Ì`” Ì`”” Ì_” Ì_” Ìa” Ìa’” Ì_” Ì_’” Ì^
+” Ì^’” "” "’” !” !’” ” 
+‘” ÌoÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜd‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache”ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í	‘N¯ImportSpecifierÌàÌèLªIdentifierÌàÌè¨InfoCardLªIdentifierÌàÌè¨InfoCardM§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍÍG‘N¯ImportSpecifierÍÍ!LªIdentifierÍÍ!­SectionHeaderLªIdentifierÍÍ!­SectionHeaderM§LiteralÍ)ÍF»../components/SectionHeader½'../components/SectionHeader'

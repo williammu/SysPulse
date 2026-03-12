@@ -1,0 +1,7 @@
+# ninja log v6
+755	895	1773292984686647413	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	eb34fdda51e1e564
+1	753	1773292983932183516	CMakeFiles/sysinfo.dir/hidebug_module.cpp.o	1bbd36310e86969c
+1	235	1773292983932375351	CMakeFiles/sysinfo.dir/sensor_module.cpp.o	fdd14ec458225b64
+0	234	1773292983931654721	CMakeFiles/sysinfo.dir/sysinfo.cpp.o	5e0f9e2d183a3d08
+4	3792	1773295671229663313	CMakeFiles/sysinfo.dir/hidebug_module.cpp.o	1bbd36310e86969c
+3792	3959	1773295675017462613	/Users/bytedance/dev/huawei_sysinfo/entry/build/default/intermediates/cmake/default/obj/arm64-v8a/libsysinfo.so	8a72e8b781d26c46

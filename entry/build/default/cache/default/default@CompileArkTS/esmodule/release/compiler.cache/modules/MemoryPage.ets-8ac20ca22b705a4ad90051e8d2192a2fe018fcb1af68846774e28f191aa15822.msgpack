@@ -1,0 +1,1024 @@
+Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ˜İif (!("finalizeConstruction" in ViewPU.prototype)) {
+    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
+}
+import router from '@ohos.router';
+import { FormatUtil } from '../utils/FormatUtil';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+import { nativeApi } from '../utils/NativeApi';
+import hilog from "@ohos.hilog";
+const TAG = 'MemoryPage';
+const REFRESH_INTERVAL = 200;
+class MemoryPage extends ViewPU {
+    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
+        super(parent, __localStorage, elmtId, extraInfo);
+        if (typeof paramsLambda === "function") {
+            this.paramsGenerator_ = paramsLambda;
+        }
+        this.__systemMemInfo = new ObservedPropertyObjectPU(null, this, "systemMemInfo");
+        this.__appMemInfo = new ObservedPropertyObjectPU(null, this, "appMemInfo");
+        this.__memoryLimit = new ObservedPropertyObjectPU(null, this, "memoryLimit");
+        this.__isNativeAvailable = new ObservedPropertySimplePU(false, this, "isNativeAvailable");
+        this.__isLoading = new ObservedPropertySimplePU(true, this, "isLoading");
+        this.refreshTimer = null;
+        this.setInitiallyProvidedValue(params);
+        this.finalizeConstruction();
+    }
+    setInitiallyProvidedValue(params) {
+        if (params.systemMemInfo !== undefined) {
+            this.systemMemInfo = params.systemMemInfo;
+        }
+        if (params.appMemInfo !== undefined) {
+            this.appMemInfo = params.appMemInfo;
+        }
+        if (params.memoryLimit !== undefined) {
+            this.memoryLimit = params.memoryLimit;
+        }
+        if (params.isNativeAvailable !== undefined) {
+            this.isNativeAvailable = params.isNativeAvailable;
+        }
+        if (params.isLoading !== undefined) {
+            this.isLoading = params.isLoading;
+        }
+        if (params.refreshTimer !== undefined) {
+            this.refreshTimer = params.refreshTimer;
+        }
+    }
+    updateStateVars(params) {
+    }
+    purgeVariableDependenciesOnElmtId(rmElmtId) {
+        this.__systemMemInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__appMemInfo.purgeDependencyOnElmtId(rmElmtId);
+        this.__memoryLimit.purgeDependencyOnElmtId(rmElmtId);
+        this.__isNativeAvailable.purgeDependencyOnElmtId(rmElmtId);
+        this.__isLoading.purgeDependencyOnElmtId(rmElmtId);
+    }
+    aboutToBeDeleted() {
+        this.__systemMemInfo.aboutToBeDeleted();
+        this.__appMemInfo.aboutToBeDeleted();
+        this.__memoryLimit.aboutToBeDeleted();
+        this.__isNativeAvailable.aboutToBeDeleted();
+        this.__isLoading.aboutToBeDeleted();
+        SubscriberManager.Get().delete(this.id__());
+        this.aboutToBeDeletedInternal();
+    }
+    get systemMemInfo() {
+        return this.__systemMemInfo.get();
+    }
+    set systemMemInfo(newValue) {
+        this.__systemMemInfo.set(newValue);
+    }
+    get appMemInfo() {
+        return this.__appMemInfo.get();
+    }
+    set appMemInfo(newValue) {
+        this.__appMemInfo.set(newValue);
+    }
+    get memoryLimit() {
+        return this.__memoryLimit.get();
+    }
+    set memoryLimit(newValue) {
+        this.__memoryLimit.set(newValue);
+    }
+    get isNativeAvailable() {
+        return this.__isNativeAvailable.get();
+    }
+    set isNativeAvailable(newValue) {
+        this.__isNativeAvailable.set(newValue);
+    }
+    get isLoading() {
+        return this.__isLoading.get();
+    }
+    set isLoading(newValue) {
+        this.__isLoading.set(newValue);
+    }
+    aboutToAppear() {
+        hilog.info(0x0000, TAG, 'MemoryPage aboutToAppear - START');
+        this.isNativeAvailable = nativeApi.isNativeAvailable();
+        hilog.info(0x0000, TAG, 'Native API available: %{public}s', String(this.isNativeAvailable));
+        if (this.isNativeAvailable) {
+            this.loadMemoryInfo();
+            this.refreshTimer = setInterval(() => {
+                this.loadMemoryInfo();
+            }, REFRESH_INTERVAL);
+        }
+        setTimeout(() => {
+            this.isLoading = false;
+        }, 100);
+        hilog.info(0x0000, TAG, 'MemoryPage aboutToAppear - END');
+    }
+    aboutToDisappear() {
+        if (this.refreshTimer !== null) {
+            clearInterval(this.refreshTimer);
+            this.refreshTimer = null;
+        }
+    }
+    loadMemoryInfo() {
+        this.systemMemInfo = nativeApi.getSystemMemInfo();
+        this.appMemInfo = nativeApi.getAppMemInfo();
+        this.memoryLimit = nativeApi.getMemoryLimit();
+    }
+    getTotalMemory() {
+        if (this.systemMemInfo?.success && this.systemMemInfo.total > 0) {
+            return FormatUtil.formatBytes(this.systemMemInfo.total);
+        }
+        return 'æœªè·å–';
+    }
+    getAvailableMemory() {
+        if (this.systemMemInfo?.success && this.systemMemInfo.available > 0) {
+            return FormatUtil.formatBytes(this.systemMemInfo.available);
+        }
+        return 'æœªè·å–';
+    }
+    getUsedMemory() {
+        if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+            const used = this.systemMemInfo.total - this.systemMemInfo.available;
+            return FormatUtil.formatBytes(used);
+        }
+        return 'æœªè·å–';
+    }
+    getMemoryUsagePercent() {
+        if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+            const used = this.systemMemInfo.total - this.systemMemInfo.available;
+            return Math.round((used / this.systemMemInfo.total) * 100);
+        }
+        return 0;
+    }
+    getAppPss() {
+        if (this.appMemInfo?.success && this.appMemInfo.pss > 0) {
+            return FormatUtil.formatBytes(this.appMemInfo.pss);
+        }
+        return 'æœªè·å–';
+    }
+    getAppRss() {
+        if (this.appMemInfo?.success && this.appMemInfo.rss > 0) {
+            return FormatUtil.formatBytes(this.appMemInfo.rss);
+        }
+        return 'æœªè·å–';
+    }
+    getAppVss() {
+        if (this.appMemInfo?.success && this.appMemInfo.vss > 0) {
+            return FormatUtil.formatBytes(this.appMemInfo.vss);
+        }
+        return 'æœªè·å–';
+    }
+    getMemoryLimit() {
+        if (this.memoryLimit?.success && this.memoryLimit.rssLimit > 0) {
+            return FormatUtil.formatBytes(this.memoryLimit.rssLimit);
+        }
+        return 'æœªè·å–';
+    }
+    DataDescription(text, parent = null) {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create(text);
+            Text.fontSize(12);
+            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.margin({ top: 4, bottom: 8 });
+            Text.width('100%');
+        }, Text);
+        Text.pop();
+    }
+    initialRender() {
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.height('100%');
+            Column.backgroundColor('#F7F8FA');
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Row.create();
+            Row.width('100%');
+            Row.padding({ left: 16, right: 16, top: 12, bottom: 12 });
+        }, Row);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('â† è¿”å›');
+            Text.fontSize(16);
+            Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+            Text.onClick(() => {
+                router.back();
+            });
+        }, Text);
+        Text.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Text.create('å†…å­˜');
+            Text.fontSize(20);
+            Text.fontWeight(FontWeight.Medium);
+            Text.margin({ left: 12 });
+        }, Text);
+        Text.pop();
+        Row.pop();
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Scroll.create();
+            Scroll.layoutWeight(1);
+        }, Scroll);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            Column.create();
+            Column.width('100%');
+            Column.padding(16);
+        }, Column);
+        this.observeComponentCreation2((elmtId, isInitialRender) => {
+            If.create();
+            if (this.isLoading) {
+                this.ifElseBranchUpdateFunction(0, () => {
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('åŠ è½½ä¸­...');
+                        Text.fontSize(16);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin(24);
+                    }, Text);
+                    Text.pop();
+                });
+            }
+            else if (!this.isNativeAvailable) {
+                this.ifElseBranchUpdateFunction(1, () => {
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new SectionHeader(this, { title: 'å†…å­˜çŠ¶æ€' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 145, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'å†…å­˜çŠ¶æ€'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'å†…å­˜çŠ¶æ€'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Column.create();
+                        Column.width('100%');
+                        Column.padding(24);
+                        Column.borderRadius(12);
+                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.alignItems(HorizontalAlign.Center);
+                    }, Column);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('Native API ä¸å¯ç”¨');
+                        Text.fontSize(18);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin(24);
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('è¯·ç¡®ä¿ Native æ¨¡å—å·²æ­£ç¡®ç¼–è¯‘å¹¶æ‰“åŒ…');
+                        Text.fontSize(14);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                    }, Text);
+                    Text.pop();
+                    Column.pop();
+                });
+            }
+            else {
+                this.ifElseBranchUpdateFunction(2, () => {
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new 
+                                // ç³»ç»Ÿå†…å­˜æ¦‚è§ˆ
+                                SectionHeader(this, { title: 'ç³»ç»Ÿå†…å­˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 164, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'ç³»ç»Ÿå†…å­˜'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'ç³»ç»Ÿå†…å­˜'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('æ˜¾ç¤ºè®¾å¤‡æ€»å†…å­˜å’Œä½¿ç”¨æƒ…å†µã€‚æ€»å†…å­˜æ˜¯è®¾å¤‡ç‰©ç†å†…å­˜çš„æ€»é‡ï¼Œå¯ç”¨å†…å­˜æ˜¯å½“å‰å¯åˆ†é…ç»™åº”ç”¨ç¨‹åºçš„å†…å­˜ã€‚');
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Column.create();
+                        Column.width('100%');
+                        Column.padding(24);
+                        Column.borderRadius(12);
+                        Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Column.alignItems(HorizontalAlign.Center);
+                    }, Column);
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create(this.getTotalMemory());
+                        Text.fontSize(48);
+                        Text.fontWeight(FontWeight.Bold);
+                        Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                    }, Text);
+                    Text.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        Text.create('æ€»å†…å­˜');
+                        Text.fontSize(14);
+                        Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                        Text.margin({ top: 8 });
+                    }, Text);
+                    Text.pop();
+                    Column.pop();
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        if (this.getMemoryUsagePercent() > 0) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    __Common__.create();
+                                    __Common__.margin({ top: 16 });
+                                }, __Common__);
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new InfoCard(this, {
+                                                title: 'å†…å­˜ä½¿ç”¨ç‡',
+                                                value: `${this.getMemoryUsagePercent()}%`
+                                            }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 185, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'å†…å­˜ä½¿ç”¨ç‡',
+                                                    value: `${this.getMemoryUsagePercent()}%`
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'å†…å­˜ä½¿ç”¨ç‡',
+                                                value: `${this.getMemoryUsagePercent()}%`
+                                            });
+                                        }
+                                    }, { name: "InfoCard" });
+                                }
+                                __Common__.pop();
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'å¯ç”¨å†…å­˜',
+                                    value: this.getAvailableMemory()
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 192, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'å¯ç”¨å†…å­˜',
+                                        value: this.getAvailableMemory()
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'å¯ç”¨å†…å­˜',
+                                    value: this.getAvailableMemory()
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'å·²ç”¨å†…å­˜',
+                                    value: this.getUsedMemory()
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 197, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'å·²ç”¨å†…å­˜',
+                                        value: this.getUsedMemory()
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'å·²ç”¨å†…å­˜',
+                                    value: this.getUsedMemory()
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new 
+                                // åº”ç”¨å†…å­˜
+                                SectionHeader(this, { title: 'åº”ç”¨å†…å­˜' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 203, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'åº”ç”¨å†…å­˜'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'åº”ç”¨å†…å­˜'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('PSSï¼šå®é™…ä½¿ç”¨çš„ç‰©ç†å†…å­˜ã€‚RSSï¼šé©»ç•™å†…å­˜å¤§å°ã€‚VSSï¼šè™šæ‹Ÿå†…å­˜å¤§å°ã€‚');
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        if (this.appMemInfo?.success) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    Column.create();
+                                    Column.width('100%');
+                                    Column.padding(20);
+                                    Column.borderRadius(12);
+                                    Column.backgroundColor({ "id": 16777224, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                                    Column.alignItems(HorizontalAlign.Center);
+                                    Column.margin({ bottom: 12 });
+                                }, Column);
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    Text.create(this.getAppPss());
+                                    Text.fontSize(36);
+                                    Text.fontWeight(FontWeight.Bold);
+                                    Text.fontColor({ "id": 16777225, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                                }, Text);
+                                Text.pop();
+                                this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                    Text.create('PSS (å®é™…ä½¿ç”¨å†…å­˜)');
+                                    Text.fontSize(14);
+                                    Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
+                                    Text.margin({ top: 8 });
+                                }, Text);
+                                Text.pop();
+                                Column.pop();
+                            });
+                        }
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'RSS (é©»ç•™å†…å­˜)',
+                                    value: this.getAppRss()
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 226, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'RSS (é©»ç•™å†…å­˜)',
+                                        value: this.getAppRss()
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'RSS (é©»ç•™å†…å­˜)',
+                                    value: this.getAppRss()
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'VSS (è™šæ‹Ÿå†…å­˜)',
+                                    value: this.getAppVss()
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 231, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'VSS (è™šæ‹Ÿå†…å­˜)',
+                                        value: this.getAppVss()
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'VSS (è™šæ‹Ÿå†…å­˜)',
+                                    value: this.getAppVss()
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                        If.create();
+                        // å†…å­˜åˆ†ç±»
+                        if (this.appMemInfo?.success) {
+                            this.ifElseBranchUpdateFunction(0, () => {
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new SectionHeader(this, { title: 'å†…å­˜åˆ†ç±»' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 238, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'å†…å­˜åˆ†ç±»'
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'å†…å­˜åˆ†ç±»'
+                                            });
+                                        }
+                                    }, { name: "SectionHeader" });
+                                }
+                                this.DataDescription.bind(this)('Sharedï¼šä¸å…¶ä»–è¿›ç¨‹å…±äº«çš„å†…å­˜ã€‚Privateï¼šè¿›ç¨‹ç‹¬å çš„å†…å­˜ã€‚Cleanï¼šæœªä¿®æ”¹çš„å†…å­˜é¡µã€‚Dirtyï¼šå·²ä¿®æ”¹çš„å†…å­˜é¡µã€‚');
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new InfoCard(this, {
+                                                title: 'Shared Clean',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
+                                            }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 241, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'Shared Clean',
+                                                    value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'Shared Clean',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
+                                            });
+                                        }
+                                    }, { name: "InfoCard" });
+                                }
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new InfoCard(this, {
+                                                title: 'Shared Dirty',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
+                                            }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 246, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'Shared Dirty',
+                                                    value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'Shared Dirty',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
+                                            });
+                                        }
+                                    }, { name: "InfoCard" });
+                                }
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new InfoCard(this, {
+                                                title: 'Private Clean',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
+                                            }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 251, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'Private Clean',
+                                                    value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'Private Clean',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
+                                            });
+                                        }
+                                    }, { name: "InfoCard" });
+                                }
+                                {
+                                    this.observeComponentCreation2((elmtId, isInitialRender) => {
+                                        if (isInitialRender) {
+                                            let componentCall = new InfoCard(this, {
+                                                title: 'Private Dirty',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
+                                            }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 256, col: 15 });
+                                            ViewPU.create(componentCall);
+                                            let paramsLambda = () => {
+                                                return {
+                                                    title: 'Private Dirty',
+                                                    value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
+                                                };
+                                            };
+                                            componentCall.paramsGenerator_ = paramsLambda;
+                                        }
+                                        else {
+                                            this.updateStateVarsOfChildByElmtId(elmtId, {
+                                                title: 'Private Dirty',
+                                                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
+                                            });
+                                        }
+                                    }, { name: "InfoCard" });
+                                }
+                            });
+                        }
+                        // å†…å­˜é™åˆ¶
+                        else {
+                            this.ifElseBranchUpdateFunction(1, () => {
+                            });
+                        }
+                    }, If);
+                    If.pop();
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new 
+                                // å†…å­˜é™åˆ¶
+                                SectionHeader(this, { title: 'å†…å­˜é™åˆ¶' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 263, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'å†…å­˜é™åˆ¶'
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'å†…å­˜é™åˆ¶'
+                                });
+                            }
+                        }, { name: "SectionHeader" });
+                    }
+                    this.DataDescription.bind(this)('ç³»ç»Ÿä¸ºæ¯ä¸ªè¿›ç¨‹è®¾ç½®çš„å†…å­˜ä½¿ç”¨ä¸Šé™ã€‚å½“åº”ç”¨å†…å­˜è¶…è¿‡é™åˆ¶æ—¶ï¼Œç³»ç»Ÿå¯èƒ½ä¼šè§¦å‘å†…å­˜è­¦å‘Šæˆ–ç»ˆæ­¢åº”ç”¨ã€‚');
+                    {
+                        this.observeComponentCreation2((elmtId, isInitialRender) => {
+                            if (isInitialRender) {
+                                let componentCall = new InfoCard(this, {
+                                    title: 'RSS é™åˆ¶',
+                                    value: this.getMemoryLimit()
+                                }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/MemoryPage.ets", line: 266, col: 13 });
+                                ViewPU.create(componentCall);
+                                let paramsLambda = () => {
+                                    return {
+                                        title: 'RSS é™åˆ¶',
+                                        value: this.getMemoryLimit()
+                                    };
+                                };
+                                componentCall.paramsGenerator_ = paramsLambda;
+                            }
+                            else {
+                                this.updateStateVarsOfChildByElmtId(elmtId, {
+                                    title: 'RSS é™åˆ¶',
+                                    value: this.getMemoryLimit()
+                                });
+                            }
+                        }, { name: "InfoCard" });
+                    }
+                });
+            }
+        }, If);
+        If.pop();
+        Column.pop();
+        Scroll.pop();
+        Column.pop();
+    }
+    rerender() {
+        this.updateDirtyElements();
+    }
+    static getEntryName() {
+        return "MemoryPage";
+    }
+}
+registerNamedRoute(() => new MemoryPage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/MemoryPage", pageFullPath: "entry/src/main/ets/pages/MemoryPage", integratedHsp: "false", moduleType: "followWithHap" });
+//# sourceMappingURL=MemoryPage.js.mapÂ–Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.etsÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ"dimport router from '@ohos.router';
+import { FormatUtil } from '../utils/FormatUtil';
+import { InfoCard } from '../components/InfoCard';
+import { SectionHeader } from '../components/SectionHeader';
+import { nativeApi, SystemMemInfo, AppMemInfo, MemoryLimit } from '../utils/NativeApi';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+
+const TAG = 'MemoryPage';
+const REFRESH_INTERVAL = 200;
+
+@Entry
+@Component
+struct MemoryPage {
+  @State systemMemInfo: SystemMemInfo | null = null;
+  @State appMemInfo: AppMemInfo | null = null;
+  @State memoryLimit: MemoryLimit | null = null;
+  @State isNativeAvailable: boolean = false;
+  @State isLoading: boolean = true;
+  private refreshTimer: number | null = null;
+
+  aboutToAppear() {
+    hilog.info(0x0000, TAG, 'MemoryPage aboutToAppear - START');
+    this.isNativeAvailable = nativeApi.isNativeAvailable();
+    hilog.info(0x0000, TAG, 'Native API available: %{public}s', String(this.isNativeAvailable));
+
+    if (this.isNativeAvailable) {
+      this.loadMemoryInfo();
+      this.refreshTimer = setInterval(() => {
+        this.loadMemoryInfo();
+      }, REFRESH_INTERVAL);
+    }
+
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 100);
+    hilog.info(0x0000, TAG, 'MemoryPage aboutToAppear - END');
+  }
+
+  aboutToDisappear() {
+    if (this.refreshTimer !== null) {
+      clearInterval(this.refreshTimer);
+      this.refreshTimer = null;
+    }
+  }
+
+  loadMemoryInfo() {
+    this.systemMemInfo = nativeApi.getSystemMemInfo();
+    this.appMemInfo = nativeApi.getAppMemInfo();
+    this.memoryLimit = nativeApi.getMemoryLimit();
+  }
+
+  getTotalMemory(): string {
+    if (this.systemMemInfo?.success && this.systemMemInfo.total > 0) {
+      return FormatUtil.formatBytes(this.systemMemInfo.total);
+    }
+    return 'æœªè·å–';
+  }
+
+  getAvailableMemory(): string {
+    if (this.systemMemInfo?.success && this.systemMemInfo.available > 0) {
+      return FormatUtil.formatBytes(this.systemMemInfo.available);
+    }
+    return 'æœªè·å–';
+  }
+
+  getUsedMemory(): string {
+    if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+      const used = this.systemMemInfo.total - this.systemMemInfo.available;
+      return FormatUtil.formatBytes(used);
+    }
+    return 'æœªè·å–';
+  }
+
+  getMemoryUsagePercent(): number {
+    if (this.systemMemInfo?.success && this.systemMemInfo.total > 0 && this.systemMemInfo.available > 0) {
+      const used = this.systemMemInfo.total - this.systemMemInfo.available;
+      return Math.round((used / this.systemMemInfo.total) * 100);
+    }
+    return 0;
+  }
+
+  getAppPss(): string {
+    if (this.appMemInfo?.success && this.appMemInfo.pss > 0) {
+      return FormatUtil.formatBytes(this.appMemInfo.pss);
+    }
+    return 'æœªè·å–';
+  }
+
+  getAppRss(): string {
+    if (this.appMemInfo?.success && this.appMemInfo.rss > 0) {
+      return FormatUtil.formatBytes(this.appMemInfo.rss);
+    }
+    return 'æœªè·å–';
+  }
+
+  getAppVss(): string {
+    if (this.appMemInfo?.success && this.appMemInfo.vss > 0) {
+      return FormatUtil.formatBytes(this.appMemInfo.vss);
+    }
+    return 'æœªè·å–';
+  }
+
+  getMemoryLimit(): string {
+    if (this.memoryLimit?.success && this.memoryLimit.rssLimit > 0) {
+      return FormatUtil.formatBytes(this.memoryLimit.rssLimit);
+    }
+    return 'æœªè·å–';
+  }
+
+  @Builder
+  DataDescription(text: string) {
+    Text(text)
+      .fontSize(12)
+      .fontColor($r('app.color.text_secondary'))
+      .margin({ top: 4, bottom: 8 })
+      .width('100%');
+  }
+
+  build() {
+    Column() {
+      Row() {
+        Text('â† è¿”å›')
+          .fontSize(16)
+          .fontColor($r('app.color.primary_color'))
+          .onClick(() => {
+            router.back();
+          });
+
+        Text('å†…å­˜')
+          .fontSize(20)
+          .fontWeight(FontWeight.Medium)
+          .margin({ left: 12 });
+      }
+      .width('100%')
+      .padding({ left: 16, right: 16, top: 12, bottom: 12 });
+
+      Scroll() {
+        Column() {
+          if (this.isLoading) {
+            Text('åŠ è½½ä¸­...')
+              .fontSize(16)
+              .fontColor($r('app.color.text_secondary'))
+              .margin(24);
+          } else if (!this.isNativeAvailable) {
+            SectionHeader({ title: 'å†…å­˜çŠ¶æ€' });
+
+            Column() {
+              Text('Native API ä¸å¯ç”¨')
+                .fontSize(18)
+                .fontColor($r('app.color.text_secondary'))
+                .margin(24);
+
+              Text('è¯·ç¡®ä¿ Native æ¨¡å—å·²æ­£ç¡®ç¼–è¯‘å¹¶æ‰“åŒ…')
+                .fontSize(14)
+                .fontColor($r('app.color.text_secondary'));
+            }
+            .width('100%')
+            .padding(24)
+            .borderRadius(12)
+            .backgroundColor($r('app.color.card_bg'))
+            .alignItems(HorizontalAlign.Center);
+          } else {
+            // ç³»ç»Ÿå†…å­˜æ¦‚è§ˆ
+            SectionHeader({ title: 'ç³»ç»Ÿå†…å­˜' });
+            this.DataDescription('æ˜¾ç¤ºè®¾å¤‡æ€»å†…å­˜å’Œä½¿ç”¨æƒ…å†µã€‚æ€»å†…å­˜æ˜¯è®¾å¤‡ç‰©ç†å†…å­˜çš„æ€»é‡ï¼Œå¯ç”¨å†…å­˜æ˜¯å½“å‰å¯åˆ†é…ç»™åº”ç”¨ç¨‹åºçš„å†…å­˜ã€‚');
+
+            Column() {
+              Text(this.getTotalMemory())
+                .fontSize(48)
+                .fontWeight(FontWeight.Bold)
+                .fontColor($r('app.color.primary_color'));
+
+              Text('æ€»å†…å­˜')
+                .fontSize(14)
+                .fontColor($r('app.color.text_secondary'))
+                .margin({ top: 8 });
+            }
+            .width('100%')
+            .padding(24)
+            .borderRadius(12)
+            .backgroundColor($r('app.color.card_bg'))
+            .alignItems(HorizontalAlign.Center);
+
+            if (this.getMemoryUsagePercent() > 0) {
+              InfoCard({
+                title: 'å†…å­˜ä½¿ç”¨ç‡',
+                value: `${this.getMemoryUsagePercent()}%`
+              })
+              .margin({ top: 16 });
+            }
+
+            InfoCard({
+              title: 'å¯ç”¨å†…å­˜',
+              value: this.getAvailableMemory()
+            });
+
+            InfoCard({
+              title: 'å·²ç”¨å†…å­˜',
+              value: this.getUsedMemory()
+            });
+
+            // åº”ç”¨å†…å­˜
+            SectionHeader({ title: 'åº”ç”¨å†…å­˜' });
+            this.DataDescription('PSSï¼šå®é™…ä½¿ç”¨çš„ç‰©ç†å†…å­˜ã€‚RSSï¼šé©»ç•™å†…å­˜å¤§å°ã€‚VSSï¼šè™šæ‹Ÿå†…å­˜å¤§å°ã€‚');
+
+            if (this.appMemInfo?.success) {
+              Column() {
+                Text(this.getAppPss())
+                  .fontSize(36)
+                  .fontWeight(FontWeight.Bold)
+                  .fontColor($r('app.color.primary_color'));
+
+                Text('PSS (å®é™…ä½¿ç”¨å†…å­˜)')
+                  .fontSize(14)
+                  .fontColor($r('app.color.text_secondary'))
+                  .margin({ top: 8 });
+              }
+              .width('100%')
+              .padding(20)
+              .borderRadius(12)
+              .backgroundColor($r('app.color.card_bg'))
+              .alignItems(HorizontalAlign.Center)
+              .margin({ bottom: 12 });
+            }
+
+            InfoCard({
+              title: 'RSS (é©»ç•™å†…å­˜)',
+              value: this.getAppRss()
+            });
+
+            InfoCard({
+              title: 'VSS (è™šæ‹Ÿå†…å­˜)',
+              value: this.getAppVss()
+            });
+
+            // å†…å­˜åˆ†ç±»
+            if (this.appMemInfo?.success) {
+              SectionHeader({ title: 'å†…å­˜åˆ†ç±»' });
+              this.DataDescription('Sharedï¼šä¸å…¶ä»–è¿›ç¨‹å…±äº«çš„å†…å­˜ã€‚Privateï¼šè¿›ç¨‹ç‹¬å çš„å†…å­˜ã€‚Cleanï¼šæœªä¿®æ”¹çš„å†…å­˜é¡µã€‚Dirtyï¼šå·²ä¿®æ”¹çš„å†…å­˜é¡µã€‚');
+
+              InfoCard({
+                title: 'Shared Clean',
+                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean)
+              });
+
+              InfoCard({
+                title: 'Shared Dirty',
+                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty)
+              });
+
+              InfoCard({
+                title: 'Private Clean',
+                value: FormatUtil.formatBytes(this.appMemInfo.privateClean)
+              });
+
+              InfoCard({
+                title: 'Private Dirty',
+                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty)
+              });
+            }
+
+            // å†…å­˜é™åˆ¶
+            SectionHeader({ title: 'å†…å­˜é™åˆ¶' });
+            this.DataDescription('ç³»ç»Ÿä¸ºæ¯ä¸ªè¿›ç¨‹è®¾ç½®çš„å†…å­˜ä½¿ç”¨ä¸Šé™ã€‚å½“åº”ç”¨å†…å­˜è¶…è¿‡é™åˆ¶æ—¶ï¼Œç³»ç»Ÿå¯èƒ½ä¼šè§¦å‘å†…å­˜è­¦å‘Šæˆ–ç»ˆæ­¢åº”ç”¨ã€‚');
+
+            InfoCard({
+              title: 'RSS é™åˆ¶',
+              value: this.getMemoryLimit()
+            });
+          }
+        }
+        .width('100%')
+        .padding(16);
+      }
+      .layoutWeight(1);
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#F7F8FA');
+  }
+}
+ÀÔrD–¬@ohos.router«@ohos.hilog²../utils/NativeApi¶../components/InfoCard³../utils/FormatUtil»../components/SectionHeaderÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÔrF‘¯hostModulesInfoœÔrG’²hostDependencyName®hostModuleName¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryG¬@ohos.router¥entryÃªoh-resolveÂEAÃÙh hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.hilog.d.tsFšG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryG«@ohos.hilog¥entryÃªoh-resolveÂEAÂÙJ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂ“ÔrH–§version¤fileªsourceRoot§sources¥names¨mappings­MemoryPage.js ‘®MemoryPage.etsÜ¾–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”; ;”< <˜”   ” ”	 	” ” <” ÌB”. ÌV”/ ÌW–”   ” 	” ” ” 3”  4–”   ” ”	 	” ” ” –”   ” ” ” ” ” ’” ” ‘” 
+ ’”< /”Ì@ 3’”9 )”= -’”: +”> /’”Ì@ &”ÌE +’”8 ”< "’” (”  ,‘” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” 	” ’” ” œ” ” 	” 
+” ” ” ” ” ”  ”ÌB >”ÌC ?”ÌD Ì@š” ” ” 	” ”! ”* &”+ '”< 8”> :”? ;Ü ” ” 	” 
+” ” ” ” ” ”  ”ÌB >”ÌD Ì@”ÌJ ÌF”ÌK ÌG”ÌO ÌK”ÌP ÌL”Ìa Ì]”Ìb Ì^”Ìc Ì_”Ìd Ì`–” ” ” ” ”" ”$  –” ” 
+” ” ”! ”" ™” ” 
+” ” ”  ”+ %”, &”/ )”1 +–” ” ” ”# ”% ”& –” ” ” 	” ”  ”! ‘”	 •”  ”  ”  ”  ”  —” !” !
+” !” !” !”" !”# !–” "”	 "” "” "
+” "” "œ” #” #	” #
+” #” #” #” #” #”  #”Ì@ #<”ÌA #=”ÌB #>’” $” $’” &” &˜” '” '” '” '” '”" '”& '"”( '$˜” (” (” (” (” (”+ (%”, (&”- ('—” )” )
+” )” )”  )”$ )”% )‘”	 *’” +” +’” -” -š” .” .” .	” .” .”& ."”' .#”7 .3”9 .5”: .6š” /” /” /	” /” /”# /”$ / ”1 /-”3 //”4 /0š” 0” 0” 0	” 0” 0”$ 0 ”% 0!”3 0/”5 01”6 02’” 1” 1’” 3” 3Ü ” 4” 4” 4” 4” 4”  4”' 4#”+ 4'”/ 4+”0 4,”= 49”> 4:”ÌC 4?”ÌF 4ÌB”ÌG 4ÌC”ÌI 4ÌE” 5” 5” 5” 5”) 5#”* 5$”. 5(”/ 5)”< 56”= 57”ÌB 5<”ÌC 5=”ÌD 5>‘”	 6”” 7” 7” 7” 7’” 8” 8’” :” :Ü ” ;” ;” ;” ;” ;”  ;”' ;#”+ ;'”/ ;+”0 ;,”= ;9”> ;:”ÌG ;ÌC”ÌJ ;ÌF”ÌK ;ÌG”ÌM ;ÌI” <” <” <” <”) <#”* <$”. <(”/ <)”< <6”= <7”ÌF <Ì@”ÌG <ÌA”ÌH <ÌB‘”	 =”” >” >” >” >’” ?” ?’” ÌA” ÌAÜ ” ÌB” ÌB” ÌB” ÌB” ÌB”  ÌB”' ÌB#”+ ÌB'”/ ÌB+”0 ÌB,”= ÌB9”> ÌB:”ÌC ÌB?”ÌF ÌBÌB”ÌG ÌBÌC”ÌK ÌBÌG”ÌO ÌBÌK”ÌP ÌBÌL”Ì] ÌBÌY”Ì^ ÌBÌZ”Ìg ÌBÌc”Ìj ÌBÌf”Ìk ÌBÌg”Ìm ÌBÌiÜ ” ÌC” ÌC” ÌC” ÌC” ÌC” ÌC”+ ÌC%”, ÌC&”1 ÌC+”4 ÌC.”8 ÌC2”9 ÌC3”ÌF ÌCÌ@”ÌG ÌCÌA”ÌP ÌCÌJ”ÌQ ÌCÌK™” ÌD” ÌD” ÌD” ÌD”) ÌD#”* ÌD$”. ÌD(”/ ÌD)”0 ÌD*‘”	 ÌE”” ÌF” ÌF” ÌF” ÌF’” ÌG” ÌG’” ÌI” ÌIÜ ” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ”  ÌJ”' ÌJ#”+ ÌJ'”/ ÌJ+”0 ÌJ,”= ÌJ9”> ÌJ:”ÌC ÌJ?”ÌF ÌJÌB”ÌG ÌJÌC”ÌK ÌJÌG”ÌO ÌJÌK”ÌP ÌJÌL”Ì] ÌJÌY”Ì^ ÌJÌZ”Ìg ÌJÌc”Ìj ÌJÌf”Ìk ÌJÌg”Ìm ÌJÌiÜ ” ÌK” ÌK” ÌK” ÌK” ÌK” ÌK”+ ÌK%”, ÌK&”1 ÌK+”4 ÌK.”8 ÌK2”9 ÌK3”ÌF ÌKÌ@”ÌG ÌKÌA”ÌP ÌKÌJ”ÌQ ÌKÌKÜ ” ÌL” ÌL” ÌL” ÌL” ÌL” ÌL” ÌL”# ÌL”& ÌL ”* ÌL$”+ ÌL%”8 ÌL2”9 ÌL3”> ÌL8”? ÌL9”ÌB ÌL<”ÌE ÌL?”ÌF ÌLÌ@”ÌG ÌLÌA‘”	 ÌM”” ÌN” ÌN” ÌN” ÌN’” ÌO” ÌO’” ÌQ” ÌQÜ ” ÌR” ÌR” ÌR” ÌR” ÌR” ÌR”$ ÌR ”( ÌR$”, ÌR(”- ÌR)”7 ÌR3”8 ÌR4”; ÌR7”> ÌR:”? ÌR;”ÌA ÌR=” ÌS” ÌS” ÌS” ÌS”) ÌS#”* ÌS$”. ÌS(”/ ÌS)”9 ÌS3”: ÌS4”= ÌS7”> ÌS8”? ÌS9‘”	 ÌT”” ÌU” ÌU” ÌU” ÌU’” ÌV” ÌV’” ÌX” ÌXÜ ” ÌY” ÌY” ÌY” ÌY” ÌY” ÌY”$ ÌY ”( ÌY$”, ÌY(”- ÌY)”7 ÌY3”8 ÌY4”; ÌY7”> ÌY:”? ÌY;”ÌA ÌY=” ÌZ” ÌZ” ÌZ” ÌZ”) ÌZ#”* ÌZ$”. ÌZ(”/ ÌZ)”9 ÌZ3”: ÌZ4”= ÌZ7”> ÌZ8”? ÌZ9‘”	 Ì[”” Ì\” Ì\” Ì\” Ì\’” Ì]” Ì]’” Ì_” Ì_Ü ” Ì`” Ì`” Ì`” Ì`” Ì`” Ì`”$ Ì` ”( Ì`$”, Ì`(”- Ì`)”7 Ì`3”8 Ì`4”; Ì`7”> Ì`:”? Ì`;”ÌA Ì`=” Ìa” Ìa” Ìa” Ìa”) Ìa#”* Ìa$”. Ìa(”/ Ìa)”9 Ìa3”: Ìa4”= Ìa7”> Ìa8”? Ìa9‘”	 Ìb”” Ìc” Ìc” Ìc” Ìc’” Ìd” Ìd’” Ìf” ÌfÜ ” Ìg” Ìg” Ìg” Ìg” Ìg” Ìg”% Ìg!”) Ìg%”- Ìg)”. Ìg*”9 Ìg5”: Ìg6”ÌB Ìg>”ÌE ÌgÌA”ÌF ÌgÌB”ÌH ÌgÌD” Ìh” Ìh” Ìh” Ìh”) Ìh#”* Ìh$”. Ìh(”/ Ìh)”: Ìh4”; Ìh5”ÌC Ìh=”ÌD Ìh>”ÌE Ìh?‘”	 Ìi”” Ìj” Ìj” Ìj” Ìj’” Ìk” Ìk”” Ìn” Ìn” Ìn” Ìn”” Ìo” Ìo” Ìo	” Ìo–” Ìo” Ìo” Ìp” Ìp” Ìp” Ìp”” Ìo” Ìo” Ìq” Ìq” Ìo” Ìo” Ìr” Ìr” Ìr” Ìr” Ìr” Ìr”  Ìr”" Ìr”( Ìr”* Ìr ”+ Ìr!”- Ìr#–” Ìo” Ìo” Ìs” Ìs” Ìs” Ìs’” Ìo” Ìo‘” Ìt‘” Ìv’” Ìw” Ìw
+–” Ìw” Ìw
+” Í” Í
+” Í” Í–” Ìw” Ìw
+” Í” Í” Í”  Í–” Ìw” Ìw
+” Í”" Í”# Í”, Í’” Ìx” Ìx	–” Ìx” Ìx	” Ì…” Ì…” Ì…” Ì…Ü ” Ìx” Ìx	” Ì†” Ì†” Ì†” Ì†” Ì†”  Ì†”" Ì†”$ Ì†”) Ì† ”+ Ì†"”- Ì†$”/ Ì†&”2 Ì†)”4 Ì†+”6 Ì†-”8 Ì†/”> Ì†5”Ì@ Ì†7”ÌB Ì†9”ÌD Ì†;”” Ìy” Ìy” Ìy” Ìy–” Ìy” Ìy” Ìz” Ìz” Ìz” Ìz”” Ìy” Ìy” Ì{” Ì{—” Ìy” Ìy” Ì|” Ì|” Ì|” Ì|” Ì|–” Ì}” Ì}” Ì}” Ì}” Ì}” Ì}’” Ì~
+” Ì~’” Ìy” Ìy”” Ì€” Ì€” Ì€” Ì€–” Ì€” Ì€” Ì” Ì” Ì” Ì˜” Ì€” Ì€” Ì‚” Ì‚” Ì‚”& Ì‚ ”' Ì‚!”- Ì‚'š” Ì€” Ì€” Ìƒ” Ìƒ” Ìƒ” Ìƒ” Ìƒ”  Ìƒ”" Ìƒ”$ Ìƒ’” Ì€” Ì€’” Ìx” Ìx	’” Ìˆ” Ìˆ–” Ìˆ” Ìˆ” Í” Í”  Í”! Í’” Ì‰” Ì‰–” Ì‰” Ì‰” Í	” Í” Í” Í–” Ì‰” Ì‰” Í	” Í” Í” Í–” ÌŠ
+” ÌŠ” ÌŠ” ÌŠ” ÌŠ”  ÌŠ”” Ì‹” Ì‹”$ Ì‹”, Ì‹–” Ì‹” Ì‹” ÌŒ”% ÌŒ”& ÌŒ”( ÌŒ”” Ì‹” Ì‹” Ì”& Ì–” Ì‹” Ì‹” Ì”# Ì”$ Ì”& Ì’” Ì‹” Ì‹‘” Ì—” Ì” Ì” Ì” Ì” Ì”, Ì,”. Ì.˜”8 Ì”ÌE Ì”ÌL Ì”ÌN Ì”ÌS Ì!”ÌU Ì#”Ì[ Ì)”Ì] Ì+””( Ì”- Ì!”/ Ì#”5 Ì)””$ Ì”) Ì!”+ Ì#”1 Ì)’” Ì’” Ì’–” Ì’” Ì’” Ìœ”$ Ìœ”% Ìœ”+ Ìœ–” Ì’” Ì’” Ì”& Ì”' Ì”) Ì–” Ì’” Ì’” Ì”+ Ì”, Ì”. Ì”” Ì’” Ì’” ÌŸ”. ÌŸ˜” Ì’” Ì’” Ì ”) Ì ”* Ì ”9 Ì '”: Ì (”Ì@ Ì .”” Ì“” Ì“”$ Ì“”4 Ì“#–” Ì“” Ì“” Ì””% Ì””& Ì””( Ì””” Ì“” Ì“” Ì•”& Ì•–” Ì“” Ì“” Ì–”# Ì–”$ Ì–”& Ì–’” Ì“” Ì“”” Ì˜” Ì˜”$ Ì˜”; Ì˜*–” Ì˜” Ì˜” Ì™”% Ì™”& Ì™”( Ì™”” Ì˜” Ì˜” Ìš”& Ìš’” Ì˜” Ì˜’” Ì’” Ì’‘” Ì¡‘” Ì¡’”  Ì¢”) Ì¢˜”  Ì£”- Ì£”4 Ì£”6 Ì£”; Ì£!”= Ì£#”ÌC Ì£)”ÌE Ì£+””( Ì£”- Ì£!”/ Ì£#”5 Ì£)””$ Ì£”) Ì£!”+ Ì£#”1 Ì£)—” Ì¤” Ì¤” Ì¤”( Ì¤ ”4 Ì¤!”Ìd Ì¤ÌQ”Ìe Ì¤ÌR’” Ì¦” Ì¦–” Ì¦” Ì¦” Ì±”$ Ì±”% Ì±”+ Ì±–” Ì¦” Ì¦” Ì²”& Ì²”' Ì²”) Ì²–” Ì¦” Ì¦” Ì³”+ Ì³”, Ì³”. Ì³”” Ì¦” Ì¦” Ì´”. Ì´˜” Ì¦” Ì¦” Ìµ”) Ìµ”* Ìµ”9 Ìµ'”: Ìµ(”Ì@ Ìµ.—” Ì§” Ì§”$ Ì§”( Ì§”) Ì§”7 Ì§&”9 Ì§(–” Ì§” Ì§” Ì¨”% Ì¨”& Ì¨”( Ì¨˜” Ì§” Ì§” Ì©”' Ì©”( Ì©”2 Ì©&”3 Ì©'”7 Ì©+”” Ì§” Ì§” Ìª”& Ìª’” Ì§” Ì§”” Ì¬” Ì¬”$ Ì¬”) Ì¬–” Ì¬” Ì¬” Ì­”% Ì­”& Ì­”( Ì­”” Ì¬” Ì¬” Ì®”& Ì®š” Ì¬” Ì¬” Ì¯”# Ì¯”$ Ì¯”& Ì¯”) Ì¯”+ Ì¯”, Ì¯ ”. Ì¯"’” Ì¬” Ì¬’” Ì¦” Ì¦™” Ì·” Ì·”  Ì·”! Ì·”6 Ì·*”8 Ì·,”; Ì·/”< Ì·0”> Ì·2˜”/ Ì¼”5 Ì¼”6 Ì¼”8 Ì¼”; Ì¼”= Ì¼”? Ì¼”ÌA Ì¼!“”ÌD Ì¸”ÌL Ì¸”ÌS Ì¸””0 Ì¹”5 Ì¹”7 Ì¹”> Ì¹™”0 Ìº”5 Ìº”7 Ìº”: Ìº”> Ìº”? Ìº”ÌT Ìº4”ÌV Ìº6”ÌY Ìº9‘”- Ì»””4 Ì¹”9 Ì¹”; Ì¹”ÌB Ì¹™”4 Ìº”9 Ìº”; Ìº”> Ìº”ÌB Ìº”ÌC Ìº”ÌX Ìº4”ÌZ Ìº6”Ì] Ìº9””0 Ì¹”5 Ì¹”7 Ì¹”> Ì¹™”0 Ìº”5 Ìº”7 Ìº”: Ìº”> Ìº”? Ìº”ÌT Ìº4”ÌV Ìº6”ÌY Ìº9‘” Ì½‘” Ì½“”8 Ì¿”Ì@ Ì¿”ÌG Ì¿””$ ÌÀ”) ÌÀ”+ ÌÀ”1 ÌÀ—”$ ÌÁ”) ÌÁ”+ ÌÁ”/ ÌÁ”0 ÌÁ”ÌB ÌÁ,”ÌD ÌÁ.‘”! ÌÂ””( ÌÀ”- ÌÀ”/ ÌÀ”5 ÌÀ—”( ÌÁ”- ÌÁ”/ ÌÁ”3 ÌÁ”4 ÌÁ”ÌF ÌÁ,”ÌH ÌÁ.””$ ÌÀ”) ÌÀ”+ ÌÀ”1 ÌÀ—”$ ÌÁ”) ÌÁ”+ ÌÁ”/ ÌÁ”0 ÌÁ”ÌB ÌÁ,”ÌD ÌÁ.“”8 ÌÄ”Ì@ ÌÄ”ÌG ÌÄ””$ ÌÅ”) ÌÅ”+ ÌÅ”1 ÌÅ—”$ ÌÆ”) ÌÆ”+ ÌÆ”/ ÌÆ”0 ÌÆ”= ÌÆ'”? ÌÆ)‘”! ÌÇ””( ÌÅ”- ÌÅ”/ ÌÅ”5 ÌÅ—”( ÌÆ”- ÌÆ”/ ÌÆ”3 ÌÆ”4 ÌÆ”ÌA ÌÆ'”ÌC ÌÆ)””$ ÌÅ”) ÌÅ”+ ÌÅ”1 ÌÅ—”$ ÌÆ”) ÌÆ”+ ÌÆ”/ ÌÆ”0 ÌÆ”= ÌÆ'”? ÌÆ)’”  ÌÉ”' ÌÉ˜”  ÌÊ”- ÌÊ”4 ÌÊ”6 ÌÊ”; ÌÊ!”= ÌÊ#”ÌC ÌÊ)”ÌE ÌÊ+””( ÌÊ”- ÌÊ!”/ ÌÊ#”5 ÌÊ)””$ ÌÊ”) ÌÊ!”+ ÌÊ#”1 ÌÊ)—” ÌË” ÌË” ÌË”( ÌË ”4 ÌË!”ÌZ ÌËÌG”Ì[ ÌËÌH˜” ÌÍ” ÌÍ”  ÌÍ”! ÌÍ”+ ÌÍ”- ÌÍ!”4 ÌÍ(”6 ÌÍ*’”$ ÌÎ”* ÌÎ–”$ ÌÎ”* ÌÎ”+ ÌÙ”0 ÌÙ”1 ÌÙ”7 ÌÙ–”$ ÌÎ”* ÌÎ”+ ÌÚ”2 ÌÚ”3 ÌÚ”5 ÌÚ–”$ ÌÎ”* ÌÎ”+ ÌÛ”7 ÌÛ”8 ÌÛ”: ÌÛ””$ ÌÎ”* ÌÎ”+ ÌÜ”: ÌÜ˜”$ ÌÎ”* ÌÎ”+ Ìİ”5 Ìİ”6 Ìİ”ÌE Ìİ)”ÌF Ìİ*”ÌL Ìİ0š”$ ÌÎ”* ÌÎ”+ ÌŞ”1 ÌŞ”2 ÌŞ”4 ÌŞ”: ÌŞ”< ÌŞ ”> ÌŞ"”Ì@ ÌŞ$—”$ ÌÏ”( ÌÏ”0 ÌÏ”4 ÌÏ”5 ÌÏ”> ÌÏ#”Ì@ ÌÏ%–”$ ÌÏ”( ÌÏ”) ÌĞ”1 ÌĞ”2 ÌĞ”4 ÌĞ˜”$ ÌÏ”( ÌÏ”) ÌÑ”3 ÌÑ”4 ÌÑ”> ÌÑ(”? ÌÑ)”ÌC ÌÑ-””$ ÌÏ”( ÌÏ”) ÌÒ”2 ÌÒ’”  ÌÏ”$ ÌÏ””$ ÌÔ”( ÌÔ”0 ÌÔ”> ÌÔ#–”$ ÌÔ”( ÌÔ”) ÌÕ”1 ÌÕ”2 ÌÕ”4 ÌÕ””$ ÌÔ”( ÌÔ”) ÌÖ”2 ÌÖš”$ ÌÔ”( ÌÔ”) Ì×”/ Ì×”0 Ì×”2 Ì×”5 Ì×”7 Ì×!”8 Ì×"”: Ì×$’”  ÌÔ”$ ÌÔ’”  ÌÎ”& ÌÎ‘” Ìß‘” Ìß“”8 Ìá”Ì@ Ìá”ÌG Ìá””$ Ìâ”) Ìâ”+ Ìâ”7 Ìâ!—”$ Ìã”) Ìã”+ Ìã”/ Ìã”0 Ìã”9 Ìã#”; Ìã%‘”! Ìä””( Ìâ”- Ìâ”/ Ìâ”; Ìâ!—”( Ìã”- Ìã”/ Ìã”3 Ìã”4 Ìã”= Ìã#”? Ìã%””$ Ìâ”) Ìâ”+ Ìâ”7 Ìâ!—”$ Ìã”) Ìã”+ Ìã”/ Ìã”0 Ìã”9 Ìã#”; Ìã%“”8 Ìæ”Ì@ Ìæ”ÌG Ìæ””$ Ìç”) Ìç”+ Ìç”7 Ìç!—”$ Ìè”) Ìè”+ Ìè”/ Ìè”0 Ìè”9 Ìè#”; Ìè%‘”! Ìé””( Ìç”- Ìç”/ Ìç”; Ìç!—”( Ìè”- Ìè”/ Ìè”3 Ìè”4 Ìè”= Ìè#”? Ìè%””$ Ìç”) Ìç”+ Ìç”7 Ìç!—”$ Ìè”) Ìè”+ Ìè”/ Ìè”0 Ìè”9 Ìè#”; Ìè%’” Ìë” Ìë˜” Ìì” Ìì”  Ìì”! Ìì”+ Ìì”- Ìì!”4 Ìì(”6 Ìì*˜”ÌD Ìí”ÌQ Ìí”ÌX Ìí”ÌZ Ìí”Ì_ Ìí#”Ìa Ìí%”Ìg Ìí+”Ìi Ìí-””4 Ìí”9 Ìí#”; Ìí%”ÌA Ìí+””0 Ìí”5 Ìí#”7 Ìí%”= Ìí+—”  Ìî”$ Ìî”% Ìî”4 Ìî"”Ì@ Ìî#”Ì€ ÌîÌc”Ì ÌîÌd“”ÌD Ìğ”ÌL Ìğ”ÌS Ìğ””0 Ìñ”5 Ìñ”7 Ìñ”ÌE Ìñ%”0 Ìò”5 Ìò”7 Ìò”ÌA Ìò!”ÌB Ìò"”ÌM Ìò-”ÌN Ìò.”ÌR Ìò2”ÌS Ìò3”Ì] Ìò=”Ì^ Ìò>”Ìi ÌòÌI”Ìj ÌòÌJ‘”- Ìó””4 Ìñ”9 Ìñ”; Ìñ”ÌI Ìñ%”4 Ìò”9 Ìò”; Ìò”ÌE Ìò!”ÌF Ìò"”ÌQ Ìò-”ÌR Ìò.”ÌV Ìò2”ÌW Ìò3”Ìa Ìò=”Ìb Ìò>”Ìm ÌòÌI”Ìn ÌòÌJ””0 Ìñ”5 Ìñ”7 Ìñ”ÌE Ìñ%”0 Ìò”5 Ìò”7 Ìò”ÌA Ìò!”ÌB Ìò"”ÌM Ìò-”ÌN Ìò.”ÌR Ìò2”ÌS Ìò3”Ì] Ìò=”Ì^ Ìò>”Ìi ÌòÌI”Ìj ÌòÌJ“”ÌD Ìõ”ÌL Ìõ”ÌS Ìõ””0 Ìö”5 Ìö”7 Ìö”ÌE Ìö%”0 Ì÷”5 Ì÷”7 Ì÷”ÌA Ì÷!”ÌB Ì÷"”ÌM Ì÷-”ÌN Ì÷.”ÌR Ì÷2”ÌS Ì÷3”Ì] Ì÷=”Ì^ Ì÷>”Ìi Ì÷ÌI”Ìj Ì÷ÌJ‘”- Ìø””4 Ìö”9 Ìö”; Ìö”ÌI Ìö%”4 Ì÷”9 Ì÷”; Ì÷”ÌE Ì÷!”ÌF Ì÷"”ÌQ Ì÷-”ÌR Ì÷.”ÌV Ì÷2”ÌW Ì÷3”Ìa Ì÷=”Ìb Ì÷>”Ìm Ì÷ÌI”Ìn Ì÷ÌJ””0 Ìö”5 Ìö”7 Ìö”ÌE Ìö%”0 Ì÷”5 Ì÷”7 Ì÷”ÌA Ì÷!”ÌB Ì÷"”ÌM Ì÷-”ÌN Ì÷.”ÌR Ì÷2”ÌS Ì÷3”Ì] Ì÷=”Ì^ Ì÷>”Ìi Ì÷ÌI”Ìj Ì÷ÌJ“”ÌD Ìú”ÌL Ìú”ÌS Ìú””0 Ìû”5 Ìû”7 Ìû”ÌF Ìû&”0 Ìü”5 Ìü”7 Ìü”ÌA Ìü!”ÌB Ìü"”ÌM Ìü-”ÌN Ìü.”ÌR Ìü2”ÌS Ìü3”Ì] Ìü=”Ì^ Ìü>”Ìj ÌüÌJ”Ìk ÌüÌK‘”- Ìı””4 Ìû”9 Ìû”; Ìû”ÌJ Ìû&”4 Ìü”9 Ìü”; Ìü”ÌE Ìü!”ÌF Ìü"”ÌQ Ìü-”ÌR Ìü.”ÌV Ìü2”ÌW Ìü3”Ìa Ìü=”Ìb Ìü>”Ìn ÌüÌJ”Ìo ÌüÌK””0 Ìû”5 Ìû”7 Ìû”ÌF Ìû&”0 Ìü”5 Ìü”7 Ìü”ÌA Ìü!”ÌB Ìü"”ÌM Ìü-”ÌN Ìü.”ÌR Ìü2”ÌS Ìü3”Ì] Ìü=”Ì^ Ìü>”Ìj ÌüÌJ”Ìk ÌüÌK“”ÌD Ìÿ”ÌL Ìÿ”ÌS Ìÿ””0 Í ”5 Í ”7 Í ”ÌF Í &”0 Í”5 Í”7 Í”ÌA Í!”ÌB Í"”ÌM Í-”ÌN Í.”ÌR Í2”ÌS Í3”Ì] Í=”Ì^ Í>”Ìj ÍÌJ”Ìk ÍÌK‘”- Í””4 Í ”9 Í ”; Í ”ÌJ Í &”4 Í”9 Í”; Í”ÌE Í!”ÌF Í"”ÌQ Í-”ÌR Í.”ÌV Í2”ÌW Í3”Ìa Í=”Ìb Í>”Ìn ÍÌJ”Ìo ÍÌK””0 Í ”5 Í ”7 Í ”ÌF Í &”0 Í”5 Í”7 Í”ÌA Í!”ÌB Í"”ÌM Í-”ÌN Í.”ÌR Í2”ÌS Í3”Ì] Í=”Ì^ Í>”Ìj ÍÌJ”Ìk ÍÌK‘” Í’” Í” Í‘” Í’”  Í”' Í˜”  Í”- Í”4 Í”6 Í”; Í!”= Í#”ÌC Í)”ÌE Í+””( Í”- Í!”/ Í#”5 Í)””$ Í”) Í!”+ Í#”1 Í)—” Í” Í” Í”( Í ”4 Í!”Ìc ÍÌP”Ìd ÍÌQ“”8 Í	”Ì@ Í	”ÌG Í	””$ Í
+”) Í
+”+ Í
+”3 Í
+—”$ Í”) Í”+ Í”/ Í”0 Í”> Í(”Ì@ Í*‘”! Í””( Í
+”- Í
+”/ Í
+”7 Í
+—”( Í”- Í”/ Í”3 Í”4 Í”ÌB Í(”ÌD Í*””$ Í
+”) Í
+”+ Í
+”3 Í
+—”$ Í”) Í”+ Í”/ Í”0 Í”> Í(”Ì@ Í*‘” Í’” Ì‰” Ì‰’” Ìˆ” Ìˆ’” Ìw” Ìw
+‘” ÍÔrI–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜÇ‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
+ ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Í ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ‘”  ÍÇ ‘”  ÍÈ ‘”  ÍÉ ‘”  ÍÊ ‘”  ÍË ‘”  ÍÌ ‘”  ÍÍ ‘”  ÍÎ ‘”  ÍÏ ‘”  ÍĞ ‘”  ÍÑ ‘”  ÍÒ ‘”  ÍÓ ‘”  ÍÔ ‘”  ÍÕ ‘”  ÍÖ ‘”  Í× ‘”  ÍØ ‘”  ÍÙ ‘”  ÍÚ ‘”  ÍÛ ‘”  ÍÜ ‘”  Íİ ‘”  ÍŞ ‘”  Íß ‘”  Íà ‘”  Íá ‘”  Íâ ‘”  Íã ‘”  Íä ‘”  Íå ‘”  Íæ ‘”  Íç ‘”  Íè ‘”  Íé ‘”  Íê ‘”  Íë ‘”  Íì ‘”  Íí ‘”  Íî ‘”  Íï ‘”  Íğ ‘”  Íñ ‘”  Íò ‘”  Íó ‘”  Íô ‘”  Íõ ‘”  Íö ‘”  Í÷ ‘”  Íø ‘”  Íù ‘”  Íú ‘”  Íû ‘”  Íü ‘”  Íı ‘”  Íş ‘”  Íÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
+ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ‘”  Í% ‘”  Í& ‘”  Í' ‘”  Í( ‘”  Í) ‘”  Í* ‘”  Í+ ‘”  Í, ‘”  Í- ‘”  Í. ‘”  Í/ ‘”  Í0 ‘”  Í1 ‘”  Í2 ‘”  Í3 ‘”  Í4 ‘”  Í5 ‘”  Í6 ‘”  Í7 ‘”  Í8 ‘”  Í9 ‘”  Í: ‘”  Í; ‘”  Í< ‘”  Í= ‘”  Í> ‘”  Í? ‘”  Í@ ‘”  ÍA ‘”  ÍB ‘”  ÍC ‘”  ÍD ‘”  ÍE ‘”  ÍF ‘”  ÍG ‘”  ÍH ‘”  ÍI ‘”  ÍJ ‘”  ÍK ‘”  ÍL ‘”  ÍM ‘”  ÍN ‘”  ÍO ‘”  ÍP ‘”  ÍQ ‘”  ÍR ‘”  ÍS ‘”  ÍT ‘”  ÍU ‘”  ÍV ‘”  ÍW ‘”  ÍX ‘”  ÍY ‘”  ÍZ ‘”  Í[ ‘”  Í\ ‘”  Í] ‘”  Í^ ‘”  Í_ ‘”  Í` ‘”  Ía ‘”  Íb ‘”  Íc ‘”  Íd ‘”  Íe ‘”  Íf ‘”  Íg ‘”  Íh ‘”  Íi ‘”  Íj ‘”  Ík ‘”  Íl ‘”  Ím ‘”  Ín ‘”  Ío ‘”  Íp ‘”  Íq ‘”  Ír ‘”  Ís ‘”  Ít ‘”  Íu ‘”  Ív ‘”  Íw ‘”  Íx ‘”  Íy ‘”  Íz ‘”  Í{ ‘”  Í| ‘”  Í} ‘”  Í~ ‘”  Í ‘”  Í€ ‘”  Í ‘”  Í‚ ‘”  Íƒ ‘”  Í„ ‘”  Í… ‘”  Í† ‘”  Í‡ ‘”  Íˆ ‘”  Í‰ ‘”  ÍŠ ‘”  Í‹ ‘”  ÍŒ ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í‘ ‘”  Í’ ‘”  Í“ ‘”  Í” ‘”  Í• ‘”  Í– ‘”  Í— ‘”  Í˜ ‘”  Í™ ‘”  Íš ‘”  Í› ‘”  Íœ ‘”  Í ‘”  Í ‘”  ÍŸ ‘”  Í  ‘”  Í¡ ‘”  Í¢ ‘”  Í£ ‘”  Í¤ ‘”  Í¥ ‘”  Í¦ ‘”  Í§ ‘”  Í¨ ‘”  Í© ‘”  Íª ‘”  Í« ‘”  Í¬ ‘”  Í­ ‘”  Í® ‘”  Í¯ ‘”  Í° ‘”  Í± ‘”  Í² ‘”  Í³ ‘”  Í´ ‘”  Íµ ‘”  Í¶ ‘”  Í· ‘”  Í¸ ‘”  Í¹ ‘”  Íº ‘”  Í» ‘”  Í¼ ‘”  Í½ ‘”  Í¾ ‘”  Í¿ ‘”  ÍÀ ‘”  ÍÁ ‘”  ÍÂ ‘”  ÍÃ ‘”  ÍÄ ‘”  ÍÅ ‘”  ÍÆ ÔrJ’§missing¦pluginÃ¦genAbcÂÔ  ÔrK”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache–ÔrL•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrM”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrN”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrO•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'L±ImportDeclarationÌ¤ÌÕ‘ÔrP•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·NªIdentifierÌ­Ì·ªFormatUtilNªIdentifierÌ­Ì·ªFormatUtilO§LiteralÌ¿ÌÔ³../utils/FormatUtilµ'../utils/FormatUtil'L±ImportDeclarationÌ×Í	‘P¯ImportSpecifierÌàÌèNªIdentifierÌàÌè¨InfoCardNªIdentifierÌàÌè¨InfoCardO§LiteralÌğÍ¶../components/InfoCard¸'../components/InfoCard'L±ImportDeclarationÍÍG‘P¯ImportSpecifierÍÍ!NªIdentifierÍÍ!­SectionHeaderNªIdentifierÍÍ!­SectionHeaderO§LiteralÍ)ÍF»../components/SectionHeader½'../components/SectionHeader'L±ImportDeclarationÍIÍx‘P¯ImportSpecifierÍRÍ[NªIdentifierÍRÍ[©nativeApiNªIdentifierÍRÍ[©nativeApiO§LiteralÍcÍw²../utils/NativeApi´'../utils/NativeApi'L±ImportDeclarationÍzÍš‘M¶ImportDefaultSpecifierÍÍ†NªIdentifierÍÍ†¥hilogO§LiteralÍŒÍ™«@ohos.hilog­"@ohos.hilog"
