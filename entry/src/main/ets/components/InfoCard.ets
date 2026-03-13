@@ -29,9 +29,10 @@ export struct InfoCard {
             .fontSize(this.getAdaptiveFontSize(this.value))
             .fontWeight(FontWeight.Bold)
             .fontColor($r('app.color.primary_color'))
-            .maxLines(2)  // 最多显示2行
+            .maxLines(3)  // 最多显示3行
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .width('100%')
+            .wordBreak(WordBreak.BREAK_ALL)
         }
         .alignItems(HorizontalAlign.Start)
         .layoutWeight(1)

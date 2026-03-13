@@ -29,7 +29,7 @@ export struct SysInfoMenuItem {
               .fontSize(12)
               .fontColor($r('app.color.text_secondary'))
               .margin({ top: 2 })
-              .maxLines(1)
+              .maxLines(2)
               .textOverflow({ overflow: TextOverflow.Ellipsis })
           }
         }

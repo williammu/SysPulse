@@ -43,6 +43,7 @@ export class SystemInfoCore {
       buildUser: deviceInfo.buildUser || '未知',
       buildHost: deviceInfo.buildHost || '未知',
       buildTime: deviceInfo.buildTime || '未知',
+      softwareVersion: deviceInfo.displayVersion || '未知',
       buildRootHash: deviceInfo.buildRootHash || '未知',
       
       // 以下字段无法从公开 API 获取，标记为"未获取"
@@ -149,11 +150,10 @@ export class SystemInfoCore {
     return {
       // 从 deviceInfo.abiList 获取架构信息
       architecture: deviceInfo.abiList || '未知',
-      
+
       // 以下字段无法从公开 API 获取，标记为"未获取"
       model: '未获取',
-      cores: 0,
-      process: '未获取'
+      cores: 0
     };
   }
 

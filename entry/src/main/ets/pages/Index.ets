@@ -7,6 +7,7 @@ import { TechHeader } from '../components/SectionHeader';
 import { nativeApi, SystemMemInfo, CpuUsage, AppMemInfo } from '../utils/NativeApi';
 import type { DeviceInfoModel, BatteryInfoModel, DisplayInfoModel, StorageInfoModel } from '../model/DeviceInfo';
 
+
 @Entry
 @Component
 struct Index {
@@ -115,9 +116,40 @@ struct Index {
     return '--';
   }
 
+  // 获取顶部安全区域高度（适配刘海屏/灵动岛）
+  getSafeAreaTop(): number {
+    // 根据屏幕高度判断设备类型
+    const screenHeight = this.displayInfo?.height || 0;
+    // Pura 70 Pro 等高端机型屏幕较高，需要更大的安全区域
+    // 沉浸式模式下需要更多空间避开系统状态栏
+    if (screenHeight >= 2700) {
+      return 80; // 灵动岛/刘海屏设备（沉浸式模式需要更大）
+    } else if (screenHeight >= 2400) {
+      return 60; // 普通刘海屏
+    }
+    return 40; // 普通屏幕
+  }
+
+  // 获取底部安全区域高度
+  getSafeAreaBottom(): number {
+    const screenHeight = this.displayInfo?.height || 0;
+    if (screenHeight >= 2700) {
+      return 32; // 高端机型底部手势区域
+    } else if (screenHeight >= 2400) {
+      return 24;
+    }
+    return 16;
+  }
+
   build() {
     Scroll() {
       Column() {
+        // 顶部安全区域占位（适配刘海屏/灵动岛）
+        Row()
+          .width('100%')
+          .height(this.getSafeAreaTop())
+          .backgroundColor($r('app.color.background_dark'))
+
         // 顶部状态栏
         Row() {
           Row() {
@@ -247,7 +279,7 @@ struct Index {
 
         SysInfoMenuItem({
           title: '处理器',
-          subtitle: `${DeviceUtil.getCpuInfo().architecture || '未知'}`,
+          subtitle: `${DeviceUtil.getCpuInfo().model || DeviceUtil.getCpuInfo().architecture || '未知'}`,
           onTap: () => {
             router.pushUrl({ url: 'pages/CpuPage' });
           }
@@ -323,6 +355,20 @@ struct Index {
           }
         })
 
+        // 系统信息
+        TechHeader({
+          title: '系统信息',
+          subtitle: 'SYSTEM INFO'
+        })
+
+        SysInfoMenuItem({
+          title: '操作系统',
+          subtitle: `${this.deviceInfo?.osFullName || 'HarmonyOS'} · ${this.deviceInfo?.displayVersion || ''}`,
+          onTap: () => {
+            router.pushUrl({ url: 'pages/OSPage' });
+          }
+        })
+
         // 其他
         TechHeader({
           title: '其他',
@@ -364,12 +410,20 @@ struct Index {
         }
         .justifyContent(FlexAlign.Center)
         .margin({ top: 32, bottom: 16 })
+
+        // 底部安全区域占位（适配底部手势条）
+        Row()
+          .width('100%')
+          .height(this.getSafeAreaBottom())
+          .backgroundColor($r('app.color.background_dark'))
       }
       .width('100%')
-      .padding(16)
+      .padding({ left: 16, right: 16 })
+      .backgroundColor($r('app.color.background_dark'))
     }
     .width('100%')
     .height('100%')
     .backgroundColor($r('app.color.background_dark'))
+    .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
   }
 }

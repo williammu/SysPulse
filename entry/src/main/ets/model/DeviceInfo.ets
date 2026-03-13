@@ -26,6 +26,7 @@ export interface DeviceInfoModel {
   buildUser: string;
   buildHost: string;
   buildTime: string;
+  softwareVersion: string;
   buildRootHash: string;
   udid: string;
   distributionOSName: string;
@@ -91,5 +92,4 @@ export interface CpuInfoModel {
   model: string;
   cores: number;
   architecture: string;
-  process: string;
 }

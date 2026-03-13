@@ -34,6 +34,7 @@ export class DeviceUtil {
       buildUser: deviceInfo.buildUser || '未知',
       buildHost: deviceInfo.buildHost || '未知',
       buildTime: deviceInfo.buildTime || '未知',
+      softwareVersion: deviceInfo.displayVersion || '未知',
       buildRootHash: deviceInfo.buildRootHash || '未知',
       
       // 以下字段无法从公开 API 获取，标记为"未获取"
@@ -147,11 +148,12 @@ export class DeviceUtil {
     return {
       // 从 deviceInfo.abiList 获取架构信息
       architecture: deviceInfo.abiList || '未知',
-      
-      // 以下字段无法从公开 API 获取，标记为"未获取"
-      model: '未获取',
-      cores: 0,
-      process: '未获取'
+
+      // 从 deviceInfo.hardwareModel 获取 CPU 型号
+      model: deviceInfo.hardwareModel || '未知',
+
+      // CPU 核心数暂时无法获取，返回 0
+      cores: 0
     };
   }
 }
