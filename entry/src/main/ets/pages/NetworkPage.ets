@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import connection from '@ohos.net.connection';
+import wifiManager from '@ohos.wifiManager';
 import { InfoCard } from '../components/InfoCard';
 import { SectionHeader } from '../components/SectionHeader';
 import { hilog } from '@kit.PerformanceAnalysisKit';
@@ -57,8 +58,8 @@ struct NetworkPage {
 
         const bearerType = netCapabilities.bearerTypes?.[0] || connection.NetBearType.BEARER_CELLULAR;
         const networkCap = netCapabilities.networkCap || [];
-        const linkUpBandwidth = netCapabilities.linkUpBandwidthKbps || 0;
-        const linkDownBandwidth = netCapabilities.linkDownBandwidthKbps || 0;
+        let linkUpBandwidth = netCapabilities.linkUpBandwidthKbps || 0;
+        let linkDownBandwidth = netCapabilities.linkDownBandwidthKbps || 0;
 
         hilog.info(0x0000, TAG, 'Bandwidth: up=%{public}d, down=%{public}d', linkUpBandwidth, linkDownBandwidth);
 
@@ -86,22 +87,60 @@ struct NetworkPage {
         let ipAddress = '未获取';
         let subnetMask = '未获取';
         if (linkAddresses.length > 0) {
-          const firstAddr = linkAddresses[0] as Record<string, string | number>;
-          ipAddress = typeof firstAddr.address === 'string' ? firstAddr.address : '未获取';
+          const firstAddr = linkAddresses[0] as Record<string, object | number>;
+          // address 是对象，包含 address 字段
+          const addrObj = firstAddr.address as Record<string, string | number> | undefined;
+          if (addrObj && typeof addrObj.address === 'string') {
+            ipAddress = addrObj.address;
+          }
           subnetMask = typeof firstAddr.prefixLength === 'number' ? `/${firstAddr.prefixLength}` : '未获取';
         }
 
-        // 解析网关
-        const gateway = connProps.gateway as Record<string, string> | undefined;
-        const gatewayAddress = gateway?.address || '未知';
+        // 解析网关 - 从 routes 中获取默认网关
+        const routes = getObjectArrayProp('routes');
+        let gatewayAddress = '未知';
+        if (routes.length > 0) {
+          const firstRoute = routes[0] as Record<string, object>;
+          const gatewayObj = firstRoute.gateway as Record<string, string> | undefined;
+          if (gatewayObj && typeof gatewayObj.address === 'string') {
+            gatewayAddress = gatewayObj.address;
+          }
+        }
 
-        // 解析 DNS
-        const dnsServers = getObjectArrayProp('dnsServers');
+        // 解析 DNS - 使用 dnses 字段
+        const dnses = getObjectArrayProp('dnses');
         const dnsList: string[] = [];
-        for (const dns of dnsServers) {
-          const dnsRecord = dns as Record<string, string>;
+        for (const dns of dnses) {
+          const dnsRecord = dns as Record<string, string | number>;
           if (typeof dnsRecord.address === 'string') {
             dnsList.push(dnsRecord.address);
+          }
+        }
+
+        // 获取 WiFi 信息
+        let wifiSsid = '';
+        let wifiSignalStrength = 0;
+        let wifiFrequency = 0;
+        let wifiLinkSpeed = 0;
+        
+        if (bearerType === connection.NetBearType.BEARER_WIFI) {
+          try {
+            const wifiInfo = wifiManager.getLinkedInfoSync();
+            hilog.info(0x0000, TAG, 'WiFi Info: %{public}s', JSON.stringify(wifiInfo));
+            wifiSsid = wifiInfo.ssid || '';
+            wifiSignalStrength = wifiInfo.rssi || 0;
+            wifiFrequency = wifiInfo.frequency || 0;
+            wifiLinkSpeed = wifiInfo.linkSpeed || 0;
+            
+            // 如果系统 API 返回的带宽为 0，使用 WiFi linkSpeed 作为替代
+            if (linkUpBandwidth === 0 && wifiLinkSpeed > 0) {
+              linkUpBandwidth = wifiLinkSpeed * 1000; // 转换为 Kbps
+            }
+            if (linkDownBandwidth === 0 && wifiLinkSpeed > 0) {
+              linkDownBandwidth = wifiLinkSpeed * 1000; // 转换为 Kbps
+            }
+          } catch (wifiError) {
+            hilog.warn(0x0000, TAG, 'Failed to get WiFi info: %{public}s', String(wifiError));
           }
         }
 
@@ -121,10 +160,10 @@ struct NetworkPage {
           macAddress: getStringProp('macAddress'),
           subnetMask: subnetMask,
           // WiFi 信息
-          ssid: getStringProp('ssid'),
-          signalStrength: getNumberProp('signalStrength'),
-          frequency: getNumberProp('frequency'),
-          linkSpeed: getNumberProp('linkSpeed')
+          ssid: wifiSsid,
+          signalStrength: wifiSignalStrength,
+          frequency: wifiFrequency,
+          linkSpeed: wifiLinkSpeed
         };
       } else {
         this.networkDetails = {

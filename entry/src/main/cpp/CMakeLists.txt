@@ -23,6 +23,6 @@ find_library(
     GLESv3
 )
 
-add_library(sysinfo SHARED sysinfo.cpp hidebug_module.cpp sensor_module.cpp gpu_module.cpp)
+add_library(sysinfo SHARED sysinfo.cpp hidebug_module.cpp sensor_module.cpp gpu_module.cpp cpu_module.cpp process_module.cpp)
 
 target_link_libraries(sysinfo PUBLIC ${hilog-lib} ${egl-lib} ${gles-lib} libace_napi.z.so libohhidebug.so libc++.a)

@@ -3,6 +3,8 @@
 #include "hidebug_module.h"
 #include "sensor_module.h"
 #include "gpu_module.h"
+#include "cpu_module.h"
+#include "process_module.h"
 
 namespace SysInfo {
 
@@ -170,6 +172,12 @@ static napi_value SysInfoInit(napi_env env, napi_value exports) {
     
     // 初始化 Sensor 模块
     InitSensorModule(env, exports);
+
+    // 初始化 CPU 模块
+    InitCpuModule(env, exports);
+
+    // 初始化 Process 模块
+    InitProcessModule(env, exports);
 
     // 注册 GPU 信息获取接口
     napi_property_descriptor gpuInfoDesc = {

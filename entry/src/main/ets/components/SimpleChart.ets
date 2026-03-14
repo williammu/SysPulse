@@ -23,7 +23,7 @@ export struct SimpleChart {
             .height(`${Math.min(100, (value / this.maxValue) * 100)}%`)
             .backgroundColor(this.color)
             .margin({ right: 2 })
-        }, (value: number, index: number) => index.toString())
+        }, (value: number, index: number) => `${index}_${value}`)
       }
       .width('100%')
       .height(100)

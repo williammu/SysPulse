@@ -1,10 +1,10 @@
 #!/bin/bash
-# SysInfo - 构建并安装到模拟器脚本
+# SysInfo - 构建并安装脚本（支持真机和模拟器，优先真机）
 
 set -e
 
 echo "=========================================="
-echo "  SysInfo - 构建并安装到模拟器"
+echo "  SysInfo - 构建并安装"
 echo "=========================================="
 echo ""
 
@@ -45,13 +45,59 @@ echo ""
 
 # 检查设备
 echo "📱 检查连接的设备..."
-DEVICE_COUNT=$($HDC list targets 2>/dev/null | wc -l | tr -d ' ')
+
+# 获取设备列表
+DEVICES=$($HDC list targets 2>/dev/null)
+DEVICE_COUNT=$(echo "$DEVICES" | wc -l | tr -d ' ')
+
 if [ "$DEVICE_COUNT" -eq 0 ]; then
     echo "❌ 未检测到设备或模拟器"
+    echo "   请连接真机或启动模拟器"
     exit 1
 fi
+
 echo "✅ 发现 $DEVICE_COUNT 个设备:"
-$HDC list targets
+echo "$DEVICES"
+echo ""
+
+# 检测设备类型并选择目标设备
+TARGET_DEVICE=""
+DEVICE_TYPE=""
+
+# 遍历设备，优先选择真机
+while IFS= read -r line; do
+    # 提取设备 ID（去除空格）
+    DEVICE_ID=$(echo "$line" | tr -d '[:space:]')
+    
+    # 跳过空行
+    [ -z "$DEVICE_ID" ] && continue
+    
+    # 检查是否为模拟器（IP 地址格式，如 127.0.0.1:5555）
+    if echo "$DEVICE_ID" | grep -qE "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+"; then
+        # 如果还没有找到真机，先记录模拟器
+        if [ -z "$TARGET_DEVICE" ]; then
+            TARGET_DEVICE="$DEVICE_ID"
+            DEVICE_TYPE="模拟器"
+            echo "✅ 发现模拟器: $DEVICE_ID"
+        fi
+    else
+        # 非 IP 格式视为真机（如 2SX0224417010945）
+        TARGET_DEVICE="$DEVICE_ID"
+        DEVICE_TYPE="真机"
+        echo "✅ 发现真机: $DEVICE_ID"
+        break
+    fi
+done <<< "$DEVICES"
+
+# 如果没有找到设备，使用第一个设备
+if [ -z "$TARGET_DEVICE" ]; then
+    TARGET_DEVICE=$(echo "$DEVICES" | head -1 | tr -d '[:space:]')
+    DEVICE_TYPE="未知设备"
+    echo "✅ 使用第一个设备: $TARGET_DEVICE"
+fi
+
+echo ""
+echo "🎯 目标设备: $TARGET_DEVICE ($DEVICE_TYPE)"
 echo ""
 
 # 清理旧的构建缓存
@@ -100,13 +146,25 @@ fi
 echo "✅ 找到 HAP: $HAP_FILE"
 echo ""
 
-# 安装到设备
-echo "📦 安装到模拟器..."
-$HDC install "$HAP_FILE"
+# 安装到目标设备
+echo "📦 安装到 $DEVICE_TYPE..."
+echo "   设备: $TARGET_DEVICE"
+echo ""
+
+$HDC -t "$TARGET_DEVICE" install -r "$HAP_FILE"
 
 echo ""
 echo "✅ 安装完成!"
 echo ""
-echo "🚀 应用已安装到模拟器"
+echo "🚀 应用已安装到 $DEVICE_TYPE"
+echo "   设备 ID: $TARGET_DEVICE"
+echo ""
+
+# 启动应用
+echo "▶️  启动应用..."
+$HDC -t "$TARGET_DEVICE" shell aa start -a EntryAbility -b com.huawei.sysinfo
+
+echo ""
+echo "✅ 应用已启动!"
 echo ""
 echo "=========================================="

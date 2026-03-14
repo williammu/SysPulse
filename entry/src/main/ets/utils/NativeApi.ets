@@ -110,6 +110,34 @@ export interface GpuInfo {
   error?: string;
 }
 
+// ============ CPU 数据接口 ============
+
+export interface CpuBaseInfo {
+  model: string;
+  cores: number;
+  architecture: string;
+  success: boolean;
+  error?: string;
+}
+
+// ============ Process 数据接口 ============
+
+export interface ProcessInfo {
+  pid: number;
+  name: string;
+  state: string;
+  utime: number;
+  stime: number;
+}
+
+export interface AllProcessesInfo {
+  processes: ProcessInfo[];
+  count: number;
+  total: number;
+  success: boolean;
+  error?: string;
+}
+
 // ============ Sensor 数据接口 ============
 
 export interface SensorInfo {
@@ -336,6 +364,18 @@ export class NativeApi {
     }
   }
 
+  getCpuInfo(): CpuBaseInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getCpuInfo() as CpuBaseInfo;
+      hilog.debug(0x0000, TAG, 'CpuInfo: model=%{public}s, cores=%{public}d', result.model, result.cores);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getCpuInfo error: %{public}s', String(e));
+      return null;
+    }
+  }
+
   // ============ Sensor API ============
 
   getAllSensorInfos(): AllSensorInfos | null {
@@ -442,6 +482,18 @@ export class NativeApi {
       return result;
     } catch (e) {
       hilog.error(0x0000, TAG, 'getHumidityData error: %{public}s', String(e));
+      return null;
+    }
+  }
+
+  getAllProcessesInfo(): AllProcessesInfo | null {
+    if (!this.isAvailable) return null;
+    try {
+      const result = sysinfo.getAllProcessesInfo() as AllProcessesInfo;
+      hilog.debug(0x0000, TAG, 'AllProcessesInfo: count=%{public}d, total=%{public}d', result.count, result.total);
+      return result;
+    } catch (e) {
+      hilog.error(0x0000, TAG, 'getAllProcessesInfo error: %{public}s', String(e));
       return null;
     }
   }

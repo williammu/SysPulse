@@ -37,6 +37,10 @@ export default class EntryAbility extends UIAbility {
 
   onWindowStageCreate(windowStage: window.WindowStage) {
     hilog.info(0x0000, 'SysInfo', '%{public}s', 'Ability onWindowStageCreate');
+
+    // 设置沉浸式模式，适配全面屏
+    this.setupImmersiveMode(windowStage);
+
     windowStage.loadContent('pages/Index', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'SysInfo', 'Failed to load content. Cause: %{public}s', JSON.stringify(err) ?? '');
@@ -44,6 +48,19 @@ export default class EntryAbility extends UIAbility {
       }
       hilog.info(0x0000, 'SysInfo', 'Succeeded in loading content. Data: %{public}s', JSON.stringify(data) ?? '');
     });
+  }
+
+  async setupImmersiveMode(windowStage: window.WindowStage) {
+    try {
+      const win = await windowStage.getMainWindow();
+      // 设置窗口布局为全屏，延伸到安全区域
+      win.setWindowLayoutFullScreen(true);
+      // 设置导航栏隐藏（底部手势条）
+      win.setSystemBarEnable([]);
+      hilog.info(0x0000, 'SysInfo', 'Immersive mode enabled');
+    } catch (err) {
+      hilog.error(0x0000, 'SysInfo', 'Failed to setup immersive mode: %{public}s', String(err));
+    }
   }
 
   onWindowStageDestroy() {

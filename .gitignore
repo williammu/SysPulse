@@ -1,0 +1,38 @@
+# HarmonyOS 构建产物
+build/
+.hvigor/
+.cxx/
+entry/build/
+entry/.cxx/
+
+# IDE
+.idea/
+*.iml
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 编译输出
+*.o
+*.so
+*.a
+*.app
+*.hap
+*.zip
+
+# 截图
+screen.jpeg
+*.png
+*.jpg
+
+# 其他
+MockExam.zip
+*.FCBak

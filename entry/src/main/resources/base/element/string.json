@@ -17,6 +17,10 @@
       "value": "用于获取网络信息"
     },
     {
+      "name": "permission_reason_wifi",
+      "value": "用于获取WiFi信息"
+    },
+    {
       "name": "permission_reason_bluetooth",
       "value": "用于获取蓝牙信息"
     }

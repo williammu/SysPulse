@@ -195,6 +195,16 @@ export interface AllSensorInfos {
   error?: string;
 }
 
+// ============ CPU 模块 ============
+
+export interface CpuBaseInfo {
+  model: string;
+  cores: number;
+  architecture: string;
+  success: boolean;
+  error?: string;
+}
+
 // ============ Native API 函数 ============
 
 export function getSystemMemInfo(): SystemMemInfo;
@@ -205,6 +215,7 @@ export function getAppCpuUsage(): CpuUsage;
 export function getCpuUsageAll(): CpuUsageAll;
 export function getGpuMemoryInfo(): GpuMemoryInfo;
 export function getGpuInfo(): GpuInfo;
+export function getCpuInfo(): CpuBaseInfo;
 
 export function getAllSensorInfos(): AllSensorInfos;
 export function getAccelerometerData(): AccelerometerData;
@@ -215,3 +226,23 @@ export function getProximityData(): ProximityData;
 export function getBarometerData(): BarometerData;
 export function getTemperatureData(): TemperatureData;
 export function getHumidityData(): HumidityData;
+
+// ============ Process 模块 ============
+
+export interface ProcessInfo {
+  pid: number;
+  name: string;
+  state: string;
+  utime: number;
+  stime: number;
+}
+
+export interface AllProcessesInfo {
+  processes: ProcessInfo[];
+  count: number;
+  total: number;
+  success: boolean;
+  error?: string;
+}
+
+export function getAllProcessesInfo(): AllProcessesInfo;

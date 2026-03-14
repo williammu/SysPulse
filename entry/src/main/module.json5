@@ -43,6 +43,14 @@
         }
       },
       {
+        "name": "ohos.permission.GET_WIFI_INFO",
+        "reason": "$string:permission_reason_wifi",
+        "usedScene": {
+          "abilities": ["EntryAbility"],
+          "when": "inuse"
+        }
+      },
+      {
         "name": "ohos.permission.ACCESS_BLUETOOTH",
         "reason": "$string:permission_reason_bluetooth",
         "usedScene": {

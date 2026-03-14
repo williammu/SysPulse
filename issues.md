@@ -714,4 +714,221 @@ API 版本: 22
 
 ---
 
-*最后更新: 2026-03-12*
+### 问题 12: 网络页面 - IP 地址、网关、DNS 未获取
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- IP 地址显示"未获取"
+- 网关显示"未知"
+- DNS 服务器显示"未获取"
+
+**原因**:
+- `linkAddresses` 结构嵌套，实际路径为 `linkAddresses[0].address.address`
+- 网关需要从 `routes` 数组获取，而非 `gateway` 字段
+- DNS 字段名错误，应为 `dnses` 而非 `dnsServers`
+
+**修复方案**:
+```typescript
+// 修复 IP 地址解析
+const firstAddr = linkAddresses[0] as Record<string, object | number>;
+const addrObj = firstAddr.address as Record<string, string | number> | undefined;
+if (addrObj && typeof addrObj.address === 'string') {
+  ipAddress = addrObj.address;
+}
+
+// 修复网关解析
+const routes = getObjectArrayProp('routes');
+if (routes.length > 0) {
+  const firstRoute = routes[0] as Record<string, object>;
+  const gatewayObj = firstRoute.gateway as Record<string, string> | undefined;
+  if (gatewayObj && typeof gatewayObj.address === 'string') {
+    gatewayAddress = gatewayObj.address;
+  }
+}
+
+// 修复 DNS 解析
+const dnses = getObjectArrayProp('dnses');
+```
+
+**修复文件**: `entry/src/main/ets/pages/NetworkPage.ets`
+
+---
+
+### 问题 13: 网络页面 - WiFi SSID 未获取
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- WiFi 名称（SSID）显示为空
+
+**原因**:
+- `net.connection` API 不返回 WiFi SSID
+- 需要使用 `@ohos.wifiManager` 模块获取
+- 缺少 `ohos.permission.GET_WIFI_INFO` 权限
+
+**修复方案**:
+1. 添加权限到 `module.json5`:
+```json
+{
+  "name": "ohos.permission.GET_WIFI_INFO",
+  "reason": "$string:permission_reason_wifi"
+}
+```
+
+2. 使用 wifiManager 获取 SSID:
+```typescript
+import wifiManager from '@ohos.wifiManager';
+
+if (bearerType === connection.NetBearType.BEARER_WIFI) {
+  const wifiInfo = wifiManager.getLinkedInfoSync();
+  wifiSsid = wifiInfo.ssid || '';
+}
+```
+
+**修复文件**:
+- `entry/src/main/module.json5`
+- `entry/src/main/resources/base/element/string.json`
+- `entry/src/main/ets/pages/NetworkPage.ets`
+
+---
+
+### 问题 14: 网络页面 - 带宽显示"未提供"
+
+**状态**: ✅ 已修复（使用替代方案）
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- 上行/下行带宽显示"未提供"
+- 系统 API `linkUpBandwidthKbps` 和 `linkDownBandwidthKbps` 返回 0
+
+**原因**:
+- HarmonyOS 的 `net.connection` API 在 WiFi 网络上不返回带宽信息
+- 这不是权限问题，是 API 限制
+
+**修复方案**:
+使用 WiFi 的 `linkSpeed` 作为替代:
+```typescript
+if (linkUpBandwidth === 0 && wifiLinkSpeed > 0) {
+  linkUpBandwidth = wifiLinkSpeed * 1000; // 转换为 Kbps
+}
+if (linkDownBandwidth === 0 && wifiLinkSpeed > 0) {
+  linkDownBandwidth = wifiLinkSpeed * 1000;
+}
+```
+
+**修复文件**: `entry/src/main/ets/pages/NetworkPage.ets`
+
+---
+
+### 问题 15: 电池页面 - 充电器类型和健康状态显示数字
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- 显示 1/2 等数字，不易理解
+- 拔掉充电器后状态不刷新
+
+**修复方案**:
+1. 添加转换方法:
+```typescript
+getPluggedTypeText(type: number): string {
+  switch (type) {
+    case 0: return '未连接充电器';
+    case 1: return '交流充电器';
+    case 2: return 'USB（电脑）';
+    case 3: return '无线充电';
+  }
+}
+```
+
+2. 添加实时刷新:
+```typescript
+this.refreshTimer = setInterval(() => {
+  this.loadBatteryInfo();
+}, 1000);
+```
+
+**修复文件**: `entry/src/main/ets/pages/BatteryPage.ets`
+
+---
+
+### 问题 16: 电池页面 - 快充识别
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- 无法区分普通充电、快充、超级快充
+
+**修复方案**:
+通过电压判断（快充通常电压较高）:
+```typescript
+isSuperFastCharge(): boolean {
+  return this.batteryInfo.voltage > 4500000; // > 4.5V
+}
+
+isFastCharge(): boolean {
+  return this.batteryInfo.voltage > 4200000; // > 4.2V
+}
+```
+
+在充电器类型后显示"（快充）"或"（超级快充）"
+
+**修复文件**: `entry/src/main/ets/pages/BatteryPage.ets`
+
+---
+
+### 问题 17: 电池页面 - 电压单位优化
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- 显示微伏(μV)，数字太大不易读
+
+**修复方案**:
+转换为伏特(V):
+```typescript
+value: this.batteryInfo?.voltage ? `${(this.batteryInfo.voltage / 1000000).toFixed(2)}V` : '--'
+```
+
+**修复文件**: `entry/src/main/ets/pages/BatteryPage.ets`
+
+---
+
+### 问题 18: 构建脚本 - 设备检测优化
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-13
+
+**问题描述**:
+- 真机设备类型检测不准确，显示"未知设备"
+
+**修复方案**:
+改进设备类型判断逻辑:
+```bash
+# 模拟器: IP 地址格式（如 127.0.0.1:5555）
+# 真机: 非 IP 格式（如 2SX0224417010945）
+if echo "$DEVICE_ID" | grep -qE "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+"; then
+  DEVICE_TYPE="模拟器"
+else
+  DEVICE_TYPE="真机"
+fi
+```
+
+**修复文件**: `build_and_run.sh`
+
+---
+
+*最后更新: 2026-03-13*

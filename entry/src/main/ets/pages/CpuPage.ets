@@ -5,23 +5,23 @@ import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
 import { SimpleChart } from '../components/SimpleChart';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
 import { nativeApi, CpuUsage, CpuUsageAll, ThreadCpuInfo } from '../utils/NativeApi';
+import type { CpuBaseInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
 const TAG = 'CpuPage';
 const REFRESH_INTERVAL = 200;
 const CHART_MAX_POINTS = 50;
 
-interface CpuBaseInfo {
+interface CpuPageInfo {
   model: string;
   cores: number;
   architecture: string;
-  process: string;
 }
 
 @Entry
 @Component
 struct CpuPage {
-  @State cpuInfo: CpuBaseInfo | null = null;
+  @State cpuInfo: CpuPageInfo | null = null;
   @State systemCpuUsage: CpuUsage | null = null;
   @State appCpuUsage: CpuUsage | null = null;
   @State cpuUsageAll: CpuUsageAll | null = null;
@@ -32,21 +32,43 @@ struct CpuPage {
   private refreshTimer: number | null = null;
 
   aboutToAppear() {
-    const baseInfo = DeviceUtil.getCpuInfo();
-    this.cpuInfo = {
-      model: baseInfo.model || '未获取',
-      cores: baseInfo.cores || 0,
-      architecture: baseInfo.architecture || '未获取',
-      process: baseInfo.process || '未获取'
-    };
-
     this.isNativeAvailable = nativeApi.isNativeAvailable();
+    hilog.info(0x0000, TAG, 'Native API available: %{public}s', String(this.isNativeAvailable));
 
     if (this.isNativeAvailable) {
+      // 从 Native API 获取 CPU 基础信息
+      const nativeCpuInfo = nativeApi.getCpuInfo();
+      hilog.info(0x0000, TAG, 'Native CPU info: %{public}s', JSON.stringify(nativeCpuInfo));
+      if (nativeCpuInfo && nativeCpuInfo.success) {
+        this.cpuInfo = {
+          model: nativeCpuInfo.model || '未获取',
+          cores: nativeCpuInfo.cores || 0,
+          architecture: nativeCpuInfo.architecture || '未获取'
+        };
+        hilog.info(0x0000, TAG, 'Using native CPU info: model=%{public}s, cores=%{public}d', this.cpuInfo.model, this.cpuInfo.cores);
+      } else {
+        // 如果 Native API 获取失败，使用 DeviceUtil 作为备用
+        hilog.info(0x0000, TAG, 'Native CPU info failed, fallback to DeviceUtil');
+        const baseInfo = DeviceUtil.getCpuInfo();
+        this.cpuInfo = {
+          model: baseInfo.model || '未获取',
+          cores: baseInfo.cores || 0,
+          architecture: baseInfo.architecture || '未获取'
+        };
+      }
+
       this.loadCpuInfo();
       this.refreshTimer = setInterval(() => {
         this.loadCpuInfo();
       }, REFRESH_INTERVAL);
+    } else {
+      // Native API 不可用，使用 DeviceUtil
+      const baseInfo = DeviceUtil.getCpuInfo();
+      this.cpuInfo = {
+        model: baseInfo.model || '未获取',
+        cores: baseInfo.cores || 0,
+        architecture: baseInfo.architecture || '未获取'
+      };
     }
 
     setTimeout(() => {
@@ -126,6 +148,30 @@ struct CpuPage {
               .fontColor($r('app.color.text_secondary'))
               .margin(24)
           } else {
+            // 处理器型号 prominently displayed
+            Column() {
+              // 优先使用 deviceInfo 的 hardwareModel，其次是 Native API 的 model
+              Text(DeviceUtil.getCpuInfo().model || this.cpuInfo?.model || '未知型号')
+                .fontSize(28)
+                .fontWeight(FontWeight.Bold)
+                .fontColor($r('app.color.primary_color'))
+                .textAlign(TextAlign.Center)
+                .width('100%')
+
+              // 优先使用 deviceInfo 的 abiList，其次是 Native API 的 architecture
+              Text(`${this.getCoreCount()} · ${DeviceUtil.getCpuInfo().architecture || this.cpuInfo?.architecture || '未知架构'}`)
+                .fontSize(14)
+                .fontColor($r('app.color.text_secondary'))
+                .margin({ top: 8 })
+                .textAlign(TextAlign.Center)
+                .width('100%')
+            }
+            .width('100%')
+            .padding({ top: 24, bottom: 24 })
+            .backgroundColor($r('app.color.background_card'))
+            .borderRadius(12)
+            .margin({ bottom: 16 })
+
             // CPU 使用率概览
             InfoHeader({
               title: 'CPU 使用率',
@@ -194,7 +240,7 @@ struct CpuPage {
 
             InfoCard({
               title: '架构',
-              value: this.cpuInfo?.architecture || '未获取'
+              value: DeviceUtil.getCpuInfo().architecture || this.cpuInfo?.architecture || '未获取'
             })
 
             InfoCard({
@@ -204,12 +250,7 @@ struct CpuPage {
 
             InfoCard({
               title: '型号',
-              value: this.cpuInfo?.model || '未获取'
-            })
-
-            InfoCard({
-              title: '制程工艺',
-              value: this.cpuInfo?.process || '未获取'
+              value: DeviceUtil.getCpuInfo().model || this.cpuInfo?.model || '未获取'
             })
 
             // 线程 CPU 使用率
