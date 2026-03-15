@@ -159,6 +159,176 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
     ]
   },
 
+  // 电池相关
+  'battery_status': {
+    id: 'battery_status',
+    title: '电池状态',
+    subtitle: 'Battery Status',
+    description: '显示当前电池的电量、充电状态等实时信息。',
+    details: [
+      {
+        title: '电池电量 (SOC)',
+        content: 'State of Charge (SOC) 表示电池当前剩余电量百分比。100% 表示充满，0% 表示耗尽。建议保持电量在 20%-80% 之间以延长电池寿命。'
+      },
+      {
+        title: '充电状态',
+        content: '未充电：设备未连接充电器；充电中：正在充电；已充满：电量达到 100%。部分设备在充满后会显示"未充电"以保护电池。'
+      },
+      {
+        title: '电池健康度',
+        content: '反映电池当前容量相对于新电池的比例。随着充放电循环次数增加，电池会逐渐老化，容量下降。健康度低于 80% 时建议考虑更换电池。'
+      }
+    ]
+  },
+
+  'charging_info': {
+    id: 'charging_info',
+    title: '充电信息',
+    subtitle: 'Charging Information',
+    description: '显示充电功率、电流、充电器类型等充电相关信息。',
+    details: [
+      {
+        title: '充电功率',
+        content: '充电功率 = 电压 × 电流，单位为瓦特(W)。功率越高充电越快。普通充电约 10W，快充 18-22.5W，超级快充 40-66W，超级快充Turbo 可达 100W 以上。'
+      },
+      {
+        title: '充电类型判断',
+        content: '普通充电 < 15W：5V/2A (10W)；快充 15-30W：9V/2A (18W)、5V/4.5A (22.5W)；超级快充 30-66W：10V/4A (40W)、11V/6A (66W)；超级快充Turbo ≥ 66W：20V/5A (100W)'
+      },
+      {
+        title: '充电器类型',
+        content: '交流充电器：标准充电器，功率较高；USB（电脑）：通过电脑 USB 充电，功率较低；无线充电：通过无线充电板充电，效率略低于有线。'
+      },
+      {
+        title: '充电电流',
+        content: '充电电流单位为毫安(mA)。电流越大充电越快，但也会产生更多热量。快充时电流可达 4000-6000mA，普通充电约 2000mA。'
+      }
+    ]
+  },
+
+  'battery_info': {
+    id: 'battery_info',
+    subtitle: 'Battery Information',
+    title: '电池信息',
+    description: '显示电池的技术参数和健康状态。',
+    details: [
+      {
+        title: '电池温度',
+        content: '正常工作温度范围为 0°C 到 45°C。温度过高会加速电池老化，甚至触发保护机制停止充电。充电时温度升高是正常现象，但超过 45°C 应暂停使用。'
+      },
+      {
+        title: '电池电压',
+        content: '锂电池正常工作电压范围为 3.0V 到 4.4V。电压过低可能导致设备自动关机，电压过高可能损坏电池。充电时电压逐渐上升，充满后稳定在 4.2V 左右。'
+      },
+      {
+        title: '电池技术',
+        content: '现代移动设备通常使用锂离子(Li-ion)或锂聚合物(Li-Po)电池。这些电池能量密度高、无记忆效应，但需要避免过度充放电以延长寿命。'
+      },
+      {
+        title: '延长电池寿命',
+        content: '1. 避免电量完全耗尽；2. 避免长时间充满 100%；3. 避免高温环境使用和充电；4. 使用原装或认证充电器；5. 减少快充频率。'
+      }
+    ]
+  },
+
+  // 操作系统相关
+  'os_version': {
+    id: 'os_version',
+    title: '系统版本信息',
+    subtitle: 'OS Version Information',
+    description: '显示 HarmonyOS 系统的版本号、API 级别等关键版本信息。',
+    details: [
+      {
+        title: '系统名称',
+        content: 'HarmonyOS 是华为开发的分布式操作系统，支持手机、平板、智能穿戴、智慧屏等多种设备类型。'
+      },
+      {
+        title: '版本号说明',
+        content: '版本号通常由主版本号、次版本号、修订号组成（如 4.0.0）。主版本号表示重大更新，次版本号表示功能更新，修订号表示问题修复。'
+      },
+      {
+        title: 'SDK API 版本',
+        content: 'SDK API 版本表示应用程序接口的级别。开发者需要根据目标设备的 API 版本来编写兼容的代码，确保应用能在该设备上正常运行。'
+      },
+      {
+        title: '首次 API 版本',
+        content: '首次 API 版本表示设备出厂时搭载的 HarmonyOS API 级别。这个信息有助于了解设备的硬件代数和系统兼容性。'
+      }
+    ]
+  },
+
+  'os_build': {
+    id: 'os_build',
+    title: '系统构建信息',
+    subtitle: 'OS Build Information',
+    description: '显示系统固件的构建版本、构建时间等技术信息。',
+    details: [
+      {
+        title: '软件版本',
+        content: '软件版本是系统固件的完整标识符，包含版本号、构建类型、分支信息等。这个信息在问题反馈和系统诊断时非常重要。'
+      },
+      {
+        title: '内部版本号',
+        content: '内部版本号是开发团队使用的版本标识，通常包含构建日期、分支名称、提交哈希等信息，用于精确定位代码版本。'
+      },
+      {
+        title: '构建时间',
+        content: '构建时间表示该系统固件的编译打包时间。通过这个信息可以了解系统的更新频率和版本新旧程度。'
+      }
+    ]
+  },
+
+  'os_security': {
+    id: 'os_security',
+    title: '系统安全信息',
+    subtitle: 'OS Security Information',
+    description: '显示系统安全补丁级别等安全相关信息。',
+    details: [
+      {
+        title: '安全补丁级别',
+        content: '安全补丁级别表示系统包含的安全更新日期。Google 和华为每月发布安全补丁，修复已知漏洞。建议保持系统更新以获得最新安全保护。'
+      },
+      {
+        title: '为什么重要',
+        content: '安全补丁修复了系统中发现的安全漏洞，防止恶意软件利用这些漏洞攻击设备。过期的安全补丁可能使设备面临安全风险。'
+      },
+      {
+        title: '如何更新',
+        content: '进入 设置 > 系统和更新 > 软件更新 检查并安装最新系统更新。建议开启自动更新以获得及时的安全保护。'
+      }
+    ]
+  },
+
+  // CPU 相关
+  'cpu_cores': {
+    id: 'cpu_cores',
+    title: 'CPU 核心配置',
+    subtitle: 'CPU Core Configuration',
+    description: '显示 CPU 的大核和小核配置信息。',
+    details: [
+      {
+        title: '什么是大核小核',
+        content: '现代移动处理器采用 big.LITTLE 架构，将高性能核心（大核）和节能核心（小核）组合在一起。大核处理复杂任务，小核处理简单任务，兼顾性能和续航。'
+      },
+      {
+        title: '大核（Performance Core）',
+        content: '大核频率高、性能强，适合运行游戏、视频编辑等计算密集型任务。但功耗较高，发热量大。常见的大核命名：Cortex-X系列、Cortex-A7x系列。'
+      },
+      {
+        title: '小核（Efficiency Core）',
+        content: '小核频率低、功耗低，适合处理后台任务、消息推送等轻量级工作。可以显著延长电池续航。常见的小核命名：Cortex-A5x系列。'
+      },
+      {
+        title: '常见配置',
+        content: '8核：通常是2大核+6小核或4大核+4小核；6核：通常是2大核+4小核；4核：通常是2大核+2小核。高端旗舰机多采用4+4配置，中端机多采用2+6配置。'
+      },
+      {
+        title: '调度策略',
+        content: '操作系统会根据任务负载动态分配核心。轻量任务使用小核，中等任务使用大核，重度任务可能同时使用所有核心。这种智能调度实现了性能与功耗的平衡。'
+      }
+    ]
+  },
+
   // GPU 相关
   'gpu_info': {
     id: 'gpu_info',

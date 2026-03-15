@@ -2,7 +2,7 @@ import router from '@ohos.router';
 import batteryInfo from '@ohos.batteryInfo';
 import { InfoCard } from '../components/InfoCard';
 import { ProgressBar } from '../components/ProgressBar';
-import { SectionHeader } from '../components/SectionHeader';
+import { InfoHeader } from '../components/InfoButton';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 
@@ -16,6 +16,18 @@ interface BatteryInfoModel {
   voltage: number;
   technology: string;
   batteryTemperature: number;
+  nowCurrent: number;
+}
+
+interface ChargingInfo {
+  power: number;
+  voltage: number;
+  current: number;
+  type: string;
+  chargerSpec: string;
+  isFastCharge: boolean;
+  isSuperFastCharge: boolean;
+  powerLevel: number;
 }
 
 @Entry
@@ -26,7 +38,6 @@ struct BatteryPage {
 
   aboutToAppear() {
     this.loadBatteryInfo();
-    // 每秒刷新一次电池信息
     this.refreshTimer = setInterval(() => {
       this.loadBatteryInfo();
     }, 1000);
@@ -48,14 +59,14 @@ struct BatteryPage {
         pluggedType: batteryInfo.pluggedType,
         voltage: batteryInfo.voltage,
         technology: batteryInfo.technology,
-        batteryTemperature: batteryInfo.batteryTemperature
+        batteryTemperature: batteryInfo.batteryTemperature,
+        nowCurrent: batteryInfo.nowCurrent
       };
     } catch (error) {
       hilog.error(0x0000, TAG, 'Failed to load battery info: %{public}s', String(error));
     }
   }
 
-  // 获取健康状态文本
   getHealthStatusText(status: number | undefined): string {
     if (status === undefined) return '--';
     switch (status) {
@@ -69,12 +80,6 @@ struct BatteryPage {
     }
   }
 
-  // 获取充电器类型文本
-  // BatteryPluggedType 枚举:
-  // 0: NONE - 未连接充电器
-  // 1: AC - 交流充电器（普通充电器）
-  // 2: USB - USB 充电（连接电脑）
-  // 3: WIRELESS - 无线充电
   getPluggedTypeText(type: number | undefined): string {
     if (type === undefined) return '--';
     switch (type) {
@@ -86,7 +91,6 @@ struct BatteryPage {
     }
   }
 
-  // 获取充电状态文本
   getChargingStatusText(status: number | undefined): string {
     if (status === undefined) return '未知';
     switch (status) {
@@ -98,31 +102,76 @@ struct BatteryPage {
     }
   }
 
-  // 判断是否快充（通过电压判断，快充通常电压较高）
-  isFastCharge(): boolean {
-    if (!this.batteryInfo) return false;
-    // 快充通常电压 > 4.2V (4200000 μV)
-    // 超级快充通常电压 > 4.5V (4500000 μV)
-    return this.batteryInfo.voltage > 4200000;
+  // 跳转到概念详情页
+  private navigateToConcept(conceptId: string): void {
+    router.pushUrl({
+      url: 'pages/ConceptDetailPage',
+      params: { conceptId: conceptId }
+    });
   }
 
-  // 判断是否超级快充
-  isSuperFastCharge(): boolean {
-    if (!this.batteryInfo) return false;
-    return this.batteryInfo.voltage > 4500000;
-  }
-
-  // 获取充电类型描述
-  getChargeTypeDescription(): string {
-    if (!this.batteryInfo) return '';
-    if (this.batteryInfo.pluggedType === 0) return '';
-    
-    if (this.isSuperFastCharge()) {
-      return '（超级快充）';
-    } else if (this.isFastCharge()) {
-      return '（快充）';
+  getChargingInfo(): ChargingInfo {
+    if (!this.batteryInfo) {
+      return {
+        power: 0,
+        voltage: 0,
+        current: 0,
+        type: '未充电',
+        chargerSpec: '',
+        isFastCharge: false,
+        isSuperFastCharge: false,
+        powerLevel: 0
+      };
     }
-    return '';
+
+    const voltageV = this.batteryInfo.voltage / 1000000;
+    const currentA = (this.batteryInfo.nowCurrent || 0) / 1000;
+    const powerW = voltageV * currentA;
+
+    let type = '未充电';
+    let chargerSpec = '';
+    let powerLevel = 0;
+    const isSuperFast = powerW >= 30;
+    const isFast = powerW >= 15;
+
+    if (this.batteryInfo.chargingStatus === 1) {
+      if (powerW >= 66) {
+        type = '超级快充Turbo';
+        chargerSpec = '20V/5A (100W)';
+        powerLevel = 4;
+      } else if (powerW >= 40) {
+        type = '超级快充';
+        chargerSpec = '10V/4A (40W) 或 11V/6A (66W)';
+        powerLevel = 3;
+      } else if (powerW >= 30) {
+        type = '超级快充';
+        chargerSpec = '10V/3A (30W)';
+        powerLevel = 3;
+      } else if (powerW >= 22) {
+        type = '快充';
+        chargerSpec = '5V/4.5A (22.5W)';
+        powerLevel = 2;
+      } else if (powerW >= 15) {
+        type = '快充';
+        chargerSpec = '9V/2A (18W)';
+        powerLevel = 2;
+      } else {
+        type = '普通充电';
+        chargerSpec = '5V/2A (10W)';
+        powerLevel = 1;
+      }
+    }
+
+    return {
+      power: Math.round(powerW * 10) / 10,
+      voltage: Math.round(voltageV * 100) / 100,
+      current: Math.round(currentA * 100) / 100,
+      type,
+      chargerSpec,
+      isFastCharge: isFast,
+      isSuperFastCharge: isSuperFast,
+      powerLevel
+    };
   }
 
   build() {
@@ -136,7 +185,12 @@ struct BatteryPage {
 
       Scroll() {
         Column() {
-          SectionHeader({ title: '电池状态' })
+          InfoHeader({
+            title: '电池状态',
+            subtitle: 'BATTERY STATUS',
+            conceptId: 'battery_status',
+            onInfoClick: () => this.navigateToConcept('battery_status')
+          })
 
           Column() {
             Text(this.batteryInfo ? `${this.batteryInfo.batterySOC}%` : '--')
@@ -163,7 +217,43 @@ struct BatteryPage {
           .backgroundColor($r('app.color.background_card'))
           .alignItems(HorizontalAlign.Center)
 
-          SectionHeader({ title: '电池信息' })
+          InfoHeader({
+            title: '充电信息',
+            subtitle: 'CHARGING INFO',
+            conceptId: 'charging_info',
+            onInfoClick: () => this.navigateToConcept('charging_info')
+          })
+
+          InfoCard({
+            title: '充电类型',
+            value: this.getChargingInfo().type,
+            subtitle: this.getChargingInfo().chargerSpec,
+            highlight: this.getChargingInfo().isSuperFastCharge
+          })
+
+          InfoCard({
+            title: '实时功率',
+            value: this.getChargingInfo().power > 0 ? `${this.getChargingInfo().power}W` : '--',
+            subtitle: this.getChargingInfo().power > 0 ? 
+              `${this.getChargingInfo().voltage}V × ${this.getChargingInfo().current}A` : ''
+          })
+
+          InfoCard({
+            title: '充电电流',
+            value: this.batteryInfo?.nowCurrent ? `${this.batteryInfo.nowCurrent}mA` : '--'
+          })
+
+          InfoCard({
+            title: '充电器类型',
+            value: this.getPluggedTypeText(this.batteryInfo?.pluggedType)
+          })
+
+          InfoHeader({
+            title: '电池信息',
+            subtitle: 'BATTERY INFO',
+            conceptId: 'battery_info',
+            onInfoClick: () => this.navigateToConcept('battery_info')
+          })
 
           InfoCard({
             title: '电量',
@@ -188,11 +278,6 @@ struct BatteryPage {
           InfoCard({
             title: '健康状态',
             value: this.getHealthStatusText(this.batteryInfo?.healthStatus)
-          })
-
-          InfoCard({
-            title: '充电器类型',
-            value: this.getPluggedTypeText(this.batteryInfo?.pluggedType) + this.getChargeTypeDescription()
           })
         }
         .width('100%')

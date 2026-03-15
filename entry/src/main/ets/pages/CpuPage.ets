@@ -18,6 +18,18 @@ interface CpuPageInfo {
   architecture: string;
 }
 
+interface CpuCoreConfig {
+  bigCores: number;
+  littleCores: number;
+  description: string;
+}
+
+interface CoreFreqInfo {
+  coreIndex: number;
+  maxFreq: number;
+  isBigCore: boolean;
+}
+
 @Entry
 @Component
 struct CpuPage {
@@ -121,6 +133,39 @@ struct CpuPage {
       return `${this.cpuInfo.cores} 核`;
     }
     return '未获取';
+  }
+
+  // 推测 CPU 核心配置（大核/小核）
+  getCpuCoreConfig(): CpuCoreConfig {
+    const cores = this.cpuInfo?.cores || 0;
+    const model = this.cpuInfo?.model || '';
+
+    // 基于常见移动 CPU 架构的推测
+    if (cores === 8) {
+      // 8 核通常是 4+4 或 2+6 架构
+      if (model.toLowerCase().includes('elite') || model.toLowerCase().includes('8cx')) {
+        return { bigCores: 4, littleCores: 4, description: '4× 大核 + 4× 小核' };
+      }
+      // 常见的手机 SoC 通常是 2+6 或 4+4
+      return { bigCores: 2, littleCores: 6, description: '2× 大核 + 6× 小核' };
+    } else if (cores === 6) {
+      return { bigCores: 2, littleCores: 4, description: '2× 大核 + 4× 小核' };
+    } else if (cores === 4) {
+      return { bigCores: 2, littleCores: 2, description: '2× 大核 + 2× 小核' };
+    } else if (cores === 2) {
+      return { bigCores: 2, littleCores: 0, description: '2× 大核' };
+    }
+
+    return { bigCores: 0, littleCores: 0, description: '未知配置' };
+  }
+
+  // 获取大核小核显示文本
+  getCoreTypeText(): string {
+    const config = this.getCpuCoreConfig();
+    if (config.bigCores === 0 && config.littleCores === 0) {
+      return '未获取';
+    }
+    return config.description;
   }
 
   // 跳转到概念详情页
@@ -235,7 +280,9 @@ struct CpuPage {
             // CPU 基本信息
             InfoHeader({
               title: 'CPU 信息',
-              subtitle: '显示 CPU 的硬件规格信息'
+              subtitle: '显示 CPU 的硬件规格信息',
+              conceptId: 'cpu_cores',
+              onInfoClick: () => this.navigateToConcept('cpu_cores')
             });
 
             InfoCard({
@@ -246,6 +293,12 @@ struct CpuPage {
             InfoCard({
               title: '核心数',
               value: this.getCoreCount()
+            })
+
+            InfoCard({
+              title: '核心配置',
+              value: this.getCoreTypeText(),
+              subtitle: '基于常见架构推测'
             })
 
             InfoCard({

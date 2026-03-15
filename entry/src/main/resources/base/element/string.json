@@ -23,6 +23,10 @@
     {
       "name": "permission_reason_bluetooth",
       "value": "用于获取蓝牙信息"
+    },
+    {
+      "name": "permission_reason_cpu",
+      "value": "用于获取CPU核心频率信息"
     }
   ]
 }

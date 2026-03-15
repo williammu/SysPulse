@@ -4,6 +4,7 @@ export struct InfoCard {
   @Prop value: string = '';
   @Prop subtitle: string = '';
   @Prop icon: string = '';
+  @Prop highlight: boolean = false;
   @State isPressed: boolean = false;
 
   // 根据文本长度计算自适应字体大小
@@ -28,8 +29,8 @@ export struct InfoCard {
           Text(this.value)
             .fontSize(this.getAdaptiveFontSize(this.value))
             .fontWeight(FontWeight.Bold)
-            .fontColor($r('app.color.primary_color'))
-            .maxLines(3)  // 最多显示3行
+            .fontColor(this.highlight ? '#FFD700' : $r('app.color.primary_color'))
+            .maxLines(3)
             .textOverflow({ overflow: TextOverflow.Ellipsis })
             .width('100%')
             .wordBreak(WordBreak.BREAK_ALL)
