@@ -239,7 +239,57 @@ getSafeAreaTop(isLandscape: boolean): number {
 
 ---
 
-## 8. 参考文档
+## 8. 导航栏安全区域适配
+
+### 8.1 问题描述
+
+在子页面中，导航栏标题会被顶部摄像头/刘海区域遮挡，导致标题显示不完整。
+
+### 8.2 解决方案
+
+在导航栏组件中添加顶部安全区域占位：
+
+```typescript
+@Component
+export struct NavigationBarWithArrow {
+  @Prop title: string = '';
+  onBack?: () => void;
+
+  build() {
+    Column() {
+      // 顶部安全区域占位（适配刘海屏/摄像头区域）
+      Row()
+        .width('100%')
+        .height(this.getStatusBarHeight())
+
+      // 导航栏内容
+      Row() {
+        // 返回按钮、标题等...
+      }
+      .width('100%')
+      .height(56)
+    }
+    .width('100%')
+    .backgroundColor($r('app.color.background_dark'))
+  }
+
+  // 获取状态栏高度
+  private getStatusBarHeight(): number {
+    // 刘海屏设备通常需要额外的顶部间距
+    return 44; // 默认 44px 适配刘海屏
+  }
+}
+```
+
+### 8.3 关键要点
+
+- 使用 `Column` 包裹导航栏内容，顶部添加占位 `Row`
+- 占位高度建议 44px，可根据实际设备调整
+- 确保标题区域在安全区域内，避免被摄像头遮挡
+
+---
+
+## 9. 参考文档
 
 - [HarmonyOS 窗口管理](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-window-V5)
 - [HarmonyOS 安全区域](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/ts-universal-attributes-expand-safe-area-V5)
@@ -247,4 +297,4 @@ getSafeAreaTop(isLandscape: boolean): number {
 
 ---
 
-*最后更新: 2026-03-13*
+*最后更新: 2026-03-16*
