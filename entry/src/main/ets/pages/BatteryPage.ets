@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import batteryInfo from '@ohos.batteryInfo';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { InfoHeader } from '../components/InfoButton';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
@@ -224,28 +225,32 @@ struct BatteryPage {
             onInfoClick: () => this.navigateToConcept('charging_info')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '充电类型',
             value: this.getChargingInfo().type,
-            subtitle: this.getChargingInfo().chargerSpec,
-            highlight: this.getChargingInfo().isSuperFastCharge
+            conceptId: 'charging_info',
+            onInfoClick: () => this.navigateToConcept('charging_info')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '实时功率',
             value: this.getChargingInfo().power > 0 ? `${this.getChargingInfo().power}W` : '--',
-            subtitle: this.getChargingInfo().power > 0 ? 
-              `${this.getChargingInfo().voltage}V × ${this.getChargingInfo().current}A` : ''
+            conceptId: 'charging_power',
+            onInfoClick: () => this.navigateToConcept('charging_power')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '充电电流',
-            value: this.batteryInfo?.nowCurrent ? `${this.batteryInfo.nowCurrent}mA` : '--'
+            value: this.batteryInfo?.nowCurrent ? `${this.batteryInfo.nowCurrent}mA` : '--',
+            conceptId: 'charging_current',
+            onInfoClick: () => this.navigateToConcept('charging_current')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '充电器类型',
-            value: this.getPluggedTypeText(this.batteryInfo?.pluggedType)
+            value: this.getPluggedTypeText(this.batteryInfo?.pluggedType),
+            conceptId: 'charger_type',
+            onInfoClick: () => this.navigateToConcept('charger_type')
           })
 
           InfoHeader({
@@ -255,29 +260,39 @@ struct BatteryPage {
             onInfoClick: () => this.navigateToConcept('battery_info')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '电量',
-            value: this.batteryInfo ? `${this.batteryInfo.batterySOC}%` : '--'
+            value: this.batteryInfo ? `${this.batteryInfo.batterySOC}%` : '--',
+            conceptId: 'battery_soc',
+            onInfoClick: () => this.navigateToConcept('battery_soc')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '温度',
-            value: this.batteryInfo?.batteryTemperature ? `${(this.batteryInfo.batteryTemperature / 10).toFixed(1)}°C` : '--'
+            value: this.batteryInfo?.batteryTemperature ? `${(this.batteryInfo.batteryTemperature / 10).toFixed(1)}°C` : '--',
+            conceptId: 'battery_temperature',
+            onInfoClick: () => this.navigateToConcept('battery_temperature')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '电压',
-            value: this.batteryInfo?.voltage ? `${(this.batteryInfo.voltage / 1000000).toFixed(2)}V` : '--'
+            value: this.batteryInfo?.voltage ? `${(this.batteryInfo.voltage / 1000000).toFixed(2)}V` : '--',
+            conceptId: 'battery_voltage',
+            onInfoClick: () => this.navigateToConcept('battery_voltage')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '电池技术',
-            value: this.batteryInfo?.technology || '--'
+            value: this.batteryInfo?.technology || '--',
+            conceptId: 'battery_technology',
+            onInfoClick: () => this.navigateToConcept('battery_technology')
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '健康状态',
-            value: this.getHealthStatusText(this.batteryInfo?.healthStatus)
+            value: this.getHealthStatusText(this.batteryInfo?.healthStatus),
+            conceptId: 'battery_health',
+            onInfoClick: () => this.navigateToConcept('battery_health')
           })
         }
         .width('100%')

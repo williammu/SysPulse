@@ -1,417 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ4—if (!("finalizeConstruction" in ViewPU.prototype)) {
-    Reflect.set(ViewPU.prototype, "finalizeConstruction", () => { });
-}
-import router from '@ohos.router';
-import { DeviceUtil } from '../utils/DeviceUtil';
-import { FormatUtil } from '../utils/FormatUtil';
-import { InfoCard } from '../components/InfoCard';
-import { ProgressBar } from '../components/ProgressBar';
-import { SectionHeader } from '../components/SectionHeader';
-import { NavigationBarWithArrow } from '../components/NavigationBar';
-class StoragePage extends ViewPU {
-    constructor(parent, params, __localStorage, elmtId = -1, paramsLambda = undefined, extraInfo) {
-        super(parent, __localStorage, elmtId, extraInfo);
-        if (typeof paramsLambda === "function") {
-            this.paramsGenerator_ = paramsLambda;
-        }
-        this.__storageInfo = new ObservedPropertyObjectPU(null, this, "storageInfo");
-        this.setInitiallyProvidedValue(params);
-        this.finalizeConstruction();
-    }
-    setInitiallyProvidedValue(params) {
-        if (params.storageInfo !== undefined) {
-            this.storageInfo = params.storageInfo;
-        }
-    }
-    updateStateVars(params) {
-    }
-    purgeVariableDependenciesOnElmtId(rmElmtId) {
-        this.__storageInfo.purgeDependencyOnElmtId(rmElmtId);
-    }
-    aboutToBeDeleted() {
-        this.__storageInfo.aboutToBeDeleted();
-        SubscriberManager.Get().delete(this.id__());
-        this.aboutToBeDeletedInternal();
-    }
-    get storageInfo() {
-        return this.__storageInfo.get();
-    }
-    set storageInfo(newValue) {
-        this.__storageInfo.set(newValue);
-    }
-    aboutToAppear() {
-        this.storageInfo = DeviceUtil.getStorageInfo();
-    }
-    initialRender() {
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.width('100%');
-            Column.height('100%');
-            Column.backgroundColor({ "id": 16777233, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Column);
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new NavigationBarWithArrow(this, {
-                        title: 'å­˜å‚¨',
-                        onBack: () => {
-                            router.back();
-                        }
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 21, col: 7 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            title: 'å­˜å‚¨',
-                            onBack: () => {
-                                router.back();
-                            }
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        title: 'å­˜å‚¨'
-                    });
-                }
-            }, { name: "NavigationBarWithArrow" });
-        }
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Scroll.create();
-            Scroll.layoutWeight(1);
-        }, Scroll);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.width('100%');
-            Column.padding(16);
-        }, Column);
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'å­˜å‚¨ä½¿ç”¨' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 30, col: 11 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            title: 'å­˜å‚¨ä½¿ç”¨'
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        title: 'å­˜å‚¨ä½¿ç”¨'
-                    });
-                }
-            }, { name: "SectionHeader" });
-        }
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Column.create();
-            Column.width('100%');
-            Column.padding(16);
-            Column.borderRadius(12);
-            Column.backgroundColor({ "id": 16777232, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Column);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('å·²ç”¨');
-            Text.fontSize(14);
-            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.usedSize) : 'æœªè·å–');
-            Text.fontSize(16);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            __Common__.create();
-            __Common__.margin({ top: 12, bottom: 12 });
-        }, __Common__);
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new ProgressBar(this, {
-                        progress: this.storageInfo?.usedSize || 0,
-                        total: this.storageInfo?.totalSize || 1,
-                        color: '#007DFF'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 45, col: 13 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            progress: this.storageInfo?.usedSize || 0,
-                            total: this.storageInfo?.totalSize || 1,
-                            color: '#007DFF'
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        progress: this.storageInfo?.usedSize || 0,
-                        total: this.storageInfo?.totalSize || 1,
-                        color: '#007DFF'
-                    });
-                }
-            }, { name: "ProgressBar" });
-        }
-        __Common__.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('å¯ç”¨');
-            Text.fontSize(14);
-            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.freeSize) : 'æœªè·å–');
-            Text.fontSize(16);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Row.create();
-            Row.width('100%');
-            Row.margin({ top: 8 });
-        }, Row);
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create('æ€»è®¡');
-            Text.fontSize(14);
-            Text.fontColor({ "id": 16777228, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Blank.create();
-        }, Blank);
-        Blank.pop();
-        this.observeComponentCreation2((elmtId, isInitialRender) => {
-            Text.create(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.totalSize) : 'æœªè·å–');
-            Text.fontSize(16);
-            Text.fontWeight(FontWeight.Medium);
-            Text.fontColor({ "id": 16777227, "type": 10001, params: [], "bundleName": "com.huawei.sysinfo", "moduleName": "entry" });
-        }, Text);
-        Text.pop();
-        Row.pop();
-        Column.pop();
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new SectionHeader(this, { title: 'å­˜å‚¨ä¿¡æ¯' }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 82, col: 11 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            title: 'å­˜å‚¨ä¿¡æ¯'
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        title: 'å­˜å‚¨ä¿¡æ¯'
-                    });
-                }
-            }, { name: "SectionHeader" });
-        }
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new InfoCard(this, {
-                        title: 'çŠ¶æ€',
-                        value: this.storageInfo ? 'å·²è·å–' : 'æœªè·å–'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 84, col: 11 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            title: 'çŠ¶æ€',
-                            value: this.storageInfo ? 'å·²è·å–' : 'æœªè·å–'
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        title: 'çŠ¶æ€',
-                        value: this.storageInfo ? 'å·²è·å–' : 'æœªè·å–'
-                    });
-                }
-            }, { name: "InfoCard" });
-        }
-        {
-            this.observeComponentCreation2((elmtId, isInitialRender) => {
-                if (isInitialRender) {
-                    let componentCall = new InfoCard(this, {
-                        title: 'è¯´æ˜',
-                        value: this.storageInfo ? 'å­˜å‚¨ä¿¡æ¯æ¥è‡ªç³»ç»Ÿ API' : 'éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–å­˜å‚¨ä¿¡æ¯'
-                    }, undefined, elmtId, () => { }, { page: "entry/src/main/ets/pages/StoragePage.ets", line: 89, col: 11 });
-                    ViewPU.create(componentCall);
-                    let paramsLambda = () => {
-                        return {
-                            title: 'è¯´æ˜',
-                            value: this.storageInfo ? 'å­˜å‚¨ä¿¡æ¯æ¥è‡ªç³»ç»Ÿ API' : 'éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–å­˜å‚¨ä¿¡æ¯'
-                        };
-                    };
-                    componentCall.paramsGenerator_ = paramsLambda;
-                }
-                else {
-                    this.updateStateVarsOfChildByElmtId(elmtId, {
-                        title: 'è¯´æ˜',
-                        value: this.storageInfo ? 'å­˜å‚¨ä¿¡æ¯æ¥è‡ªç³»ç»Ÿ API' : 'éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–å­˜å‚¨ä¿¡æ¯'
-                    });
-                }
-            }, { name: "InfoCard" });
-        }
-        Column.pop();
-        Scroll.pop();
-        Column.pop();
-    }
-    rerender() {
-        this.updateDirtyElements();
-    }
-    static getEntryName() {
-        return "StoragePage";
-    }
-}
-registerNamedRoute(() => new StoragePage(undefined, {}), "", { bundleName: "com.huawei.sysinfo", moduleName: "entry", pagePath: "pages/StoragePage", pageFullPath: "entry/src/main/ets/pages/StoragePage", integratedHsp: "false", moduleType: "followWithHap" });
-//# sourceMappingURL=StoragePage.js.mapÂ—Ùi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsÙL/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.etsÔrB›ªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  Ù)/Users/bytedance/dev/huawei_sysinfo/entryÔrCÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ7import router from '@ohos.router';
-import { DeviceUtil } from '../utils/DeviceUtil';
-import { FormatUtil } from '../utils/FormatUtil';
-import { InfoCard } from '../components/InfoCard';
-import { ProgressBar } from '../components/ProgressBar';
-import { SectionHeader } from '../components/SectionHeader';
-import type { StorageInfoModel } from '../model/DeviceInfo';
-import { NavigationBarWithArrow } from '../components/NavigationBar';
-
-@Entry
-@Component
-struct StoragePage {
-  @State storageInfo: StorageInfoModel | null = null;
-
-  aboutToAppear() {
-    this.storageInfo = DeviceUtil.getStorageInfo();
-  }
-
-  build() {
-    Column() {
-      NavigationBarWithArrow({
-        title: 'å­˜å‚¨',
-        onBack: () => {
-          router.back();
-        }
-      })
-
-      Scroll() {
-        Column() {
-          SectionHeader({ title: 'å­˜å‚¨ä½¿ç”¨' })
-
-          Column() {
-            Row() {
-              Text('å·²ç”¨')
-                .fontSize(14)
-                .fontColor($r('app.color.text_secondary'))
-              Blank()
-              Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.usedSize) : 'æœªè·å–')
-                .fontSize(16)
-                .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-            }
-            .width('100%')
-
-            ProgressBar({
-              progress: this.storageInfo?.usedSize || 0,
-              total: this.storageInfo?.totalSize || 1,
-              color: '#007DFF'
-            })
-            .margin({ top: 12, bottom: 12 })
-
-            Row() {
-              Text('å¯ç”¨')
-                .fontSize(14)
-                .fontColor($r('app.color.text_secondary'))
-              Blank()
-              Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.freeSize) : 'æœªè·å–')
-                .fontSize(16)
-                .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-            }
-            .width('100%')
-
-            Row() {
-              Text('æ€»è®¡')
-                .fontSize(14)
-                .fontColor($r('app.color.text_secondary'))
-              Blank()
-              Text(this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.totalSize) : 'æœªè·å–')
-                .fontSize(16)
-                .fontWeight(FontWeight.Medium)
-          .fontColor($r('app.color.text_primary'))
-            }
-            .width('100%')
-            .margin({ top: 8 })
-          }
-          .width('100%')
-          .padding(16)
-          .borderRadius(12)
-          .backgroundColor($r('app.color.background_card'))
-
-          SectionHeader({ title: 'å­˜å‚¨ä¿¡æ¯' })
-
-          InfoCard({
-            title: 'çŠ¶æ€',
-            value: this.storageInfo ? 'å·²è·å–' : 'æœªè·å–'
-          })
-
-          InfoCard({
-            title: 'è¯´æ˜',
-            value: this.storageInfo ? 'å­˜å‚¨ä¿¡æ¯æ¥è‡ªç³»ç»Ÿ API' : 'éƒ¨åˆ†è®¾å¤‡å¯èƒ½æ— æ³•è·å–å­˜å‚¨ä¿¡æ¯'
-          })
-        }
-        .width('100%')
-        .padding(16)
-      }
-      .layoutWeight(1)
-    }
-    .width('100%')
-    .height('100%')
-    .backgroundColor($r('app.color.background_dark'))
-  }
-}
-ÀÔrD—¬@ohos.router³../utils/FormatUtil³../utils/DeviceUtil¶../components/InfoCard»../components/SectionHeader¹../components/ProgressBar»../components/NavigationBarÔrE—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙi hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.router.d.tsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.etsAÃªoh-resolveÂEAÂÙK/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.etsAÃªoh-resolveÂEAÂÙN/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.etsAÃªoh-resolveÂEAÂÙQ/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.etsAÃªoh-resolveÂEAÂÙS/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.etsAÃªoh-resolveÂ“ÔrF–§version¤fileªsourceRoot§sources¥names¨mappings®StoragePage.js ‘¯StoragePage.etsÜ–”    ”  ”  ”  ”!  !”"  "˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”0 0”1 1˜”   ” ”	 	” ” ” ”1 1”2 2˜”   ” ”	 	” ” ” ”7 7”8 8˜”   ” ”	 	” ” ” ”; ;”< <˜”   ” ”	 	” ”! !”' '”ÌD ÌD”ÌE ÌE’” ” ‘” 	 ’”: 0”> 4‘” ÌE’” 	” ’” 	” ’” ” š” ” ” 	” ” ”% !”& "”4 0”6 2”7 3’” ” ‘” ’” ” 
-–” ” 
-” Ìb” Ìb
-” Ìb” Ìb–” ” 
-” Ìc” Ìc” Ìc”  Ìc”” ” 
-” Ìd”" Ìd“”, ”ÌB ”ÌI ”” ” ” ”# •” ” ”  ”# ”% –” 
-”" ”# ”' ”) ”* ’” ” 	‘” ”” ”! ”# ”' •” ”" ”$ ”' ”) –”  
-”& ”' ”+ ”- ”. ’” ” 	”” ” ” ”# ’” ” –” ” ” Ì`” Ì`”  Ì`”! Ì`’” ” –” ” ” Ì]	” Ì]” Ì]” Ì]–” ” ” Ì^	” Ì^” Ì^” Ì^˜”, 
-”9 ”Ì@ ”ÌB ”ÌG ”ÌI !”ÌO '”ÌQ )”” ”! ”# !”) '”” ” ” !”% '’” 
-” –” 
-” ” ÌL” ÌL” ÌL” ÌL–” 
-” ” ÌM” ÌM” ÌM” ÌM–” 
-” ” ÌN” ÌN”  ÌN”" ÌN”” 
-” ” ÌO”" ÌO’”  ”  –”  ”  ” *” *” *” *”” !” !” !” !–” !” !” "” "” "” "”” !” !” #” #’” !” !’” $” $’” $” $Ü ” %” %” %” %” %”( %#”) %$”* %%”+ %&”5 %0”6 %1”ÌA %<”ÌB %=”ÌF %ÌA”ÌG %ÌB”ÌR %ÌM”ÌS %ÌN”Ì[ %ÌV”Ì\ %ÌW”Ì] %ÌX”Ì^ %ÌY”Ì_ %ÌZ”Ìd %Ì_–” %” %” &” &” &” &˜” %” %” '” '” '”& '&”' ''”- '-”” %” %” (” (’” %” %’”  ”  œ” 1” 1” 1”  1”# 1”% 1”' 1”) 1”/ 1%”1 1'”3 1)”5 1+“”, ,”7 ,”> ,š” -”  -”" -”& -”' -”2 -(”4 -*”< -2”Ì@ -6”ÌA -7š” .” .” .”# .”$ .”/ .%”1 .'”: .0”> .4”? .5”” /” /” /”( /‘” 0š” -”$ -”& -”* -”+ -”6 -(”8 -*”Ì@ -2”ÌD -6”ÌE -7š” .”! .”# .”' .”( .”3 .%”5 .'”> .0”ÌB .4”ÌC .5”” /”! /”# /”, /š” -”  -”" -”& -”' -”2 -(”4 -*”< -2”Ì@ -6”ÌA -7š” .” .” .”# .”$ .”/ .%”1 .'”: .0”> .4”? .5”” /” /” /”( /’” 3” 3–” 3” 3” =” =” =” =”” 4” 4” 4” 4–” 4” 4” 5” 5” 5” 5”” 4” 4” 6” 6’” 4” 4’” 7” 7’” 7” 7Ü ” 8” 8” 8” 8” 8”( 8#”) 8$”* 8%”+ 8&”5 80”6 81”ÌA 8<”ÌB 8=”ÌF 8ÌA”ÌG 8ÌB”ÌR 8ÌM”ÌS 8ÌN”Ì[ 8ÌV”Ì\ 8ÌW”Ì] 8ÌX”Ì^ 8ÌY”Ì_ 8ÌZ”Ìd 8Ì_–” 8” 8” 9” 9” 9” 9˜” 8” 8” :” :” :”& :&”' :'”- :-”” 8” 8” ;” ;’” 8” 8’” 3” 3’” ?” ?–” ?” ?” ÌI” ÌI” ÌI” ÌIš” ?” ?” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ” ÌJ”! ÌJ”” Ì@” Ì@” Ì@” Ì@–” Ì@” Ì@” ÌA” ÌA” ÌA” ÌA”” Ì@” Ì@” ÌB” ÌB’” Ì@” Ì@’” ÌC” ÌC’” ÌC” ÌCÜ ” ÌD” ÌD” ÌD” ÌD” ÌD”( ÌD#”) ÌD$”* ÌD%”+ ÌD&”5 ÌD0”6 ÌD1”ÌA ÌD<”ÌB ÌD=”ÌF ÌDÌA”ÌG ÌDÌB”ÌR ÌDÌM”ÌS ÌDÌN”Ì\ ÌDÌW”Ì] ÌDÌX”Ì^ ÌDÌY”Ì_ ÌDÌZ”Ì` ÌDÌ[”Ìe ÌDÌ`–” ÌD” ÌD” ÌE” ÌE” ÌE” ÌE˜” ÌD” ÌD” ÌF” ÌF” ÌF”& ÌF&”' ÌF'”- ÌF-”” ÌD” ÌD” ÌG” ÌG’” ÌD” ÌD’” ?” ?’” 
-” ˜”, ÌQ
-”9 ÌQ”Ì@ ÌQ”ÌB ÌQ”ÌG ÌQ”ÌI ÌQ!”ÌO ÌQ'”ÌQ ÌQ)”” ÌQ”! ÌQ”# ÌQ!”) ÌQ'”” ÌQ” ÌQ” ÌQ!”% ÌQ'“”, ÌS
-”4 ÌS”; ÌS”” ÌT” ÌT” ÌT”# ÌT” ÌU” ÌU” ÌU”# ÌU”$ ÌU”/ ÌU#”0 ÌU$”1 ÌU%”2 ÌU&”7 ÌU+”8 ÌU,”9 ÌU-”: ÌU.”? ÌU3‘” ÌV”” ÌT”! ÌT”# ÌT”' ÌT” ÌU”! ÌU”# ÌU”' ÌU”( ÌU”3 ÌU#”4 ÌU$”5 ÌU%”6 ÌU&”; ÌU+”< ÌU,”= ÌU-”> ÌU.”ÌC ÌU3”” ÌT” ÌT” ÌT”# ÌT” ÌU” ÌU” ÌU”# ÌU”$ ÌU”/ ÌU#”0 ÌU$”1 ÌU%”2 ÌU&”7 ÌU+”8 ÌU,”9 ÌU-”: ÌU.”? ÌU3“”, ÌX
-”4 ÌX”; ÌX”” ÌY” ÌY” ÌY”# ÌY” ÌZ” ÌZ” ÌZ”# ÌZ”$ ÌZ”/ ÌZ#”0 ÌZ$”1 ÌZ%”2 ÌZ&”Ì@ ÌZ4”ÌA ÌZ5”ÌB ÌZ6”ÌC ÌZ7”ÌS ÌZÌG‘” Ì[”” ÌY”! ÌY”# ÌY”' ÌY” ÌZ”! ÌZ”# ÌZ”' ÌZ”( ÌZ”3 ÌZ#”4 ÌZ$”5 ÌZ%”6 ÌZ&”ÌD ÌZ4”ÌE ÌZ5”ÌF ÌZ6”ÌG ÌZ7”ÌW ÌZÌG”” ÌY” ÌY” ÌY”# ÌY” ÌZ” ÌZ” ÌZ”# ÌZ”$ ÌZ”/ ÌZ#”0 ÌZ$”1 ÌZ%”2 ÌZ&”Ì@ ÌZ4”ÌA ÌZ5”ÌB ÌZ6”ÌC ÌZ7”ÌS ÌZÌG’” ” ’” ” ’” ” 
-‘” ÌeÔrG–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ%‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ‘”  Ì¶ ‘”  Ì· ‘”  Ì¸ ‘”  Ì¹ ‘”  Ìº ‘”  Ì» ‘”  Ì¼ ‘”  Ì½ ‘”  Ì¾ ‘”  Ì¿ ‘”  ÌÀ ‘”  ÌÁ ‘”  ÌÂ ‘”  ÌÃ ‘”  ÌÄ ‘”  ÌÅ ‘”  ÌÆ ‘”  ÌÇ ‘”  ÌÈ ‘”  ÌÉ ‘”  ÌÊ ‘”  ÌË ‘”  ÌÌ ‘”  ÌÍ ‘”  ÌÎ ‘”  ÌÏ ‘”  ÌĞ ‘”  ÌÑ ‘”  ÌÒ ‘”  ÌÓ ‘”  ÌÔ ‘”  ÌÕ ‘”  ÌÖ ‘”  Ì× ‘”  ÌØ ‘”  ÌÙ ‘”  ÌÚ ‘”  ÌÛ ‘”  ÌÜ ‘”  Ìİ ‘”  ÌŞ ‘”  Ìß ‘”  Ìà ‘”  Ìá ‘”  Ìâ ‘”  Ìã ‘”  Ìä ‘”  Ìå ‘”  Ìæ ‘”  Ìç ‘”  Ìè ‘”  Ìé ‘”  Ìê ‘”  Ìë ‘”  Ìì ‘”  Ìí ‘”  Ìî ‘”  Ìï ‘”  Ìğ ‘”  Ìñ ‘”  Ìò ‘”  Ìó ‘”  Ìô ‘”  Ìõ ‘”  Ìö ‘”  Ì÷ ‘”  Ìø ‘”  Ìù ‘”  Ìú ‘”  Ìû ‘”  Ìü ‘”  Ìı ‘”  Ìş ‘”  Ìÿ ‘”  Í  ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í	 ‘”  Í
- ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í ‘”  Í  ‘”  Í! ‘”  Í" ‘”  Í# ‘”  Í$ ÔrH’§missing¦pluginÃ¦genAbcÂÔ  ÔrI”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache—ÔrJ•¤type¥start£endªspecifiers¦source±ImportDeclarationÌ€Ì¢‘ÔrK”¤type¥start£end¥local¶ImportDefaultSpecifierÌ‡ÌÔrL”¤type¥start£end¤nameªIdentifierÌ‡Ì¦routerÔrM•¤type¥start£end¥value£raw§LiteralÌ“Ì¡¬@ohos.router®'@ohos.router'J±ImportDeclarationÌ¤ÌÕ‘ÔrN•¤type¥start£end¨imported¥local¯ImportSpecifierÌ­Ì·LªIdentifierÌ­Ì·ªDeviceUtilLªIdentifierÌ­Ì·ªDeviceUtilM§LiteralÌ¿ÌÔ³../utils/DeviceUtilµ'../utils/DeviceUtil'J±ImportDeclarationÌ×Í‘N¯ImportSpecifierÌàÌêLªIdentifierÌàÌêªFormatUtilLªIdentifierÌàÌêªFormatUtilM§LiteralÌòÍ³../utils/FormatUtilµ'../utils/FormatUtil'J±ImportDeclarationÍ
-Í<‘N¯ImportSpecifierÍÍLªIdentifierÍÍ¨InfoCardLªIdentifierÍÍ¨InfoCardM§LiteralÍ#Í;¶../components/InfoCard¸'../components/InfoCard'J±ImportDeclarationÍ>Ív‘N¯ImportSpecifierÍGÍRLªIdentifierÍGÍR«ProgressBarLªIdentifierÍGÍR«ProgressBarM§LiteralÍZÍu¹../components/ProgressBar»'../components/ProgressBar'J±ImportDeclarationÍxÍ´‘N¯ImportSpecifierÍÍLªIdentifierÍÍ­SectionHeaderLªIdentifierÍÍ­SectionHeaderM§LiteralÍ–Í³»../components/SectionHeader½'../components/SectionHeader'J±ImportDeclarationÍ¶Íû‘N¯ImportSpecifierÍ¿ÍÕLªIdentifierÍ¿ÍÕ¶NavigationBarWithArrowLªIdentifierÍ¿ÍÕ¶NavigationBarWithArrowM§LiteralÍİÍú»../components/NavigationBar½'../components/NavigationBar'

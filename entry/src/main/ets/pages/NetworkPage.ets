@@ -2,6 +2,7 @@ import router from '@ohos.router';
 import connection from '@ohos.net.connection';
 import wifiManager from '@ohos.wifiManager';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { SectionHeader } from '../components/SectionHeader';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
@@ -82,6 +83,17 @@ struct NetworkPage {
           return Array.isArray(val) ? val : [];
         };
 
+        // 将前缀长度转换为子网掩码
+        const prefixToMask = (prefix: number): string => {
+          const mask = 0xffffffff << (32 - prefix);
+          return [
+            (mask >>> 24) & 0xff,
+            (mask >>> 16) & 0xff,
+            (mask >>> 8) & 0xff,
+            mask & 0xff
+          ].join('.');
+        };
+
         // 解析 IP 地址
         const linkAddresses = getObjectArrayProp('linkAddresses');
         let ipAddress = '未获取';
@@ -93,7 +105,10 @@ struct NetworkPage {
           if (addrObj && typeof addrObj.address === 'string') {
             ipAddress = addrObj.address;
           }
-          subnetMask = typeof firstAddr.prefixLength === 'number' ? `/${firstAddr.prefixLength}` : '未获取';
+          if (typeof firstAddr.prefixLength === 'number') {
+            const prefix = firstAddr.prefixLength;
+            subnetMask = prefixToMask(prefix);
+          }
         }
 
         // 解析网关 - 从 routes 中获取默认网关
@@ -306,19 +321,40 @@ struct NetworkPage {
             SectionHeader({ title: 'IP 配置' });
             this.DataDescription('显示当前网络的 IP 地址、子网掩码、网关等配置信息。');
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'IP 地址',
-              value: this.networkDetails.ipAddress
+              value: this.networkDetails.ipAddress,
+              conceptId: 'network_ip_address',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_ip_address' }
+                });
+              }
             })
 
-            InfoCard({
-              title: '子网前缀',
-              value: this.networkDetails.subnetMask
+            InfoCardWithDesc({
+              title: '子网掩码',
+              value: this.networkDetails.subnetMask,
+              conceptId: 'network_subnet_mask',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_subnet_mask' }
+                });
+              }
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '默认网关',
-              value: this.networkDetails.gateway
+              value: this.networkDetails.gateway,
+              conceptId: 'network_gateway',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_gateway' }
+                });
+              }
             })
 
             // DNS 服务器
@@ -327,15 +363,29 @@ struct NetworkPage {
 
             if (this.networkDetails.dnsServers.length > 0) {
               ForEach(this.networkDetails.dnsServers, (dns: string, index: number) => {
-                InfoCard({
+                InfoCardWithDesc({
                   title: `DNS ${index + 1}`,
-                  value: dns
+                  value: dns,
+                  conceptId: 'network_dns',
+                  onInfoClick: () => {
+                    router.pushUrl({
+                      url: 'pages/ConceptDetailPage',
+                      params: { conceptId: 'network_dns' }
+                    });
+                  }
                 })
               }, (dns: string, index: number) => index.toString())
             } else {
-              InfoCard({
+              InfoCardWithDesc({
                 title: 'DNS 服务器',
-                value: '未获取'
+                value: '未获取',
+                conceptId: 'network_dns',
+                onInfoClick: () => {
+                  router.pushUrl({
+                    url: 'pages/ConceptDetailPage',
+                    params: { conceptId: 'network_dns' }
+                  });
+                }
               })
             }
 
@@ -348,14 +398,28 @@ struct NetworkPage {
               value: this.networkDetails.interfaceName
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'MAC 地址',
-              value: this.networkDetails.macAddress
+              value: this.networkDetails.macAddress,
+              conceptId: 'network_mac',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_mac' }
+                });
+              }
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'MTU',
-              value: this.formatMtu(this.networkDetails.mtu)
+              value: this.formatMtu(this.networkDetails.mtu),
+              conceptId: 'network_mtu',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_mtu' }
+                });
+              }
             })
 
             // WiFi 详细信息（仅 WiFi 网络显示）
@@ -394,14 +458,28 @@ struct NetworkPage {
             SectionHeader({ title: '带宽信息' });
             this.DataDescription('显示当前网络连接的理论上行和下行带宽。某些网络类型（如模拟器环境）可能不提供带宽信息。实际网速可能因网络环境、信号强度等因素而有所不同。');
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '上行带宽',
-              value: this.formatBandwidth(this.networkDetails.linkUpBandwidth)
+              value: this.formatBandwidth(this.networkDetails.linkUpBandwidth),
+              conceptId: 'network_bandwidth',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_bandwidth' }
+                });
+              }
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '下行带宽',
-              value: this.formatBandwidth(this.networkDetails.linkDownBandwidth)
+              value: this.formatBandwidth(this.networkDetails.linkDownBandwidth),
+              conceptId: 'network_bandwidth',
+              onInfoClick: () => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'network_bandwidth' }
+                });
+              }
             })
 
             // 说明

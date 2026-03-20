@@ -1,1364 +1,0 @@
-�r@��assertions�code�customTransformCache�dependencies�id�meta�moduleSideEffects�originalCode�originalSourcemap�resolvedIds�sourcemapChain�syntheticNamedExports�transformDependencies�transformFiles�cacheAst�rA�ڃ-export const ConceptConfig = {
-    // CPU 相关
-    'cpu_usage': {
-        id: 'cpu_usage',
-        title: 'CPU 使用率',
-        subtitle: 'CPU Usage',
-        description: 'CPU 使用率表示处理器在一段时间内处于忙碌状态的时间比例，反映了系统的负载情况。',
-        details: [
-            {
-                title: '什么是 CPU 使用率？',
-                content: 'CPU 使用率是指在一段时间内，CPU 处于非空闲状态的时间占比。例如，50% 的 CPU 使用率意味着 CPU 有一半的时间在处理任务，另一半时间处于空闲状态。'
-            },
-            {
-                title: '为什么使用率会超过 100%？',
-                content: '在多核 CPU 设备上，每个核心都可以独立工作。如果有 8 个核心，理论最大使用率可达 800%。系统显示的是所有核心的总使用率。'
-            },
-            {
-                title: '高 CPU 使用率意味着什么？',
-                content: '持续高 CPU 使用率（>80%）可能导致设备发热、耗电加快、响应变慢。但短时间内的高使用率是正常的，特别是在运行大型应用或游戏时。'
-            }
-        ]
-    },
-    'thread_cpu': {
-        id: 'thread_cpu',
-        title: '线程 CPU 使用率',
-        subtitle: 'Thread CPU Usage',
-        description: '线程是程序执行的最小单位，一个应用通常包含多个线程来执行不同任务。',
-        details: [
-            {
-                title: '什么是线程？',
-                content: '线程是操作系统能够进行运算调度的最小单位。一个进程可以包含多个线程，它们共享进程的资源，但独立执行。多线程可以提高程序的并发性能。'
-            },
-            {
-                title: '为什么应用有多个线程？',
-                content: '现代应用通常使用多线程：主线程负责 UI 渲染，后台线程处理网络请求、文件读写、数据计算等。这样可以避免界面卡顿，提升用户体验。'
-            },
-            {
-                title: '如何优化线程性能？',
-                content: '避免创建过多线程（会增加上下文切换开销），合理分配任务到不同线程，使用线程池管理线程生命周期，避免主线程执行耗时操作。'
-            }
-        ]
-    },
-    // 内存相关
-    'memory_pss': {
-        id: 'memory_pss',
-        title: 'PSS (实际使用内存)',
-        subtitle: 'Proportional Set Size',
-        description: 'PSS 是衡量应用实际内存占用的最佳指标，包含按比例分配的共享内存。',
-        details: [
-            {
-                title: '什么是 PSS？',
-                content: 'PSS (Proportional Set Size) 表示应用实际使用的物理内存。它包含应用独占的内存，以及按比例分配的共享内存（如系统库、共享资源等）。'
-            },
-            {
-                title: 'PSS vs RSS 的区别',
-                content: 'RSS (Resident Set Size) 包含所有共享内存的完整大小，会导致重复计算。PSS 更准确地反映了应用对系统内存的真实占用，是评估内存使用的最佳指标。'
-            },
-            {
-                title: '如何降低 PSS？',
-                content: '减少内存泄漏、及时释放不再使用的对象、使用更高效的数据结构、避免加载不必要的资源、使用图片压缩和缓存策略。'
-            }
-        ]
-    },
-    'memory_rss': {
-        id: 'memory_rss',
-        title: 'RSS (驻留内存)',
-        subtitle: 'Resident Set Size',
-        description: 'RSS 表示进程在物理内存中实际占用的空间，包含所有共享内存。',
-        details: [
-            {
-                title: '什么是 RSS？',
-                content: 'RSS (Resident Set Size) 表示进程当前驻留在物理内存中的页面总数，包括代码段、数据段、堆栈和共享库等。它反映了进程实际占用的物理内存大小。'
-            },
-            {
-                title: 'RSS 的局限性',
-                content: 'RSS 包含了完整的共享内存大小（如系统库），如果多个应用使用相同的库，RSS 会将这些内存重复计算，导致总和超过系统实际内存。'
-            }
-        ]
-    },
-    'memory_vss': {
-        id: 'memory_vss',
-        title: 'VSS (虚拟内存)',
-        subtitle: 'Virtual Set Size',
-        description: 'VSS 表示进程可访问的所有内存地址空间，包括未实际分配的内存。',
-        details: [
-            {
-                title: '什么是 VSS？',
-                content: 'VSS (Virtual Set Size) 表示进程的虚拟地址空间大小，包括所有已分配和未分配的内存映射。它通常远大于实际物理内存使用。'
-            },
-            {
-                title: '为什么 VSS 很大？',
-                content: 'VSS 包含了进程可能访问的所有内存区域，包括内存映射文件、共享库、堆、栈等。即使这些内存并未实际加载到物理内存中，也会计入 VSS。'
-            }
-        ]
-    },
-    'memory_shared': {
-        id: 'memory_shared',
-        title: '内存分类',
-        subtitle: 'Memory Classification',
-        description: '内存按共享属性和修改状态分为 Shared/Private 和 Clean/Dirty 四类。',
-        details: [
-            {
-                title: 'Shared Clean',
-                content: '与其他进程共享的未修改内存页。通常是系统库、框架代码等只读资源。多个应用共享同一份物理内存，节省系统资源。'
-            },
-            {
-                title: 'Shared Dirty',
-                content: '与其他进程共享但已被修改的内存页。由于被修改，需要为当前进程单独保存一份副本，但仍标记为共享。'
-            },
-            {
-                title: 'Private Clean',
-                content: '进程独占的未修改内存页。通常是应用自身的代码段、只读数据等，不需要与其他进程共享。'
-            },
-            {
-                title: 'Private Dirty',
-                content: '进程独占且已被修改的内存页。这是应用运行时产生的数据，如动态分配的内存、运行时数据等，是应用内存占用的主要部分。'
-            }
-        ]
-    },
-    'memory_limit': {
-        id: 'memory_limit',
-        title: '内存限制',
-        subtitle: 'Memory Limit',
-        description: '系统为每个应用设置的内存使用上限，防止单个应用占用过多资源。',
-        details: [
-            {
-                title: '什么是内存限制？',
-                content: '系统为每个应用进程设置的内存使用上限（RSS 限制）。当应用内存接近或超过限制时，系统会触发内存警告，甚至终止应用以防止影响系统稳定性。'
-            },
-            {
-                title: '超过限制会怎样？',
-                content: '当内存使用接近限制时，系统会发送内存警告，应用应该释放不必要的资源。如果继续增长超过限制，系统可能会强制终止应用（OOM - Out of Memory）。'
-            },
-            {
-                title: '如何避免 OOM？',
-                content: '及时响应内存警告、使用懒加载策略、实现图片缓存和压缩、避免内存泄漏、使用更高效的数据结构、定期检查和优化内存使用。'
-            }
-        ]
-    },
-    // GPU 相关
-    'gpu_info': {
-        id: 'gpu_info',
-        title: 'GPU 信息',
-        subtitle: 'GPU Information',
-        description: 'GPU（图形处理器）是专为图形渲染设计的处理器，负责游戏画面、UI 动画、视频解码等任务。',
-        details: [
-            {
-                title: 'GPU 厂商',
-                content: '常见的移动 GPU 厂商包括 ARM（Mali 系列）、Qualcomm（Adreno 系列）、Imagination（PowerVR 系列）、Apple 等。不同厂商的 GPU 在性能和特性上有所差异。'
-            },
-            {
-                title: 'OpenGL ES',
-                content: 'OpenGL ES（OpenGL for Embedded Systems）是移动设备上的图形 API 标准。版本号（如 3.2）表示支持的特性和功能级别，版本越高支持越多的高级图形特性。'
-            },
-            {
-                title: 'GLSL',
-                content: 'GLSL（OpenGL Shading Language）是用于编写着色器（Shader）的编程语言。着色器运行在 GPU 上，负责顶点处理、片段着色等图形渲染任务。'
-            },
-            {
-                title: 'GPU 扩展',
-                content: 'GPU 扩展是厂商提供的额外功能，超出标准 OpenGL ES 规范。这些扩展可以提供更好的性能或额外的图形特性，但需要针对特定 GPU 进行适配。'
-            }
-        ]
-    },
-    // 传感器相关
-    'sensor_accelerometer': {
-        id: 'sensor_accelerometer',
-        title: '加速度传感器',
-        subtitle: 'Accelerometer',
-        description: '测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。',
-        details: [
-            {
-                title: '工作原理',
-                content: '加速度传感器通过检测质量块在加速度作用下的位移来测量加速度。它可以检测重力（静止时 Z 轴约 9.8 m/s²）和运动加速度。'
-            },
-            {
-                title: '应用场景',
-                content: '屏幕旋转、步数检测、游戏控制、晃动检测、倾斜角度计算等。当设备静止时，可以测量重力方向来确定设备姿态。'
-            },
-            {
-                title: '三轴含义',
-                content: 'X 轴：左右方向，右为正；Y 轴：前后方向，前为正；Z 轴：上下方向，上为正。当设备平放时，X 和 Y 接近 0，Z 约 9.8 m/s²（重力加速度）。'
-            }
-        ]
-    },
-    'sensor_gyroscope': {
-        id: 'sensor_gyroscope',
-        title: '陀螺仪',
-        subtitle: 'Gyroscope',
-        description: '测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。',
-        details: [
-            {
-                title: '工作原理',
-                content: '陀螺仪基于科里奥利力原理，通过检测旋转时产生的力来测量角速度。它可以检测设备的旋转、转向等动作，与加速度传感器互补。'
-            },
-            {
-                title: '与加速度的区别',
-                content: '加速度传感器测量线性加速度（包括重力），陀螺仪测量旋转角速度。两者结合可以精确追踪设备的 3D 运动和姿态。'
-            },
-            {
-                title: '应用场景',
-                content: '游戏控制（如赛车转向）、图像防抖、航向参考、VR/AR 追踪、相机旋转检测等。'
-            }
-        ]
-    },
-    'sensor_light': {
-        id: 'sensor_light',
-        title: '光线传感器',
-        subtitle: 'Ambient Light Sensor',
-        description: '测量环境光强度，单位 lux（勒克斯）。',
-        details: [
-            {
-                title: 'lux 单位',
-                content: 'lux（勒克斯）是光照强度的单位，表示每平方米接收到的光通量。常见参考：室内照明 100-500 lux，阴天室外 1000-10000 lux，晴天室外 10000-100000 lux。'
-            },
-            {
-                title: '应用场景',
-                content: '自动调节屏幕亮度（环境暗时降低亮度保护眼睛，环境亮时提高亮度保证可见性）、自动切换暗黑模式、相机曝光调节等。'
-            }
-        ]
-    },
-    'sensor_magnetic': {
-        id: 'sensor_magnetic',
-        title: '磁场传感器',
-        subtitle: 'Magnetometer',
-        description: '测量设备周围的磁场强度，单位 μT（微特斯拉）。',
-        details: [
-            {
-                title: '工作原理',
-                content: '磁场传感器基于霍尔效应或磁阻效应，可以检测地球磁场和周围磁场的强度和方向。地球磁场强度约为 25-65 μT。'
-            },
-            {
-                title: '电子罗盘',
-                content: '结合加速度传感器（确定水平面）和磁场传感器（确定北方），可以实现电子罗盘功能，用于导航和方向检测。'
-            },
-            {
-                title: '干扰因素',
-                content: '附近的金属物体、磁铁、电子设备都会产生磁场干扰，影响传感器精度。使用时需要远离这些干扰源或进行校准。'
-            }
-        ]
-    },
-    // 网络相关
-    'network_bandwidth': {
-        id: 'network_bandwidth',
-        title: '网络带宽',
-        subtitle: 'Network Bandwidth',
-        description: '表示网络连接的数据传输能力，分为上行和下行。',
-        details: [
-            {
-                title: '上行 vs 下行',
-                content: '上行带宽（Upload）是设备向网络发送数据的速度，影响上传文件、发送消息、视频通话等。下行带宽（Download）是设备从网络接收数据的速度，影响下载、视频播放、网页浏览等。'
-            },
-            {
-                title: '理论 vs 实际',
-                content: '显示的带宽是理论最大值，由网络类型（5G、Wi-Fi 6 等）决定。实际速度受信号强度、网络拥塞、服务器速度等因素影响，通常低于理论值。'
-            },
-            {
-                title: '计费网络',
-                content: '移动数据网络通常按流量计费的，Wi-Fi 通常不计费。应用可以根据此信息决定是否下载大文件或播放高清视频。'
-            }
-        ]
-    },
-    // 电池相关
-    'battery_health': {
-        id: 'battery_health',
-        title: '电池健康度',
-        subtitle: 'Battery Health',
-        description: '反映电池当前容量相对于新电池的比例，是电池老化程度的指标。',
-        details: [
-            {
-                title: '什么是电池健康度？',
-                content: '电池健康度表示当前电池的最大容量相对于新电池设计容量的百分比。随着充放电循环次数增加，电池会逐渐老化，容量下降。'
-            },
-            {
-                title: '健康度标准',
-                content: '100-90%：健康状态良好；89-80%：轻度老化，续航略有下降；79-70%：中度老化，建议考虑更换；<70%：严重老化，续航明显缩短，可能影响性能。'
-            },
-            {
-                title: '如何延长电池寿命？',
-                content: '避免过度充电（保持 20%-80% 电量）、避免高温环境、使用原装充电器、减少快充频率、避免边充边玩大型游戏。'
-            }
-        ]
-    },
-    // 存储相关
-    'storage_types': {
-        id: 'storage_types',
-        title: '存储类型',
-        subtitle: 'Storage Types',
-        description: '设备存储分为内部存储和外部存储，应用数据也有不同分类。',
-        details: [
-            {
-                title: '内部存储',
-                content: '设备内置的闪存芯片，速度快、稳定可靠。包含系统分区、应用分区、用户数据分区等。应用默认安装和运行在此存储上。'
-            },
-            {
-                title: '应用数据分类',
-                content: '应用数据包括：代码（App 本身）、数据（用户数据、数据库）、缓存（临时文件、图片缓存）。缓存可以安全清理，数据清理会导致应用重置。'
-            }
-        ]
-    },
-    // 屏幕相关
-    'screen_refresh_rate': {
-        id: 'screen_refresh_rate',
-        title: '屏幕刷新率',
-        subtitle: 'Refresh Rate',
-        description: '屏幕每秒刷新画面的次数，单位 Hz（赫兹）。',
-        details: [
-            {
-                title: '刷新率的意义',
-                content: '60Hz 表示每秒刷新 60 次，120Hz 表示每秒刷新 120 次。更高的刷新率意味着更流畅的视觉体验，特别是在滑动、动画、游戏中。'
-            },
-            {
-                title: '常见刷新率',
-                content: '60Hz：标准刷新率，大部分应用的基础体验；90Hz：流畅体验，平衡性能和功耗；120Hz：高刷体验，极致流畅但耗电增加；144Hz+：电竞级别，主要用于游戏手机。'
-            },
-            {
-                title: '自适应刷新率',
-                content: '现代设备支持自适应刷新率，根据内容动态调整（如静态页面 60Hz，滑动时 120Hz），在保证流畅的同时节省电量。'
-            }
-        ]
-    },
-    'screen_dpi': {
-        id: 'screen_dpi',
-        title: '屏幕密度 (DPI)',
-        subtitle: 'Dots Per Inch',
-        description: '每英寸屏幕上的像素点数，反映屏幕的精细程度。',
-        details: [
-            {
-                title: 'DPI 与 PPI',
-                content: 'DPI（Dots Per Inch）和 PPI（Pixels Per Inch）通常混用，都表示屏幕像素密度。数值越高，屏幕显示越精细，文字和图像越清晰。'
-            },
-            {
-                title: '常见 DPI 等级',
-                content: 'LDPI (~120dpi)、MDPI (~160dpi)、HDPI (~240dpi)、XHDPI (~320dpi)、XXHDPI (~480dpi)、XXXHDPI (~640dpi)。Android/HarmonyOS 根据 DPI 自动选择合适的资源。'
-            },
-            {
-                title: '密度无关像素 (dp)',
-                content: '为了在不同 DPI 屏幕上保持一致的视觉大小，使用 dp（density-independent pixels）作为单位。1dp 在 160dpi 屏幕上等于 1 像素，在高 DPI 屏幕上等于更多像素。'
-            }
-        ]
-    },
-    // GPU 相关概念
-    'gpu_max_texture_size': {
-        id: 'gpu_max_texture_size',
-        title: '最大纹理尺寸',
-        subtitle: 'Max Texture Size',
-        description: 'GPU 支持的最大 2D 纹理图片尺寸，通常以像素为单位。',
-        details: [
-            {
-                title: '什么是 2D 纹理？',
-                content: '2D 纹理是最常用的纹理类型，用于平面贴图，如游戏角色的皮肤、场景的地表、UI 元素等。最大纹理尺寸限制了单张 2D 纹理图片的最大宽高。'
-            },
-            {
-                title: '为什么重要？',
-                content: '如果纹理超过 GPU 支持的最大尺寸，会导致加载失败或需要分割处理。高端 GPU 通常支持 8192 或 16384，而低端 GPU 可能只支持 2048 或 4096。'
-            },
-            {
-                title: '优化建议',
-                content: '根据目标设备的 GPU 能力选择合适的纹理尺寸。过大的纹理会占用大量显存，影响性能。可以使用纹理压缩格式（如 ETC2、ASTC）减少内存占用。'
-            }
-        ]
-    },
-    'gpu_cube_map_size': {
-        id: 'gpu_cube_map_size',
-        title: '最大立方体贴图尺寸',
-        subtitle: 'Max Cube Map Texture Size',
-        description: 'GPU 支持的最大立方体贴图（Cube Map）尺寸。',
-        details: [
-            {
-                title: '什么是立方体贴图？',
-                content: '立方体贴图由 6 张正方形纹理组成，分别对应立方体的 6 个面（上、下、左、右、前、后）。常用于天空盒、环境反射、环境光照等效果。'
-            },
-            {
-                title: '与 2D 纹理的区别',
-                content: '2D 纹理是平面的，而立方体贴图是立体的。立方体贴图使用 3D 方向向量来采样，适合模拟无限远的环境。6 个面的尺寸必须相同，且必须是正方形。'
-            },
-            {
-                title: '应用场景',
-                content: '天空盒（模拟远景天空）、环境映射（金属反射效果）、动态反射、全局光照等。立方体贴图尺寸通常与 2D 纹理尺寸限制相同，但有些 GPU 会有不同的限制。'
-            }
-        ]
-    },
-    'gpu_texture_units': {
-        id: 'gpu_texture_units',
-        title: '纹理单元',
-        subtitle: 'Texture Units',
-        description: 'GPU 可以同时使用的纹理数量限制。',
-        details: [
-            {
-                title: '什么是纹理单元？',
-                content: '纹理单元是 GPU 中用于采样纹理的硬件资源。每个纹理单元可以在着色器中绑定一张纹理。maxTextureImageUnits 表示片段着色器可用的纹理单元数。'
-            },
-            {
-                title: '顶点纹理 vs 片段纹理',
-                content: '顶点纹理单元（Vertex Texture Units）用于顶点着色器采样纹理，片段纹理单元（Fragment Texture Units）用于片段着色器。现代 GPU 通常支持 16-32 个纹理单元。'
-            },
-            {
-                title: '实际应用',
-                content: '多纹理用于复杂渲染效果，如光照贴图、法线贴图、反射贴图等。超过限制的纹理需要分批渲染，会影响性能。'
-            }
-        ]
-    },
-    'gpu_viewport': {
-        id: 'gpu_viewport',
-        title: '视口尺寸',
-        subtitle: 'Viewport Dimensions',
-        description: 'GPU 支持的最大视口渲染区域尺寸。',
-        details: [
-            {
-                title: '什么是视口？',
-                content: '视口（Viewport）是 OpenGL ES 渲染输出的目标区域，通常对应屏幕或帧缓冲区的某个矩形区域。maxViewportDims 定义了视口的最大宽度和高度。'
-            },
-            {
-                title: '为什么重要？',
-                content: '视口尺寸限制了渲染目标的最大分辨率。例如 16384×16384 表示 GPU 可以渲染最大 16K×16K 的图像，这对于高分辨率截图、离线渲染等场景很重要。'
-            },
-            {
-                title: '与屏幕分辨率的区别',
-                content: '屏幕分辨率是物理显示器的像素数，而视口尺寸是 GPU 渲染能力的上限。视口可以大于屏幕（用于缩放），也可以小于屏幕（用于局部渲染）。'
-            }
-        ]
-    },
-    'gpu_line_width': {
-        id: 'gpu_line_width',
-        title: '线宽范围',
-        subtitle: 'Line Width Range',
-        description: 'GPU 支持的线条渲染宽度范围。',
-        details: [
-            {
-                title: '什么是线宽？',
-                content: '线宽是 OpenGL ES 绘制线条时的粗细程度。aliasedLineWidthRange 表示 GPU 支持的抗锯齿线条的最小和最大宽度。'
-            },
-            {
-                title: '为什么显示 1-1？',
-                content: '许多移动 GPU（特别是 Mali 系列）只支持线宽为 1。这是硬件限制，意味着无法通过 OpenGL ES 直接绘制更粗的线条。需要绘制矩形或多边形来模拟粗线条。'
-            },
-            {
-                title: '实际应用',
-                content: '在数据可视化、CAD 应用、游戏调试线框等场景中，线宽控制很重要。如果 GPU 不支持可变线宽，需要在应用层通过几何体扩展来实现。'
-            }
-        ]
-    },
-    'gpu_point_size': {
-        id: 'gpu_point_size',
-        title: '点大小范围',
-        subtitle: 'Point Size Range',
-        description: 'GPU 支持的点精灵（Point Sprite）渲染大小范围。',
-        details: [
-            {
-                title: '什么是点大小？',
-                content: '点大小是 OpenGL ES 绘制点精灵（Point Sprite）时的尺寸。与线宽类似，aliasedPointSizeRange 表示 GPU 支持的点的最小和最大尺寸。'
-            },
-            {
-                title: '为什么显示 1-1？',
-                content: '许多移动 GPU 只支持点大小为 1。这意味着无法直接绘制更大的点。需要绘制小三角形或四边形来模拟大点，这在粒子系统、点云渲染中很常见。'
-            },
-            {
-                title: '实际应用',
-                content: '点精灵常用于粒子效果、星空、点云可视化等。如果 GPU 不支持可变点大小，可以使用公告板技术（Billboarding）用始终朝向相机的四边形替代点。'
-            }
-        ]
-    },
-    'gpu_vertex_attribs': {
-        id: 'gpu_vertex_attribs',
-        title: '顶点属性',
-        subtitle: 'Vertex Attributes',
-        description: '每个顶点可以携带的数据属性数量限制。',
-        details: [
-            {
-                title: '什么是顶点属性？',
-                content: '顶点属性是每个顶点携带的数据，如位置（3D坐标）、颜色、法线、纹理坐标、切线等。maxVertexAttribs 表示每个顶点最多可以有多少个属性。'
-            },
-            {
-                title: '常见属性',
-                content: '位置（3个浮点数）、颜色（4个浮点数 RGBA）、纹理坐标（2个浮点数 UV）、法线（3个浮点数）。复杂的着色器可能需要更多属性。'
-            },
-            {
-                title: '限制影响',
-                content: 'OpenGL ES 3.0 要求至少支持 16 个顶点属性。如果着色器使用的属性超过 GPU 限制，会导致编译失败。需要优化着色器或拆分渲染。'
-            }
-        ]
-    },
-    'gpu_uniform_vectors': {
-        id: 'gpu_uniform_vectors',
-        title: 'Uniform 变量',
-        subtitle: 'Uniform Variables',
-        description: '着色器中可以使用的 uniform 变量数量限制。',
-        details: [
-            {
-                title: '什么是 Uniform？',
-                content: 'Uniform 是着色器中的全局常量，在整个绘制调用中保持不变。用于传递变换矩阵、光照参数、材质属性等数据给着色器。'
-            },
-            {
-                title: '顶点 vs 片段 Uniform',
-                content: '顶点着色器和片段着色器有各自的 uniform 限制。maxVertexUniformVectors 通常是 128-256，maxFragmentUniformVectors 通常是 16-224，具体取决于 GPU。'
-            },
-            {
-                title: '优化技巧',
-                content: '使用 UBO（Uniform Buffer Object）可以突破单个着色器的 uniform 限制，在多个着色器间共享数据。合并多个 uniform 到一个 vec4 也可以节省空间。'
-            }
-        ]
-    },
-    'gpu_varying_vectors': {
-        id: 'gpu_varying_vectors',
-        title: 'Varying 变量',
-        subtitle: 'Varying Variables',
-        description: '顶点着色器传递给片段着色器的插值数据限制。',
-        details: [
-            {
-                title: '什么是 Varying？',
-                content: 'Varying 变量用于将数据从顶点着色器传递到片段着色器。GPU 会在三角形内部进行插值，使片段着色器获得平滑变化的数据。'
-            },
-            {
-                title: '常见用途',
-                content: '纹理坐标、颜色、法线、光照强度等需要从顶点插值到像素的数据都使用 varying。maxVaryingVectors 限制了可以传递的数据量。'
-            },
-            {
-                title: '限制说明',
-                content: 'OpenGL ES 3.0 要求至少支持 15 个 varying 变量（vec4）。如果超过限制，着色器编译会失败。需要减少传递的数据量或使用纹理查找替代。'
-            }
-        ]
-    },
-    'gpu_multisample': {
-        id: 'gpu_multisample',
-        title: '多重采样',
-        subtitle: 'Multisampling',
-        description: 'GPU 支持的多重采样抗锯齿（MSAA）的最大样本数。',
-        details: [
-            {
-                title: '什么是多重采样？',
-                content: '多重采样抗锯齿（MSAA）是一种抗锯齿技术，通过对每个像素进行多次采样来减少锯齿边缘。maxSamples 表示支持的最大采样数。'
-            },
-            {
-                title: '常见采样数',
-                content: '1：无抗锯齿；2：2x MSAA；4：4x MSAA；8：8x MSAA；16：16x MSAA。采样数越高，边缘越平滑，但性能开销越大。'
-            },
-            {
-                title: '性能影响',
-                content: 'MSAA 会显著增加显存占用和渲染开销。移动端通常使用 2x 或 4x，高端设备可以使用 8x。需要在画质和性能间权衡。'
-            }
-        ]
-    },
-    'gpu_draw_buffers': {
-        id: 'gpu_draw_buffers',
-        title: '绘制缓冲区',
-        subtitle: 'Draw Buffers',
-        description: 'GPU 单次绘制可以同时输出到的颜色缓冲区数量。',
-        details: [
-            {
-                title: '什么是 MRT？',
-                content: 'MRT（Multiple Render Targets）允许单次绘制将结果输出到多个纹理。maxDrawBuffers 表示支持的同时渲染目标数量。'
-            },
-            {
-                title: '应用场景',
-                content: '延迟渲染、G-Buffer 生成、后处理效果等需要同时输出多个数据（颜色、法线、深度等）到不同纹理。OpenGL ES 3.0 要求至少支持 4 个。'
-            },
-            {
-                title: '性能考虑',
-                content: '更多的绘制缓冲区会增加带宽和显存占用。移动端通常限制在 4-8 个，桌面级 GPU 可以支持更多。'
-            }
-        ]
-    },
-    'gpu_compressed_texture': {
-        id: 'gpu_compressed_texture',
-        title: '压缩纹理格式',
-        subtitle: 'Compressed Texture Formats',
-        description: 'GPU 支持的硬件压缩纹理格式列表。',
-        details: [
-            {
-                title: '为什么需要压缩纹理？',
-                content: '压缩纹理可以显著减少显存占用和带宽消耗。与 PNG/JPEG 不同，压缩纹理可以直接被 GPU 使用，无需解压，提高渲染效率。'
-            },
-            {
-                title: '常见压缩格式',
-                content: 'ETC2：Android 标准，所有 GPU 支持；ASTC：高质量压缩，Android 5.0+ 可选支持；PVRTC：PowerVR GPU 专用；S3TC：桌面 GPU 常用。'
-            },
-            {
-                title: '使用建议',
-                content: '优先使用 ETC2（保证兼容性）或 ASTC（高质量）。根据纹理内容选择压缩方式：RGB 用 ETC2_RGB，RGBA 用 ETC2_RGBA 或 ASTC_4x4。'
-            }
-        ]
-    },
-    'gpu_extensions': {
-        id: 'gpu_extensions',
-        title: 'OpenGL ES 扩展',
-        subtitle: 'OpenGL ES Extensions',
-        description: 'GPU 支持的 OpenGL ES 扩展功能列表，这些扩展提供了超出标准规范的高级特性。',
-        details: [
-            {
-                title: '什么是扩展？',
-                content: 'OpenGL ES 扩展是 GPU 厂商提供的额外功能，超出标准 OpenGL ES 规范。扩展名称以 GL_ 开头，后跟厂商前缀（如 OES、KHR、EXT、ARM 等）和功能描述。'
-            },
-            {
-                title: '常见扩展 - 图像与同步',
-                content: 'GL_OES_EGL_image：支持 EGL 图像作为纹理；GL_OES_EGL_image_external：支持外部图像（如相机预览）；GL_OES_EGL_sync：支持 GPU 同步原语，用于多线程渲染协调。'
-            },
-            {
-                title: '常见扩展 - 深度与浮点',
-                content: 'GL_OES_depth24/depth32：支持 24/32 位深度缓冲；GL_OES_texture_float/half_float：支持浮点纹理（HDR 渲染）；GL_EXT_color_buffer_float：支持浮点颜色缓冲区。'
-            },
-            {
-                title: '常见扩展 - 压缩与顶点',
-                content: 'GL_KHR_texture_compression_astc_ldr/hdr：ASTC 纹理压缩（高质量）；GL_OES_vertex_array_object：VAO 支持（减少状态切换开销）；GL_OES_depth_texture：深度纹理支持（阴影贴图）。'
-            },
-            {
-                title: '如何使用扩展？',
-                content: '使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。'
-            }
-        ]
-    }
-};
-// 获取概念信息
-export function getConceptInfo(id) {
-    return ConceptConfig[id];
-}
-// 获取所有概念 ID
-export function getAllConceptIds() {
-    return Object.keys(ConceptConfig);
-}
-//# sourceMappingURL=ConceptConfig.js.map�O/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets�rB��moduleName�isLocalDependency�isNodeEntryFile�pkgPath�belongProjectPath�pkgName�pkgVersion�dependencyPkgInfo�hostModulesInfo�belongModulePath�checker�shouldEmitJs�entry���)/Users/bytedance/dev/huawei_sysinfo/entry�#/Users/bytedance/dev/huawei_sysinfo�entry�1.0.0�  ��rC��hostDependencyName�hostModuleName�../config/ConceptConfig�entry�)/Users/bytedance/dev/huawei_sysinfo/entry�rD� ��getNodeCount�getIdentifierCount�getSymbolCount�getTypeCount�getInstantiationCount�getRelationCacheSizes�isUndefinedSymbol�isArgumentsSymbol�isUnknownSymbol�getMergedSymbol�getDiagnostics�getGlobalDiagnostics�getRecursionIdentity�getUnmatchedProperties�getTypeOfSymbolAtLocation�getTypeOfSymbol�(getSymbolsOfParameterPropertyDeclaration�getDeclaredTypeOfSymbol�getPropertiesOfType�getPropertyOfType�"getPrivateIdentifierPropertyOfType�getTypeOfPropertyOfType�getIndexInfoOfType�getIndexInfosOfType�getIndexInfosOfIndexSymbol�getSignaturesOfType�getIndexTypeOfType�getIndexType�getBaseTypes�getBaseTypeOfLiteralType�getWidenedType�getTypeFromTypeNode�getParameterType�$getParameterIdentifierNameAtPosition�getPromisedTypeOfPromise�getAwaitedType�getReturnTypeOfSignature�isNullableType�getNullableType�getNonNullableType�getNonOptionalType�getTypeArguments�typeToTypeNode�$indexInfoToIndexSignatureDeclaration�signatureToSignatureDeclaration�symbolToEntityName�symbolToExpression�symbolToNode�!symbolToTypeParameterDeclarations�symbolToParameterDeclaration�typeParameterToDeclaration�getSymbolsInScope�getSymbolAtLocation�getIndexInfosAtLocation�!getShorthandAssignmentValueSymbol�#getExportSpecifierLocalTargetSymbol�getExportSymbolOfSymbol�getTypeAtLocation�getTypeAtLocationForLinter� tryGetTypeAtLocationWithoutCheck�getTypeOfAssignmentPattern�*getPropertySymbolOfDestructuringAssignment�signatureToString�typeToString�symbolToString�typePredicateToString�writeSignature�writeType�writeSymbol�writeTypePredicate�getAugmentedPropertiesOfType�getRootSymbols�getSymbolOfExpando�getContextualType�(getContextualTypeForObjectLiteralElement�#getContextualTypeForArgumentAtIndex� getContextualTypeForJsxAttribute�isContextSensitive�!getTypeOfPropertyOfContextualType�getFullyQualifiedName�#tryGetResolvedSignatureWithoutCheck�getResolvedSignature�/getResolvedSignatureForStringLiteralCompletions�$getResolvedSignatureForSignatureHelp�getExpandedParameters�hasEffectiveRestParameter�containsArgumentsReference�getConstantValue�isValidPropertyAccess�#isValidPropertyAccessForCompletions�getSignatureFromDeclaration�isImplementationOfOverload�getImmediateAliasedSymbol�getAliasedSymbol�getEmitResolver�getExportsOfModule�getExportsAndPropertiesOfModule� forEachExportAndPropertyOfModule�getSymbolWalker�getAmbientModules�getJsxIntrinsicTagNamesAt�isOptionalParameter�tryGetMemberInModuleExports�(tryGetMemberInModuleExportsAndProperties�tryFindAmbientModule�(tryFindAmbientModuleWithoutAugmentations�getApparentType�getUnionType�isTypeAssignableTo�createAnonymousType�createSignature�createSymbol�createIndexInfo�getAnyType�getStringType�getNumberType�createPromiseType�createArrayType�getElementTypeOfArrayType�getBooleanType�getFalseType�getTrueType�getVoidType�getUndefinedType�getNullType�getESSymbolType�getNeverType�getOptionalType�getPromiseType�getPromiseLikeType�getAsyncIterableType�isSymbolAccessible�isArrayType�isTupleType�isArrayLikeType�#isTypeInvalidDueToUnionDiscriminant�getExactOptionalProperties�getAllPossiblePropertiesOfTypes�(getSuggestedSymbolForNonexistentProperty�#getSuggestionForNonexistentProperty�,getSuggestedSymbolForNonexistentJSXAttribute�&getSuggestedSymbolForNonexistentSymbol�!getSuggestionForNonexistentSymbol�&getSuggestedSymbolForNonexistentModule�!getSuggestionForNonexistentExport�+getSuggestedSymbolForNonexistentClassMember�getBaseConstraintOfType�getDefaultFromTypeParameter�resolveName�getJsxNamespace�getJsxFragmentFactory�getAccessibleSymbolChain�getTypePredicateOfSignature�resolveExternalModuleName�resolveExternalModuleSymbol�tryGetThisTypeAt�getTypeArgumentConstraint�getSuggestionDiagnostics�runWithCancellationToken�3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias�isDeclarationVisible�isPropertyAccessible�getTypeOnlyAliasDeclaration�getMemberOverrideModifierStatus�!isTypeParameterPossiblyReferenced�getConstEnumRelate�clearConstEnumRelate�deleteConstEnumRelate�$getTypeArgumentsForResolvedSignature�getCheckedSourceFiles�"collectHaveTsNoCheckFilesForLinter�clearQualifiedNameCache�isStaticRecord�isStaticSourceFile�  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  �  ���t�// 概念详情项
-export interface ConceptDetailItem {
-  title: string;
-  content: string;
-}
-
-// 概念说明配置
-export interface ConceptInfo {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  details: ConceptDetailItem[];
-}
-
-export const ConceptConfig: Record<string, ConceptInfo> = {
-  // CPU 相关
-  'cpu_usage': {
-    id: 'cpu_usage',
-    title: 'CPU 使用率',
-    subtitle: 'CPU Usage',
-    description: 'CPU 使用率表示处理器在一段时间内处于忙碌状态的时间比例，反映了系统的负载情况。',
-    details: [
-      {
-        title: '什么是 CPU 使用率？',
-        content: 'CPU 使用率是指在一段时间内，CPU 处于非空闲状态的时间占比。例如，50% 的 CPU 使用率意味着 CPU 有一半的时间在处理任务，另一半时间处于空闲状态。'
-      },
-      {
-        title: '为什么使用率会超过 100%？',
-        content: '在多核 CPU 设备上，每个核心都可以独立工作。如果有 8 个核心，理论最大使用率可达 800%。系统显示的是所有核心的总使用率。'
-      },
-      {
-        title: '高 CPU 使用率意味着什么？',
-        content: '持续高 CPU 使用率（>80%）可能导致设备发热、耗电加快、响应变慢。但短时间内的高使用率是正常的，特别是在运行大型应用或游戏时。'
-      }
-    ]
-  },
-
-  'thread_cpu': {
-    id: 'thread_cpu',
-    title: '线程 CPU 使用率',
-    subtitle: 'Thread CPU Usage',
-    description: '线程是程序执行的最小单位，一个应用通常包含多个线程来执行不同任务。',
-    details: [
-      {
-        title: '什么是线程？',
-        content: '线程是操作系统能够进行运算调度的最小单位。一个进程可以包含多个线程，它们共享进程的资源，但独立执行。多线程可以提高程序的并发性能。'
-      },
-      {
-        title: '为什么应用有多个线程？',
-        content: '现代应用通常使用多线程：主线程负责 UI 渲染，后台线程处理网络请求、文件读写、数据计算等。这样可以避免界面卡顿，提升用户体验。'
-      },
-      {
-        title: '如何优化线程性能？',
-        content: '避免创建过多线程（会增加上下文切换开销），合理分配任务到不同线程，使用线程池管理线程生命周期，避免主线程执行耗时操作。'
-      }
-    ]
-  },
-
-  // 内存相关
-  'memory_pss': {
-    id: 'memory_pss',
-    title: 'PSS (实际使用内存)',
-    subtitle: 'Proportional Set Size',
-    description: 'PSS 是衡量应用实际内存占用的最佳指标，包含按比例分配的共享内存。',
-    details: [
-      {
-        title: '什么是 PSS？',
-        content: 'PSS (Proportional Set Size) 表示应用实际使用的物理内存。它包含应用独占的内存，以及按比例分配的共享内存（如系统库、共享资源等）。'
-      },
-      {
-        title: 'PSS vs RSS 的区别',
-        content: 'RSS (Resident Set Size) 包含所有共享内存的完整大小，会导致重复计算。PSS 更准确地反映了应用对系统内存的真实占用，是评估内存使用的最佳指标。'
-      },
-      {
-        title: '如何降低 PSS？',
-        content: '减少内存泄漏、及时释放不再使用的对象、使用更高效的数据结构、避免加载不必要的资源、使用图片压缩和缓存策略。'
-      }
-    ]
-  },
-
-  'memory_rss': {
-    id: 'memory_rss',
-    title: 'RSS (驻留内存)',
-    subtitle: 'Resident Set Size',
-    description: 'RSS 表示进程在物理内存中实际占用的空间，包含所有共享内存。',
-    details: [
-      {
-        title: '什么是 RSS？',
-        content: 'RSS (Resident Set Size) 表示进程当前驻留在物理内存中的页面总数，包括代码段、数据段、堆栈和共享库等。它反映了进程实际占用的物理内存大小。'
-      },
-      {
-        title: 'RSS 的局限性',
-        content: 'RSS 包含了完整的共享内存大小（如系统库），如果多个应用使用相同的库，RSS 会将这些内存重复计算，导致总和超过系统实际内存。'
-      }
-    ]
-  },
-
-  'memory_vss': {
-    id: 'memory_vss',
-    title: 'VSS (虚拟内存)',
-    subtitle: 'Virtual Set Size',
-    description: 'VSS 表示进程可访问的所有内存地址空间，包括未实际分配的内存。',
-    details: [
-      {
-        title: '什么是 VSS？',
-        content: 'VSS (Virtual Set Size) 表示进程的虚拟地址空间大小，包括所有已分配和未分配的内存映射。它通常远大于实际物理内存使用。'
-      },
-      {
-        title: '为什么 VSS 很大？',
-        content: 'VSS 包含了进程可能访问的所有内存区域，包括内存映射文件、共享库、堆、栈等。即使这些内存并未实际加载到物理内存中，也会计入 VSS。'
-      }
-    ]
-  },
-
-  'memory_shared': {
-    id: 'memory_shared',
-    title: '内存分类',
-    subtitle: 'Memory Classification',
-    description: '内存按共享属性和修改状态分为 Shared/Private 和 Clean/Dirty 四类。',
-    details: [
-      {
-        title: 'Shared Clean',
-        content: '与其他进程共享的未修改内存页。通常是系统库、框架代码等只读资源。多个应用共享同一份物理内存，节省系统资源。'
-      },
-      {
-        title: 'Shared Dirty',
-        content: '与其他进程共享但已被修改的内存页。由于被修改，需要为当前进程单独保存一份副本，但仍标记为共享。'
-      },
-      {
-        title: 'Private Clean',
-        content: '进程独占的未修改内存页。通常是应用自身的代码段、只读数据等，不需要与其他进程共享。'
-      },
-      {
-        title: 'Private Dirty',
-        content: '进程独占且已被修改的内存页。这是应用运行时产生的数据，如动态分配的内存、运行时数据等，是应用内存占用的主要部分。'
-      }
-    ]
-  },
-
-  'memory_limit': {
-    id: 'memory_limit',
-    title: '内存限制',
-    subtitle: 'Memory Limit',
-    description: '系统为每个应用设置的内存使用上限，防止单个应用占用过多资源。',
-    details: [
-      {
-        title: '什么是内存限制？',
-        content: '系统为每个应用进程设置的内存使用上限（RSS 限制）。当应用内存接近或超过限制时，系统会触发内存警告，甚至终止应用以防止影响系统稳定性。'
-      },
-      {
-        title: '超过限制会怎样？',
-        content: '当内存使用接近限制时，系统会发送内存警告，应用应该释放不必要的资源。如果继续增长超过限制，系统可能会强制终止应用（OOM - Out of Memory）。'
-      },
-      {
-        title: '如何避免 OOM？',
-        content: '及时响应内存警告、使用懒加载策略、实现图片缓存和压缩、避免内存泄漏、使用更高效的数据结构、定期检查和优化内存使用。'
-      }
-    ]
-  },
-
-  // GPU 相关
-  'gpu_info': {
-    id: 'gpu_info',
-    title: 'GPU 信息',
-    subtitle: 'GPU Information',
-    description: 'GPU（图形处理器）是专为图形渲染设计的处理器，负责游戏画面、UI 动画、视频解码等任务。',
-    details: [
-      {
-        title: 'GPU 厂商',
-        content: '常见的移动 GPU 厂商包括 ARM（Mali 系列）、Qualcomm（Adreno 系列）、Imagination（PowerVR 系列）、Apple 等。不同厂商的 GPU 在性能和特性上有所差异。'
-      },
-      {
-        title: 'OpenGL ES',
-        content: 'OpenGL ES（OpenGL for Embedded Systems）是移动设备上的图形 API 标准。版本号（如 3.2）表示支持的特性和功能级别，版本越高支持越多的高级图形特性。'
-      },
-      {
-        title: 'GLSL',
-        content: 'GLSL（OpenGL Shading Language）是用于编写着色器（Shader）的编程语言。着色器运行在 GPU 上，负责顶点处理、片段着色等图形渲染任务。'
-      },
-      {
-        title: 'GPU 扩展',
-        content: 'GPU 扩展是厂商提供的额外功能，超出标准 OpenGL ES 规范。这些扩展可以提供更好的性能或额外的图形特性，但需要针对特定 GPU 进行适配。'
-      }
-    ]
-  },
-
-  // 传感器相关
-  'sensor_accelerometer': {
-    id: 'sensor_accelerometer',
-    title: '加速度传感器',
-    subtitle: 'Accelerometer',
-    description: '测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。',
-    details: [
-      {
-        title: '工作原理',
-        content: '加速度传感器通过检测质量块在加速度作用下的位移来测量加速度。它可以检测重力（静止时 Z 轴约 9.8 m/s²）和运动加速度。'
-      },
-      {
-        title: '应用场景',
-        content: '屏幕旋转、步数检测、游戏控制、晃动检测、倾斜角度计算等。当设备静止时，可以测量重力方向来确定设备姿态。'
-      },
-      {
-        title: '三轴含义',
-        content: 'X 轴：左右方向，右为正；Y 轴：前后方向，前为正；Z 轴：上下方向，上为正。当设备平放时，X 和 Y 接近 0，Z 约 9.8 m/s²（重力加速度）。'
-      }
-    ]
-  },
-
-  'sensor_gyroscope': {
-    id: 'sensor_gyroscope',
-    title: '陀螺仪',
-    subtitle: 'Gyroscope',
-    description: '测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。',
-    details: [
-      {
-        title: '工作原理',
-        content: '陀螺仪基于科里奥利力原理，通过检测旋转时产生的力来测量角速度。它可以检测设备的旋转、转向等动作，与加速度传感器互补。'
-      },
-      {
-        title: '与加速度的区别',
-        content: '加速度传感器测量线性加速度（包括重力），陀螺仪测量旋转角速度。两者结合可以精确追踪设备的 3D 运动和姿态。'
-      },
-      {
-        title: '应用场景',
-        content: '游戏控制（如赛车转向）、图像防抖、航向参考、VR/AR 追踪、相机旋转检测等。'
-      }
-    ]
-  },
-
-  'sensor_light': {
-    id: 'sensor_light',
-    title: '光线传感器',
-    subtitle: 'Ambient Light Sensor',
-    description: '测量环境光强度，单位 lux（勒克斯）。',
-    details: [
-      {
-        title: 'lux 单位',
-        content: 'lux（勒克斯）是光照强度的单位，表示每平方米接收到的光通量。常见参考：室内照明 100-500 lux，阴天室外 1000-10000 lux，晴天室外 10000-100000 lux。'
-      },
-      {
-        title: '应用场景',
-        content: '自动调节屏幕亮度（环境暗时降低亮度保护眼睛，环境亮时提高亮度保证可见性）、自动切换暗黑模式、相机曝光调节等。'
-      }
-    ]
-  },
-
-  'sensor_magnetic': {
-    id: 'sensor_magnetic',
-    title: '磁场传感器',
-    subtitle: 'Magnetometer',
-    description: '测量设备周围的磁场强度，单位 μT（微特斯拉）。',
-    details: [
-      {
-        title: '工作原理',
-        content: '磁场传感器基于霍尔效应或磁阻效应，可以检测地球磁场和周围磁场的强度和方向。地球磁场强度约为 25-65 μT。'
-      },
-      {
-        title: '电子罗盘',
-        content: '结合加速度传感器（确定水平面）和磁场传感器（确定北方），可以实现电子罗盘功能，用于导航和方向检测。'
-      },
-      {
-        title: '干扰因素',
-        content: '附近的金属物体、磁铁、电子设备都会产生磁场干扰，影响传感器精度。使用时需要远离这些干扰源或进行校准。'
-      }
-    ]
-  },
-
-  // 网络相关
-  'network_bandwidth': {
-    id: 'network_bandwidth',
-    title: '网络带宽',
-    subtitle: 'Network Bandwidth',
-    description: '表示网络连接的数据传输能力，分为上行和下行。',
-    details: [
-      {
-        title: '上行 vs 下行',
-        content: '上行带宽（Upload）是设备向网络发送数据的速度，影响上传文件、发送消息、视频通话等。下行带宽（Download）是设备从网络接收数据的速度，影响下载、视频播放、网页浏览等。'
-      },
-      {
-        title: '理论 vs 实际',
-        content: '显示的带宽是理论最大值，由网络类型（5G、Wi-Fi 6 等）决定。实际速度受信号强度、网络拥塞、服务器速度等因素影响，通常低于理论值。'
-      },
-      {
-        title: '计费网络',
-        content: '移动数据网络通常按流量计费的，Wi-Fi 通常不计费。应用可以根据此信息决定是否下载大文件或播放高清视频。'
-      }
-    ]
-  },
-
-  // 电池相关
-  'battery_health': {
-    id: 'battery_health',
-    title: '电池健康度',
-    subtitle: 'Battery Health',
-    description: '反映电池当前容量相对于新电池的比例，是电池老化程度的指标。',
-    details: [
-      {
-        title: '什么是电池健康度？',
-        content: '电池健康度表示当前电池的最大容量相对于新电池设计容量的百分比。随着充放电循环次数增加，电池会逐渐老化，容量下降。'
-      },
-      {
-        title: '健康度标准',
-        content: '100-90%：健康状态良好；89-80%：轻度老化，续航略有下降；79-70%：中度老化，建议考虑更换；<70%：严重老化，续航明显缩短，可能影响性能。'
-      },
-      {
-        title: '如何延长电池寿命？',
-        content: '避免过度充电（保持 20%-80% 电量）、避免高温环境、使用原装充电器、减少快充频率、避免边充边玩大型游戏。'
-      }
-    ]
-  },
-
-  // 存储相关
-  'storage_types': {
-    id: 'storage_types',
-    title: '存储类型',
-    subtitle: 'Storage Types',
-    description: '设备存储分为内部存储和外部存储，应用数据也有不同分类。',
-    details: [
-      {
-        title: '内部存储',
-        content: '设备内置的闪存芯片，速度快、稳定可靠。包含系统分区、应用分区、用户数据分区等。应用默认安装和运行在此存储上。'
-      },
-      {
-        title: '应用数据分类',
-        content: '应用数据包括：代码（App 本身）、数据（用户数据、数据库）、缓存（临时文件、图片缓存）。缓存可以安全清理，数据清理会导致应用重置。'
-      }
-    ]
-  },
-
-  // 屏幕相关
-  'screen_refresh_rate': {
-    id: 'screen_refresh_rate',
-    title: '屏幕刷新率',
-    subtitle: 'Refresh Rate',
-    description: '屏幕每秒刷新画面的次数，单位 Hz（赫兹）。',
-    details: [
-      {
-        title: '刷新率的意义',
-        content: '60Hz 表示每秒刷新 60 次，120Hz 表示每秒刷新 120 次。更高的刷新率意味着更流畅的视觉体验，特别是在滑动、动画、游戏中。'
-      },
-      {
-        title: '常见刷新率',
-        content: '60Hz：标准刷新率，大部分应用的基础体验；90Hz：流畅体验，平衡性能和功耗；120Hz：高刷体验，极致流畅但耗电增加；144Hz+：电竞级别，主要用于游戏手机。'
-      },
-      {
-        title: '自适应刷新率',
-        content: '现代设备支持自适应刷新率，根据内容动态调整（如静态页面 60Hz，滑动时 120Hz），在保证流畅的同时节省电量。'
-      }
-    ]
-  },
-
-  'screen_dpi': {
-    id: 'screen_dpi',
-    title: '屏幕密度 (DPI)',
-    subtitle: 'Dots Per Inch',
-    description: '每英寸屏幕上的像素点数，反映屏幕的精细程度。',
-    details: [
-      {
-        title: 'DPI 与 PPI',
-        content: 'DPI（Dots Per Inch）和 PPI（Pixels Per Inch）通常混用，都表示屏幕像素密度。数值越高，屏幕显示越精细，文字和图像越清晰。'
-      },
-      {
-        title: '常见 DPI 等级',
-        content: 'LDPI (~120dpi)、MDPI (~160dpi)、HDPI (~240dpi)、XHDPI (~320dpi)、XXHDPI (~480dpi)、XXXHDPI (~640dpi)。Android/HarmonyOS 根据 DPI 自动选择合适的资源。'
-      },
-      {
-        title: '密度无关像素 (dp)',
-        content: '为了在不同 DPI 屏幕上保持一致的视觉大小，使用 dp（density-independent pixels）作为单位。1dp 在 160dpi 屏幕上等于 1 像素，在高 DPI 屏幕上等于更多像素。'
-      }
-    ]
-  },
-
-  // GPU 相关概念
-  'gpu_max_texture_size': {
-    id: 'gpu_max_texture_size',
-    title: '最大纹理尺寸',
-    subtitle: 'Max Texture Size',
-    description: 'GPU 支持的最大 2D 纹理图片尺寸，通常以像素为单位。',
-    details: [
-      {
-        title: '什么是 2D 纹理？',
-        content: '2D 纹理是最常用的纹理类型，用于平面贴图，如游戏角色的皮肤、场景的地表、UI 元素等。最大纹理尺寸限制了单张 2D 纹理图片的最大宽高。'
-      },
-      {
-        title: '为什么重要？',
-        content: '如果纹理超过 GPU 支持的最大尺寸，会导致加载失败或需要分割处理。高端 GPU 通常支持 8192 或 16384，而低端 GPU 可能只支持 2048 或 4096。'
-      },
-      {
-        title: '优化建议',
-        content: '根据目标设备的 GPU 能力选择合适的纹理尺寸。过大的纹理会占用大量显存，影响性能。可以使用纹理压缩格式（如 ETC2、ASTC）减少内存占用。'
-      }
-    ]
-  },
-
-  'gpu_cube_map_size': {
-    id: 'gpu_cube_map_size',
-    title: '最大立方体贴图尺寸',
-    subtitle: 'Max Cube Map Texture Size',
-    description: 'GPU 支持的最大立方体贴图（Cube Map）尺寸。',
-    details: [
-      {
-        title: '什么是立方体贴图？',
-        content: '立方体贴图由 6 张正方形纹理组成，分别对应立方体的 6 个面（上、下、左、右、前、后）。常用于天空盒、环境反射、环境光照等效果。'
-      },
-      {
-        title: '与 2D 纹理的区别',
-        content: '2D 纹理是平面的，而立方体贴图是立体的。立方体贴图使用 3D 方向向量来采样，适合模拟无限远的环境。6 个面的尺寸必须相同，且必须是正方形。'
-      },
-      {
-        title: '应用场景',
-        content: '天空盒（模拟远景天空）、环境映射（金属反射效果）、动态反射、全局光照等。立方体贴图尺寸通常与 2D 纹理尺寸限制相同，但有些 GPU 会有不同的限制。'
-      }
-    ]
-  },
-
-  'gpu_texture_units': {
-    id: 'gpu_texture_units',
-    title: '纹理单元',
-    subtitle: 'Texture Units',
-    description: 'GPU 可以同时使用的纹理数量限制。',
-    details: [
-      {
-        title: '什么是纹理单元？',
-        content: '纹理单元是 GPU 中用于采样纹理的硬件资源。每个纹理单元可以在着色器中绑定一张纹理。maxTextureImageUnits 表示片段着色器可用的纹理单元数。'
-      },
-      {
-        title: '顶点纹理 vs 片段纹理',
-        content: '顶点纹理单元（Vertex Texture Units）用于顶点着色器采样纹理，片段纹理单元（Fragment Texture Units）用于片段着色器。现代 GPU 通常支持 16-32 个纹理单元。'
-      },
-      {
-        title: '实际应用',
-        content: '多纹理用于复杂渲染效果，如光照贴图、法线贴图、反射贴图等。超过限制的纹理需要分批渲染，会影响性能。'
-      }
-    ]
-  },
-
-  'gpu_viewport': {
-    id: 'gpu_viewport',
-    title: '视口尺寸',
-    subtitle: 'Viewport Dimensions',
-    description: 'GPU 支持的最大视口渲染区域尺寸。',
-    details: [
-      {
-        title: '什么是视口？',
-        content: '视口（Viewport）是 OpenGL ES 渲染输出的目标区域，通常对应屏幕或帧缓冲区的某个矩形区域。maxViewportDims 定义了视口的最大宽度和高度。'
-      },
-      {
-        title: '为什么重要？',
-        content: '视口尺寸限制了渲染目标的最大分辨率。例如 16384×16384 表示 GPU 可以渲染最大 16K×16K 的图像，这对于高分辨率截图、离线渲染等场景很重要。'
-      },
-      {
-        title: '与屏幕分辨率的区别',
-        content: '屏幕分辨率是物理显示器的像素数，而视口尺寸是 GPU 渲染能力的上限。视口可以大于屏幕（用于缩放），也可以小于屏幕（用于局部渲染）。'
-      }
-    ]
-  },
-
-  'gpu_line_width': {
-    id: 'gpu_line_width',
-    title: '线宽范围',
-    subtitle: 'Line Width Range',
-    description: 'GPU 支持的线条渲染宽度范围。',
-    details: [
-      {
-        title: '什么是线宽？',
-        content: '线宽是 OpenGL ES 绘制线条时的粗细程度。aliasedLineWidthRange 表示 GPU 支持的抗锯齿线条的最小和最大宽度。'
-      },
-      {
-        title: '为什么显示 1-1？',
-        content: '许多移动 GPU（特别是 Mali 系列）只支持线宽为 1。这是硬件限制，意味着无法通过 OpenGL ES 直接绘制更粗的线条。需要绘制矩形或多边形来模拟粗线条。'
-      },
-      {
-        title: '实际应用',
-        content: '在数据可视化、CAD 应用、游戏调试线框等场景中，线宽控制很重要。如果 GPU 不支持可变线宽，需要在应用层通过几何体扩展来实现。'
-      }
-    ]
-  },
-
-  'gpu_point_size': {
-    id: 'gpu_point_size',
-    title: '点大小范围',
-    subtitle: 'Point Size Range',
-    description: 'GPU 支持的点精灵（Point Sprite）渲染大小范围。',
-    details: [
-      {
-        title: '什么是点大小？',
-        content: '点大小是 OpenGL ES 绘制点精灵（Point Sprite）时的尺寸。与线宽类似，aliasedPointSizeRange 表示 GPU 支持的点的最小和最大尺寸。'
-      },
-      {
-        title: '为什么显示 1-1？',
-        content: '许多移动 GPU 只支持点大小为 1。这意味着无法直接绘制更大的点。需要绘制小三角形或四边形来模拟大点，这在粒子系统、点云渲染中很常见。'
-      },
-      {
-        title: '实际应用',
-        content: '点精灵常用于粒子效果、星空、点云可视化等。如果 GPU 不支持可变点大小，可以使用公告板技术（Billboarding）用始终朝向相机的四边形替代点。'
-      }
-    ]
-  },
-
-  'gpu_vertex_attribs': {
-    id: 'gpu_vertex_attribs',
-    title: '顶点属性',
-    subtitle: 'Vertex Attributes',
-    description: '每个顶点可以携带的数据属性数量限制。',
-    details: [
-      {
-        title: '什么是顶点属性？',
-        content: '顶点属性是每个顶点携带的数据，如位置（3D坐标）、颜色、法线、纹理坐标、切线等。maxVertexAttribs 表示每个顶点最多可以有多少个属性。'
-      },
-      {
-        title: '常见属性',
-        content: '位置（3个浮点数）、颜色（4个浮点数 RGBA）、纹理坐标（2个浮点数 UV）、法线（3个浮点数）。复杂的着色器可能需要更多属性。'
-      },
-      {
-        title: '限制影响',
-        content: 'OpenGL ES 3.0 要求至少支持 16 个顶点属性。如果着色器使用的属性超过 GPU 限制，会导致编译失败。需要优化着色器或拆分渲染。'
-      }
-    ]
-  },
-
-  'gpu_uniform_vectors': {
-    id: 'gpu_uniform_vectors',
-    title: 'Uniform 变量',
-    subtitle: 'Uniform Variables',
-    description: '着色器中可以使用的 uniform 变量数量限制。',
-    details: [
-      {
-        title: '什么是 Uniform？',
-        content: 'Uniform 是着色器中的全局常量，在整个绘制调用中保持不变。用于传递变换矩阵、光照参数、材质属性等数据给着色器。'
-      },
-      {
-        title: '顶点 vs 片段 Uniform',
-        content: '顶点着色器和片段着色器有各自的 uniform 限制。maxVertexUniformVectors 通常是 128-256，maxFragmentUniformVectors 通常是 16-224，具体取决于 GPU。'
-      },
-      {
-        title: '优化技巧',
-        content: '使用 UBO（Uniform Buffer Object）可以突破单个着色器的 uniform 限制，在多个着色器间共享数据。合并多个 uniform 到一个 vec4 也可以节省空间。'
-      }
-    ]
-  },
-
-  'gpu_varying_vectors': {
-    id: 'gpu_varying_vectors',
-    title: 'Varying 变量',
-    subtitle: 'Varying Variables',
-    description: '顶点着色器传递给片段着色器的插值数据限制。',
-    details: [
-      {
-        title: '什么是 Varying？',
-        content: 'Varying 变量用于将数据从顶点着色器传递到片段着色器。GPU 会在三角形内部进行插值，使片段着色器获得平滑变化的数据。'
-      },
-      {
-        title: '常见用途',
-        content: '纹理坐标、颜色、法线、光照强度等需要从顶点插值到像素的数据都使用 varying。maxVaryingVectors 限制了可以传递的数据量。'
-      },
-      {
-        title: '限制说明',
-        content: 'OpenGL ES 3.0 要求至少支持 15 个 varying 变量（vec4）。如果超过限制，着色器编译会失败。需要减少传递的数据量或使用纹理查找替代。'
-      }
-    ]
-  },
-
-  'gpu_multisample': {
-    id: 'gpu_multisample',
-    title: '多重采样',
-    subtitle: 'Multisampling',
-    description: 'GPU 支持的多重采样抗锯齿（MSAA）的最大样本数。',
-    details: [
-      {
-        title: '什么是多重采样？',
-        content: '多重采样抗锯齿（MSAA）是一种抗锯齿技术，通过对每个像素进行多次采样来减少锯齿边缘。maxSamples 表示支持的最大采样数。'
-      },
-      {
-        title: '常见采样数',
-        content: '1：无抗锯齿；2：2x MSAA；4：4x MSAA；8：8x MSAA；16：16x MSAA。采样数越高，边缘越平滑，但性能开销越大。'
-      },
-      {
-        title: '性能影响',
-        content: 'MSAA 会显著增加显存占用和渲染开销。移动端通常使用 2x 或 4x，高端设备可以使用 8x。需要在画质和性能间权衡。'
-      }
-    ]
-  },
-
-  'gpu_draw_buffers': {
-    id: 'gpu_draw_buffers',
-    title: '绘制缓冲区',
-    subtitle: 'Draw Buffers',
-    description: 'GPU 单次绘制可以同时输出到的颜色缓冲区数量。',
-    details: [
-      {
-        title: '什么是 MRT？',
-        content: 'MRT（Multiple Render Targets）允许单次绘制将结果输出到多个纹理。maxDrawBuffers 表示支持的同时渲染目标数量。'
-      },
-      {
-        title: '应用场景',
-        content: '延迟渲染、G-Buffer 生成、后处理效果等需要同时输出多个数据（颜色、法线、深度等）到不同纹理。OpenGL ES 3.0 要求至少支持 4 个。'
-      },
-      {
-        title: '性能考虑',
-        content: '更多的绘制缓冲区会增加带宽和显存占用。移动端通常限制在 4-8 个，桌面级 GPU 可以支持更多。'
-      }
-    ]
-  },
-
-  'gpu_compressed_texture': {
-    id: 'gpu_compressed_texture',
-    title: '压缩纹理格式',
-    subtitle: 'Compressed Texture Formats',
-    description: 'GPU 支持的硬件压缩纹理格式列表。',
-    details: [
-      {
-        title: '为什么需要压缩纹理？',
-        content: '压缩纹理可以显著减少显存占用和带宽消耗。与 PNG/JPEG 不同，压缩纹理可以直接被 GPU 使用，无需解压，提高渲染效率。'
-      },
-      {
-        title: '常见压缩格式',
-        content: 'ETC2：Android 标准，所有 GPU 支持；ASTC：高质量压缩，Android 5.0+ 可选支持；PVRTC：PowerVR GPU 专用；S3TC：桌面 GPU 常用。'
-      },
-      {
-        title: '使用建议',
-        content: '优先使用 ETC2（保证兼容性）或 ASTC（高质量）。根据纹理内容选择压缩方式：RGB 用 ETC2_RGB，RGBA 用 ETC2_RGBA 或 ASTC_4x4。'
-      }
-    ]
-  },
-
-  'gpu_extensions': {
-    id: 'gpu_extensions',
-    title: 'OpenGL ES 扩展',
-    subtitle: 'OpenGL ES Extensions',
-    description: 'GPU 支持的 OpenGL ES 扩展功能列表，这些扩展提供了超出标准规范的高级特性。',
-    details: [
-      {
-        title: '什么是扩展？',
-        content: 'OpenGL ES 扩展是 GPU 厂商提供的额外功能，超出标准 OpenGL ES 规范。扩展名称以 GL_ 开头，后跟厂商前缀（如 OES、KHR、EXT、ARM 等）和功能描述。'
-      },
-      {
-        title: '常见扩展 - 图像与同步',
-        content: 'GL_OES_EGL_image：支持 EGL 图像作为纹理；GL_OES_EGL_image_external：支持外部图像（如相机预览）；GL_OES_EGL_sync：支持 GPU 同步原语，用于多线程渲染协调。'
-      },
-      {
-        title: '常见扩展 - 深度与浮点',
-        content: 'GL_OES_depth24/depth32：支持 24/32 位深度缓冲；GL_OES_texture_float/half_float：支持浮点纹理（HDR 渲染）；GL_EXT_color_buffer_float：支持浮点颜色缓冲区。'
-      },
-      {
-        title: '常见扩展 - 压缩与顶点',
-        content: 'GL_KHR_texture_compression_astc_ldr/hdr：ASTC 纹理压缩（高质量）；GL_OES_vertex_array_object：VAO 支持（减少状态切换开销）；GL_OES_depth_texture：深度纹理支持（阴影贴图）。'
-      },
-      {
-        title: '如何使用扩展？',
-        content: '使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。'
-      }
-    ]
-  }
-};
-
-// 获取概念信息
-export function getConceptInfo(id: string): ConceptInfo | undefined {
-  return ConceptConfig[id];
-}
-
-// 获取所有概念 ID
-export function getAllConceptIds(): string[] {
-  return Object.keys(ConceptConfig);
-}
-�A��rE��version�file�sourceRoot�sources�names�mappings�ConceptConfig.js���ConceptConfig.ets��k��   � � � � � :�� � �� � � �� �
- � � �� � 	� � �� � � � �� � � ��@ <�� � � �� �� � � �% �� � � ��l �d�� �� �� � � �(  �� � � ��\ �T�� �� ��  �  �  �(   �� !� !� !��] !�U�� "��	 #�� $�� &� &� &�� '�
- '� '� '�� (� (	� (� (�� )� )� )�$ ) �� *� *� *�8 *4�� +� +� +�� ,�� -� -� -� -�� .� .� .��\ .�T�� /�� 0�� 1� 1� 1�$ 1�� 2� 2� 2��[ 2�S�� 3�� 4�� 5� 5� 5�" 5�� 6� 6� 6��V 6�N�� 7��	 8�� 9�� ;� ;	�� <� <� <�� =�
- =� =� =�� >� >	� >� >�� ?� ?� ?�) ?%�� �@� �@� �@�9 �@5�� �A� �A� �A�� �B�� �C� �C� �C�! �C�� �D� �D� �D��i �D�a�� �E�� �F�� �G� �G� �G�' �G�� �H� �H� �H��n �H�f�� �I�� �J�� �K� �K� �K�" �K�� �L� �L� �L��P �L�H�� �M��	 �N�� �O�� �Q� �Q� �Q�� �R�
- �R� �R� �R�� �S� �S	� �S� �S�� �T� �T� �T�% �T!�� �U� �U� �U�6 �U2�� �V� �V� �V�� �W�� �X� �X� �X�! �X�� �Y� �Y� �Y��k �Y�c�� �Z�� �[�� �\� �\� �\�! �\�� �]� �]� �]��[ �]�S�� �^��	 �_�� �`�� �b� �b� �b�� �c�
- �c� �c� �c�� �d� �d	� �d� �d�� �e� �e� �e�$ �e �� �f� �f� �f�7 �f3�� �g� �g� �g�� �h�� �i� �i� �i�! �i�� �j� �j� �j��` �j�X�� �k�� �l�� �m� �m� �m�$ �m�� �n� �n� �n��^ �n�V�� �o��	 �p�� �q�� �s� �s� �s�� �t�
- �t� �t� �t�� �u� �u	� �u� �u�� �v� �v� �v�) �v%�� �w� �w� �w��F �w�B�� �x� �x� �x�� �y�� �z� �z� �z�% �z�� �{� �{� �{��P �{�H�� �|�� �}�� �~� �~� �~�% �~�� �� �� ���J ��B�� ̀�� ́�� ̂� ̂� ̂�& ̂�� ̃� ̃� ̃��D ̃<�� ̄�� ̅�� ̆� ̆� ̆�& ̆�� ̇� ̇� ̇��S ̇�K�� ̈��	 ̉�� ̊�� ̌� ̌� ̌�� ̍�
- ̍� ̍� ̍�� ̎� ̎	� ̎� ̎�� ̏� ̏� ̏�  ̏�� ̐� ̐� ̐�5 ̐1�� ̑� ̑� ̑�� ̒�� ̓� ̓� ̓�! ̓�� ̔� ̔� ̔��_ ̔�W�� ̕�� ̖�� ̗� ̗� ̗�! ̗�� ̘� ̘� ̘��i ̘�a�� ̙�� ̚�� ̛� ̛� ̛�" ̛�� ̜� ̜� ̜��T ̜�L�� ̝��	 ̞�� ̟�� ̡� ̡�� ̢� ̢� ̢�� ̣�
- ̣� ̣� ̣�� ̤� ̤	� ̤� ̤�� ̥� ̥� ̥�# ̥�� ̦� ̦� ̦��D ̦�@�� ̧� ̧� ̧�� ̨�� ̩� ̩� ̩� ̩�� ̪� ̪� ̪�́ ̪�y�� ̫�� ̬�� ̭� ̭� ̭�" ̭�� ̮� ̮� ̮��y ̮�q�� ̯�� ̰�� ̱� ̱� ̱� ̱�� ̲� ̲� ̲��n ̲�f�� ̳�� ̴�� ̵� ̵� ̵� ̵�� ̶� ̶� ̶��e ̶�]�� ̷��	 ̸�� ̹�� ̻� ̻
-�� ̼� ̼� ̼�� ̽�
- ̽� ̽�" ̽�� ̾� ̾	� ̾� ̾�� ̿� ̿� ̿�! ̿�� ��� ��� ���4 ��0�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����Z ���R�� ���� ���� ��� ��� ��� ���� ��� ��� ����N ���F�� ���� ���� ��� ��� ��� ���� ��� ��� ����h ���`�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ��� ���� ��� ��� ���5 ��1�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����U ���M�� ���� ���� ��� ��� ���  ���� ��� ��� ����Q ���I�� ���� ���� ��� ��� ��� ���� ��� ��� ����B ��:�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���( ��$�� ��� ��� ���+ ��'�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����z ���r�� ���� ���� ��� ��� ��� ���� ��� ��� ����Q ���I�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���  ���� ��� ��� ���/ ��+�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����R ���J�� � �� ��� �� �� �� ��� �� �� ���L ��D�� ��� ��� �� �� �� ��� �� �� ���M ��E�� ���	 �	�� �
-�� �� �	�� �� �� ��� ��
- �� �� ��� �� �	� �� ��� �� �� ��% �!�� �� �� ��- �)�� �� �� ��� ��� �� �� ��! ��� �� �� ���s ��k�� ��� ��� �� �� ��! ��� �� �� ���_ ��W�� ��� ��� �� �� �� ��� �� �� ���P ��H�� ���	 ��� � �� �"� �"	�� �#� �#� �#�� �$�
- �$� �$� �$�� �%� �%	� �%� �%�� �&� �&� �&�" �&�� �'� �'� �'�4 �'0�� �(� �(� �(�� �)�� �*� �*� �*�" �*�� �+� �+� �+��S �+�K�� �,�� �-�� �.� �.� �.� �.�� �/� �/� �/��h �/�`�� �0�� �1�� �2� �2� �2�" �2�� �3� �3� �3��R �3�J�� �4��	 �5�� �6�� �8� �8	�� �9� �9� �9�� �:�
- �:� �:� �:�� �;� �;	� �;� �;�� �<� �<� �<�! �<�� �=� �=� �=�2 �=.�� �>� �>� �>�� �?�� �@� �@� �@� �@�� �A� �A� �A��Q �A�I�� �B�� �C�� �D� �D� �D� �D�� �E� �E� �E��] �E�U�� �F��	 �G�� �H�� �J� �J	�� �K� �K� �K�� �L�
- �L� �L�! �L�� �M� �M	� �M� �M�� �N� �N� �N�  �N�� �O� �O� �O�- �O)�� �P� �P� �P�� �Q�� �R� �R� �R� �R�� �S� �S� �S��_ �S�W�� �T�� �U�� �V� �V� �V� �V�� �W� �W� �W��m �W�e�� �X�� �Y�� �Z� �Z� �Z� �Z�� �[� �[� �[��T �[�L�� �\��	 �]�� �^�� �`� �`� �`�� �a�
- �a� �a� �a�� �b� �b	� �b� �b�� �c� �c� �c�! �c�� �d� �d� �d�- �d)�� �e� �e� �e�� �f�� �g� �g� �g�" �g�� �h� �h� �h��h �h�`�� �i�� �j�� �k� �k� �k�" �k�� �l� �l� �l�̞ �l̖�� �m�� �n�� �o� �o� �o�$ �o�� �p� �p� �p�́ �p�y�� �q��	 �r�� �s�� �u� �u�� �v� �v� �v�� �w�
- �w� �w�" �w�� �x� �x	� �x� �x�� �y� �y� �y�$ �y �� �z� �z� �z�4 �z0�� �{� �{� �{�� �|�� �}� �}� �}�# �}�� �~� �~� �~��` �~�X�� ��� ���� ��� ��� ��� ���� ��� ��� ����p ���h�� ���� ���� ��� ��� ��� ���� ��� ��� ����c ���[�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���- ��)�� ��� ��� ���2 ��.�� ��� ��� ���� ���� ��� ��� ���" ���� ��� ��� ����\ ���T�� ���� ���� ��� ��� ���# ���� ��� ��� ����b ���Z�� ���� ���� ��� ��� ��� ���� ��� ��� ����f ���^�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���! ���� ��� ��� ���) ��%�� ��� ��� ���� ���� ��� ��� ���! ���� ��� ��� ����k ���c�� ���� ���� ��� ��� ���% ���� ��� ��� ���́ ���y�� ���� ���� ��� ��� ��� ���� ��� ��� ����L ���D�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���' ��#�� ��� ��� ���) ��%�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����n ���f�� ���� ���� ��� ��� ��� ���� ��� ��� ����k ���c�� ���� ���� ��� ��� ���" ���� ��� ��� ����] ���U�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���$ �� �� ��� ��� ���' ��#�� ��� ��� ���� ���� ��� ��� ��� ���� ��� ��� ����b ���Z�� ���� ���� ��� ��� ���# ���� ��� ��� ����m ���e�� ���� ���� ��� ��� ��� ���� ��� ��� ����\ ���T�� ����	 ���� ���� ��� ��� ���� ���
- ��� ��� ���� ��� ��	� ��� ���� ��� ��� ���$ �� �� ��� ��� ���6 ��2�� ��� ��� ���� ���� ��� ��� ���  ���� ��� ��� ����r ���j�� ���� ���� ��� ��� ���# ���� ��� ��� ����_ ���W�� ���� ���� ��� ��� ��� ���� ��� ��� ����f ���^�� ����	 ���� ���� ��� ��� ���� ���
- ��� ���  ���� ��� ��	� ��� ���� ��� ��� ���% ��!�� ��� ��� ���) ��%�� ��� ��� ���� ���� ��� ��� ���! ���� ��� ��� ����e ���]�� ���� ���� ��� ��� ��� ���� � � � � � ��\ � �T�� ��� ��� �� �� �� ��� �� �� ���b ��Z�� ���	 ��� ��� �	� �	� �	�� �
-�
- �
-� �
-�! �
-�� �� �	� �� ��� �� �� ��% �!�� �� �� ��0 �,�� �� �� ��� ��� �� �� ��% ��� �� �� ���U ��M�� ��� ��� �� �� ��) �!�� �� �� ��̉ �́�� ��� ��� �� �� �� ��� �� �� ���x ��p�� ���	 ��� ��� �� �� ��� ��
- �� ��! ��� � � � 	� � � � �� �!� �!� �!�% �!!�� �"� �"� �"�, �"(�� �#� �#� �#�� �$�� �%� �%� �%�% �%�� �&� �&� �&��Y �&�Q�� �'�� �(�� �)� �)� �)� �)�� �*� �*� �*��b �*�Z�� �+�� �,�� �-� �-� �-� �-�� �.� �.� �.��j �.�b�� �/��	 �0�� �1�� �3� �3� �3�� �4�
- �4� �4� �4�� �5� �5	� �5� �5�� �6� �6� �6�! �6�� �7� �7� �7�2 �7.�� �8� �8� �8�� �9�� �:� �:� �:�! �:�� �;� �;� �;��\ �;�T�� �<�� �=�� �>� �>� �>� �>�� �?� �?� �?��` �?�X�� �@�� �A�� �B� �B� �B� �B�� �C� �C� �C��W �C�O�� �D��	 �E�� �F�� �H� �H� �H�� �I�
- �I� �I� �I�� �J� �J	� �J� �J�� �K� �K� �K�  �K�� �L� �L� �L�/ �L+�� �M� �M� �M�� �N�� �O� �O� �O�! �O�� �P� �P� �P��e �P�]�� �Q�� �R�� �S� �S� �S� �S�� �T� �T� �T��f �T�^�� �U�� �V�� �W� �W� �W� �W�� �X� �X� �X��L �X�D�� �Y��	 �Z�� �[�� �]� �]� �]�� �^�
- �^� �^�$ �^ �� �_� �_	� �_� �_�� �`� �`� �`�. �`*�� �a� �a� �a�) �a%�� �b� �b� �b�� �c�� �d� �d� �d�# �d�� �e� �e� �e��Z �e�R�� �f�� �g�� �h� �h� �h� �h�� �i� �i� �i��v �i�n�� �j�� �k�� �l� �l� �l� �l�� �m� �m� �m��o �m�g�� �n��	 �o�� �p�� �r� �r� �r�� �s�
- �s� �s� �s�� �t� �t	� �t� �t�� �u� �u� �u�( �u$�� �v� �v� �v��C �v?�� �w� �w� �w�� �x�� �y� �y� �y� �y�� �z� �z� �z��w �z�o�� �{�� �|�� �}� �}� �}�% �}�� �~� �~� �~�̈ �~̀�� ��� ���� ��� ��� ���% ���� ��� ��� ���̔ ��̌�� ���� ���� ��� ��� ���% ���� ��� ��� ���̠ ��̘�� ���� ���� ��� ��� ���  ���� ��� ��� ����w ���o�� ����	 ���� ���� ��� ����  �� �	 ��	��  �� � ��� ��� ��� ���! ��)�� ��� ��	� ��� ��� ��� ��� ����  �� � ����  �� � ����  �� � ��� ���  �� �� ��� ��	� ��� ��� ��� ���$ ��"�% ��#�& ��$��  �� � ���rF��version�file�sources�sourcesContent�names�mappings�������l��    ��   ��   ��   ��   ��   ��   ��   ��   ��  	 ��  
- ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��   ��    ��  ! ��  " ��  # ��  $ ��  % ��  & ��  ' ��  ( ��  ) ��  * ��  + ��  , ��  - ��  . ��  / ��  0 ��  1 ��  2 ��  3 ��  4 ��  5 ��  6 ��  7 ��  8 ��  9 ��  : ��  ; ��  < ��  = ��  > ��  ? ��  �@ ��  �A ��  �B ��  �C ��  �D ��  �E ��  �F ��  �G ��  �H ��  �I ��  �J ��  �K ��  �L ��  �M ��  �N ��  �O ��  �P ��  �Q ��  �R ��  �S ��  �T ��  �U ��  �V ��  �W ��  �X ��  �Y ��  �Z ��  �[ ��  �\ ��  �] ��  �^ ��  �_ ��  �` ��  �a ��  �b ��  �c ��  �d ��  �e ��  �f ��  �g ��  �h ��  �i ��  �j ��  �k ��  �l ��  �m ��  �n ��  �o ��  �p ��  �q ��  �r ��  �s ��  �t ��  �u ��  �v ��  �w ��  �x ��  �y ��  �z ��  �{ ��  �| ��  �} ��  �~ ��  � ��  ̀ ��  ́ ��  ̂ ��  ̃ ��  ̄ ��  ̅ ��  ̆ ��  ̇ ��  ̈ ��  ̉ ��  ̊ ��  ̋ ��  ̌ ��  ̍ ��  ̎ ��  ̏ ��  ̐ ��  ̑ ��  ̒ ��  ̓ ��  ̔ ��  ̕ ��  ̖ ��  ̗ ��  ̘ ��  ̙ ��  ̚ ��  ̛ ��  ̜ ��  ̝ ��  ̞ ��  ̟ ��  ̠ ��  ̡ ��  ̢ ��  ̣ ��  ̤ ��  ̥ ��  ̦ ��  ̧ ��  ̨ ��  ̩ ��  ̪ ��  ̫ ��  ̬ ��  ̭ ��  ̮ ��  ̯ ��  ̰ ��  ̱ ��  ̲ ��  ̳ ��  ̴ ��  ̵ ��  ̶ ��  ̷ ��  ̸ ��  ̹ ��  ̺ ��  ̻ ��  ̼ ��  ̽ ��  ̾ ��  ̿ ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �  ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  �	 ��  �
- ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  �  ��  �! ��  �" ��  �# ��  �$ ��  �% ��  �& ��  �' ��  �( ��  �) ��  �* ��  �+ ��  �, ��  �- ��  �. ��  �/ ��  �0 ��  �1 ��  �2 ��  �3 ��  �4 ��  �5 ��  �6 ��  �7 ��  �8 ��  �9 ��  �: ��  �; ��  �< ��  �= ��  �> ��  �? ��  �@ ��  �A ��  �B ��  �C ��  �D ��  �E ��  �F ��  �G ��  �H ��  �I ��  �J ��  �K ��  �L ��  �M ��  �N ��  �O ��  �P ��  �Q ��  �R ��  �S ��  �T ��  �U ��  �V ��  �W ��  �X ��  �Y ��  �Z ��  �[ ��  �\ ��  �] ��  �^ ��  �_ ��  �` ��  �a ��  �b ��  �c ��  �d ��  �e ��  �f ��  �g ��  �h ��  �i ��  �j ��  �k ��  �l ��  �m ��  �n ��  �o ��  �p ��  �q ��  �r ��  �s ��  �t ��  �u ��  �v ��  �w ��  �x ��  �y ��  �z ��  �{ ��  �| ��  �} ��  �~ ��  � ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �� ��  �  ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  �	 ��  �
- ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  � ��  �  ��  �! ��  �" ��  �# ��  �$ ��  �% ��  �& ��  �' ��  �( ��  �) ��  �* ��  �+ ��  �, ��  �- ��  �. ��  �/ ��  �0 ��  �1 ��  �2 ��  �3 ��  �4 ��  �5 ��  �6 ��  �7 ��  �8 ��  �9 ��  �: ��  �; ��  �< ��  �= ��  �> ��  �? ��  �@ ��  �A ��  �B ��  �C ��  �D ��  �E ��  �F ��  �G ��  �H ��  �I ��  �J ��  �K ��  �L ��  �M ��  �N ��  �O ��  �P ��  �Q ��  �R ��  �S ��  �T ��  �U ��  �V ��  �W ��  �X ��  �Y ��  �Z ��  �[ ��  �\ ��  �] ��  �^ ��  �_ ��  �` ��  �a ��  �b ��  �c ��  �d ��  �e ��  �f ��  �g ��  �h ��  �i ��  �j ��  �k �rG��missing�pluginægenAbc�  �rH��dynamicImportCache�exportAllDeclarationCache�exportNamedDeclarationCache�importCache����rI��type�start�end�declaration�specifiers�source�ExportNamedDeclaration �T��rJ��type�start�end�declarations�kind�VariableDeclaration�Tӑ�rK��type�start�end�id�init�VariableDeclarator�T��rL��type�start�end�name�Identifier�ConceptConfig�rM��type�start�end�properties�ObjectExpression�T�� �rN��type�start�end�method�shorthand�computed�key�value�kind�Property3�����rO��type�start�end�value�raw�Literal3>�cpu_usage�'cpu_usage'M�ObjectExpression�@��N�Property�K�Z���L�Identifier�K�M�idO�Literal�O�Z�cpu_usage�'cpu_usage'�initN�Property�e�u���L�Identifier�e�j�titleO�Literal�l�u�CPU 使用率�'CPU 使用率'�initN�Propertỳ̕���L�Identifier̀̈�subtitleO�Literal̊̕�CPU Usage�'CPU Usage'�initN�Property̠�����L�Identifier̠̫�descriptionO�Literaḽ���sCPU 使用率表示处理器在一段时间内处于忙碌状态的时间比例，反映了系统的负载情况。�u'CPU 使用率表示处理器在一段时间内处于忙碌状态的时间比例，反映了系统的负载情况。'�initN�Property�������L�Identifier����details�rP��type�start�end�elements�ArrayExpression�����M�ObjectExpression�����N�Property��#���L�Identifier���titleO�Literal��#�什么是 CPU 使用率？�'什么是 CPU 使用率？'�initN�Property�6�����L�Identifier�6�=�contentO�Literal�?����CPU 使用率是指在一段时间内，CPU 处于非空闲状态的时间占比。例如，50% 的 CPU 使用率意味着 CPU 有一半的时间在处理任务，另一半时间处于空闲状态。��'CPU 使用率是指在一段时间内，CPU 处于非空闲状态的时间占比。例如，50% 的 CPU 使用率意味着 CPU 有一半的时间在处理任务，另一半时间处于空闲状态。'�initM�ObjectExpression���I�N�Property�������L�Identifier���ȥtitleO�Literal�����#为什么使用率会超过 100%？�%'为什么使用率会超过 100%？'�initN�Property���:���L�Identifier�����contentO�Literal���:٩在多核 CPU 设备上，每个核心都可以独立工作。如果有 8 个核心，理论最大使用率可达 800%。系统显示的是所有核心的总使用率。٫'在多核 CPU 设备上，每个核心都可以独立工作。如果有 8 个核心，理论最大使用率可达 800%。系统显示的是所有核心的总使用率。'�initM�ObjectExpression�X��N�Property�k�����L�Identifier�k�p�titleO�Literal�r���#高 CPU 使用率意味着什么？�%'高 CPU 使用率意味着什么？'�initN�Property�������L�Identifier�����contentO�Literal����ٴ持续高 CPU 使用率（>80%）可能导致设备发热、耗电加快、响应变慢。但短时间内的高使用率是正常的，特别是在运行大型应用或游戏时。ٶ'持续高 CPU 使用率（>80%）可能导致设备发热、耗电加快、响应变慢。但短时间内的高使用率是正常的，特别是在运行大型应用或游戏时。'�init�init�initN�Property������O�Literal���thread_cpu�'thread_cpu'M�ObjectExpression����N�Property�$�4���L�Identifier�$�&�idO�Literal�(�4�thread_cpu�'thread_cpu'�initN�Property�?�R���L�Identifier�?�D�titleO�Literal�F�R�线程 CPU 使用率�'线程 CPU 使用率'�initN�Property�]�y���L�Identifier�]�e�subtitleO�Literal�g�y�Thread CPU Usage�'Thread CPU Usage'�initN�Property�������L�Identifier�����descriptionO�Literal�����c线程是程序执行的最小单位，一个应用通常包含多个线程来执行不同任务。�e'线程是程序执行的最小单位，一个应用通常包含多个线程来执行不同任务。'�initN�Property�������L�Identifier���ƧdetailsP�ArrayExpression�����M�ObjectExpression���g�N�Property�������L�Identifier����titleO�Literal�����什么是线程？�'什么是线程？'�initN�Property��X���L�Identifier���contentO�Literal��X��线程是操作系统能够进行运算调度的最小单位。一个进程可以包含多个线程，它们共享进程的资源，但独立执行。多线程可以提高程序的并发性能。��'线程是操作系统能够进行运算调度的最小单位。一个进程可以包含多个线程，它们共享进程的资源，但独立执行。多线程可以提高程序的并发性能。'�initM�ObjectExpression�v�
-�N�Property�������L�Identifier�����titleO�Literal�����!为什么应用有多个线程？�#'为什么应用有多个线程？'�initN�Property�������L�Identifier�����contentO�Literal����ٸ现代应用通常使用多线程：主线程负责 UI 渲染，后台线程处理网络请求、文件读写、数据计算等。这样可以避免界面卡顿，提升用户体验。ٺ'现代应用通常使用多线程：主线程负责 UI 渲染，后台线程处理网络请求、文件读写、数据计算等。这样可以避免界面卡顿，提升用户体验。'�initM�ObjectExpression����N�Property�,�>���L�Identifier�,�1�titleO�Literal�3�>�如何优化线程性能？�'如何优化线程性能？'�initN�Property�Q�����L�Identifier�Q�X�contentO�Literal�Z��ٱ避免创建过多线程（会增加上下文切换开销），合理分配任务到不同线程，使用线程池管理线程生命周期，避免主线程执行耗时操作。ٳ'避免创建过多线程（会增加上下文切换开销），合理分配任务到不同线程，使用线程池管理线程生命周期，避免主线程执行耗时操作。'�init�init�initN�Property�������O�Literal���تmemory_pss�'memory_pss'M�ObjectExpression�����N�Property�������L�Identifier����idO�Literal�����memory_pss�'memory_pss'�initN�Property� ����L�Identifier� ��titleO�Literal���PSS (实际使用内存)�'PSS (实际使用内存)'�initN�Property� �A���L�Identifier� �(�subtitleO�Literal�*�A�Proportional Set Size�'Proportional Set Size'�initN�Property�L�}���L�Identifier�L�W�descriptionO�Literal�Y�}�^PSS 是衡量应用实际内存占用的最佳指标，包含按比例分配的共享内存。�`'PSS 是衡量应用实际内存占用的最佳指标，包含按比例分配的共享内存。'�initN�Property�������L�Identifier�����detailsP�ArrayExpression�����M�ObjectExpression���?�N�Property�������L�Identifier�����titleO�Literal���İ什么是 PSS？�'什么是 PSS？'�initN�Property���0���L�Identifier���ާcontentO�Literal���0ٲPSS (Proportional Set Size) 表示应用实际使用的物理内存。它包含应用独占的内存，以及按比例分配的共享内存（如系统库、共享资源等）。ٴ'PSS (Proportional Set Size) 表示应用实际使用的物理内存。它包含应用独占的内存，以及按比例分配的共享内存（如系统库、共享资源等）。'�initM�ObjectExpression�N���N�Property�a�x���L�Identifier�a�f�titleO�Literal�h�x�PSS vs RSS 的区别�'PSS vs RSS 的区别'�initN�Property�������L�Identifier�����contentO�Literal������RSS (Resident Set Size) 包含所有共享内存的完整大小，会导致重复计算。PSS 更准确地反映了应用对系统内存的真实占用，是评估内存使用的最佳指标。��'RSS (Resident Set Size) 包含所有共享内存的完整大小，会导致重复计算。PSS 更准确地反映了应用对系统内存的真实占用，是评估内存使用的最佳指标。'�initM�ObjectExpression����N�Property��,���L�Identifier���titleO�Literal�!�,�如何降低 PSS？�'如何降低 PSS？'�initN�Property�?����L�Identifier�?�F�contentO�Literal�H�ٟ减少内存泄漏、及时释放不再使用的对象、使用更高效的数据结构、避免加载不必要的资源、使用图片压缩和缓存策略。١'减少内存泄漏、及时释放不再使用的对象、使用更高效的数据结构、避免加载不必要的资源、使用图片压缩和缓存策略。'�init�init�initN�Property���
-����O�Literal�����memory_rss�'memory_rss'M�ObjectExpression���
-ŕN�Property�������L�Identifier���¢idO�Literal���Ъmemory_rss�'memory_rss'�initN�Property�������L�Identifier����titleO�Literal����RSS (驻留内存)�'RSS (驻留内存)'�initN�Property���	���L�Identifier���	�subtitleO�Literal�	�	�Resident Set Size�'Resident Set Size'�initN�Property�	!�	O���L�Identifier�	!�	,�descriptionO�Literal�	.�	O�URSS 表示进程在物理内存中实际占用的空间，包含所有共享内存。�W'RSS 表示进程在物理内存中实际占用的空间，包含所有共享内存。'�initN�Property�	Z�
-����L�Identifier�	Z�	a�detailsP�ArrayExpression�	c�
-��M�ObjectExpression�	r�
-�N�Property�	��	����L�Identifier�	��	��titleO�Literal�	��	��什么是 RSS？�'什么是 RSS？'�initN�Property�	��
-���L�Identifier�	��	��contentO�Literal�	��
-��RSS (Resident Set Size) 表示进程当前驻留在物理内存中的页面总数，包括代码段、数据段、堆栈和共享库等。它反映了进程实际占用的物理内存大小。��'RSS (Resident Set Size) 表示进程当前驻留在物理内存中的页面总数，包括代码段、数据段、堆栈和共享库等。它反映了进程实际占用的物理内存大小。'�initM�ObjectExpression�
-"�
-��N�Property�
-5�
-F���L�Identifier�
-5�
-:�titleO�Literal�
-<�
-F�RSS 的局限性�'RSS 的局限性'�initN�Property�
-Y�
-����L�Identifier�
-Y�
-`�contentO�Literal�
-b�
-�ٰRSS 包含了完整的共享内存大小（如系统库），如果多个应用使用相同的库，RSS 会将这些内存重复计算，导致总和超过系统实际内存。ٲ'RSS 包含了完整的共享内存大小（如系统库），如果多个应用使用相同的库，RSS 会将这些内存重复计算，导致总和超过系统实际内存。'�init�init�initN�Property�
-������O�Literal�
-��
-تmemory_vss�'memory_vss'M�ObjectExpression�
-���N�Property�
-��
-����L�Identifier�
-��
-�idO�Literal�
-��
-��memory_vss�'memory_vss'�initN�Property� ����L�Identifier� ��titleO�Literal���VSS (虚拟内存)�'VSS (虚拟内存)'�initN�Property��:���L�Identifier��&�subtitleO�Literal�(�:�Virtual Set Size�'Virtual Set Size'�initN�Property�E�t���L�Identifier�E�P�descriptionO�Literal�R�t�XVSS 表示进程可访问的所有内存地址空间，包括未实际分配的内存。�Z'VSS 表示进程可访问的所有内存地址空间，包括未实际分配的内存。'�initN�Property������L�Identifier����detailsP�ArrayExpression���ޒM�ObjectExpression���-�N�Property�������L�Identifier�����titleO�Literal�����什么是 VSS？�'什么是 VSS？'�initN�Property������L�Identifier���էcontentO�Literal���١VSS (Virtual Set Size) 表示进程的虚拟地址空间大小，包括所有已分配和未分配的内存映射。它通常远大于实际物理内存使用。٣'VSS (Virtual Set Size) 表示进程的虚拟地址空间大小，包括所有已分配和未分配的内存映射。它通常远大于实际物理内存使用。'�initM�ObjectExpression�<�ӒN�Property�O�c���L�Identifier�O�T�titleO�Literal�V�c�为什么 VSS 很大？�'为什么 VSS 很大？'�initN�Property�v�����L�Identifier�v�}�contentO�Literal���ٹVSS 包含了进程可能访问的所有内存区域，包括内存映射文件、共享库、堆、栈等。即使这些内存并未实际加载到物理内存中，也会计入 VSS。ٻ'VSS 包含了进程可能访问的所有内存区域，包括内存映射文件、共享库、堆、栈等。即使这些内存并未实际加载到物理内存中，也会计入 VSS。'�init�init�initN�Property���%���O�Literal�����memory_shared�'memory_shared'M�ObjectExpression���%�N�Property�����L�Identifier��
-�idO�Literal���memory_shared�'memory_shared'�initN�Property�&�3���L�Identifier�&�+�titleO�Literal�-�3�内存分类�'内存分类'�initN�Property�>�_���L�Identifier�>�F�subtitleO�Literal�H�_�Memory Classification�'Memory Classification'�initN�Property�j�����L�Identifier�j�u�descriptionO�Literal�w���S内存按共享属性和修改状态分为 Shared/Private 和 Clean/Dirty 四类。�U'内存按共享属性和修改状态分为 Shared/Private 和 Clean/Dirty 四类。'�initN�Property������L�Identifier�����detailsP�ArrayExpression����M�ObjectExpression���U�N�Property�������L�Identifier����titleO�Literal����Shared Clean�'Shared Clean'�initN�Property��F���L�Identifier���contentO�Literal��Fٟ与其他进程共享的未修改内存页。通常是系统库、框架代码等只读资源。多个应用共享同一份物理内存，节省系统资源。١'与其他进程共享的未修改内存页。通常是系统库、框架代码等只读资源。多个应用共享同一份物理内存，节省系统资源。'�initM�ObjectExpression�d��N�Property�w�����L�Identifier�w�|�titleO�Literal�~���Shared Dirty�'Shared Dirty'�initN�Property�������L�Identifier�����contentO�Literal����ٍ与其他进程共享但已被修改的内存页。由于被修改，需要为当前进程单独保存一份副本，但仍标记为共享。ُ'与其他进程共享但已被修改的内存页。由于被修改，需要为当前进程单独保存一份副本，但仍标记为共享。'�initM�ObjectExpression���v�N�Property�
-� ���L�Identifier�
-��titleO�Literal�� �Private Clean�'Private Clean'�initN�Property�3�g���L�Identifier�3�:�contentO�Literal�<�g�{进程独占的未修改内存页。通常是应用自身的代码段、只读数据等，不需要与其他进程共享。�}'进程独占的未修改内存页。通常是应用自身的代码段、只读数据等，不需要与其他进程共享。'�initM�ObjectExpression����N�Property�������L�Identifier�����titleO�Literal�����Private Dirty�'Private Dirty'�initN�Property������L�Identifier���ȧcontentO�Literal���٨进程独占且已被修改的内存页。这是应用运行时产生的数据，如动态分配的内存、运行时数据等，是应用内存占用的主要部分。٪'进程独占且已被修改的内存页。这是应用运行时产生的数据，如动态分配的内存、运行时数据等，是应用内存占用的主要部分。'�init�init�initN�Property�,�����O�Literal�,�:�memory_limit�'memory_limit'M�ObjectExpression�<�ޕN�Property�G�Y���L�Identifier�G�I�idO�Literal�K�Y�memory_limit�'memory_limit'�initN�Property�d�q���L�Identifier�d�i�titleO�Literal�k�q�内存限制�'内存限制'�initN�Property�|�����L�Identifier�|���subtitleO�Literal�����Memory Limit�'Memory Limit'�initN�Property�������L�Identifier�����descriptionO�Literal�����Z系统为每个应用设置的内存使用上限，防止单个应用占用过多资源。�\'系统为每个应用设置的内存使用上限，防止单个应用占用过多资源。'�initN�Property�������L�Identifier���ާdetailsP�ArrayExpression���דM�ObjectExpression�����N�Property�����L�Identifier���titleO�Literal�	��什么是内存限制？�'什么是内存限制？'�initN�Property�&�u���L�Identifier�&�-�contentO�Literal�/�u��系统为每个应用进程设置的内存使用上限（RSS 限制）。当应用内存接近或超过限制时，系统会触发内存警告，甚至终止应用以防止影响系统稳定性。��'系统为每个应用进程设置的内存使用上限（RSS 限制）。当应用内存接近或超过限制时，系统会触发内存警告，甚至终止应用以防止影响系统稳定性。'�initM�ObjectExpression���2�N�Property�������L�Identifier�����titleO�Literal�����超过限制会怎样？�'超过限制会怎样？'�initN�Property���#���L�Identifier���ѧcontentO�Literal���#��当内存使用接近限制时，系统会发送内存警告，应用应该释放不必要的资源。如果继续增长超过限制，系统可能会强制终止应用（OOM - Out of Memory）。��'当内存使用接近限制时，系统会发送内存警告，应用应该释放不必要的资源。如果继续增长超过限制，系统可能会强制终止应用（OOM - Out of Memory）。'�initM�ObjectExpression�A�̒N�Property�T�f���L�Identifier�T�Y�titleO�Literal�[�f�如何避免 OOM？�'如何避免 OOM？'�initN�Property�y�����L�Identifier�y���contentO�Literal����٫及时响应内存警告、使用懒加载策略、实现图片缓存和压缩、避免内存泄漏、使用更高效的数据结构、定期检查和优化内存使用。٭'及时响应内存警告、使用懒加载策略、实现图片缓存和压缩、避免内存泄漏、使用更高效的数据结构、定期检查和优化内存使用。'�init�init�initN�Property�������O�Literal�����gpu_info�'gpu_info'M�ObjectExpression� ���N�Property�����L�Identifier���idO�Literal���gpu_info�'gpu_info'�initN�Property�$�3���L�Identifier�$�)�titleO�Literal�+�3�GPU 信息�'GPU 信息'�initN�Property�>�Y���L�Identifier�>�F�subtitleO�Literal�H�Y�GPU Information�'GPU Information'�initN�Property�d�����L�Identifier�d�o�descriptionO�Literal�q���{GPU（图形处理器）是专为图形渲染设计的处理器，负责游戏画面、UI 动画、视频解码等任务。�}'GPU（图形处理器）是专为图形渲染设计的处理器，负责游戏画面、UI 动画、视频解码等任务。'�initN�Property�������L�Identifier�����detailsP�ArrayExpression�����M�ObjectExpression���x�N�Property�������L�Identifier���ۥtitleO�Literal����GPU 厂商�'GPU 厂商'�initN�Property���i���L�Identifier�����contentO�Literal��iټ常见的移动 GPU 厂商包括 ARM（Mali 系列）、Qualcomm（Adreno 系列）、Imagination（PowerVR 系列）、Apple 等。不同厂商的 GPU 在性能和特性上有所差异。پ'常见的移动 GPU 厂商包括 ARM（Mali 系列）、Qualcomm（Adreno 系列）、Imagination（PowerVR 系列）、Apple 等。不同厂商的 GPU 在性能和特性上有所差异。'�initM�ObjectExpression���7�N�Property�������L�Identifier�����titleO�Literal�����OpenGL ES�'OpenGL ES'�initN�Property���(���L�Identifier���ƧcontentO�Literal���(��OpenGL ES（OpenGL for Embedded Systems）是移动设备上的图形 API 标准。版本号（如 3.2）表示支持的特性和功能级别，版本越高支持越多的高级图形特性。��'OpenGL ES（OpenGL for Embedded Systems）是移动设备上的图形 API 标准。版本号（如 3.2）表示支持的特性和功能级别，版本越高支持越多的高级图形特性。'�initM�ObjectExpression�F��N�Property�Y�f���L�Identifier�Y�^�titleO�Literal�`�f�GLSL�'GLSL'�initN�Property�y�����L�Identifier�y���contentO�Literal����٭GLSL（OpenGL Shading Language）是用于编写着色器（Shader）的编程语言。着色器运行在 GPU 上，负责顶点处理、片段着色等图形渲染任务。ٯ'GLSL（OpenGL Shading Language）是用于编写着色器（Shader）的编程语言。着色器运行在 GPU 上，负责顶点处理、片段着色等图形渲染任务。'�initM�ObjectExpression�����N�Property�����L�Identifier���titleO�Literal���GPU 扩展�'GPU 扩展'�initN�Property�*����L�Identifier�*�1�contentO�Literal�3�ٶGPU 扩展是厂商提供的额外功能，超出标准 OpenGL ES 规范。这些扩展可以提供更好的性能或额外的图形特性，但需要针对特定 GPU 进行适配。ٸ'GPU 扩展是厂商提供的额外功能，超出标准 OpenGL ES 规范。这些扩展可以提供更好的性能或额外的图形特性，但需要针对特定 GPU 进行适配。'�init�init�initN�Property���`���O�Literal���˴sensor_accelerometer�'sensor_accelerometer'M�ObjectExpression���`�N�Property�������L�Identifier���ڢidO�Literal����sensor_accelerometer�'sensor_accelerometer'�initN�Property������L�Identifier����titleO�Literal���加速度传感器�'加速度传感器'�initN�Property��0���L�Identifier���subtitleO�Literal�!�0�Accelerometer�'Accelerometer'�initN�Property�;�g���L�Identifier�;�F�descriptionO�Literal�H�g�@测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。�B'测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。'�initN�Property�r�Y���L�Identifier�r�y�detailsP�ArrayExpression�{�Y�M�ObjectExpression����N�Property�������L�Identifier�����titleO�Literal�����工作原理�'工作原理'�initN�Property������L�Identifier���ħcontentO�Literal���٦加速度传感器通过检测质量块在加速度作用下的位移来测量加速度。它可以检测重力（静止时 Z 轴约 9.8 m/s²）和运动加速度。٨'加速度传感器通过检测质量块在加速度作用下的位移来测量加速度。它可以检测重力（静止时 Z 轴约 9.8 m/s²）和运动加速度。'�initM�ObjectExpression�%���N�Property�8�E���L�Identifier�8�=�titleO�Literal�?�E�应用场景�'应用场景'�initN�Property�X�����L�Identifier�X�_�contentO�Literal�a��ٙ屏幕旋转、步数检测、游戏控制、晃动检测、倾斜角度计算等。当设备静止时，可以测量重力方向来确定设备姿态。ٛ'屏幕旋转、步数检测、游戏控制、晃动检测、倾斜角度计算等。当设备静止时，可以测量重力方向来确定设备姿态。'�initM�ObjectExpression���N�N�Property�������L�Identifier���̥titleO�Literal���Ԭ三轴含义�'三轴含义'�initN�Property���?���L�Identifier����contentO�Literal���?ٸX 轴：左右方向，右为正；Y 轴：前后方向，前为正；Z 轴：上下方向，上为正。当设备平放时，X 和 Y 接近 0，Z 约 9.8 m/s²（重力加速度）。ٺ'X 轴：左右方向，右为正；Y 轴：前后方向，前为正；Z 轴：上下方向，上为正。当设备平放时，X 和 Y 接近 0，Z 约 9.8 m/s²（重力加速度）。'�init�init�initN�Property�g�����O�Literal�g�y�sensor_gyroscope�'sensor_gyroscope'M�ObjectExpression�{�ߕN�Property�������L�Identifier�����idO�Literal�����sensor_gyroscope�'sensor_gyroscope'�initN�Property�������L�Identifier�����titleO�Literal�����陀螺仪�'陀螺仪'�initN�Property�������L�Identifier���ƨsubtitleO�Literal���өGyroscope�'Gyroscope'�initN�Property������L�Identifier����descriptionO�Literal����@测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。�B'测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。'�initN�Property������L�Identifier���detailsP�ArrayExpression��ؓM�ObjectExpression�.���N�Property�A�N���L�Identifier�A�F�titleO�Literal�H�N�工作原理�'工作原理'�initN�Property�a�����L�Identifier�a�h�contentO�Literal�j��ٮ陀螺仪基于科里奥利力原理，通过检测旋转时产生的力来测量角速度。它可以检测设备的旋转、转向等动作，与加速度传感器互补。ٰ'陀螺仪基于科里奥利力原理，通过检测旋转时产生的力来测量角速度。它可以检测设备的旋转、转向等动作，与加速度传感器互补。'�initM�ObjectExpression���J�N�Property�������L�Identifier���ܥtitleO�Literal����与加速度的区别�'与加速度的区别'�initN�Property���;���L�Identifier����contentO�Literal��;ٚ加速度传感器测量线性加速度（包括重力），陀螺仪测量旋转角速度。两者结合可以精确追踪设备的 3D 运动和姿态。ٜ'加速度传感器测量线性加速度（包括重力），陀螺仪测量旋转角速度。两者结合可以精确追踪设备的 3D 运动和姿态。'�initM�ObjectExpression�Y�͒N�Property�l�y���L�Identifier�l�q�titleO�Literal�s�y�应用场景�'应用场景'�initN�Property�������L�Identifier�����contentO�Literal�����i游戏控制（如赛车转向）、图像防抖、航向参考、VR/AR 追踪、相机旋转检测等。�k'游戏控制（如赛车转向）、图像防抖、航向参考、VR/AR 追踪、相机旋转检测等。'�init�init�initN�Property�������O�Literal�����sensor_light�'sensor_light'M�ObjectExpression�����N�Property�����L�Identifier���idO�Literal���sensor_light�'sensor_light'�initN�Property��,���L�Identifier��#�titleO�Literal�%�,�光线传感器�'光线传感器'�initN�Property�7�W���L�Identifier�7�?�subtitleO�Literal�A�W�Ambient Light Sensor�'Ambient Light Sensor'�initN�Property�b�����L�Identifier�b�m�descriptionO�Literal�o���4测量环境光强度，单位 lux（勒克斯）。�6'测量环境光强度，单位 lux（勒克斯）。'�initN�Property�������L�Identifier�����detailsP�ArrayExpression����M�ObjectExpression���V�N�Property�������L�Identifier�����titleO�Literal���ʪlux 单位�'lux 单位'�initN�Property���G���L�Identifier����contentO�Literal���Gٿlux（勒克斯）是光照强度的单位，表示每平方米接收到的光通量。常见参考：室内照明 100-500 lux，阴天室外 1000-10000 lux，晴天室外 10000-100000 lux。��'lux（勒克斯）是光照强度的单位，表示每平方米接收到的光通量。常见参考：室内照明 100-500 lux，阴天室外 1000-10000 lux，晴天室外 10000-100000 lux。'�initM�ObjectExpression�e��N�Property�x�����L�Identifier�x�}�titleO�Literal����应用场景�'应用场景'�initN�Property�������L�Identifier�����contentO�Literal����٢自动调节屏幕亮度（环境暗时降低亮度保护眼睛，环境亮时提高亮度保证可见性）、自动切换暗黑模式、相机曝光调节等。٤'自动调节屏幕亮度（环境暗时降低亮度保护眼睛，环境亮时提高亮度保证可见性）、自动切换暗黑模式、相机曝光调节等。'�init�init�initN�Property�� v���O�Literal���sensor_magnetic�'sensor_magnetic'M�ObjectExpression�� v�N�Property��4���L�Identifier��!�idO�Literal�#�4�sensor_magnetic�'sensor_magnetic'�initN�Property�?�M���L�Identifier�?�D�titleO�Literal�F�M�磁场传感器�'磁场传感器'�initN�Property�X�p���L�Identifier�X�`�subtitleO�Literal�b�p�Magnetometer�'Magnetometer'�initN�Property�{�����L�Identifier�{���descriptionO�Literal�����C测量设备周围的磁场强度，单位 μT（微特斯拉）。�E'测量设备周围的磁场强度，单位 μT（微特斯拉）。'�initN�Property��� o���L�Identifier�����detailsP�ArrayExpression��� o�M�ObjectExpression���I�N�Property�������L�Identifier���ݥtitleO�Literal����工作原理�'工作原理'�initN�Property���:���L�Identifier�����contentO�Literal��:ٔ磁场传感器基于霍尔效应或磁阻效应，可以检测地球磁场和周围磁场的强度和方向。地球磁场强度约为 25-65 μT。ٖ'磁场传感器基于霍尔效应或磁阻效应，可以检测地球磁场和周围磁场的强度和方向。地球磁场强度约为 25-65 μT。'�initM�ObjectExpression�X�֒N�Property�k�x���L�Identifier�k�p�titleO�Literal�r�x�电子罗盘�'电子罗盘'�initN�Property�������L�Identifier�����contentO�Literal����ٓ结合加速度传感器（确定水平面）和磁场传感器（确定北方），可以实现电子罗盘功能，用于导航和方向检测。ٕ'结合加速度传感器（确定水平面）和磁场传感器（确定北方），可以实现电子罗盘功能，用于导航和方向检测。'�initM�ObjectExpression��� d�N�Property��� ���L�Identifier�����titleO�Literal��� �干扰因素�'干扰因素'�initN�Property� � U���L�Identifier� � �contentO�Literal� !� Uٖ附近的金属物体、磁铁、电子设备都会产生磁场干扰，影响传感器精度。使用时需要远离这些干扰源或进行校准。٘'附近的金属物体、磁铁、电子设备都会产生磁场干扰，影响传感器精度。使用时需要远离这些干扰源或进行校准。'�init�init�initN�Property� ��#D���O�Literal� �� ��network_bandwidth�'network_bandwidth'M�ObjectExpression� ��#D�N�Property� �� ����L�Identifier� �� ��idO�Literal� �� ��network_bandwidth�'network_bandwidth'�initN�Property� �� ����L�Identifier� �� ѥtitleO�Literal� �� ٬网络带宽�'网络带宽'�initN�Property� ��!���L�Identifier� �� �subtitleO�Literal� ��!�Network Bandwidth�'Network Bandwidth'�initN�Property�!�!1���L�Identifier�!�!�descriptionO�Literal�!�!1�B表示网络连接的数据传输能力，分为上行和下行。�D'表示网络连接的数据传输能力，分为上行和下行。'�initN�Property�!<�#=���L�Identifier�!<�!C�detailsP�ArrayExpression�!E�#=�M�ObjectExpression�!T�!��N�Property�!g�!x���L�Identifier�!g�!l�titleO�Literal�!n�!x�上行 vs 下行�'上行 vs 下行'�initN�Property�!��!����L�Identifier�!��!��contentO�Literal�!��!���上行带宽（Upload）是设备向网络发送数据的速度，影响上传文件、发送消息、视频通话等。下行带宽（Download）是设备从网络接收数据的速度，影响下载、视频播放、网页浏览等。��'上行带宽（Upload）是设备向网络发送数据的速度，影响上传文件、发送消息、视频通话等。下行带宽（Download）是设备从网络接收数据的速度，影响下载、视频播放、网页浏览等。'�initM�ObjectExpression�"�"��N�Property�"�"0���L�Identifier�"�"$�titleO�Literal�"&�"0�理论 vs 实际�'理论 vs 实际'�initN�Property�"C�"����L�Identifier�"C�"J�contentO�Literal�"L�"�ٸ显示的带宽是理论最大值，由网络类型（5G、Wi-Fi 6 等）决定。实际速度受信号强度、网络拥塞、服务器速度等因素影响，通常低于理论值。ٺ'显示的带宽是理论最大值，由网络类型（5G、Wi-Fi 6 等）决定。实际速度受信号强度、网络拥塞、服务器速度等因素影响，通常低于理论值。'�initM�ObjectExpression�"��#2�N�Property�"��"����L�Identifier�"��"ȥtitleO�Literal�"��"Ь计费网络�'计费网络'�initN�Property�"��##���L�Identifier�"��"�contentO�Literal�"��##ٓ移动数据网络通常按流量计费的，Wi-Fi 通常不计费。应用可以根据此信息决定是否下载大文件或播放高清视频。ٕ'移动数据网络通常按流量计费的，Wi-Fi 通常不计费。应用可以根据此信息决定是否下载大文件或播放高清视频。'�init�init�initN�Property�#X�%����O�Literal�#X�#h�battery_health�'battery_health'M�ObjectExpression�#j�%��N�Property�#u�#����L�Identifier�#u�#w�idO�Literal�#y�#��battery_health�'battery_health'�initN�Property�#��#����L�Identifier�#��#��titleO�Literal�#��#��电池健康度�'电池健康度'�initN�Property�#��#����L�Identifier�#��#��subtitleO�Literal�#��#ǮBattery Health�'Battery Health'�initN�Property�#��#����L�Identifier�#��#ݫdescriptionO�Literal�#��#��W反映电池当前容量相对于新电池的比例，是电池老化程度的指标。�Y'反映电池当前容量相对于新电池的比例，是电池老化程度的指标。'�initN�Property�$	�%����L�Identifier�$	�$�detailsP�ArrayExpression�$�%��M�ObjectExpression�$!�$��N�Property�$4�$F���L�Identifier�$4�$9�titleO�Literal�$;�$F�什么是电池健康度？�'什么是电池健康度？'�initN�Property�$Y�$����L�Identifier�$Y�$`�contentO�Literal�$b�$�٨电池健康度表示当前电池的最大容量相对于新电池设计容量的百分比。随着充放电循环次数增加，电池会逐渐老化，容量下降。٪'电池健康度表示当前电池的最大容量相对于新电池设计容量的百分比。随着充放电循环次数增加，电池会逐渐老化，容量下降。'�initM�ObjectExpression�$��%U�N�Property�$��$����L�Identifier�$��$ҥtitleO�Literal�$��$ۯ健康度标准�'健康度标准'�initN�Property�$��%F���L�Identifier�$��$��contentO�Literal�$��%Fٹ100-90%：健康状态良好；89-80%：轻度老化，续航略有下降；79-70%：中度老化，建议考虑更换；<70%：严重老化，续航明显缩短，可能影响性能。ٻ'100-90%：健康状态良好；89-80%：轻度老化，续航略有下降；79-70%：中度老化，建议考虑更换；<70%：严重老化，续航明显缩短，可能影响性能。'�initM�ObjectExpression�%d�%�N�Property�%w�%����L�Identifier�%w�%|�titleO�Literal�%~�%��如何延长电池寿命？�'如何延长电池寿命？'�initN�Property�%��%����L�Identifier�%��%��contentO�Literal�%��%�ٓ避免过度充电（保持 20%-80% 电量）、避免高温环境、使用原装充电器、减少快充频率、避免边充边玩大型游戏。ٕ'避免过度充电（保持 20%-80% 电量）、避免高温环境、使用原装充电器、减少快充频率、避免边充边玩大型游戏。'�init�init�initN�Property�&�(���O�Literal�&�&"�storage_types�'storage_types'M�ObjectExpression�&$�(�N�Property�&/�&B���L�Identifier�&/�&1�idO�Literal�&3�&B�storage_types�'storage_types'�initN�Property�&M�&Z���L�Identifier�&M�&R�titleO�Literal�&T�&Z�存储类型�'存储类型'�initN�Property�&e�&~���L�Identifier�&e�&m�subtitleO�Literal�&o�&~�Storage Types�'Storage Types'�initN�Property�&��&����L�Identifier�&��&��descriptionO�Literal�&��&��Q设备存储分为内部存储和外部存储，应用数据也有不同分类。�S'设备存储分为内部存储和外部存储，应用数据也有不同分类。'�initN�Property�&��(���L�Identifier�&��&ŧdetailsP�ArrayExpression�&��(�M�ObjectExpression�&��'Y�N�Property�&��&����L�Identifier�&��&�titleO�Literal�&��&��内部存储�'内部存储'�initN�Property�'	�'J���L�Identifier�'	�'�contentO�Literal�'�'J٢设备内置的闪存芯片，速度快、稳定可靠。包含系统分区、应用分区、用户数据分区等。应用默认安装和运行在此存储上。٤'设备内置的闪存芯片，速度快、稳定可靠。包含系统分区、应用分区、用户数据分区等。应用默认安装和运行在此存储上。'�initM�ObjectExpression�'h�'��N�Property�'{�'����L�Identifier�'{�'��titleO�Literal�'��'��应用数据分类�'应用数据分类'�initN�Property�'��'����L�Identifier�'��'��contentO�Literal�'��'�پ应用数据包括：代码（App 本身）、数据（用户数据、数据库）、缓存（临时文件、图片缓存）。缓存可以安全清理，数据清理会导致应用重置。��'应用数据包括：代码（App 本身）、数据（用户数据、数据库）、缓存（临时文件、图片缓存）。缓存可以安全清理，数据清理会导致应用重置。'�init�init�initN�Property�(�*����O�Literal�(�(4�screen_refresh_rate�'screen_refresh_rate'M�ObjectExpression�(6�*ԕN�Property�(A�(Z���L�Identifier�(A�(C�idO�Literal�(E�(Z�screen_refresh_rate�'screen_refresh_rate'�initN�Property�(e�(s���L�Identifier�(e�(j�titleO�Literal�(l�(s�屏幕刷新率�'屏幕刷新率'�initN�Property�(~�(����L�Identifier�(~�(��subtitleO�Literal�(��(��Refresh Rate�'Refresh Rate'�initN�Property�(��(����L�Identifier�(��(��descriptionO�Literal�(��(��<屏幕每秒刷新画面的次数，单位 Hz（赫兹）。�>'屏幕每秒刷新画面的次数，单位 Hz（赫兹）。'�initN�Property�(��*����L�Identifier�(��(اdetailsP�ArrayExpression�(��*͓M�ObjectExpression�(��)|�N�Property�(��)���L�Identifier�(��)�titleO�Literal�)�)�刷新率的意义�'刷新率的意义'�initN�Property�)�)m���L�Identifier�)�)%�contentO�Literal�)'�)m٤60Hz 表示每秒刷新 60 次，120Hz 表示每秒刷新 120 次。更高的刷新率意味着更流畅的视觉体验，特别是在滑动、动画、游戏中。٦'60Hz 表示每秒刷新 60 次，120Hz 表示每秒刷新 120 次。更高的刷新率意味着更流畅的视觉体验，特别是在滑动、动画、游戏中。'�initM�ObjectExpression�)��*+�N�Property�)��)����L�Identifier�)��)��titleO�Literal�)��)��常见刷新率�'常见刷新率'�initN�Property�)��*���L�Identifier�)��)ƧcontentO�Literal�)��*��60Hz：标准刷新率，大部分应用的基础体验；90Hz：流畅体验，平衡性能和功耗；120Hz：高刷体验，极致流畅但耗电增加；144Hz+：电竞级别，主要用于游戏手机。��'60Hz：标准刷新率，大部分应用的基础体验；90Hz：流畅体验，平衡性能和功耗；120Hz：高刷体验，极致流畅但耗电增加；144Hz+：电竞级别，主要用于游戏手机。'�initM�ObjectExpression�*:�*N�Property�*M�*\���L�Identifier�*M�*R�titleO�Literal�*T�*\�自适应刷新率�'自适应刷新率'�initN�Property�*o�*����L�Identifier�*o�*v�contentO�Literal�*x�*�ٕ现代设备支持自适应刷新率，根据内容动态调整（如静态页面 60Hz，滑动时 120Hz），在保证流畅的同时节省电量。ٗ'现代设备支持自适应刷新率，根据内容动态调整（如静态页面 60Hz，滑动时 120Hz），在保证流畅的同时节省电量。'�init�init�initN�Property�*��-����O�Literal�*��*�screen_dpi�'screen_dpi'M�ObjectExpression�*��-��N�Property�*��+���L�Identifier�*��*��idO�Literal�*��+�screen_dpi�'screen_dpi'�initN�Property�+�+"���L�Identifier�+�+�titleO�Literal�+�+"�屏幕密度 (DPI)�'屏幕密度 (DPI)'�initN�Property�+-�+F���L�Identifier�+-�+5�subtitleO�Literal�+7�+F�Dots Per Inch�'Dots Per Inch'�initN�Property�+Q�+v���L�Identifier�+Q�+\�descriptionO�Literal�+^�+v�B每英寸屏幕上的像素点数，反映屏幕的精细程度。�D'每英寸屏幕上的像素点数，反映屏幕的精细程度。'�initN�Property�+��-����L�Identifier�+��+��detailsP�ArrayExpression�+��-�M�ObjectExpression�+��,8�N�Property�+��+����L�Identifier�+��+��titleO�Literal�+��+��DPI 与 PPI�'DPI 与 PPI'�initN�Property�+��,)���L�Identifier�+��+اcontentO�Literal�+��,)١DPI（Dots Per Inch）和 PPI（Pixels Per Inch）通常混用，都表示屏幕像素密度。数值越高，屏幕显示越精细，文字和图像越清晰。٣'DPI（Dots Per Inch）和 PPI（Pixels Per Inch）通常混用，都表示屏幕像素密度。数值越高，屏幕显示越精细，文字和图像越清晰。'�initM�ObjectExpression�,G�-�N�Property�,Z�,l���L�Identifier�,Z�,_�titleO�Literal�,a�,l�常见 DPI 等级�'常见 DPI 等级'�initN�Property�,�-���L�Identifier�,�,��contentO�Literal�,��-٧LDPI (~120dpi)、MDPI (~160dpi)、HDPI (~240dpi)、XHDPI (~320dpi)、XXHDPI (~480dpi)、XXXHDPI (~640dpi)。Android/HarmonyOS 根据 DPI 自动选择合适的资源。٩'LDPI (~120dpi)、MDPI (~160dpi)、HDPI (~240dpi)、XHDPI (~320dpi)、XXHDPI (~480dpi)、XXXHDPI (~640dpi)。Android/HarmonyOS 根据 DPI 自动选择合适的资源。'�initM�ObjectExpression�-+�-�N�Property�->�-R���L�Identifier�->�-C�titleO�Literal�-E�-R�密度无关像素 (dp)�'密度无关像素 (dp)'�initN�Property�-e�-����L�Identifier�-e�-l�contentO�Literal�-n�-���为了在不同 DPI 屏幕上保持一致的视觉大小，使用 dp（density-independent pixels）作为单位。1dp 在 160dpi 屏幕上等于 1 像素，在高 DPI 屏幕上等于更多像素。��'为了在不同 DPI 屏幕上保持一致的视觉大小，使用 dp（density-independent pixels）作为单位。1dp 在 160dpi 屏幕上等于 1 像素，在高 DPI 屏幕上等于更多像素。'�init�init�initN�Property�.�0����O�Literal�.�.%�gpu_max_texture_size�'gpu_max_texture_size'M�ObjectExpression�.'�0�N�Property�.2�.L���L�Identifier�.2�.4�idO�Literal�.6�.L�gpu_max_texture_size�'gpu_max_texture_size'�initN�Property�.W�.f���L�Identifier�.W�.\�titleO�Literal�.^�.f�最大纹理尺寸�'最大纹理尺寸'�initN�Property�.q�.����L�Identifier�.q�.y�subtitleO�Literal�.{�.��Max Texture Size�'Max Texture Size'�initN�Property�.��.����L�Identifier�.��.��descriptionO�Literal�.��.��GGPU 支持的最大 2D 纹理图片尺寸，通常以像素为单位。�I'GPU 支持的最大 2D 纹理图片尺寸，通常以像素为单位。'�initN�Property�.��0����L�Identifier�.��.֧detailsP�ArrayExpression�.��0�M�ObjectExpression�.��/�N�Property�.��/���L�Identifier�.��.��titleO�Literal�/�/�什么是 2D 纹理？�'什么是 2D 纹理？'�initN�Property�/ �/p���L�Identifier�/ �/'�contentO�Literal�/)�/pٻ2D 纹理是最常用的纹理类型，用于平面贴图，如游戏角色的皮肤、场景的地表、UI 元素等。最大纹理尺寸限制了单张 2D 纹理图片的最大宽高。ٽ'2D 纹理是最常用的纹理类型，用于平面贴图，如游戏角色的皮肤、场景的地表、UI 元素等。最大纹理尺寸限制了单张 2D 纹理图片的最大宽高。'�initM�ObjectExpression�/��02�N�Property�/��/����L�Identifier�/��/��titleO�Literal�/��/��为什么重要？�'为什么重要？'�initN�Property�/��0#���L�Identifier�/��/ʧcontentO�Literal�/��0#ٳ如果纹理超过 GPU 支持的最大尺寸，会导致加载失败或需要分割处理。高端 GPU 通常支持 8192 或 16384，而低端 GPU 可能只支持 2048 或 4096。ٵ'如果纹理超过 GPU 支持的最大尺寸，会导致加载失败或需要分割处理。高端 GPU 通常支持 8192 或 16384，而低端 GPU 可能只支持 2048 或 4096。'�initM�ObjectExpression�0A�0֒N�Property�0T�0a���L�Identifier�0T�0Y�titleO�Literal�0[�0a�优化建议�'优化建议'�initN�Property�0t�0����L�Identifier�0t�0{�contentO�Literal�0}�0�ټ根据目标设备的 GPU 能力选择合适的纹理尺寸。过大的纹理会占用大量显存，影响性能。可以使用纹理压缩格式（如 ETC2、ASTC）减少内存占用。پ'根据目标设备的 GPU 能力选择合适的纹理尺寸。过大的纹理会占用大量显存，影响性能。可以使用纹理压缩格式（如 ETC2、ASTC）减少内存占用。'�init�init�initN�Property�0��3����O�Literal�0��1�gpu_cube_map_size�'gpu_cube_map_size'M�ObjectExpression�1�3��N�Property�1�1&���L�Identifier�1�1�idO�Literal�1�1&�gpu_cube_map_size�'gpu_cube_map_size'�initN�Property�11�1C���L�Identifier�11�16�titleO�Literal�18�1C�最大立方体贴图尺寸�'最大立方体贴图尺寸'�initN�Property�1N�1s���L�Identifier�1N�1V�subtitleO�Literal�1X�1s�Max Cube Map Texture Size�'Max Cube Map Texture Size'�initN�Property�1~�1����L�Identifier�1~�1��descriptionO�Literal�1��1��9GPU 支持的最大立方体贴图（Cube Map）尺寸。�;'GPU 支持的最大立方体贴图（Cube Map）尺寸。'�initN�Property�1��3����L�Identifier�1��1��detailsP�ArrayExpression�1��3��M�ObjectExpression�1��2^�N�Property�1��1����L�Identifier�1��1�titleO�Literal�1��1�什么是立方体贴图？�'什么是立方体贴图？'�initN�Property�2�2O���L�Identifier�2�2
-�contentO�Literal�2�2Oٷ立方体贴图由 6 张正方形纹理组成，分别对应立方体的 6 个面（上、下、左、右、前、后）。常用于天空盒、环境反射、环境光照等效果。ٹ'立方体贴图由 6 张正方形纹理组成，分别对应立方体的 6 个面（上、下、左、右、前、后）。常用于天空盒、环境反射、环境光照等效果。'�initM�ObjectExpression�2m�3�N�Property�2��2����L�Identifier�2��2��titleO�Literal�2��2��与 2D 纹理的区别�'与 2D 纹理的区别'�initN�Property�2��2����L�Identifier�2��2��contentO�Literal�2��2���2D 纹理是平面的，而立方体贴图是立体的。立方体贴图使用 3D 方向向量来采样，适合模拟无限远的环境。6 个面的尺寸必须相同，且必须是正方形。��'2D 纹理是平面的，而立方体贴图是立体的。立方体贴图使用 3D 方向向量来采样，适合模拟无限远的环境。6 个面的尺寸必须相同，且必须是正方形。'�initM�ObjectExpression�3�3��N�Property�3)�36���L�Identifier�3)�3.�titleO�Literal�30�36�应用场景�'应用场景'�initN�Property�3I�3����L�Identifier�3I�3P�contentO�Literal�3R�3���天空盒（模拟远景天空）、环境映射（金属反射效果）、动态反射、全局光照等。立方体贴图尺寸通常与 2D 纹理尺寸限制相同，但有些 GPU 会有不同的限制。��'天空盒（模拟远景天空）、环境映射（金属反射效果）、动态反射、全局光照等。立方体贴图尺寸通常与 2D 纹理尺寸限制相同，但有些 GPU 会有不同的限制。'�init�init�initN�Property�3��6����O�Literal�3��3ڱgpu_texture_units�'gpu_texture_units'M�ObjectExpression�3��6��N�Property�3��3����L�Identifier�3��3�idO�Literal�3��3��gpu_texture_units�'gpu_texture_units'�initN�Property�4	�4���L�Identifier�4	�4�titleO�Literal�4�4�纹理单元�'纹理单元'�initN�Property�4!�4:���L�Identifier�4!�4)�subtitleO�Literal�4+�4:�Texture Units�'Texture Units'�initN�Property�4E�4f���L�Identifier�4E�4P�descriptionO�Literal�4R�4f�.GPU 可以同时使用的纹理数量限制。�0'GPU 可以同时使用的纹理数量限制。'�initN�Property�4q�6����L�Identifier�4q�4x�detailsP�ArrayExpression�4z�6��M�ObjectExpression�4��5*�N�Property�4��4����L�Identifier�4��4��titleO�Literal�4��4��什么是纹理单元？�'什么是纹理单元？'�initN�Property�4��5���L�Identifier�4��4ǧcontentO�Literal�4��5ټ纹理单元是 GPU 中用于采样纹理的硬件资源。每个纹理单元可以在着色器中绑定一张纹理。maxTextureImageUnits 表示片段着色器可用的纹理单元数。پ'纹理单元是 GPU 中用于采样纹理的硬件资源。每个纹理单元可以在着色器中绑定一张纹理。maxTextureImageUnits 表示片段着色器可用的纹理单元数。'�initM�ObjectExpression�59�5��N�Property�5L�5a���L�Identifier�5L�5Q�titleO�Literal�5S�5a�顶点纹理 vs 片段纹理�'顶点纹理 vs 片段纹理'�initN�Property�5t�5����L�Identifier�5t�5{�contentO�Literal�5}�5���顶点纹理单元（Vertex Texture Units）用于顶点着色器采样纹理，片段纹理单元（Fragment Texture Units）用于片段着色器。现代 GPU 通常支持 16-32 个纹理单元。��'顶点纹理单元（Vertex Texture Units）用于顶点着色器采样纹理，片段纹理单元（Fragment Texture Units）用于片段着色器。现代 GPU 通常支持 16-32 个纹理单元。'�initM�ObjectExpression�6�6��N�Property�6�6#���L�Identifier�6�6�titleO�Literal�6�6#�实际应用�'实际应用'�initN�Property�66�6r���L�Identifier�66�6=�contentO�Literal�6?�6rٓ多纹理用于复杂渲染效果，如光照贴图、法线贴图、反射贴图等。超过限制的纹理需要分批渲染，会影响性能。ٕ'多纹理用于复杂渲染效果，如光照贴图、法线贴图、反射贴图等。超过限制的纹理需要分批渲染，会影响性能。'�init�init�initN�Property�6��9]���O�Literal�6��6��gpu_viewport�'gpu_viewport'M�ObjectExpression�6��9]�N�Property�6��6����L�Identifier�6��6��idO�Literal�6��6Ǭgpu_viewport�'gpu_viewport'�initN�Property�6��6����L�Identifier�6��6ץtitleO�Literal�6��6߬视口尺寸�'视口尺寸'�initN�Property�6��7	���L�Identifier�6��6�subtitleO�Literal�6��7	�Viewport Dimensions�'Viewport Dimensions'�initN�Property�7�75���L�Identifier�7�7�descriptionO�Literal�7!�75�.GPU 支持的最大视口渲染区域尺寸。�0'GPU 支持的最大视口渲染区域尺寸。'�initN�Property�7@�9V���L�Identifier�7@�7G�detailsP�ArrayExpression�7I�9V�M�ObjectExpression�7X�7��N�Property�7k�7z���L�Identifier�7k�7p�titleO�Literal�7r�7z�什么是视口？�'什么是视口？'�initN�Property�7��7����L�Identifier�7��7��contentO�Literal�7��7�ٳ视口（Viewport）是 OpenGL ES 渲染输出的目标区域，通常对应屏幕或帧缓冲区的某个矩形区域。maxViewportDims 定义了视口的最大宽度和高度。ٵ'视口（Viewport）是 OpenGL ES 渲染输出的目标区域，通常对应屏幕或帧缓冲区的某个矩形区域。maxViewportDims 定义了视口的最大宽度和高度。'�initM�ObjectExpression�8	�8��N�Property�8�8+���L�Identifier�8�8!�titleO�Literal�8#�8+�为什么重要？�'为什么重要？'�initN�Property�8>�8����L�Identifier�8>�8E�contentO�Literal�8G�8�ټ视口尺寸限制了渲染目标的最大分辨率。例如 16384×16384 表示 GPU 可以渲染最大 16K×16K 的图像，这对于高分辨率截图、离线渲染等场景很重要。پ'视口尺寸限制了渲染目标的最大分辨率。例如 16384×16384 表示 GPU 可以渲染最大 16K×16K 的图像，这对于高分辨率截图、离线渲染等场景很重要。'�initM�ObjectExpression�8��9K�N�Property�8��8����L�Identifier�8��8ϥtitleO�Literal�8��8ܻ与屏幕分辨率的区别�'与屏幕分辨率的区别'�initN�Property�8��9<���L�Identifier�8��8��contentO�Literal�8��9<ټ屏幕分辨率是物理显示器的像素数，而视口尺寸是 GPU 渲染能力的上限。视口可以大于屏幕（用于缩放），也可以小于屏幕（用于局部渲染）。پ'屏幕分辨率是物理显示器的像素数，而视口尺寸是 GPU 渲染能力的上限。视口可以大于屏幕（用于缩放），也可以小于屏幕（用于局部渲染）。'�init�init�initN�Property�9d�<���O�Literal�9d�9t�gpu_line_width�'gpu_line_width'M�ObjectExpression�9v�<�N�Property�9��9����L�Identifier�9��9��idO�Literal�9��9��gpu_line_width�'gpu_line_width'�initN�Property�9��9����L�Identifier�9��9��titleO�Literal�9��9��线宽范围�'线宽范围'�initN�Property�9��9����L�Identifier�9��9��subtitleO�Literal�9��9԰Line Width Range�'Line Width Range'�initN�Property�9��9����L�Identifier�9��9�descriptionO�Literal�9��9��(GPU 支持的线条渲染宽度范围。�*'GPU 支持的线条渲染宽度范围。'�initN�Property�:	�<���L�Identifier�:	�:�detailsP�ArrayExpression�:�<�M�ObjectExpression�:!�:��N�Property�:4�:C���L�Identifier�:4�:9�titleO�Literal�:;�:C�什么是线宽？�'什么是线宽？'�initN�Property�:V�:����L�Identifier�:V�:]�contentO�Literal�:_�:�ى线宽是 OpenGL ES 绘制线条时的粗细程度。aliasedLineWidthRange 表示 GPU 支持的抗锯齿线条的最小和最大宽度。ً'线宽是 OpenGL ES 绘制线条时的粗细程度。aliasedLineWidthRange 表示 GPU 支持的抗锯齿线条的最小和最大宽度。'�initM�ObjectExpression�:��;k�N�Property�:��:����L�Identifier�:��:ޥtitleO�Literal�:��:�为什么显示 1-1？�'为什么显示 1-1？'�initN�Property�:��;\���L�Identifier�:��;�contentO�Literal�;�;\��许多移动 GPU（特别是 Mali 系列）只支持线宽为 1。这是硬件限制，意味着无法通过 OpenGL ES 直接绘制更粗的线条。需要绘制矩形或多边形来模拟粗线条。��'许多移动 GPU（特别是 Mali 系列）只支持线宽为 1。这是硬件限制，意味着无法通过 OpenGL ES 直接绘制更粗的线条。需要绘制矩形或多边形来模拟粗线条。'�initM�ObjectExpression�;z�<�N�Property�;��;����L�Identifier�;��;��titleO�Literal�;��;��实际应用�'实际应用'�initN�Property�;��;����L�Identifier�;��;��contentO�Literal�;��;�ٱ在数据可视化、CAD 应用、游戏调试线框等场景中，线宽控制很重要。如果 GPU 不支持可变线宽，需要在应用层通过几何体扩展来实现。ٳ'在数据可视化、CAD 应用、游戏调试线框等场景中，线宽控制很重要。如果 GPU 不支持可变线宽，需要在应用层通过几何体扩展来实现。'�init�init�initN�Property�<!�>����O�Literal�<!�<1�gpu_point_size�'gpu_point_size'M�ObjectExpression�<3�>��N�Property�<>�<R���L�Identifier�<>�<@�idO�Literal�<B�<R�gpu_point_size�'gpu_point_size'�initN�Property�<]�<k���L�Identifier�<]�<b�titleO�Literal�<d�<k�点大小范围�'点大小范围'�initN�Property�<v�<����L�Identifier�<v�<~�subtitleO�Literal�<��<��Point Size Range�'Point Size Range'�initN�Property�<��<����L�Identifier�<��<��descriptionO�Literal�<��<��=GPU 支持的点精灵（Point Sprite）渲染大小范围。�?'GPU 支持的点精灵（Point Sprite）渲染大小范围。'�initN�Property�<��>����L�Identifier�<��<ݧdetailsP�ArrayExpression�<��>�M�ObjectExpression�<��=��N�Property�=�=���L�Identifier�=�=�titleO�Literal�=�=�什么是点大小？�'什么是点大小？'�initN�Property�=$�=����L�Identifier�=$�=+�contentO�Literal�=-�=�١点大小是 OpenGL ES 绘制点精灵（Point Sprite）时的尺寸。与线宽类似，aliasedPointSizeRange 表示 GPU 支持的点的最小和最大尺寸。٣'点大小是 OpenGL ES 绘制点精灵（Point Sprite）时的尺寸。与线宽类似，aliasedPointSizeRange 表示 GPU 支持的点的最小和最大尺寸。'�initM�ObjectExpression�=��>;�N�Property�=��=����L�Identifier�=��=��titleO�Literal�=��=ʶ为什么显示 1-1？�'为什么显示 1-1？'�initN�Property�=��>,���L�Identifier�=��=�contentO�Literal�=��>,پ许多移动 GPU 只支持点大小为 1。这意味着无法直接绘制更大的点。需要绘制小三角形或四边形来模拟大点，这在粒子系统、点云渲染中很常见。��'许多移动 GPU 只支持点大小为 1。这意味着无法直接绘制更大的点。需要绘制小三角形或四边形来模拟大点，这在粒子系统、点云渲染中很常见。'�initM�ObjectExpression�>J�>�N�Property�>]�>j���L�Identifier�>]�>b�titleO�Literal�>d�>j�实际应用�'实际应用'�initN�Property�>}�>����L�Identifier�>}�>��contentO�Literal�>��>�ٿ点精灵常用于粒子效果、星空、点云可视化等。如果 GPU 不支持可变点大小，可以使用公告板技术（Billboarding）用始终朝向相机的四边形替代点。��'点精灵常用于粒子效果、星空、点云可视化等。如果 GPU 不支持可变点大小，可以使用公告板技术（Billboarding）用始终朝向相机的四边形替代点。'�init�init�initN�Property�>��A����O�Literal�>��?�gpu_vertex_attribs�'gpu_vertex_attribs'M�ObjectExpression�?�A��N�Property�?�?4���L�Identifier�?�?�idO�Literal�? �?4�gpu_vertex_attribs�'gpu_vertex_attribs'�initN�Property�??�?L���L�Identifier�??�?D�titleO�Literal�?F�?L�顶点属性�'顶点属性'�initN�Property�?W�?t���L�Identifier�?W�?_�subtitleO�Literal�?a�?t�Vertex Attributes�'Vertex Attributes'�initN�Property�?�?����L�Identifier�?�?��descriptionO�Literal�?��?��6每个顶点可以携带的数据属性数量限制。�8'每个顶点可以携带的数据属性数量限制。'�initN�Property�?��A����L�Identifier�?��?��detailsP�ArrayExpression�?��A��M�ObjectExpression�?��@^�N�Property�?��?����L�Identifier�?��?ۥtitleO�Literal�?��?�什么是顶点属性？�'什么是顶点属性？'�initN�Property�?��@O���L�Identifier�?��@�contentO�Literal�@�@Oٸ顶点属性是每个顶点携带的数据，如位置（3D坐标）、颜色、法线、纹理坐标、切线等。maxVertexAttribs 表示每个顶点最多可以有多少个属性。ٺ'顶点属性是每个顶点携带的数据，如位置（3D坐标）、颜色、法线、纹理坐标、切线等。maxVertexAttribs 表示每个顶点最多可以有多少个属性。'�initM�ObjectExpression�@m�@��N�Property�@��@����L�Identifier�@��@��titleO�Literal�@��@��常见属性�'常见属性'�initN�Property�@��@����L�Identifier�@��@��contentO�Literal�@��@�٫位置（3个浮点数）、颜色（4个浮点数 RGBA）、纹理坐标（2个浮点数 UV）、法线（3个浮点数）。复杂的着色器可能需要更多属性。٭'位置（3个浮点数）、颜色（4个浮点数 RGBA）、纹理坐标（2个浮点数 UV）、法线（3个浮点数）。复杂的着色器可能需要更多属性。'�initM�ObjectExpression�A
-�A��N�Property�A�A*���L�Identifier�A�A"�titleO�Literal�A$�A*�限制影响�'限制影响'�initN�Property�A=�A����L�Identifier�A=�AD�contentO�Literal�AF�A�٧OpenGL ES 3.0 要求至少支持 16 个顶点属性。如果着色器使用的属性超过 GPU 限制，会导致编译失败。需要优化着色器或拆分渲染。٩'OpenGL ES 3.0 要求至少支持 16 个顶点属性。如果着色器使用的属性超过 GPU 限制，会导致编译失败。需要优化着色器或拆分渲染。'�init�init�initN�Property�A��D����O�Literal�A��A̳gpu_uniform_vectors�'gpu_uniform_vectors'M�ObjectExpression�A��D��N�Property�A��A����L�Identifier�A��AۢidO�Literal�A��A�gpu_uniform_vectors�'gpu_uniform_vectors'�initN�Property�A��B���L�Identifier�A��B�titleO�Literal�B�B�Uniform 变量�'Uniform 变量'�initN�Property�B�B8���L�Identifier�B�B#�subtitleO�Literal�B%�B8�Uniform Variables�'Uniform Variables'�initN�Property�BC�Bk���L�Identifier�BC�BN�descriptionO�Literal�BP�Bk�9着色器中可以使用的 uniform 变量数量限制。�;'着色器中可以使用的 uniform 变量数量限制。'�initN�Property�Bv�D����L�Identifier�Bv�B}�detailsP�ArrayExpression�B�D��M�ObjectExpression�B��C�N�Property�B��B����L�Identifier�B��B��titleO�Literal�B��B��什么是 Uniform？�'什么是 Uniform？'�initN�Property�B��C���L�Identifier�B��BЧcontentO�Literal�B��CٞUniform 是着色器中的全局常量，在整个绘制调用中保持不变。用于传递变换矩阵、光照参数、材质属性等数据给着色器。٠'Uniform 是着色器中的全局常量，在整个绘制调用中保持不变。用于传递变换矩阵、光照参数、材质属性等数据给着色器。'�initM�ObjectExpression�C,�C�N�Property�C?�CX���L�Identifier�C?�CD�titleO�Literal�CF�CX�顶点 vs 片段 Uniform�'顶点 vs 片段 Uniform'�initN�Property�Ck�C����L�Identifier�Ck�Cr�contentO�Literal�Ct�C�ٮ顶点着色器和片段着色器有各自的 uniform 限制。maxVertexUniformVectors 通常是 128-256，maxFragmentUniformVectors 通常是 16-224，具体取决于 GPU。ٰ'顶点着色器和片段着色器有各自的 uniform 限制。maxVertexUniformVectors 通常是 128-256，maxFragmentUniformVectors 通常是 16-224，具体取决于 GPU。'�initM�ObjectExpression�D�D��N�Property�D�D"���L�Identifier�D�D�titleO�Literal�D�D"�优化技巧�'优化技巧'�initN�Property�D5�D����L�Identifier�D5�D<�contentO�Literal�D>�D�ٵ使用 UBO（Uniform Buffer Object）可以突破单个着色器的 uniform 限制，在多个着色器间共享数据。合并多个 uniform 到一个 vec4 也可以节省空间。ٷ'使用 UBO（Uniform Buffer Object）可以突破单个着色器的 uniform 限制，在多个着色器间共享数据。合并多个 uniform 到一个 vec4 也可以节省空间。'�init�init�initN�Property�D��G����O�Literal�D��Dڳgpu_varying_vectors�'gpu_varying_vectors'M�ObjectExpression�D��G��N�Property�D��E ���L�Identifier�D��D�idO�Literal�D��E �gpu_varying_vectors�'gpu_varying_vectors'�initN�Property�E�E���L�Identifier�E�E�titleO�Literal�E�E�Varying 变量�'Varying 变量'�initN�Property�E)�EF���L�Identifier�E)�E1�subtitleO�Literal�E3�EF�Varying Variables�'Varying Variables'�initN�Property�EQ�Eu���L�Identifier�EQ�E\�descriptionO�Literal�E^�Eu�?顶点着色器传递给片段着色器的插值数据限制。�A'顶点着色器传递给片段着色器的插值数据限制。'�initN�Property�E��G����L�Identifier�E��E��detailsP�ArrayExpression�E��G��M�ObjectExpression�E��F+�N�Property�E��E����L�Identifier�E��E��titleO�Literal�E��E��什么是 Varying？�'什么是 Varying？'�initN�Property�E��F���L�Identifier�E��EڧcontentO�Literal�E��F٢Varying 变量用于将数据从顶点着色器传递到片段着色器。GPU 会在三角形内部进行插值，使片段着色器获得平滑变化的数据。٤'Varying 变量用于将数据从顶点着色器传递到片段着色器。GPU 会在三角形内部进行插值，使片段着色器获得平滑变化的数据。'�initM�ObjectExpression�F:�FΒN�Property�FM�FZ���L�Identifier�FM�FR�titleO�Literal�FT�FZ�常见用途�'常见用途'�initN�Property�Fm�F����L�Identifier�Fm�Ft�contentO�Literal�Fv�F�١纹理坐标、颜色、法线、光照强度等需要从顶点插值到像素的数据都使用 varying。maxVaryingVectors 限制了可以传递的数据量。٣'纹理坐标、颜色、法线、光照强度等需要从顶点插值到像素的数据都使用 varying。maxVaryingVectors 限制了可以传递的数据量。'�initM�ObjectExpression�F��Gy�N�Property�F��F����L�Identifier�F��F��titleO�Literal�F��F��限制说明�'限制说明'�initN�Property�G�Gj���L�Identifier�G�G�contentO�Literal�G�GjٯOpenGL ES 3.0 要求至少支持 15 个 varying 变量（vec4）。如果超过限制，着色器编译会失败。需要减少传递的数据量或使用纹理查找替代。ٱ'OpenGL ES 3.0 要求至少支持 15 个 varying 变量（vec4）。如果超过限制，着色器编译会失败。需要减少传递的数据量或使用纹理查找替代。'�init�init�initN�Property�G��J7���O�Literal�G��G��gpu_multisample�'gpu_multisample'M�ObjectExpression�G��J7�N�Property�G��G����L�Identifier�G��G��idO�Literal�G��Gůgpu_multisample�'gpu_multisample'�initN�Property�G��G����L�Identifier�G��GեtitleO�Literal�G��Gݬ多重采样�'多重采样'�initN�Property�G��H���L�Identifier�G��G�subtitleO�Literal�G��H�Multisampling�'Multisampling'�initN�Property�H�H6���L�Identifier�H�H�descriptionO�Literal�H�H6�AGPU 支持的多重采样抗锯齿（MSAA）的最大样本数。�C'GPU 支持的多重采样抗锯齿（MSAA）的最大样本数。'�initN�Property�HA�J0���L�Identifier�HA�HH�detailsP�ArrayExpression�HJ�J0�M�ObjectExpression�HY�H�N�Property�Hl�H}���L�Identifier�Hl�Hq�titleO�Literal�Hs�H}�什么是多重采样？�'什么是多重采样？'�initN�Property�H��H����L�Identifier�H��H��contentO�Literal�H��H�٥多重采样抗锯齿（MSAA）是一种抗锯齿技术，通过对每个像素进行多次采样来减少锯齿边缘。maxSamples 表示支持的最大采样数。٧'多重采样抗锯齿（MSAA）是一种抗锯齿技术，通过对每个像素进行多次采样来减少锯齿边缘。maxSamples 表示支持的最大采样数。'�initM�ObjectExpression�H��I��N�Property�I�I���L�Identifier�I�I�titleO�Literal�I�I�常见采样数�'常见采样数'�initN�Property�I.�I~���L�Identifier�I.�I5�contentO�Literal�I7�I~ى1：无抗锯齿；2：2x MSAA；4：4x MSAA；8：8x MSAA；16：16x MSAA。采样数越高，边缘越平滑，但性能开销越大。ً'1：无抗锯齿；2：2x MSAA；4：4x MSAA；8：8x MSAA；16：16x MSAA。采样数越高，边缘越平滑，但性能开销越大。'�initM�ObjectExpression�I��J%�N�Property�I��I����L�Identifier�I��I��titleO�Literal�I��I��性能影响�'性能影响'�initN�Property�I��J���L�Identifier�I��I֧contentO�Literal�I��JٖMSAA 会显著增加显存占用和渲染开销。移动端通常使用 2x 或 4x，高端设备可以使用 8x。需要在画质和性能间权衡。٘'MSAA 会显著增加显存占用和渲染开销。移动端通常使用 2x 或 4x，高端设备可以使用 8x。需要在画质和性能间权衡。'�init�init�initN�Property�J>�L����O�Literal�J>�JP�gpu_draw_buffers�'gpu_draw_buffers'M�ObjectExpression�JR�L�N�Property�J]�Js���L�Identifier�J]�J_�idO�Literal�Ja�Js�gpu_draw_buffers�'gpu_draw_buffers'�initN�Property�J~�J����L�Identifier�J~�J��titleO�Literal�J��J��绘制缓冲区�'绘制缓冲区'�initN�Property�J��J����L�Identifier�J��J��subtitleO�Literal�J��J��Draw Buffers�'Draw Buffers'�initN�Property�J��J����L�Identifier�J��JūdescriptionO�Literal�J��J��@GPU 单次绘制可以同时输出到的颜色缓冲区数量。�B'GPU 单次绘制可以同时输出到的颜色缓冲区数量。'�initN�Property�J��L����L�Identifier�J��J�detailsP�ArrayExpression�J��LޓM�ObjectExpression�K�K��N�Property�K�K(���L�Identifier�K�K�titleO�Literal�K�K(�什么是 MRT？�'什么是 MRT？'�initN�Property�K;�K����L�Identifier�K;�KB�contentO�Literal�KD�K�ٌMRT（Multiple Render Targets）允许单次绘制将结果输出到多个纹理。maxDrawBuffers 表示支持的同时渲染目标数量。َ'MRT（Multiple Render Targets）允许单次绘制将结果输出到多个纹理。maxDrawBuffers 表示支持的同时渲染目标数量。'�initM�ObjectExpression�K��LF�N�Property�K��K����L�Identifier�K��KƥtitleO�Literal�K��Kά应用场景�'应用场景'�initN�Property�K��L7���L�Identifier�K��K�contentO�Literal�K��L7٭延迟渲染、G-Buffer 生成、后处理效果等需要同时输出多个数据（颜色、法线、深度等）到不同纹理。OpenGL ES 3.0 要求至少支持 4 个。ٯ'延迟渲染、G-Buffer 生成、后处理效果等需要同时输出多个数据（颜色、法线、深度等）到不同纹理。OpenGL ES 3.0 要求至少支持 4 个。'�initM�ObjectExpression�LU�LӒN�Property�Lh�Lu���L�Identifier�Lh�Lm�titleO�Literal�Lo�Lu�性能考虑�'性能考虑'�initN�Property�L��L����L�Identifier�L��L��contentO�Literal�L��L��更多的绘制缓冲区会增加带宽和显存占用。移动端通常限制在 4-8 个，桌面级 GPU 可以支持更多。ف'更多的绘制缓冲区会增加带宽和显存占用。移动端通常限制在 4-8 个，桌面级 GPU 可以支持更多。'�init�init�initN�Property�L��O����O�Literal�L��M�gpu_compressed_texture�'gpu_compressed_texture'M�ObjectExpression�M�OԕN�Property�M�M-���L�Identifier�M�M�idO�Literal�M�M-�gpu_compressed_texture�'gpu_compressed_texture'�initN�Property�M8�MG���L�Identifier�M8�M=�titleO�Literal�M?�MG�压缩纹理格式�'压缩纹理格式'�initN�Property�MR�Mx���L�Identifier�MR�MZ�subtitleO�Literal�M\�Mx�Compressed Texture Formats�'Compressed Texture Formats'�initN�Property�M��M����L�Identifier�M��M��descriptionO�Literal�M��M��.GPU 支持的硬件压缩纹理格式列表。�0'GPU 支持的硬件压缩纹理格式列表。'�initN�Property�M��O����L�Identifier�M��M��detailsP�ArrayExpression�M��O͓M�ObjectExpression�M��NY�N�Property�M��M����L�Identifier�M��MߥtitleO�Literal�M��M��为什么需要压缩纹理？� '为什么需要压缩纹理？'�initN�Property�N �NJ���L�Identifier�N �N�contentO�Literal�N	�NJٟ压缩纹理可以显著减少显存占用和带宽消耗。与 PNG/JPEG 不同，压缩纹理可以直接被 GPU 使用，无需解压，提高渲染效率。١'压缩纹理可以显著减少显存占用和带宽消耗。与 PNG/JPEG 不同，压缩纹理可以直接被 GPU 使用，无需解压，提高渲染效率。'�initM�ObjectExpression�Nh�O�N�Property�N{�N����L�Identifier�N{�N��titleO�Literal�N��N��常见压缩格式�'常见压缩格式'�initN�Property�N��O���L�Identifier�N��N��contentO�Literal�N��OٙETC2：Android 标准，所有 GPU 支持；ASTC：高质量压缩，Android 5.0+ 可选支持；PVRTC：PowerVR GPU 专用；S3TC：桌面 GPU 常用。ٛ'ETC2：Android 标准，所有 GPU 支持；ASTC：高质量压缩，Android 5.0+ 可选支持；PVRTC：PowerVR GPU 专用；S3TC：桌面 GPU 常用。'�initM�ObjectExpression�O!�ON�Property�O4�OA���L�Identifier�O4�O9�titleO�Literal�O;�OA�使用建议�'使用建议'�initN�Property�OT�O����L�Identifier�OT�O[�contentO�Literal�O]�O�ٜ优先使用 ETC2（保证兼容性）或 ASTC（高质量）。根据纹理内容选择压缩方式：RGB 用 ETC2_RGB，RGBA 用 ETC2_RGBA 或 ASTC_4x4。ٞ'优先使用 ETC2（保证兼容性）或 ASTC（高质量）。根据纹理内容选择压缩方式：RGB 用 ETC2_RGB，RGBA 用 ETC2_RGBA 或 ASTC_4x4。'�init�init�initN�Property�O��T����O�Literal�O��O�gpu_extensions�'gpu_extensions'M�ObjectExpression�O��TϕN�Property�O��P���L�Identifier�O��O��idO�Literal�O��P�gpu_extensions�'gpu_extensions'�initN�Property�P�P,���L�Identifier�P�P�titleO�Literal�P�P,�OpenGL ES 扩展�'OpenGL ES 扩展'�initN�Property�P7�PW���L�Identifier�P7�P?�subtitleO�Literal�PA�PW�OpenGL ES Extensions�'OpenGL ES Extensions'�initN�Property�Pb�P����L�Identifier�Pb�Pm�descriptionO�Literal�Po�P��fGPU 支持的 OpenGL ES 扩展功能列表，这些扩展提供了超出标准规范的高级特性。�h'GPU 支持的 OpenGL ES 扩展功能列表，这些扩展提供了超出标准规范的高级特性。'�initN�Property�P��T����L�Identifier�P��P��detailsP�ArrayExpression�P��TȕM�ObjectExpression�P��Qk�N�Property�P��P����L�Identifier�P��PإtitleO�Literal�P��P�什么是扩展？�'什么是扩展？'�initN�Property�P��Q\���L�Identifier�P��P��contentO�Literal�P��Q\ٺOpenGL ES 扩展是 GPU 厂商提供的额外功能，超出标准 OpenGL ES 规范。扩展名称以 GL_ 开头，后跟厂商前缀（如 OES、KHR、EXT、ARM 等）和功能描述。ټ'OpenGL ES 扩展是 GPU 厂商提供的额外功能，超出标准 OpenGL ES 规范。扩展名称以 GL_ 开头，后跟厂商前缀（如 OES、KHR、EXT、ARM 等）和功能描述。'�initM�ObjectExpression�Qz�R<�N�Property�Q��Q����L�Identifier�Q��Q��titleO�Literal�Q��Q��常见扩展 - 图像与同步� '常见扩展 - 图像与同步'�initN�Property�Q��R-���L�Identifier�Q��Q��contentO�Literal�Q��R-��GL_OES_EGL_image：支持 EGL 图像作为纹理；GL_OES_EGL_image_external：支持外部图像（如相机预览）；GL_OES_EGL_sync：支持 GPU 同步原语，用于多线程渲染协调。��'GL_OES_EGL_image：支持 EGL 图像作为纹理；GL_OES_EGL_image_external：支持外部图像（如相机预览）；GL_OES_EGL_sync：支持 GPU 同步原语，用于多线程渲染协调。'�initM�ObjectExpression�RK�S�N�Property�R^�Rs���L�Identifier�R^�Rc�titleO�Literal�Re�Rs�常见扩展 - 深度与浮点� '常见扩展 - 深度与浮点'�initN�Property�R��S
-���L�Identifier�R��R��contentO�Literal�R��S
-ٹGL_OES_depth24/depth32：支持 24/32 位深度缓冲；GL_OES_texture_float/half_float：支持浮点纹理（HDR 渲染）；GL_EXT_color_buffer_float：支持浮点颜色缓冲区。ٻ'GL_OES_depth24/depth32：支持 24/32 位深度缓冲；GL_OES_texture_float/half_float：支持浮点纹理（HDR 渲染）；GL_EXT_color_buffer_float：支持浮点颜色缓冲区。'�initM�ObjectExpression�S(�T�N�Property�S;�SP���L�Identifier�S;�S@�titleO�Literal�SB�SP�常见扩展 - 压缩与顶点� '常见扩展 - 压缩与顶点'�initN�Property�Sc�S����L�Identifier�Sc�Sj�contentO�Literal�Sl�S���GL_KHR_texture_compression_astc_ldr/hdr：ASTC 纹理压缩（高质量）；GL_OES_vertex_array_object：VAO 支持（减少状态切换开销）；GL_OES_depth_texture：深度纹理支持（阴影贴图）。��'GL_KHR_texture_compression_astc_ldr/hdr：ASTC 纹理压缩（高质量）；GL_OES_vertex_array_object：VAO 支持（减少状态切换开销）；GL_OES_depth_texture：深度纹理支持（阴影贴图）。'�initM�ObjectExpression�T�T��N�Property�T$�T4���L�Identifier�T$�T)�titleO�Literal�T+�T4�如何使用扩展？�'如何使用扩展？'�initN�Property�TG�T����L�Identifier�TG�TN�contentO�Literal�TP�T�ٺ使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。ټ'使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。'�init�init�init�const��I�ExportNamedDeclaration�T��U&�rQ��type�start�end�id�expression�generator�async�params�body�FunctionDeclaration�T��U&L�Identifier�T��T��getConceptInfo��L�Identifier�T��U�id�rR��type�start�end�body�BlockStatement�U�U&��rS��type�start�end�argument�ReturnStatement�U
-�U#�rT��type�start�end�object�property�computed�optional�MemberExpression�U�U"L�Identifier�U�U�ConceptConfigL�Identifier�U�U!�id��I�ExportNamedDeclaration�U6�U�Q�FunctionDeclaration�U=�U�L�Identifier�UF�UV�getAllConceptIds��R�BlockStatement�UY�U��S�ReturnStatement�U`�U��rU��type�start�end�callee�arguments�optional�CallExpression�Ug�U�T�MemberExpression�Ug�UrL�Identifier�Ug�Um�ObjectL�Identifier�Un�Ur�keys�L�Identifier�Us�U��ConceptConfig��

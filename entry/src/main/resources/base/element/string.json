@@ -27,6 +27,10 @@
     {
       "name": "permission_reason_cpu",
       "value": "用于获取CPU核心频率信息"
+    },
+    {
+      "name": "permission_reason_camera",
+      "value": "用于获取摄像头信息"
     }
   ]
 }

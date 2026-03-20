@@ -25,18 +25,19 @@
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/PerformanceMonitor.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
       ],
       "error": false
     },
@@ -62,6 +63,31 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/folder_stack.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/nav_destination.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/navigation.d.ts"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.arkui.UIContext.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
       ],
       "error": false
     },
@@ -120,12 +146,43 @@
         28007
       ]
     },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets": {
+      "mtimeMs": 1773384339970.6074,
+      "children": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets": {
+      "mtimeMs": 1773298215714.8884,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets"
+      ],
+      "error": false
+    },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets": {
-      "mtimeMs": 1773298093720.719,
+      "mtimeMs": 1773999195958.3174,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.UIAbility.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.window.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.Want.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.AbilityConstant.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/PerformanceMonitor.ets",
@@ -133,7 +190,10 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets"
       ],
       "parent": [],
-      "error": false
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
     },
     "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.Ability.d.ts": {
       "mtimeMs": 1768799347000,
@@ -257,6 +317,12 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.socket.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.security.cert.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.security.cryptoFramework.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.wifiManager.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/graphics3d/SceneResources.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/embedded_component.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/image.d.ts",
@@ -265,8 +331,7 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/pattern_lock.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/video.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.web.webview.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.print.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts"
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.print.d.ts"
       ],
       "error": false
     },
@@ -486,7 +551,8 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/Context.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.common.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/app/context.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.rdb.d.ts"
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.rdb.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts"
       ],
       "error": false
     },
@@ -510,6 +576,8 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.bundle.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/PhotoEditorExtensionContext.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimodalInput.pointer.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/common.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.web.webview.d.ts"
       ],
@@ -580,7 +648,8 @@
       "parent": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.image.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.graphics.drawing.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.display.d.ts"
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.display.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts"
       ],
       "error": false
     },
@@ -653,35 +722,11 @@
       ],
       "parent": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.arkui.UIContext.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/action_sheet.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/alert_dialog.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/common.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/custom_dialog_controller.d.ts"
-      ],
-      "error": false
-    },
-    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts": {
-      "mtimeMs": 1768799347000,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts"
-      ],
-      "parent": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.arkui.UIContext.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
       ],
       "error": false
     },
@@ -1052,6 +1097,8 @@
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.app.ability.common.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/ExtensionContext.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/AbilityStageContext.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/build-tools/ets-loader/declarations/common.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.print.d.ts"
       ],
@@ -1565,6 +1612,7 @@
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/PerformanceMonitor.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets"
       ],
       "error": false
@@ -1606,8 +1654,8 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/PerformanceMonitor.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.http.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.socket.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets"
       ],
       "error": false
     },
@@ -1664,8 +1712,16 @@
       ],
       "error": false
     },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts": {
+      "mtimeMs": 1773384293301.2273,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets"
+      ],
+      "error": false
+    },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets": {
-      "mtimeMs": 1773298061075.0935,
+      "mtimeMs": 1773391623996.957,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.deviceInfo.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.batteryInfo.d.ts",
@@ -1674,19 +1730,34 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
       ],
       "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets"
       ],
       "error": true,
       "errorCodes": [
         28007
       ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets": {
+      "mtimeMs": 1773391642751.0432,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets"
+      ],
+      "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.ets": {
       "mtimeMs": 1773210452096.2253,
@@ -1695,33 +1766,31 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
       ],
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets": {
-      "mtimeMs": 1773311687629.9688,
+      "mtimeMs": 1773999919816.1455,
       "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets"
       ],
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/MenuItem.ets": {
-      "mtimeMs": 1773303007580.144,
+      "mtimeMs": 1773391899939.242,
       "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets"
@@ -1733,40 +1802,16 @@
       "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets": {
-      "mtimeMs": 1773213600805.599,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets"
       ],
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets": {
-      "mtimeMs": 1773304979803.0774,
+      "mtimeMs": 1773805074266.9536,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
@@ -1783,28 +1828,53 @@
         28007
       ]
     },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets": {
-      "mtimeMs": 1773308412073.7341,
-      "children": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
-      ],
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets": {
+      "mtimeMs": 1773307855954.3733,
+      "children": [],
       "parent": [
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SimpleChart.ets": {
+      "mtimeMs": 1773385333300.9753,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets": {
+      "mtimeMs": 1773633797230.0461,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
       ],
       "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets": {
-      "mtimeMs": 1773312221883.811,
+      "mtimeMs": 1774001730997.3093,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
@@ -1812,6 +1882,7 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SimpleChart.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
       ],
@@ -1822,30 +1893,29 @@
         28007
       ]
     },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/cpp/types/libsysinfo/index.d.ts": {
-      "mtimeMs": 1773308389711.2803,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.ets": {
-      "mtimeMs": 1773210725813.364,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets"
-      ],
-      "error": false
-    },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets": {
-      "mtimeMs": 1773311872347.981,
+      "mtimeMs": 1774001681334.8757,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
+      ],
+      "parent": [],
+      "error": true,
+      "errorCodes": [
+        28040,
+        28007
+      ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets": {
+      "mtimeMs": 1774001747142.9863,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
@@ -1859,13 +1929,23 @@
         28007
       ]
     },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.ets": {
+      "mtimeMs": 1773210725813.364,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets"
+      ],
+      "error": false
+    },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets": {
-      "mtimeMs": 1773312030544.7515,
+      "mtimeMs": 1774000916978.1816,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets",
@@ -1878,11 +1958,12 @@
       ]
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets": {
-      "mtimeMs": 1773312055504.245,
+      "mtimeMs": 1774000918868.9087,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
@@ -1894,47 +1975,42 @@
       ]
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets": {
-      "mtimeMs": 1773311924868.2715,
+      "mtimeMs": 1774001666623.2214,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.batteryInfo.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/ProgressBar.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
       ],
       "parent": [],
       "error": true,
       "errorCodes": [
+        28040,
         28007
       ]
     },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets": {
-      "mtimeMs": 1773286374085.5059,
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.wifiManager.d.ts": {
+      "mtimeMs": 1768799347000,
       "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.deviceInfo.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.batteryInfo.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.display.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.statvfs.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.connection.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts"
       ],
       "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets"
       ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
+      "error": false
     },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets": {
-      "mtimeMs": 1773314982723.68,
+      "mtimeMs": 1774000915170.9575,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.connection.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.wifiManager.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
@@ -1945,12 +2021,135 @@
         28007
       ]
     },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/BaseContext.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.image.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.graphics.colorSpaceManager.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/permissions.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/Context.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/security/PermissionRequestResult.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets"
+      ],
+      "error": false
+    },
     "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets": {
-      "mtimeMs": 1773312003209.0828,
+      "mtimeMs": 1773999149659.5754,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.promptAction.d.ts"
+      ],
+      "parent": [],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/application/Context.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.image.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.dataSharePredicates.d.ts"
+      ],
+      "parent": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.multimedia.camera.d.ts"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.dataSharePredicates.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.ValuesBucket.d.ts"
+      ],
+      "parent": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.photoAccessHelper.d.ts"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.ValuesBucket.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [],
+      "parent": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.data.dataSharePredicates.d.ts"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/permissions.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [],
+      "parent": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts"
+      ],
+      "error": false
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/security/PermissionRequestResult.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [],
+      "parent": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.abilityAccessCtrl.d.ts"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets": {
+      "mtimeMs": 1773299818883.4163,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets"
+      ],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts": {
+      "mtimeMs": 1768799347000,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets": {
+      "mtimeMs": 1774004440557.5222,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
       ],
       "parent": [],
@@ -1959,14 +2158,38 @@
         28007
       ]
     },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets": {
-      "mtimeMs": 1773311978582.4329,
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/OSPage.ets": {
+      "mtimeMs": 1774001714408.7126,
       "children": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
+      ],
+      "parent": [],
+      "error": true,
+      "errorCodes": [
+        28040,
+        28007
+      ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets": {
+      "mtimeMs": 1774004459601.1843,
+      "children": [],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
+      ],
+      "error": false
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets": {
+      "mtimeMs": 1773312106701.6072,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets",
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
       ],
@@ -1987,6 +2210,24 @@
         "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
       ],
       "parent": [],
+      "error": true,
+      "errorCodes": [
+        28007
+      ]
+    },
+    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.ets": {
+      "mtimeMs": 1773391747664.1487,
+      "children": [
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.deviceInfo.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.batteryInfo.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.display.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.file.statvfs.d.ts",
+        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.net.connection.d.ts",
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
+      ],
+      "parent": [
+        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
+      ],
       "error": true,
       "errorCodes": [
         28007
@@ -2451,161 +2692,6 @@
       "children": [],
       "parent": [
         "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.web.webview.d.ts"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AppMemoryPage.ets": {
-      "mtimeMs": 1773298557308.091,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/FormatUtil.ets",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
-      ],
-      "parent": [],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ThreadCpuPage.ets": {
-      "mtimeMs": 1773298613466.9568,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SectionHeader.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
-      ],
-      "parent": [],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DataRefreshService.ets": {
-      "mtimeMs": 1773298215714.8884,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/DeviceUtil.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/model/DeviceInfo.ets"
-      ],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/entryability/EntryAbility.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/Index.ets"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/SimpleChart.ets": {
-      "mtimeMs": 1773303027082.3955,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets": {
-      "mtimeMs": 1773314284823.5974,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoCard.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/NativeApi.ets",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
-      ],
-      "parent": [],
-      "error": true,
-      "errorCodes": [
-        28040,
-        28007
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets": {
-      "mtimeMs": 1773299818883.4163,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts"
-      ],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets"
-      ],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.sensor.d.ts": {
-      "mtimeMs": 1768799347000,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.base.d.ts"
-      ],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SensorUtil.ets"
-      ],
-      "error": false
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/InfoButton.ets": {
-      "mtimeMs": 1773307855954.3733,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets"
-      ],
-      "error": false,
-      "errorCodes": [
-        2416,
-        2345
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets": {
-      "mtimeMs": 1773308862130.8208,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets"
-      ],
-      "error": false,
-      "errorCodes": [
-        40,
-        43,
-        38
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets": {
-      "mtimeMs": 1773312106701.6072,
-      "children": [
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.router.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/config/ConceptConfig.ets",
-        "/Applications/DevEco-Studio.app/Contents/sdk/default/openharmony/ets/api/@ohos.hilog.d.ts",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets"
-      ],
-      "parent": [],
-      "error": true,
-      "errorCodes": [
-        28007
-      ]
-    },
-    "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/components/NavigationBar.ets": {
-      "mtimeMs": 1773312242878.1975,
-      "children": [],
-      "parent": [
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/MemoryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/GpuPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/StoragePage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/DisplayPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/BatteryPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/NetworkPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/CameraPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/SensorPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/ConceptDetailPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/AboutPage.ets",
-        "/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/pages/TestPage.ets"
       ],
       "error": false
     }

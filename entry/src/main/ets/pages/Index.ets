@@ -340,7 +340,7 @@ struct Index {
         })
 
         SysInfoMenuItem({
-          title: '摄像头',
+          title: '相机',
           subtitle: '',
           onTap: () => {
             router.pushUrl({ url: 'pages/CameraPage' });

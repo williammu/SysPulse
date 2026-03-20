@@ -112,18 +112,20 @@ export struct TechCard {
 
   build() {
     Column() {
-      // 顶部装饰线
+      // 顶部装饰线 - 使用内边距避免刺破圆角
       Row()
-        .width('100%')
+        .width('90%')
         .height(2)
         .backgroundColor($r('app.color.primary_color'))
         .opacity(this.glowIntensity)
+        .borderRadius(1)
         .animation({
           duration: 2000,
           curve: Curve.EaseInOut,
           iterations: -1,
           playMode: PlayMode.Alternate
         })
+        .margin({ top: 8 })
 
       Column() {
         Text(this.title)

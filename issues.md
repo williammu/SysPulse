@@ -931,4 +931,178 @@ fi
 
 ---
 
-*最后更新: 2026-03-13*
+### 问题 19: 相机变焦范围获取失败且 UI 不刷新
+
+**状态**: ✅ 已修复
+
+**发现时间**: 2026-03-20
+
+**问题描述**:
+1. 调用 `getZoomRatioRange()` 获取变焦范围失败
+2. 即使获取成功，UI 仍显示"未获取"
+3. 错误码 7400103: "Surface invalid or released"
+
+**根本原因分析**:
+
+#### 1. XComponent 生命周期问题
+- `previewSurfaceId` 作为 `@State` 变量，更新时触发 UI 重新渲染
+- 重新渲染导致 XComponent 被销毁重建，surface 失效
+- 错误码 7400103 表示 "Surface invalid or released"
+
+#### 2. ArkTS 语法问题
+- 使用了 ES6 的展开运算符 `...`，ArkTS 严格模式不支持
+- 数组更新方式不正确，无法触发 UI 刷新
+
+```typescript
+// ❌ 错误：ArkTS 不支持展开运算符
+this.backCameras = [...this.backCameras];
+
+// ✅ 正确：使用 slice() 创建新数组
+this.backCameras = this.backCameras.slice();
+```
+
+#### 3. @Builder 参数传递问题（主要原因）
+- `CameraDetailView` 是 `@Builder` 函数，参数 `detail` 是值传递
+- 当 `backCameras` 数组更新后，`ForEach` 的 key 函数 `(cam) => cam.cameraId` 返回的 key 没有变化
+- ArkUI 认为元素没有变化，不会重新渲染 Builder
+- Builder 内部使用的是旧的 `detail` 参数值
+
+```typescript
+// ❌ 错误：使用 Builder 参数，不会随 State 更新
+Text(this.getZoomRangeText(detail.photoZoomRange))
+
+// ✅ 正确：直接从 State 数组获取最新值
+Text(this.getZoomRangeText(this.getCameraArray(cameraType)[index]?.photoZoomRange))
+```
+
+**修复方案**:
+
+#### 1. 修复 XComponent 生命周期
+```typescript
+// 不要设置 previewSurfaceId，避免 UI 重新渲染
+// this.previewSurfaceId = surfaceId;
+
+// 直接使用 surfaceId 启动预览
+this.startCameraPreview(firstCamera.cameraId, surfaceId, 'back', 0);
+```
+
+#### 2. 修复 ArkTS 语法
+```typescript
+// 使用 slice() 代替展开运算符
+const newBackCameras = this.backCameras.slice();
+newBackCameras[index].photoZoomRange = zoomRange;
+this.backCameras = newBackCameras;
+```
+
+#### 3. 修复 @Builder 参数传递
+```typescript
+// 添加辅助方法获取最新数组
+getCameraArray(cameraType: 'back' | 'front' | 'other'): CameraDeviceDetail[] {
+  if (cameraType === 'back') return this.backCameras;
+  if (cameraType === 'front') return this.frontCameras;
+  return this.otherCameras;
+}
+
+@Builder
+CameraDetailView(detail: CameraDeviceDetail, index: number, cameraType: 'back' | 'front' | 'other') {
+  // ...
+  // 直接从 State 数组获取最新值，而不是使用 detail 参数
+  Text(this.getZoomRangeText(this.getCameraArray(cameraType)[index]?.photoZoomRange))
+  
+  Button(this.getCameraArray(cameraType)[index]?.isPreviewing ? '停止' : '获取')
+    .backgroundColor(this.getCameraArray(cameraType)[index]?.isPreviewing ? ... : ...)
+  
+  if (this.getCameraArray(cameraType)[index]?.isPreviewing) {
+    Text('预览中')
+  }
+}
+```
+
+#### 4. 确保 Session 完全就绪后再获取变焦
+```typescript
+// 增加延迟确保 Session 完全就绪
+const zoomDelayMs = 2000;
+setTimeout(() => {
+  const zoomRange = currentSession.getZoomRatioRange();
+  // 更新 UI...
+}, zoomDelayMs);
+```
+
+**技术要点**:
+
+1. **XComponent 和 Surface 管理**
+   - XComponent 的 surface 在组件重建时会失效
+   - 避免在获取 surface 后触发 UI 重新渲染
+   - 使用单个 XComponent，通过条件渲染控制显示
+
+2. **ArkTS 严格模式限制**
+   - 不支持展开运算符 `...`
+   - 数组更新必须创建新引用才能触发刷新
+   - 使用 `slice()` 代替展开运算符
+
+3. **@Builder 和 @State 的关系**
+   - Builder 参数是值传递，不会随 State 自动更新
+   - 在 Builder 内部直接访问 State 变量，而不是通过参数
+   - 使用索引从原始数组获取最新数据
+
+4. **Camera API 调用时机**
+   - `getZoomRatioRange()` 必须在 Session start 后才能调用
+   - 需要等待 Session 完全就绪（建议 2000ms 延迟）
+   - 必须先创建 PreviewOutput 并添加到 Session
+
+**修复文件**: `entry/src/main/ets/pages/CameraPage.ets`
+
+**验证结果**: ✅ 变焦范围正确显示（如 "0.5x - 100.0x"）
+
+---
+
+### 问题 20: 相机变焦范围获取依赖真实预览区域
+
+**状态**: ✅ 已确认（设计如此）
+
+**发现时间**: 2026-03-20
+
+**问题描述**:
+是否必须有真实的预览区域（Surface）才能获取变焦范围？
+
+**分析结果**:
+**是的，必须要有真实的预览区域才能正确获取变焦范围。**
+
+原因如下：
+
+1. **Session 依赖**
+   - `getZoomRatioRange()` 是 `PhotoSession` 的方法
+   - 创建 Session 需要 `previewOutput`（预览输出）
+   - `previewOutput` 需要有效的 surfaceId
+
+2. **API 设计原理**
+   ```typescript
+   // 创建预览输出，必须传入有效的 surfaceId
+   const previewOutput = cameraManager.createPreviewOutput(photoCapability.previewProfiles[0], surfaceId);
+   
+   // Session 配置并启动后，才能获取变焦范围
+   photoSession.addOutput(previewOutput);
+   photoSession.commitConfig();
+   photoSession.start();
+   
+   // 然后才能调用 getZoomRatioRange
+   const zoomRange = photoSession.getZoomRatioRange();
+   ```
+
+3. **HarmonyOS Camera 架构**
+   - 变焦能力是与特定 Session 和预览配置绑定的
+   - 不同的预览配置（分辨率、Surface）可能支持不同的变焦范围
+   - 系统需要在预览管道建立后才能确定可用的变焦范围
+
+**替代方案评估**:
+- ❌ 虚拟 Surface：无法通过系统验证
+- ❌ 静态能力查询：`getSupportedOutputCapability()` 不返回变焦信息
+- ❌ 其他 API：HarmonyOS 暂无其他获取变焦范围的 API
+
+**结论**: 当前实现是正确的，必须通过 XComponent 创建真实的预览 Surface，配置 Session 并启动后，才能获取准确的变焦范围。
+
+**修复文件**: `entry/src/main/ets/pages/CameraPage.ets`
+
+---
+
+*最后更新: 2026-03-20*

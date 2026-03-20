@@ -3,6 +3,7 @@ import { DeviceUtil } from '../utils/DeviceUtil';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { InfoHeader } from '../components/InfoButton';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
 import type { DeviceInfoModel } from '../model/DeviceInfo';
 
@@ -116,34 +117,46 @@ struct OSPage {
               onInfoClick: () => this.navigateToConcept('os_version')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '系统名称',
-              value: this.deviceInfo?.osFullName || '未知'
+              value: this.deviceInfo?.osFullName || '未知',
+              conceptId: 'os_name',
+              onInfoClick: () => this.navigateToConcept('os_name')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '显示版本',
-              value: this.deviceInfo?.displayVersion || '未知'
+              value: this.deviceInfo?.displayVersion || '未知',
+              conceptId: 'os_display_version',
+              onInfoClick: () => this.navigateToConcept('os_display_version')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '内部版本',
-              value: this.deviceInfo?.incrementalVersion || '未知'
+              value: this.deviceInfo?.incrementalVersion || '未知',
+              conceptId: 'os_incremental_version',
+              onInfoClick: () => this.navigateToConcept('os_incremental_version')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '版本号',
-              value: this.deviceInfo?.versionId || '未知'
+              value: this.deviceInfo?.versionId || '未知',
+              conceptId: 'os_version_id',
+              onInfoClick: () => this.navigateToConcept('os_version_id')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'SDK API 版本',
-              value: `${this.deviceInfo?.sdkApiVersion || 0}`
+              value: `${this.deviceInfo?.sdkApiVersion || 0}`,
+              conceptId: 'os_sdk_api',
+              onInfoClick: () => this.navigateToConcept('os_sdk_api')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '首次 API 版本',
-              value: `${this.deviceInfo?.firstApiVersion || 0}`
+              value: `${this.deviceInfo?.firstApiVersion || 0}`,
+              conceptId: 'os_first_api',
+              onInfoClick: () => this.navigateToConcept('os_first_api')
             })
 
             // 构建信息
@@ -154,14 +167,18 @@ struct OSPage {
               onInfoClick: () => this.navigateToConcept('os_build')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '软件版本',
-              value: this.deviceInfo?.softwareVersion || '未知'
+              value: this.deviceInfo?.softwareVersion || '未知',
+              conceptId: 'os_software_version',
+              onInfoClick: () => this.navigateToConcept('os_software_version')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '构建时间',
-              value: this.formatBuildTime()
+              value: this.formatBuildTime(),
+              conceptId: 'os_build_time',
+              onInfoClick: () => this.navigateToConcept('os_build_time')
             })
 
             // 安全信息
@@ -172,9 +189,11 @@ struct OSPage {
               onInfoClick: () => this.navigateToConcept('os_security')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '安全补丁级别',
-              value: this.deviceInfo?.securityPatchTag || '未知'
+              value: this.deviceInfo?.securityPatchTag || '未知',
+              conceptId: 'os_security_patch',
+              onInfoClick: () => this.navigateToConcept('os_security_patch')
             })
 
             // 底部留白

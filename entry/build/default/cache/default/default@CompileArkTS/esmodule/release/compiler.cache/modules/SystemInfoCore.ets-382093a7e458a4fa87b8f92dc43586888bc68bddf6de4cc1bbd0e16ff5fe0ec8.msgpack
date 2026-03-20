@@ -1,482 +1,0 @@
-Ôr@Ÿªassertions¤code´customTransformCache¬dependencies¢id¤meta±moduleSideEffects¬originalCode±originalSourcemap«resolvedIds®sourcemapChainµsyntheticNamedExportsµtransformDependencies®transformFiles¨cacheAstÔrAÚ!import deviceInfo from '@ohos.deviceInfo';
-import batteryInfo from '@ohos.batteryInfo';
-import display from '@ohos.display';
-import statvfs from '@ohos.file.statvfs';
-import connection from '@ohos.net.connection';
-export class SystemInfoCore {
-    static getDeviceInfo() {
-        return {
-            // ä» @ohos.deviceInfo è·å–çš„çœŸå®æ•°æ®
-            deviceType: deviceInfo.deviceType || 'æœªçŸ¥',
-            manufacture: deviceInfo.manufacture || 'æœªçŸ¥',
-            brand: deviceInfo.brand || 'æœªçŸ¥',
-            marketName: deviceInfo.marketName || 'æœªçŸ¥',
-            productSeries: deviceInfo.productSeries || 'æœªçŸ¥',
-            productModel: deviceInfo.productModel || 'æœªçŸ¥',
-            softwareModel: deviceInfo.softwareModel || 'æœªçŸ¥',
-            hardwareModel: deviceInfo.hardwareModel || 'æœªçŸ¥',
-            bootloaderVersion: deviceInfo.bootloaderVersion || 'æœªçŸ¥',
-            abiList: deviceInfo.abiList || 'æœªçŸ¥',
-            securityPatchTag: deviceInfo.securityPatchTag || 'æœªçŸ¥',
-            displayVersion: deviceInfo.displayVersion || 'æœªçŸ¥',
-            incrementalVersion: deviceInfo.incrementalVersion || 'æœªçŸ¥',
-            osReleaseType: deviceInfo.osReleaseType || 'æœªçŸ¥',
-            osFullName: deviceInfo.osFullName || 'æœªçŸ¥',
-            majorVersion: deviceInfo.majorVersion || 0,
-            seniorVersion: deviceInfo.seniorVersion || 0,
-            featureVersion: deviceInfo.featureVersion || 0,
-            buildVersion: deviceInfo.buildVersion || 0,
-            sdkApiVersion: deviceInfo.sdkApiVersion || 0,
-            firstApiVersion: deviceInfo.firstApiVersion || 0,
-            versionId: deviceInfo.versionId || 'æœªçŸ¥',
-            buildType: deviceInfo.buildType || 'æœªçŸ¥',
-            buildUser: deviceInfo.buildUser || 'æœªçŸ¥',
-            buildHost: deviceInfo.buildHost || 'æœªçŸ¥',
-            buildTime: deviceInfo.buildTime || 'æœªçŸ¥',
-            buildRootHash: deviceInfo.buildRootHash || 'æœªçŸ¥',
-            // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-            productModelAlias: 'æœªè·å–',
-            udid: 'æœªè·å–',
-            distributionOSName: 'æœªè·å–',
-            distributionOSVersion: 'æœªè·å–',
-            distributionOSApiVersion: 0,
-            distributionOSApiName: 'æœªè·å–',
-            distributionOSReleaseType: 'æœªè·å–',
-            odid: 'æœªè·å–',
-            diskSN: 'æœªè·å–',
-            performanceClass: 0,
-            chipType: 'æœªè·å–',
-            bootCount: 0
-        };
-    }
-    static getBatteryInfo() {
-        return {
-            // ä» @ohos.batteryInfo è·å–çš„çœŸå®æ•°æ®
-            batterySOC: batteryInfo.batterySOC || 0,
-            chargingStatus: batteryInfo.chargingStatus || 0,
-            healthStatus: batteryInfo.healthStatus || 0,
-            pluggedType: batteryInfo.pluggedType || 0,
-            voltage: batteryInfo.voltage || 0,
-            technology: batteryInfo.technology || 'æœªçŸ¥',
-            batteryTemperature: batteryInfo.batteryTemperature || 0,
-            // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-            isBatteryPresent: false,
-            batteryCapacityLevel: 0,
-            nowCurrent: 0
-        };
-    }
-    static async getDisplayInfo() {
-        try {
-            const displays = await display.getDefaultDisplay();
-            return {
-                // ä» @ohos.display è·å–çš„çœŸå®æ•°æ®
-                id: displays.id,
-                name: displays.name,
-                alive: displays.alive,
-                state: displays.state,
-                refreshRate: displays.refreshRate,
-                rotation: displays.rotation,
-                width: displays.width,
-                height: displays.height,
-                densityDPI: displays.densityDPI,
-                densityPixels: displays.densityPixels,
-                scaledDensity: displays.scaledDensity,
-                xDPI: displays.xDPI,
-                yDPI: displays.yDPI
-            };
-        }
-        catch (err) {
-            console.error('Get display info error:', err);
-            return null;
-        }
-    }
-    static getStorageInfo() {
-        try {
-            const context = getContext();
-            const dataPath = context.filesDir;
-            const totalSize = statvfs.getTotalSizeSync(dataPath);
-            const freeSize = statvfs.getFreeSizeSync(dataPath);
-            return {
-                // ä» @ohos.file.statvfs è·å–çš„çœŸå®æ•°æ®
-                totalSize: totalSize,
-                freeSize: freeSize,
-                usedSize: totalSize - freeSize
-            };
-        }
-        catch (err) {
-            console.error('Get storage info error:', err);
-            return null;
-        }
-    }
-    static async getNetworkInfo() {
-        try {
-            const netHandle = await connection.getDefaultNet();
-            const netCapabilities = await connection.getNetCapabilities(netHandle);
-            return {
-                // ä» @ohos.net.connection è·å–çš„çœŸå®æ•°æ®
-                netType: netCapabilities.bearerTypes?.join(',') || 'æœªçŸ¥',
-                capabilities: netCapabilities.networkCap || [],
-                bearerTypes: netCapabilities.bearerTypes || []
-            };
-        }
-        catch (err) {
-            console.error('Get network info error:', err);
-            return null;
-        }
-    }
-    static getMemoryInfo() {
-        // æ³¨æ„ï¼šHarmonyOS NEXT ç›®å‰æ²¡æœ‰æä¾›è·å–å†…å­˜ä¿¡æ¯çš„å…¬å¼€ API
-        // è¿”å› null è¡¨ç¤ºæ— æ³•è·å–
-        console.warn('Memory info API not available in HarmonyOS NEXT');
-        return null;
-    }
-    static getCpuInfo() {
-        return {
-            // ä» deviceInfo.abiList è·å–æ¶æ„ä¿¡æ¯
-            architecture: deviceInfo.abiList || 'æœªçŸ¥',
-            // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-            model: 'æœªè·å–',
-            cores: 0,
-            process: 'æœªè·å–'
-        };
-    }
-    static async runAllTests() {
-        console.log('========== SystemInfoCore Test Start ==========');
-        console.log('\n[Test 1] Device Info:');
-        const deviceInfoResult = SystemInfoCore.getDeviceInfo();
-        console.log('  è®¾å¤‡ç±»å‹:', deviceInfoResult.deviceType);
-        console.log('  è®¾å¤‡å“ç‰Œ:', deviceInfoResult.brand);
-        console.log('  è®¾å¤‡å‹å·:', deviceInfoResult.marketName);
-        console.log('  ç³»ç»Ÿç‰ˆæœ¬:', deviceInfoResult.osFullName);
-        console.log('  API ç‰ˆæœ¬:', deviceInfoResult.sdkApiVersion);
-        console.log('  CPU æ¶æ„:', deviceInfoResult.abiList);
-        console.log('\n[Test 2] Battery Info:');
-        const batteryInfoResult = SystemInfoCore.getBatteryInfo();
-        console.log('  ç”µæ± ç”µé‡:', batteryInfoResult.batterySOC + '%');
-        console.log('  å……ç”µçŠ¶æ€:', batteryInfoResult.chargingStatus);
-        console.log('  å¥åº·çŠ¶æ€:', batteryInfoResult.healthStatus);
-        console.log('  ç”µæ± æ¸©åº¦:', (batteryInfoResult.batteryTemperature / 10).toFixed(1) + 'Â°C');
-        console.log('\n[Test 3] Display Info:');
-        const displayInfoResult = await SystemInfoCore.getDisplayInfo();
-        if (displayInfoResult) {
-            console.log('  å±å¹•å®½åº¦:', displayInfoResult.width + 'px');
-            console.log('  å±å¹•é«˜åº¦:', displayInfoResult.height + 'px');
-            console.log('  åƒç´ å¯†åº¦:', displayInfoResult.densityDPI + ' DPI');
-            console.log('  åˆ·æ–°ç‡:', displayInfoResult.refreshRate + ' Hz');
-        }
-        console.log('\n[Test 4] Storage Info:');
-        const storageInfoResult = SystemInfoCore.getStorageInfo();
-        if (storageInfoResult) {
-            console.log('  æ€»å­˜å‚¨:', (storageInfoResult.totalSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-            console.log('  å¯ç”¨å­˜å‚¨:', (storageInfoResult.freeSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-            console.log('  å·²ç”¨å­˜å‚¨:', (storageInfoResult.usedSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-        }
-        console.log('\n[Test 5] Network Info:');
-        const networkInfoResult = await SystemInfoCore.getNetworkInfo();
-        if (networkInfoResult) {
-            console.log('  ç½‘ç»œç±»å‹:', networkInfoResult.netType);
-        }
-        console.log('\n========== SystemInfoCore Test Complete ==========');
-    }
-}
-//# sourceMappingURL=SystemInfoCore.js.mapÂ•Ùm hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.deviceInfo.d.tsÙn hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.batteryInfo.d.tsÙj hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.display.d.tsÙo hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.file.statvfs.d.tsÙq hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.net.connection.d.tsÙO/Users/bytedance/dev/huawei_sysinfo/entry/src/main/ets/utils/SystemInfoCore.etsÔrBœªmoduleName±isLocalDependency¯isNodeEntryFile§pkgPath±belongProjectPath§pkgNameªpkgVersion±dependencyPkgInfo¯hostModulesInfo°belongModulePath§checker¬shouldEmitJs¥entryÃÂÙ)/Users/bytedance/dev/huawei_sysinfo/entryÙ#/Users/bytedance/dev/huawei_sysinfo¥entry¥1.0.0Ô  ’ÔrC’²hostDependencyName®hostModuleName·../utils/SystemInfoCore¥entryC·../utils/SystemInfoCore¥entryÙ)/Users/bytedance/dev/huawei_sysinfo/entryÔrDÜ ®¬getNodeCount²getIdentifierCount®getSymbolCount¬getTypeCountµgetInstantiationCountµgetRelationCacheSizes±isUndefinedSymbol±isArgumentsSymbol¯isUnknownSymbol¯getMergedSymbol®getDiagnostics´getGlobalDiagnostics´getRecursionIdentity¶getUnmatchedProperties¹getTypeOfSymbolAtLocation¯getTypeOfSymbolÙ(getSymbolsOfParameterPropertyDeclaration·getDeclaredTypeOfSymbol³getPropertiesOfType±getPropertyOfTypeÙ"getPrivateIdentifierPropertyOfType·getTypeOfPropertyOfType²getIndexInfoOfType³getIndexInfosOfTypeºgetIndexInfosOfIndexSymbol³getSignaturesOfType²getIndexTypeOfType¬getIndexType¬getBaseTypes¸getBaseTypeOfLiteralType®getWidenedType³getTypeFromTypeNode°getParameterTypeÙ$getParameterIdentifierNameAtPosition¸getPromisedTypeOfPromise®getAwaitedType¸getReturnTypeOfSignature®isNullableType¯getNullableType²getNonNullableType²getNonOptionalType°getTypeArguments®typeToTypeNodeÙ$indexInfoToIndexSignatureDeclaration¿signatureToSignatureDeclaration²symbolToEntityName²symbolToExpression¬symbolToNodeÙ!symbolToTypeParameterDeclarations¼symbolToParameterDeclarationºtypeParameterToDeclaration±getSymbolsInScope³getSymbolAtLocation·getIndexInfosAtLocationÙ!getShorthandAssignmentValueSymbolÙ#getExportSpecifierLocalTargetSymbol·getExportSymbolOfSymbol±getTypeAtLocationºgetTypeAtLocationForLinterÙ tryGetTypeAtLocationWithoutCheckºgetTypeOfAssignmentPatternÙ*getPropertySymbolOfDestructuringAssignment±signatureToString¬typeToString®symbolToStringµtypePredicateToString®writeSignature©writeType«writeSymbol²writeTypePredicate¼getAugmentedPropertiesOfType®getRootSymbols²getSymbolOfExpando±getContextualTypeÙ(getContextualTypeForObjectLiteralElementÙ#getContextualTypeForArgumentAtIndexÙ getContextualTypeForJsxAttribute²isContextSensitiveÙ!getTypeOfPropertyOfContextualTypeµgetFullyQualifiedNameÙ#tryGetResolvedSignatureWithoutCheck´getResolvedSignatureÙ/getResolvedSignatureForStringLiteralCompletionsÙ$getResolvedSignatureForSignatureHelpµgetExpandedParameters¹hasEffectiveRestParameterºcontainsArgumentsReference°getConstantValueµisValidPropertyAccessÙ#isValidPropertyAccessForCompletions»getSignatureFromDeclarationºisImplementationOfOverload¹getImmediateAliasedSymbol°getAliasedSymbol¯getEmitResolver²getExportsOfModule¿getExportsAndPropertiesOfModuleÙ forEachExportAndPropertyOfModule¯getSymbolWalker±getAmbientModules¹getJsxIntrinsicTagNamesAt³isOptionalParameter»tryGetMemberInModuleExportsÙ(tryGetMemberInModuleExportsAndProperties´tryFindAmbientModuleÙ(tryFindAmbientModuleWithoutAugmentations¯getApparentType¬getUnionType²isTypeAssignableTo³createAnonymousType¯createSignature¬createSymbol¯createIndexInfoªgetAnyType­getStringType­getNumberType±createPromiseType¯createArrayType¹getElementTypeOfArrayType®getBooleanType¬getFalseType«getTrueType«getVoidType°getUndefinedType«getNullType¯getESSymbolType¬getNeverType¯getOptionalType®getPromiseType²getPromiseLikeType´getAsyncIterableType²isSymbolAccessible«isArrayType«isTupleType¯isArrayLikeTypeÙ#isTypeInvalidDueToUnionDiscriminantºgetExactOptionalProperties¿getAllPossiblePropertiesOfTypesÙ(getSuggestedSymbolForNonexistentPropertyÙ#getSuggestionForNonexistentPropertyÙ,getSuggestedSymbolForNonexistentJSXAttributeÙ&getSuggestedSymbolForNonexistentSymbolÙ!getSuggestionForNonexistentSymbolÙ&getSuggestedSymbolForNonexistentModuleÙ!getSuggestionForNonexistentExportÙ+getSuggestedSymbolForNonexistentClassMember·getBaseConstraintOfType»getDefaultFromTypeParameter«resolveName¯getJsxNamespaceµgetJsxFragmentFactory¸getAccessibleSymbolChain»getTypePredicateOfSignature¹resolveExternalModuleName»resolveExternalModuleSymbol°tryGetThisTypeAt¹getTypeArgumentConstraint¸getSuggestionDiagnostics¸runWithCancellationTokenÙ3getLocalTypeParametersOfClassOrInterfaceOrTypeAlias´isDeclarationVisible´isPropertyAccessible»getTypeOnlyAliasDeclaration¿getMemberOverrideModifierStatusÙ!isTypeParameterPossiblyReferenced²getConstEnumRelate´clearConstEnumRelateµdeleteConstEnumRelateÙ$getTypeArgumentsForResolvedSignatureµgetCheckedSourceFilesÙ"collectHaveTsNoCheckFilesForLinter·clearQualifiedNameCache®isStaticRecord²isStaticSourceFileÔ  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  Ô  ÃÃÚ·import deviceInfo from '@ohos.deviceInfo';
-import batteryInfo from '@ohos.batteryInfo';
-import display from '@ohos.display';
-import statvfs from '@ohos.file.statvfs';
-import connection from '@ohos.net.connection';
-import type {
-  DeviceInfoModel,
-  BatteryInfoModel,
-  DisplayInfoModel,
-  StorageInfoModel,
-  NetworkInfoModel,
-  MemoryInfoModel,
-  CpuInfoModel
-} from '../model/DeviceInfo';
-
-export class SystemInfoCore {
-  static getDeviceInfo(): DeviceInfoModel {
-    return {
-      // ä» @ohos.deviceInfo è·å–çš„çœŸå®æ•°æ®
-      deviceType: deviceInfo.deviceType || 'æœªçŸ¥',
-      manufacture: deviceInfo.manufacture || 'æœªçŸ¥',
-      brand: deviceInfo.brand || 'æœªçŸ¥',
-      marketName: deviceInfo.marketName || 'æœªçŸ¥',
-      productSeries: deviceInfo.productSeries || 'æœªçŸ¥',
-      productModel: deviceInfo.productModel || 'æœªçŸ¥',
-      softwareModel: deviceInfo.softwareModel || 'æœªçŸ¥',
-      hardwareModel: deviceInfo.hardwareModel || 'æœªçŸ¥',
-      bootloaderVersion: deviceInfo.bootloaderVersion || 'æœªçŸ¥',
-      abiList: deviceInfo.abiList || 'æœªçŸ¥',
-      securityPatchTag: deviceInfo.securityPatchTag || 'æœªçŸ¥',
-      displayVersion: deviceInfo.displayVersion || 'æœªçŸ¥',
-      incrementalVersion: deviceInfo.incrementalVersion || 'æœªçŸ¥',
-      osReleaseType: deviceInfo.osReleaseType || 'æœªçŸ¥',
-      osFullName: deviceInfo.osFullName || 'æœªçŸ¥',
-      majorVersion: deviceInfo.majorVersion || 0,
-      seniorVersion: deviceInfo.seniorVersion || 0,
-      featureVersion: deviceInfo.featureVersion || 0,
-      buildVersion: deviceInfo.buildVersion || 0,
-      sdkApiVersion: deviceInfo.sdkApiVersion || 0,
-      firstApiVersion: deviceInfo.firstApiVersion || 0,
-      versionId: deviceInfo.versionId || 'æœªçŸ¥',
-      buildType: deviceInfo.buildType || 'æœªçŸ¥',
-      buildUser: deviceInfo.buildUser || 'æœªçŸ¥',
-      buildHost: deviceInfo.buildHost || 'æœªçŸ¥',
-      buildTime: deviceInfo.buildTime || 'æœªçŸ¥',
-      buildRootHash: deviceInfo.buildRootHash || 'æœªçŸ¥',
-      
-      // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-      productModelAlias: 'æœªè·å–',
-      udid: 'æœªè·å–',
-      distributionOSName: 'æœªè·å–',
-      distributionOSVersion: 'æœªè·å–',
-      distributionOSApiVersion: 0,
-      distributionOSApiName: 'æœªè·å–',
-      distributionOSReleaseType: 'æœªè·å–',
-      odid: 'æœªè·å–',
-      diskSN: 'æœªè·å–',
-      performanceClass: 0,
-      chipType: 'æœªè·å–',
-      bootCount: 0
-    };
-  }
-
-  static getBatteryInfo(): BatteryInfoModel {
-    return {
-      // ä» @ohos.batteryInfo è·å–çš„çœŸå®æ•°æ®
-      batterySOC: batteryInfo.batterySOC || 0,
-      chargingStatus: batteryInfo.chargingStatus || 0,
-      healthStatus: batteryInfo.healthStatus || 0,
-      pluggedType: batteryInfo.pluggedType || 0,
-      voltage: batteryInfo.voltage || 0,
-      technology: batteryInfo.technology || 'æœªçŸ¥',
-      batteryTemperature: batteryInfo.batteryTemperature || 0,
-      
-      // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-      isBatteryPresent: false,
-      batteryCapacityLevel: 0,
-      nowCurrent: 0
-    };
-  }
-
-  static async getDisplayInfo(): Promise<DisplayInfoModel | null> {
-    try {
-      const displays = await display.getDefaultDisplay();
-      return {
-        // ä» @ohos.display è·å–çš„çœŸå®æ•°æ®
-        id: displays.id,
-        name: displays.name,
-        alive: displays.alive,
-        state: displays.state,
-        refreshRate: displays.refreshRate,
-        rotation: displays.rotation,
-        width: displays.width,
-        height: displays.height,
-        densityDPI: displays.densityDPI,
-        densityPixels: displays.densityPixels,
-        scaledDensity: displays.scaledDensity,
-        xDPI: displays.xDPI,
-        yDPI: displays.yDPI
-      };
-    } catch (err) {
-      console.error('Get display info error:', err);
-      return null;
-    }
-  }
-
-  static getStorageInfo(): StorageInfoModel | null {
-    try {
-      const context: Context = getContext();
-      const dataPath: string = context.filesDir;
-      const totalSize: number = statvfs.getTotalSizeSync(dataPath);
-      const freeSize: number = statvfs.getFreeSizeSync(dataPath);
-      return {
-        // ä» @ohos.file.statvfs è·å–çš„çœŸå®æ•°æ®
-        totalSize: totalSize,
-        freeSize: freeSize,
-        usedSize: totalSize - freeSize
-      };
-    } catch (err) {
-      console.error('Get storage info error:', err);
-      return null;
-    }
-  }
-
-  static async getNetworkInfo(): Promise<NetworkInfoModel | null> {
-    try {
-      const netHandle = await connection.getDefaultNet();
-      const netCapabilities = await connection.getNetCapabilities(netHandle);
-      return {
-        // ä» @ohos.net.connection è·å–çš„çœŸå®æ•°æ®
-        netType: netCapabilities.bearerTypes?.join(',') || 'æœªçŸ¥',
-        capabilities: netCapabilities.networkCap || [],
-        bearerTypes: netCapabilities.bearerTypes || []
-      };
-    } catch (err) {
-      console.error('Get network info error:', err);
-      return null;
-    }
-  }
-
-  static getMemoryInfo(): MemoryInfoModel | null {
-    // æ³¨æ„ï¼šHarmonyOS NEXT ç›®å‰æ²¡æœ‰æä¾›è·å–å†…å­˜ä¿¡æ¯çš„å…¬å¼€ API
-    // è¿”å› null è¡¨ç¤ºæ— æ³•è·å–
-    console.warn('Memory info API not available in HarmonyOS NEXT');
-    return null;
-  }
-
-  static getCpuInfo(): CpuInfoModel {
-    return {
-      // ä» deviceInfo.abiList è·å–æ¶æ„ä¿¡æ¯
-      architecture: deviceInfo.abiList || 'æœªçŸ¥',
-      
-      // ä»¥ä¸‹å­—æ®µæ— æ³•ä»å…¬å¼€ API è·å–ï¼Œæ ‡è®°ä¸º"æœªè·å–"
-      model: 'æœªè·å–',
-      cores: 0,
-      process: 'æœªè·å–'
-    };
-  }
-
-  static async runAllTests(): Promise<void> {
-    console.log('========== SystemInfoCore Test Start ==========');
-    
-    console.log('\n[Test 1] Device Info:');
-    const deviceInfoResult = SystemInfoCore.getDeviceInfo();
-    console.log('  è®¾å¤‡ç±»å‹:', deviceInfoResult.deviceType);
-    console.log('  è®¾å¤‡å“ç‰Œ:', deviceInfoResult.brand);
-    console.log('  è®¾å¤‡å‹å·:', deviceInfoResult.marketName);
-    console.log('  ç³»ç»Ÿç‰ˆæœ¬:', deviceInfoResult.osFullName);
-    console.log('  API ç‰ˆæœ¬:', deviceInfoResult.sdkApiVersion);
-    console.log('  CPU æ¶æ„:', deviceInfoResult.abiList);
-
-    console.log('\n[Test 2] Battery Info:');
-    const batteryInfoResult = SystemInfoCore.getBatteryInfo();
-    console.log('  ç”µæ± ç”µé‡:', batteryInfoResult.batterySOC + '%');
-    console.log('  å……ç”µçŠ¶æ€:', batteryInfoResult.chargingStatus);
-    console.log('  å¥åº·çŠ¶æ€:', batteryInfoResult.healthStatus);
-    console.log('  ç”µæ± æ¸©åº¦:', (batteryInfoResult.batteryTemperature / 10).toFixed(1) + 'Â°C');
-
-    console.log('\n[Test 3] Display Info:');
-    const displayInfoResult = await SystemInfoCore.getDisplayInfo();
-    if (displayInfoResult) {
-      console.log('  å±å¹•å®½åº¦:', displayInfoResult.width + 'px');
-      console.log('  å±å¹•é«˜åº¦:', displayInfoResult.height + 'px');
-      console.log('  åƒç´ å¯†åº¦:', displayInfoResult.densityDPI + ' DPI');
-      console.log('  åˆ·æ–°ç‡:', displayInfoResult.refreshRate + ' Hz');
-    }
-
-    console.log('\n[Test 4] Storage Info:');
-    const storageInfoResult = SystemInfoCore.getStorageInfo();
-    if (storageInfoResult) {
-      console.log('  æ€»å­˜å‚¨:', (storageInfoResult.totalSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-      console.log('  å¯ç”¨å­˜å‚¨:', (storageInfoResult.freeSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-      console.log('  å·²ç”¨å­˜å‚¨:', (storageInfoResult.usedSize / 1024 / 1024 / 1024).toFixed(2) + ' GB');
-    }
-
-    console.log('\n[Test 5] Network Info:');
-    const networkInfoResult = await SystemInfoCore.getNetworkInfo();
-    if (networkInfoResult) {
-      console.log('  ç½‘ç»œç±»å‹:', networkInfoResult.netType);
-    }
-
-    console.log('\n========== SystemInfoCore Test Complete ==========');
-  }
-}
-ÀÔrE•°@ohos.deviceInfo±@ohos.batteryInfo­@ohos.display²@ohos.file.statvfs´@ohos.net.connectionÔrF—ªassertions¨external¢id¤meta±moduleSideEffectsªresolvedByµsyntheticNamedExportsAÃÙm hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.deviceInfo.d.tsAÃªoh-resolveÂFAÃÙn hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.batteryInfo.d.tsAÃªoh-resolveÂFAÃÙj hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.display.d.tsAÃªoh-resolveÂFAÃÙo hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.file.statvfs.d.tsAÃªoh-resolveÂFAÃÙq hvigor_ignore__Applications_DevEco-Studio.app_Contents_sdk_default_openharmony_ets_api_@ohos.net.connection.d.tsAÃªoh-resolveÂ“ÔrG–§version¤fileªsourceRoot§sources¥names¨mappings±SystemInfoCore.js ‘²SystemInfoCore.etsÜ µ–”    ”  ”  ”  ”)  )”*  *–”   ” ” ” ”+ +”, ,–”   ” ” ” ”# #”$ $–”   ” ” ” ”( (”) )–”   ” ” ” ”- -”. .””   ” ” ” ”” ”
- ” 	” ’” ” ’” ”) #˜” ” ” ”" ”# ”- '”1 +”5 /˜” ” ” ”# ”$ ”/ )”3 -”7 1˜” ” ” ” ” ”# ”' !”+ %˜” ” ” ”" ”# ”- '”1 +”5 /˜” ” ” ”% ”&  ”3 -”7 1”; 5˜” ” ” ”$ ”% ”1 +”5 /”9 3˜” ” ” ”% ”&  ”3 -”7 1”; 5˜” ” ” ”% ”&  ”3 -”7 1”; 5˜” ” ” ”) #”* $”; 5”? 9”ÌC =˜” ” ” ” ”  ”' !”+ %”/ )˜” ” ” ”( "”) #”9 3”= 7”ÌA ;˜” ” ” ”&  ”' !”5 /”9 3”= 7˜” ” ”  ”* $”+ %”= 7”ÌA ;”ÌE ?˜”  ”  ”  ”%  ”&   ”3  -”7  1”;  5˜” !” !” !”" !”# !”- !'”1 !+”5 !/˜” "” "” "”$ "”% "”1 "+”5 "/”6 "0˜” #” #” #”% #”& # ”3 #-”7 #1”8 #2˜” $” $” $”& $ ”' $!”5 $/”9 $3”: $4˜” %” %” %”$ %”% %”1 %+”5 %/”6 %0˜” &” &” &”% &”& & ”3 &-”7 &1”8 &2˜” '” '” '”' '!”( '"”7 '1”; '5”< '6˜” (” (” (”! (”" (”+ (%”/ ()”3 (-˜” )” )” )”! )”" )”+ )%”/ ))”3 )-˜” *” *” *”! *”" *”+ *%”/ *)”3 *-˜” +” +” +”! +”" +”+ +%”/ +)”3 +-˜” ,” ,” ,”! ,”" ,”+ ,%”/ ,)”3 ,-˜” -” -” -”% -”& - ”3 --”7 -1”; -5’” /”( /"”” 0” 0” 0”$ 0”” 1” 1
-” 1” 1”” 2” 2”  2”% 2”” 3”! 3”# 3”( 3"”” 4”$ 4”& 4 ”' 4!”” 5”! 5”# 5”( 5"”” 6”% 6”' 6!”, 6&”” 7” 7
-” 7” 7”” 8” 8” 8” 8”” 9” 9” 9” 9”” :” :” :” :”” ;” ;” ;” ;’”	 <”
- <’” =” =”” ?”
- ?” ?	” ?’” Ì@” Ì@’” ÌA”* ÌA$˜” ÌB” ÌB” ÌB”# ÌB”$ ÌB”. ÌB(”2 ÌB,”3 ÌB-˜” ÌC” ÌC” ÌC”' ÌC!”( ÌC"”6 ÌC0”: ÌC4”; ÌC5˜” ÌD” ÌD” ÌD”% ÌD”& ÌD ”2 ÌD,”6 ÌD0”7 ÌD1˜” ÌE” ÌE” ÌE”$ ÌE”% ÌE”0 ÌE*”4 ÌE.”5 ÌE/˜” ÌF” ÌF” ÌF”  ÌF”! ÌF”( ÌF"”, ÌF&”- ÌF'˜” ÌG” ÌG” ÌG”# ÌG”$ ÌG”. ÌG(”2 ÌG,”6 ÌG0˜” ÌH” ÌH”  ÌH”+ ÌH%”, ÌH&”> ÌH8”ÌB ÌH<”ÌC ÌH=’” ÌJ”( ÌJ"”” ÌK” ÌK” ÌK”# ÌK”” ÌL”  ÌL”" ÌL”# ÌL”” ÌM” ÌM” ÌM” ÌM’”	 ÌN”
- ÌN’” ÌO” ÌO–” ÌQ”
- ÌQ” ÌQ	” ÌQ” ÌQ” ÌQ’” ÌR” ÌRš” ÌS” ÌS” ÌS” ÌS”# ÌS”* ÌS$”+ ÌS%”< ÌS6”> ÌS8”? ÌS9’” ÌT” ÌT’” ÌU”* ÌU"–” ÌV” ÌV
-” ÌV” ÌV” ÌV” ÌV–” ÌW” ÌW” ÌW” ÌW” ÌW”# ÌW–” ÌX” ÌX” ÌX” ÌX”  ÌX”% ÌX–” ÌY” ÌY” ÌY” ÌY”  ÌY”% ÌY–” ÌZ” ÌZ” ÌZ”% ÌZ”& ÌZ”1 ÌZ)–” Ì[” Ì[” Ì[”" Ì[”# Ì[”+ Ì[#–” Ì\” Ì\” Ì\” Ì\”  Ì\”% Ì\–” Ì]” Ì]” Ì]”  Ì]”! Ì]”' Ì]–” Ì^” Ì^” Ì^”$ Ì^”% Ì^”/ Ì^'–” Ì_” Ì_” Ì_”' Ì_”( Ì_ ”5 Ì_-–” Ì`” Ì`” Ì`”' Ì`”( Ì` ”5 Ì`-–” Ìa” Ìa” Ìa” Ìa” Ìa”# Ìa–” Ìb” Ìb” Ìb” Ìb” Ìb”# Ìb’” Ìc” Ìc‘”	 Ìd”” Ìd” Ìd” Ìd” Ìdš” Ìe” Ìe” Ìe” Ìe” Ìe”3 Ìe-”5 Ìe/”8 Ìe2”9 Ìe3”: Ìe4”” Ìf” Ìf” Ìf” Ìf‘”	 Ìg’” Ìh” Ìh”” Ìj”
- Ìj” Ìj	” Ìj’” Ìk” Ìk—” Ìl” Ìl” Ìl” Ìl”& Ìl)”( Ìl+”) Ìl,˜” Ìm” Ìm” Ìm” Ìm”$ Ìm&”% Ìm'”- Ìm/”. Ìm0›” Ìn” Ìn” Ìn” Ìn ”% Ìn'”& Ìn(”6 Ìn8”7 Ìn9”? ÌnÌA”Ì@ ÌnÌB”ÌA ÌnÌC›” Ìo” Ìo” Ìo” Ìo”$ Ìo&”% Ìo'”4 Ìo6”5 Ìo7”= Ìo?”> ÌoÌ@”? ÌoÌA’” Ìp” Ìp’” Ìq”/ Ìq'”” Ìr” Ìr” Ìr”$ Ìr”” Ìs” Ìs” Ìs”" Ìs–” Ìt” Ìt” Ìt”# Ìt”& Ìt”. Ìt&’” Ìu” Ìu‘”	 Ìv”” Ìv” Ìv” Ìv” Ìvš” Ìw” Ìw” Ìw” Ìw” Ìw”3 Ìw-”5 Ìw/”8 Ìw2”9 Ìw3”: Ìw4”” Ìx” Ìx” Ìx” Ìx‘”	 Ìy’” Ìz” Ìz–” Ì|”
- Ì|” Ì|	” Ì|” Ì|” Ì|’” Ì}” Ì}š” Ì~” Ì~” Ì~” Ì~”$ Ì~”. Ì~(”/ Ì~)”< Ì~6”> Ì~8”? Ì~9œ” Ì” Ì”! Ì”$ Ì”* Ì$”4 Ì.”5 Ì/”ÌG ÌÌA”ÌH ÌÌB”ÌQ ÌÌK”ÌR ÌÌL”ÌS ÌÌM’” Ì€” Ì€’” Ì”1 Ì)” Ì‚” Ì‚” Ì‚”( Ì‚ ”) Ì‚!”4 Ì‚,”6 Ì‚.”: Ì‚2”; Ì‚3”> Ì‚6”? Ì‚7”ÌC Ì‚;”ÌG Ì‚?˜” Ìƒ” Ìƒ” Ìƒ”- Ìƒ%”. Ìƒ&”8 Ìƒ0”< Ìƒ4”> Ìƒ6˜” Ì„” Ì„” Ì„”, Ì„$”- Ì„%”8 Ì„0”< Ì„4”> Ì„6’” Ì…” Ì…‘”	 Ì†”” Ì†” Ì†” Ì†” Ì†š” Ì‡” Ì‡” Ì‡” Ì‡” Ì‡”3 Ì‡-”5 Ì‡/”8 Ì‡2”9 Ì‡3”: Ì‡4”” Ìˆ” Ìˆ” Ìˆ” Ìˆ‘”	 Ì‰’” ÌŠ” ÌŠ”” ÌŒ”
- ÌŒ” ÌŒ	” ÌŒ’” Ì”0 Ì,’” Ì” Ì˜” Ì” Ì” Ì” Ì” Ì”ÌF ÌÌB”ÌG ÌÌC”ÌH ÌÌD”” Ì” Ì” Ì” Ì’” Ì‘” Ì‘”” Ì“”
- Ì“” Ì“	” Ì“’” Ì”” Ì”’” Ì•”* Ì•$˜” Ì–” Ì–” Ì–”$ Ì–”% Ì–”, Ì–&”0 Ì–*”4 Ì–.’” Ì˜”( Ì˜"”” Ì™” Ì™” Ì™” Ì™”” Ìš” Ìš” Ìš” Ìš”” Ì›” Ì›” Ì›” Ì›’”	 Ìœ”
- Ìœ’” Ì” Ì–” ÌŸ”
- ÌŸ” ÌŸ	” ÌŸ” ÌŸ” ÌŸ˜” Ì ” Ì ” Ì ” Ì ” Ì ”ÌE Ì ÌA”ÌF Ì ÌB”ÌG Ì ÌC˜” Ì¢” Ì¢” Ì¢” Ì¢” Ì¢”- Ì¢)”. Ì¢*”/ Ì¢+™” Ì£” Ì£
-” Ì£”! Ì£”/ Ì£+”0 Ì£,”= Ì£9”? Ì£;”Ì@ Ì£<œ” Ì¤” Ì¤” Ì¤” Ì¤” Ì¤” Ì¤” Ì¤”/ Ì¤+”0 Ì¤,”: Ì¤6”; Ì¤7”< Ì¤8œ” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥” Ì¥”/ Ì¥+”0 Ì¥,”5 Ì¥1”6 Ì¥2”7 Ì¥3œ” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦” Ì¦”/ Ì¦+”0 Ì¦,”: Ì¦6”; Ì¦7”< Ì¦8œ” Ì§” Ì§” Ì§” Ì§” Ì§” Ì§” Ì§”/ Ì§+”0 Ì§,”: Ì§6”; Ì§7”< Ì§8œ” Ì¨” Ì¨” Ì¨” Ì¨” Ì¨” Ì¨”! Ì¨”1 Ì¨-”2 Ì¨.”? Ì¨;”Ì@ Ì¨<”ÌA Ì¨=œ” Ì©” Ì©” Ì©” Ì©” Ì©” Ì©”! Ì©”1 Ì©-”2 Ì©.”9 Ì©5”: Ì©6”; Ì©7˜” Ì«” Ì«” Ì«” Ì«” Ì«”. Ì«*”/ Ì«+”0 Ì«,™” Ì¬” Ì¬
-” Ì¬”" Ì¬”0 Ì¬,”1 Ì¬-”? Ì¬;”ÌA Ì¬=”ÌB Ì¬>” Ì­” Ì­” Ì­” Ì­” Ì­” Ì­” Ì­”0 Ì­,”1 Ì­-”; Ì­7”> Ì­:”ÌA Ì­=”ÌB Ì­>”ÌC Ì­?œ” Ì®” Ì®” Ì®” Ì®” Ì®” Ì®” Ì®”0 Ì®,”1 Ì®-”? Ì®;”Ì@ Ì®<”ÌA Ì®=œ” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯” Ì¯”0 Ì¯,”1 Ì¯-”= Ì¯9”> Ì¯:”? Ì¯;Ü ” Ì°” Ì°” Ì°” Ì°” Ì°” Ì°” Ì°”  Ì°”1 Ì°-”2 Ì°.”ÌD Ì°Ì@”ÌG Ì°ÌC”ÌI Ì°ÌE”ÌJ Ì°ÌF”ÌK Ì°ÌG”ÌR Ì°ÌN”ÌS Ì°ÌO”ÌT Ì°ÌP”ÌU Ì°ÌQ”ÌX Ì°ÌT”Ì\ Ì°ÌX”Ì] Ì°ÌY”Ì^ Ì°ÌZ˜” Ì²” Ì²” Ì²” Ì²” Ì²”. Ì²*”/ Ì²+”0 Ì²,š” Ì³” Ì³
-” Ì³”" Ì³”( Ì³$”6 Ì³2”7 Ì³3”ÌE Ì³ÌA”ÌG Ì³ÌC”ÌH Ì³ÌD”” Ì´” Ì´” Ì´” Ì´” Ìµ” Ìµ” Ìµ” Ìµ” Ìµ”! Ìµ”# Ìµ”4 Ìµ.”5 Ìµ/”: Ìµ4”= Ìµ7”ÌA Ìµ;”ÌB Ìµ<”ÌC Ìµ=” Ì¶” Ì¶” Ì¶” Ì¶” Ì¶”! Ì¶”# Ì¶”4 Ì¶.”5 Ì¶/”; Ì¶5”> Ì¶8”ÌB Ì¶<”ÌC Ì¶=”ÌD Ì¶>” Ì·” Ì·” Ì·” Ì·” Ì·”! Ì·”# Ì·”4 Ì·.”5 Ì·/”? Ì·9”ÌB Ì·<”ÌH Ì·ÌB”ÌI Ì·ÌC”ÌJ Ì·ÌD” Ì¸” Ì¸” Ì¸” Ì¸” Ì¸”  Ì¸”" Ì¸”3 Ì¸-”4 Ì¸.”? Ì¸9”ÌB Ì¸<”ÌG Ì¸ÌA”ÌH Ì¸ÌB”ÌI Ì¸ÌC‘”	 Ì¹˜” Ì»” Ì»” Ì»” Ì»” Ì»”. Ì»*”/ Ì»+”0 Ì»,™” Ì¼” Ì¼
-” Ì¼”" Ì¼”0 Ì¼,”1 Ì¼-”? Ì¼;”ÌA Ì¼=”ÌB Ì¼>”” Ì½” Ì½” Ì½” Ì½Ü ” Ì¾” Ì¾” Ì¾” Ì¾” Ì¾”  Ì¾”" Ì¾”# Ì¾”4 Ì¾.”5 Ì¾/”> Ì¾8”ÌA Ì¾;”ÌE Ì¾?”ÌH Ì¾ÌB”ÌL Ì¾ÌF”ÌO Ì¾ÌI”ÌS Ì¾ÌM”ÌT Ì¾ÌN”ÌU Ì¾ÌO”Ì\ Ì¾ÌV”Ì] Ì¾ÌW”Ì^ Ì¾ÌX”Ì_ Ì¾ÌY”Ìb Ì¾Ì\”Ìg Ì¾Ìa”Ìh Ì¾Ìb”Ìi Ì¾ÌcÜ ” Ì¿” Ì¿” Ì¿” Ì¿” Ì¿”! Ì¿”# Ì¿”$ Ì¿”5 Ì¿/”6 Ì¿0”> Ì¿8”ÌA Ì¿;”ÌE Ì¿?”ÌH Ì¿ÌB”ÌL Ì¿ÌF”ÌO Ì¿ÌI”ÌS Ì¿ÌM”ÌT Ì¿ÌN”ÌU Ì¿ÌO”Ì\ Ì¿ÌV”Ì] Ì¿ÌW”Ì^ Ì¿ÌX”Ì_ Ì¿ÌY”Ìb Ì¿Ì\”Ìg Ì¿Ìa”Ìh Ì¿Ìb”Ìi Ì¿ÌcÜ ” ÌÀ” ÌÀ” ÌÀ” ÌÀ” ÌÀ”! ÌÀ”# ÌÀ”$ ÌÀ”5 ÌÀ/”6 ÌÀ0”> ÌÀ8”ÌA ÌÀ;”ÌE ÌÀ?”ÌH ÌÀÌB”ÌL ÌÀÌF”ÌO ÌÀÌI”ÌS ÌÀÌM”ÌT ÌÀÌN”ÌU ÌÀÌO”Ì\ ÌÀÌV”Ì] ÌÀÌW”Ì^ ÌÀÌX”Ì_ ÌÀÌY”Ìb ÌÀÌ\”Ìg ÌÀÌa”Ìh ÌÀÌb”Ìi ÌÀÌc‘”	 ÌÁ˜” ÌÃ” ÌÃ” ÌÃ” ÌÃ” ÌÃ”. ÌÃ*”/ ÌÃ+”0 ÌÃ,š” ÌÄ” ÌÄ
-” ÌÄ”" ÌÄ”( ÌÄ$”6 ÌÄ2”7 ÌÄ3”ÌE ÌÄÌA”ÌG ÌÄÌC”ÌH ÌÄÌD”” ÌÅ” ÌÅ” ÌÅ” ÌÅœ” ÌÆ” ÌÆ” ÌÆ” ÌÆ” ÌÆ”! ÌÆ”# ÌÆ”4 ÌÆ.”5 ÌÆ/”< ÌÆ6”= ÌÆ7”> ÌÆ8‘”	 ÌÇ˜” ÌÉ” ÌÉ” ÌÉ” ÌÉ” ÌÉ”ÌJ ÌÉÌF”ÌK ÌÉÌG”ÌL ÌÉÌH’” ÌÊ” ÌÊ‘” ÌËÔrH–§version¤file§sources®sourcesContent¥names¨mappingsÀ‘À‘ÀÜ ¶‘”    ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”  	 ‘”  
- ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”   ‘”    ‘”  ! ‘”  " ‘”  # ‘”  $ ‘”  % ‘”  & ‘”  ' ‘”  ( ‘”  ) ‘”  * ‘”  + ‘”  , ‘”  - ‘”  . ‘”  / ‘”  0 ‘”  1 ‘”  2 ‘”  3 ‘”  4 ‘”  5 ‘”  6 ‘”  7 ‘”  8 ‘”  9 ‘”  : ‘”  ; ‘”  < ‘”  = ‘”  > ‘”  ? ‘”  Ì@ ‘”  ÌA ‘”  ÌB ‘”  ÌC ‘”  ÌD ‘”  ÌE ‘”  ÌF ‘”  ÌG ‘”  ÌH ‘”  ÌI ‘”  ÌJ ‘”  ÌK ‘”  ÌL ‘”  ÌM ‘”  ÌN ‘”  ÌO ‘”  ÌP ‘”  ÌQ ‘”  ÌR ‘”  ÌS ‘”  ÌT ‘”  ÌU ‘”  ÌV ‘”  ÌW ‘”  ÌX ‘”  ÌY ‘”  ÌZ ‘”  Ì[ ‘”  Ì\ ‘”  Ì] ‘”  Ì^ ‘”  Ì_ ‘”  Ì` ‘”  Ìa ‘”  Ìb ‘”  Ìc ‘”  Ìd ‘”  Ìe ‘”  Ìf ‘”  Ìg ‘”  Ìh ‘”  Ìi ‘”  Ìj ‘”  Ìk ‘”  Ìl ‘”  Ìm ‘”  Ìn ‘”  Ìo ‘”  Ìp ‘”  Ìq ‘”  Ìr ‘”  Ìs ‘”  Ìt ‘”  Ìu ‘”  Ìv ‘”  Ìw ‘”  Ìx ‘”  Ìy ‘”  Ìz ‘”  Ì{ ‘”  Ì| ‘”  Ì} ‘”  Ì~ ‘”  Ì ‘”  Ì€ ‘”  Ì ‘”  Ì‚ ‘”  Ìƒ ‘”  Ì„ ‘”  Ì… ‘”  Ì† ‘”  Ì‡ ‘”  Ìˆ ‘”  Ì‰ ‘”  ÌŠ ‘”  Ì‹ ‘”  ÌŒ ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì ‘”  Ì‘ ‘”  Ì’ ‘”  Ì“ ‘”  Ì” ‘”  Ì• ‘”  Ì– ‘”  Ì— ‘”  Ì˜ ‘”  Ì™ ‘”  Ìš ‘”  Ì› ‘”  Ìœ ‘”  Ì ‘”  Ì ‘”  ÌŸ ‘”  Ì  ‘”  Ì¡ ‘”  Ì¢ ‘”  Ì£ ‘”  Ì¤ ‘”  Ì¥ ‘”  Ì¦ ‘”  Ì§ ‘”  Ì¨ ‘”  Ì© ‘”  Ìª ‘”  Ì« ‘”  Ì¬ ‘”  Ì­ ‘”  Ì® ‘”  Ì¯ ‘”  Ì° ‘”  Ì± ‘”  Ì² ‘”  Ì³ ‘”  Ì´ ‘”  Ìµ ÔrI’§missing¦pluginÃ¦genAbcÂÔ  ÔrJ”²dynamicImportCache¹exportAllDeclarationCache»exportNamedDeclarationCache«importCache‘ÔrK–¤type¥start£end«declarationªspecifiers¦source¶ExportNamedDeclarationÌÛÍ?ÔrL–¤type¥start£end¢idªsuperClass¤body°ClassDeclarationÌâÍ?ÔrM”¤type¥start£end¤nameªIdentifierÌèÌö®SystemInfoCoreÀÔrN”¤type¥start£end¤body©ClassBodyÌ÷Í?˜ÔrO˜¤type¥start£end¦static¨computed£key¤kind¥value°MethodDefinitionÌşÍ	pÃÂMªIdentifierÍÍ­getDeviceInfo¦methodÔrP™¤type¥start£end¢idªexpression©generator¥async¦params¤body²FunctionExpressionÍÍ	pÀÂÂÂN®BlockStatementÍÍ	p‘ÔrQ”¤type¥start£end¨argument¯ReturnStatementÍ Í	iÔrR”¤type¥start£endªproperties°ObjectExpressionÍ'Í	hÜ 'ÔrS™¤type¥start£end¦method©shorthand¨computed£key¥value¤kind¨PropertyÍaÍŠÂÂÂMªIdentifierÍaÍkªdeviceTypeÔrT–¤type¥start£end¤left¨operator¥right±LogicalExpressionÍmÍŠÔrU—¤type¥start£end¦object¨property¨computed¨optional°MemberExpressionÍmÍ‚MªIdentifierÍmÍwªdeviceInfoMªIdentifierÍxÍ‚ªdeviceTypeÂÂ¢||ÔrV•¤type¥start£end¥value£raw§LiteralÍ†ÍŠ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ™ÍÄÂÂÂMªIdentifierÍ™Í¤«manufactureT±LogicalExpressionÍ¦ÍÄU°MemberExpressionÍ¦Í¼MªIdentifierÍ¦Í°ªdeviceInfoMªIdentifierÍ±Í¼«manufactureÂÂ¢||V§LiteralÍÀÍÄ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍÓÍòÂÂÂMªIdentifierÍÓÍØ¥brandT±LogicalExpressionÍÚÍòU°MemberExpressionÍÚÍêMªIdentifierÍÚÍäªdeviceInfoMªIdentifierÍåÍê¥brandÂÂ¢||V§LiteralÍîÍò¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍÍ*ÂÂÂMªIdentifierÍÍªmarketNameT±LogicalExpressionÍÍ*U°MemberExpressionÍÍ"MªIdentifierÍÍªdeviceInfoMªIdentifierÍÍ"ªmarketNameÂÂ¢||V§LiteralÍ&Í*¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ9ÍhÂÂÂMªIdentifierÍ9ÍF­productSeriesT±LogicalExpressionÍHÍhU°MemberExpressionÍHÍ`MªIdentifierÍHÍRªdeviceInfoMªIdentifierÍSÍ`­productSeriesÂÂ¢||V§LiteralÍdÍh¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍwÍ¤ÂÂÂMªIdentifierÍwÍƒ¬productModelT±LogicalExpressionÍ…Í¤U°MemberExpressionÍ…ÍœMªIdentifierÍ…ÍªdeviceInfoMªIdentifierÍÍœ¬productModelÂÂ¢||V§LiteralÍ Í¤¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ³ÍâÂÂÂMªIdentifierÍ³ÍÀ­softwareModelT±LogicalExpressionÍÂÍâU°MemberExpressionÍÂÍÚMªIdentifierÍÂÍÌªdeviceInfoMªIdentifierÍÍÍÚ­softwareModelÂÂ¢||V§LiteralÍŞÍâ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍñÍ ÂÂÂMªIdentifierÍñÍş­hardwareModelT±LogicalExpressionÍ Í U°MemberExpressionÍ ÍMªIdentifierÍ Í
-ªdeviceInfoMªIdentifierÍÍ­hardwareModelÂÂ¢||V§LiteralÍÍ ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ/ÍfÂÂÂMªIdentifierÍ/Í@±bootloaderVersionT±LogicalExpressionÍBÍfU°MemberExpressionÍBÍ^MªIdentifierÍBÍLªdeviceInfoMªIdentifierÍMÍ^±bootloaderVersionÂÂ¢||V§LiteralÍbÍf¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍuÍ˜ÂÂÂMªIdentifierÍuÍ|§abiListT±LogicalExpressionÍ~Í˜U°MemberExpressionÍ~ÍMªIdentifierÍ~ÍˆªdeviceInfoMªIdentifierÍ‰Í§abiListÂÂ¢||V§LiteralÍ”Í˜¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ§ÍÜÂÂÂMªIdentifierÍ§Í·°securityPatchTagT±LogicalExpressionÍ¹ÍÜU°MemberExpressionÍ¹ÍÔMªIdentifierÍ¹ÍÃªdeviceInfoMªIdentifierÍÄÍÔ°securityPatchTagÂÂ¢||V§LiteralÍØÍÜ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍëÍÂÂÂMªIdentifierÍëÍù®displayVersionT±LogicalExpressionÍûÍU°MemberExpressionÍûÍMªIdentifierÍûÍªdeviceInfoMªIdentifierÍÍ®displayVersionÂÂ¢||V§LiteralÍÍ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ+ÍdÂÂÂMªIdentifierÍ+Í=²incrementalVersionT±LogicalExpressionÍ?ÍdU°MemberExpressionÍ?Í\MªIdentifierÍ?ÍIªdeviceInfoMªIdentifierÍJÍ\²incrementalVersionÂÂ¢||V§LiteralÍ`Íd¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍsÍ¢ÂÂÂMªIdentifierÍsÍ€­osReleaseTypeT±LogicalExpressionÍ‚Í¢U°MemberExpressionÍ‚ÍšMªIdentifierÍ‚ÍŒªdeviceInfoMªIdentifierÍÍš­osReleaseTypeÂÂ¢||V§LiteralÍÍ¢¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ±ÍÚÂÂÂMªIdentifierÍ±Í»ªosFullNameT±LogicalExpressionÍ½ÍÚU°MemberExpressionÍ½ÍÒMªIdentifierÍ½ÍÇªdeviceInfoMªIdentifierÍÈÍÒªosFullNameÂÂ¢||V§LiteralÍÖÍÚ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍéÍÂÂÂMªIdentifierÍéÍõ¬majorVersionT±LogicalExpressionÍ÷ÍU°MemberExpressionÍ÷ÍMªIdentifierÍ÷ÍªdeviceInfoMªIdentifierÍÍ¬majorVersionÂÂ¢||V§LiteralÍÍ ¡0¤initS¨PropertyÍ"ÍNÂÂÂMªIdentifierÍ"Í/­seniorVersionT±LogicalExpressionÍ1ÍNU°MemberExpressionÍ1ÍIMªIdentifierÍ1Í;ªdeviceInfoMªIdentifierÍ<ÍI­seniorVersionÂÂ¢||V§LiteralÍMÍN ¡0¤initS¨PropertyÍ]Í‹ÂÂÂMªIdentifierÍ]Ík®featureVersionT±LogicalExpressionÍmÍ‹U°MemberExpressionÍmÍ†MªIdentifierÍmÍwªdeviceInfoMªIdentifierÍxÍ†®featureVersionÂÂ¢||V§LiteralÍŠÍ‹ ¡0¤initS¨PropertyÍšÍÄÂÂÂMªIdentifierÍšÍ¦¬buildVersionT±LogicalExpressionÍ¨ÍÄU°MemberExpressionÍ¨Í¿MªIdentifierÍ¨Í²ªdeviceInfoMªIdentifierÍ³Í¿¬buildVersionÂÂ¢||V§LiteralÍÃÍÄ ¡0¤initS¨PropertyÍÓÍÿÂÂÂMªIdentifierÍÓÍà­sdkApiVersionT±LogicalExpressionÍâÍÿU°MemberExpressionÍâÍúMªIdentifierÍâÍìªdeviceInfoMªIdentifierÍíÍú­sdkApiVersionÂÂ¢||V§LiteralÍşÍÿ ¡0¤initS¨PropertyÍÍ>ÂÂÂMªIdentifierÍÍ¯firstApiVersionT±LogicalExpressionÍÍ>U°MemberExpressionÍÍ9MªIdentifierÍÍ)ªdeviceInfoMªIdentifierÍ*Í9¯firstApiVersionÂÂ¢||V§LiteralÍ=Í> ¡0¤initS¨PropertyÍMÍtÂÂÂMªIdentifierÍMÍV©versionIdT±LogicalExpressionÍXÍtU°MemberExpressionÍXÍlMªIdentifierÍXÍbªdeviceInfoMªIdentifierÍcÍl©versionIdÂÂ¢||V§LiteralÍpÍt¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍƒÍªÂÂÂMªIdentifierÍƒÍŒ©buildTypeT±LogicalExpressionÍÍªU°MemberExpressionÍÍ¢MªIdentifierÍÍ˜ªdeviceInfoMªIdentifierÍ™Í¢©buildTypeÂÂ¢||V§LiteralÍ¦Íª¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ¹ÍàÂÂÂMªIdentifierÍ¹ÍÂ©buildUserT±LogicalExpressionÍÄÍàU°MemberExpressionÍÄÍØMªIdentifierÍÄÍÎªdeviceInfoMªIdentifierÍÏÍØ©buildUserÂÂ¢||V§LiteralÍÜÍà¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍïÍÂÂÂMªIdentifierÍïÍø©buildHostT±LogicalExpressionÍúÍU°MemberExpressionÍúÍMªIdentifierÍúÍªdeviceInfoMªIdentifierÍÍ©buildHostÂÂ¢||V§LiteralÍÍ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ%ÍLÂÂÂMªIdentifierÍ%Í.©buildTimeT±LogicalExpressionÍ0ÍLU°MemberExpressionÍ0ÍDMªIdentifierÍ0Í:ªdeviceInfoMªIdentifierÍ;ÍD©buildTimeÂÂ¢||V§LiteralÍHÍL¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ[ÍŠÂÂÂMªIdentifierÍ[Íh­buildRootHashT±LogicalExpressionÍjÍŠU°MemberExpressionÍjÍ‚MªIdentifierÍjÍtªdeviceInfoMªIdentifierÍuÍ‚­buildRootHashÂÂ¢||V§LiteralÍ†ÍŠ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍÃÍÛÂÂÂMªIdentifierÍÃÍÔ±productModelAliasV§LiteralÍÖÍÛ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍêÍõÂÂÂMªIdentifierÍêÍî¤udidV§LiteralÍğÍõ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍÍÂÂÂMªIdentifierÍÍ²distributionOSNameV§LiteralÍÍ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍ,ÍHÂÂÂMªIdentifierÍ,ÍAµdistributionOSVersionV§LiteralÍCÍH©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍWÍrÂÂÂMªIdentifierÍWÍo¸distributionOSApiVersionV§LiteralÍqÍr ¡0¤initS¨PropertyÍÍÂÂÂMªIdentifierÍÍ–µdistributionOSApiNameV§LiteralÍ˜Í©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍ¬ÍÌÂÂÂMªIdentifierÍ¬ÍÅ¹distributionOSReleaseTypeV§LiteralÍÇÍÌ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍÛÍæÂÂÂMªIdentifierÍÛÍß¤odidV§LiteralÍáÍæ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍõÍ	ÂÂÂMªIdentifierÍõÍû¦diskSNV§LiteralÍıÍ	©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍ	Í	$ÂÂÂMªIdentifierÍ	Í	!°performanceClassV§LiteralÍ	#Í	$ ¡0¤initS¨PropertyÍ	3Í	BÂÂÂMªIdentifierÍ	3Í	;¨chipTypeV§LiteralÍ	=Í	B©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍ	QÍ	]ÂÂÂMªIdentifierÍ	QÍ	Z©bootCountV§LiteralÍ	\Í	] ¡0¤initO°MethodDefinitionÍ	vÍÃÂMªIdentifierÍ	}Í	‹®getBatteryInfo¦methodP²FunctionExpressionÍ	‹ÍÀÂÂÂN®BlockStatementÍ	Í‘Q¯ReturnStatementÍ	™ÍÿR°ObjectExpressionÍ	 ÍşšS¨PropertyÍ	ÛÍ
-ÂÂÂMªIdentifierÍ	ÛÍ	åªbatterySOCT±LogicalExpressionÍ	çÍ
-U°MemberExpressionÍ	çÍ	ıMªIdentifierÍ	çÍ	ò«batteryInfoMªIdentifierÍ	óÍ	ıªbatterySOCÂÂ¢||V§LiteralÍ
-Í
- ¡0¤initS¨PropertyÍ
-Í
-@ÂÂÂMªIdentifierÍ
-Í
-®chargingStatusT±LogicalExpressionÍ
-!Í
-@U°MemberExpressionÍ
-!Í
-;MªIdentifierÍ
-!Í
-,«batteryInfoMªIdentifierÍ
--Í
-;®chargingStatusÂÂ¢||V§LiteralÍ
-?Í
-@ ¡0¤initS¨PropertyÍ
-OÍ
-zÂÂÂMªIdentifierÍ
-OÍ
-[¬healthStatusT±LogicalExpressionÍ
-]Í
-zU°MemberExpressionÍ
-]Í
-uMªIdentifierÍ
-]Í
-h«batteryInfoMªIdentifierÍ
-iÍ
-u¬healthStatusÂÂ¢||V§LiteralÍ
-yÍ
-z ¡0¤initS¨PropertyÍ
-‰Í
-²ÂÂÂMªIdentifierÍ
-‰Í
-”«pluggedTypeT±LogicalExpressionÍ
-–Í
-²U°MemberExpressionÍ
-–Í
-­MªIdentifierÍ
-–Í
-¡«batteryInfoMªIdentifierÍ
-¢Í
-­«pluggedTypeÂÂ¢||V§LiteralÍ
-±Í
-² ¡0¤initS¨PropertyÍ
-ÁÍ
-âÂÂÂMªIdentifierÍ
-ÁÍ
-È§voltageT±LogicalExpressionÍ
-ÊÍ
-âU°MemberExpressionÍ
-ÊÍ
-İMªIdentifierÍ
-ÊÍ
-Õ«batteryInfoMªIdentifierÍ
-ÖÍ
-İ§voltageÂÂ¢||V§LiteralÍ
-áÍ
-â ¡0¤initS¨PropertyÍ
-ñÍÂÂÂMªIdentifierÍ
-ñÍ
-ûªtechnologyT±LogicalExpressionÍ
-ıÍU°MemberExpressionÍ
-ıÍMªIdentifierÍ
-ıÍ«batteryInfoMªIdentifierÍ	ÍªtechnologyÂÂ¢||V§LiteralÍÍ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍ*ÍaÂÂÂMªIdentifierÍ*Í<²batteryTemperatureT±LogicalExpressionÍ>ÍaU°MemberExpressionÍ>Í\MªIdentifierÍ>ÍI«batteryInfoMªIdentifierÍJÍ\²batteryTemperatureÂÂ¢||V§LiteralÍ`Ía ¡0¤initS¨PropertyÍšÍ±ÂÂÂMªIdentifierÍšÍª°isBatteryPresentV§LiteralÍ¬Í±Â¥false¤initS¨PropertyÍÀÍ×ÂÂÂMªIdentifierÍÀÍÔ´batteryCapacityLevelV§LiteralÍÖÍ× ¡0¤initS¨PropertyÍæÍóÂÂÂMªIdentifierÍæÍğªnowCurrentV§LiteralÍòÍó ¡0¤initO°MethodDefinitionÍÍÃÂMªIdentifierÍÍ'®getDisplayInfo¦methodP²FunctionExpressionÍ'ÍÀÂÂÃN®BlockStatementÍ*Í‘ÔrW–¤type¥start£end¥block§handler©finalizer¬TryStatementÍ5Í‰N®BlockStatementÍ9Í’ÔrX•¤type¥start£end¬declarations¤kind³VariableDeclarationÍHÍ{‘ÔrY•¤type¥start£end¢id¤init²VariableDeclaratorÍNÍzMªIdentifierÍNÍV¨displaysQ¯AwaitExpressionÍYÍzÔrZ–¤type¥start£end¦callee©arguments¨optional®CallExpressionÍ_ÍzU°MemberExpressionÍ_ÍxMªIdentifierÍ_Íf§displayMªIdentifierÍgÍx±getDefaultDisplayÂÂÂ¥constQ¯ReturnStatementÍ‰ÍR°ObjectExpressionÍÍS¨PropertyÍÏÍŞÂÂÂMªIdentifierÍÏÍÑ¢idU°MemberExpressionÍÓÍŞMªIdentifierÍÓÍÛ¨displaysMªIdentifierÍÜÍŞ¢idÂÂ¤initS¨PropertyÍñÍÂÂÂMªIdentifierÍñÍõ¤nameU°MemberExpressionÍ÷ÍMªIdentifierÍ÷Íÿ¨displaysMªIdentifierÍ Í¤nameÂÂ¤initS¨PropertyÍÍ,ÂÂÂMªIdentifierÍÍ¥aliveU°MemberExpressionÍÍ,MªIdentifierÍÍ&¨displaysMªIdentifierÍ'Í,¥aliveÂÂ¤initS¨PropertyÍ?ÍTÂÂÂMªIdentifierÍ?ÍD¥stateU°MemberExpressionÍFÍTMªIdentifierÍFÍN¨displaysMªIdentifierÍOÍT¥stateÂÂ¤initS¨PropertyÍgÍˆÂÂÂMªIdentifierÍgÍr«refreshRateU°MemberExpressionÍtÍˆMªIdentifierÍtÍ|¨displaysMªIdentifierÍ}Íˆ«refreshRateÂÂ¤initS¨PropertyÍ›Í¶ÂÂÂMªIdentifierÍ›Í£¨rotationU°MemberExpressionÍ¥Í¶MªIdentifierÍ¥Í­¨displaysMªIdentifierÍ®Í¶¨rotationÂÂ¤initS¨PropertyÍÉÍŞÂÂÂMªIdentifierÍÉÍÎ¥widthU°MemberExpressionÍĞÍŞMªIdentifierÍĞÍØ¨displaysMªIdentifierÍÙÍŞ¥widthÂÂ¤initS¨PropertyÍñÍÂÂÂMªIdentifierÍñÍ÷¦heightU°MemberExpressionÍùÍMªIdentifierÍùÍ¨displaysMªIdentifierÍÍ¦heightÂÂ¤initS¨PropertyÍÍ:ÂÂÂMªIdentifierÍÍ%ªdensityDPIU°MemberExpressionÍ'Í:MªIdentifierÍ'Í/¨displaysMªIdentifierÍ0Í:ªdensityDPIÂÂ¤initS¨PropertyÍMÍrÂÂÂMªIdentifierÍMÍZ­densityPixelsU°MemberExpressionÍ\ÍrMªIdentifierÍ\Íd¨displaysMªIdentifierÍeÍr­densityPixelsÂÂ¤initS¨PropertyÍ…ÍªÂÂÂMªIdentifierÍ…Í’­scaledDensityU°MemberExpressionÍ”ÍªMªIdentifierÍ”Íœ¨displaysMªIdentifierÍÍª­scaledDensityÂÂ¤initS¨PropertyÍ½ÍĞÂÂÂMªIdentifierÍ½ÍÁ¤xDPIU°MemberExpressionÍÃÍĞMªIdentifierÍÃÍË¨displaysMªIdentifierÍÌÍĞ¤xDPIÂÂ¤initS¨PropertyÍãÍöÂÂÂMªIdentifierÍãÍç¤yDPIU°MemberExpressionÍéÍöMªIdentifierÍéÍñ¨displaysMªIdentifierÍòÍö¤yDPIÂÂ¤initÔr[•¤type¥start£end¥param¤body«CatchClauseÍÍ‰MªIdentifierÍ"Í%£errN®BlockStatementÍ'Í‰’Ôr\”¤type¥start£endªexpression³ExpressionStatementÍ6ÍdZ®CallExpressionÍ6ÍcU°MemberExpressionÍ6ÍCMªIdentifierÍ6Í=§consoleMªIdentifierÍ>ÍC¥errorÂÂ’V§LiteralÍDÍ]·Get display info error:¹'Get display info error:'MªIdentifierÍ_Íb£errÂQ¯ReturnStatementÍrÍ~V§LiteralÍyÍ}À¤nullÀO°MethodDefinitionÍ–ÍúÃÂMªIdentifierÍÍ«®getStorageInfo¦methodP²FunctionExpressionÍ«ÍúÀÂÂÂN®BlockStatementÍ®Íú‘W¬TryStatementÍ¹ÍóN®BlockStatementÍ½Í{•X³VariableDeclarationÍÌÍé‘Y²VariableDeclaratorÍÒÍèMªIdentifierÍÒÍÙ§contextZ®CallExpressionÍÜÍèMªIdentifierÍÜÍæªgetContextÂ¥constX³VariableDeclarationÍ÷Í‘Y²VariableDeclaratorÍıÍMªIdentifierÍıÍ¨dataPathU°MemberExpressionÍÍMªIdentifierÍÍ§contextMªIdentifierÍÍ¨filesDirÂÂ¥constX³VariableDeclarationÍ'Í\‘Y²VariableDeclaratorÍ-Í[MªIdentifierÍ-Í6©totalSizeZ®CallExpressionÍ9Í[U°MemberExpressionÍ9ÍQMªIdentifierÍ9Í@§statvfsMªIdentifierÍAÍQ°getTotalSizeSyncÂÂ‘MªIdentifierÍRÍZ¨dataPathÂ¥constX³VariableDeclarationÍjÍ‘Y²VariableDeclaratorÍpÍœMªIdentifierÍpÍx¨freeSizeZ®CallExpressionÍ{ÍœU°MemberExpressionÍ{Í’MªIdentifierÍ{Í‚§statvfsMªIdentifierÍƒÍ’¯getFreeSizeSyncÂÂ‘MªIdentifierÍ“Í›¨dataPathÂ¥constQ¯ReturnStatementÍ«ÍpR°ObjectExpressionÍ²Ío“S¨PropertyÍöÍ
-ÂÂÂMªIdentifierÍöÍÿ©totalSizeMªIdentifierÍÍ
-©totalSize¤initS¨PropertyÍÍ/ÂÂÂMªIdentifierÍÍ%¨freeSizeMªIdentifierÍ'Í/¨freeSize¤initS¨PropertyÍBÍ`ÂÂÂMªIdentifierÍBÍJ¨usedSizeT°BinaryExpressionÍLÍ`MªIdentifierÍLÍU©totalSize¡-MªIdentifierÍXÍ`¨freeSize¤init[«CatchClauseÍ…ÍóMªIdentifierÍŒÍ£errN®BlockStatementÍ‘Íó’\³ExpressionStatementÍ ÍÎZ®CallExpressionÍ ÍÍU°MemberExpressionÍ Í­MªIdentifierÍ Í§§consoleMªIdentifierÍ¨Í­¥errorÂÂ’V§LiteralÍ®ÍÇ·Get storage info error:¹'Get storage info error:'MªIdentifierÍÉÍÌ£errÂQ¯ReturnStatementÍÜÍèV§LiteralÍãÍçÀ¤nullÀO°MethodDefinitionÍ ÍrÃÂMªIdentifierÍÍ®getNetworkInfo¦methodP²FunctionExpressionÍÍrÀÂÂÃN®BlockStatementÍÍr‘W¬TryStatementÍ)ÍkN®BlockStatementÍ-Íó“X³VariableDeclarationÍ<Ío‘Y²VariableDeclaratorÍBÍnMªIdentifierÍBÍK©netHandleQ¯AwaitExpressionÍNÍnZ®CallExpressionÍTÍnU°MemberExpressionÍTÍlMªIdentifierÍTÍ^ªconnectionMªIdentifierÍ_Íl­getDefaultNetÂÂÂ¥constX³VariableDeclarationÍ}ÍÄ‘Y²VariableDeclaratorÍƒÍÃMªIdentifierÍƒÍ’¯netCapabilitiesQ¯AwaitExpressionÍ•ÍÃZ®CallExpressionÍ›ÍÃU°MemberExpressionÍ›Í¸MªIdentifierÍ›Í¥ªconnectionMªIdentifierÍ¦Í¸²getNetCapabilitiesÂÂ‘MªIdentifierÍ¹ÍÂ©netHandleÂ¥constQ¯ReturnStatementÍÒÍèR°ObjectExpressionÍÙÍç“S¨PropertyÍÍVÂÂÂMªIdentifierÍÍ&§netTypeT±LogicalExpressionÍ(ÍV\¯ChainExpressionÍ(ÍNZ®CallExpressionÍ(ÍNU°MemberExpressionÍ(ÍIU°MemberExpressionÍ(ÍCMªIdentifierÍ(Í7¯netCapabilitiesMªIdentifierÍ8ÍC«bearerTypesÂÂMªIdentifierÍEÍI¤joinÂÃ‘V§LiteralÍJÍM¡,£','Â¢||V§LiteralÍRÍV¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍiÍ—ÂÂÂMªIdentifierÍiÍu¬capabilitiesT±LogicalExpressionÍwÍ—U°MemberExpressionÍwÍ‘MªIdentifierÍwÍ†¯netCapabilitiesMªIdentifierÍ‡Í‘ªnetworkCapÂÂ¢||Ôr]”¤type¥start£end¨elements¯ArrayExpressionÍ•Í—¤initS¨PropertyÍªÍØÂÂÂMªIdentifierÍªÍµ«bearerTypesT±LogicalExpressionÍ·ÍØU°MemberExpressionÍ·ÍÒMªIdentifierÍ·ÍÆ¯netCapabilitiesMªIdentifierÍÇÍÒ«bearerTypesÂÂ¢||]¯ArrayExpressionÍÖÍØ¤init[«CatchClauseÍıÍkMªIdentifierÍÍ£errN®BlockStatementÍ	Ík’\³ExpressionStatementÍÍFZ®CallExpressionÍÍEU°MemberExpressionÍÍ%MªIdentifierÍÍ§consoleMªIdentifierÍ Í%¥errorÂÂ’V§LiteralÍ&Í?·Get network info error:¹'Get network info error:'MªIdentifierÍAÍD£errÂQ¯ReturnStatementÍTÍ`V§LiteralÍ[Í_À¤nullÀO°MethodDefinitionÍxÍDÃÂMªIdentifierÍÍŒ­getMemoryInfo¦methodP²FunctionExpressionÍŒÍDÀÂÂÂN®BlockStatementÍÍD’\³ExpressionStatementÍçÍ'Z®CallExpressionÍçÍ&U°MemberExpressionÍçÍóMªIdentifierÍçÍî§consoleMªIdentifierÍïÍó¤warnÂÂ‘V§LiteralÍôÍ%Ù/Memory info API not available in HarmonyOS NEXTÙ1'Memory info API not available in HarmonyOS NEXT'ÂQ¯ReturnStatementÍ1Í=V§LiteralÍ8Í<À¤nullO°MethodDefinitionÍJÍ_ÃÂMªIdentifierÍQÍ[ªgetCpuInfo¦methodP²FunctionExpressionÍ[Í_ÀÂÂÂN®BlockStatementÍ^Í_‘Q¯ReturnStatementÍiÍXR°ObjectExpressionÍpÍW”S¨PropertyÍ«ÍÓÂÂÂMªIdentifierÍ«Í·¬architectureT±LogicalExpressionÍ¹ÍÓU°MemberExpressionÍ¹ÍËMªIdentifierÍ¹ÍÃªdeviceInfoMªIdentifierÍÄÍË§abiListÂÂ¢||V§LiteralÍÏÍÓ¦æœªçŸ¥¨'æœªçŸ¥'¤initS¨PropertyÍÍÂÂÂMªIdentifierÍÍ¥modelV§LiteralÍÍ©æœªè·å–«'æœªè·å–'¤initS¨PropertyÍ'Í/ÂÂÂMªIdentifierÍ'Í,¥coresV§LiteralÍ.Í/ ¡0¤initS¨PropertyÍ>ÍLÂÂÂMªIdentifierÍ>ÍE§processV§LiteralÍGÍL©æœªè·å–«'æœªè·å–'¤initO°MethodDefinitionÍeÍ<ÃÂMªIdentifierÍrÍ}«runAllTests¦methodP²FunctionExpressionÍ}Í<ÀÂÂÃN®BlockStatementÍ€Í<Ü \³ExpressionStatementÍ‹ÍÊZ®CallExpressionÍ‹ÍÉU°MemberExpressionÍ‹Í–MªIdentifierÍ‹Í’§consoleMªIdentifierÍ“Í–£logÂÂ‘V§LiteralÍ—ÍÈÙ/========== SystemInfoCore Test Start ==========Ù1'========== SystemInfoCore Test Start =========='Â\³ExpressionStatementÍÔÍûZ®CallExpressionÍÔÍúU°MemberExpressionÍÔÍßMªIdentifierÍÔÍÛ§consoleMªIdentifierÍÜÍß£logÂÂ‘V§LiteralÍàÍù¶
-[Test 1] Device Info:¹'\n[Test 1] Device Info:'ÂX³VariableDeclarationÍÍ=‘Y²VariableDeclaratorÍÍ<MªIdentifierÍÍ°deviceInfoResultZ®CallExpressionÍÍ<U°MemberExpressionÍÍ:MªIdentifierÍÍ,®SystemInfoCoreMªIdentifierÍ-Í:­getDeviceInfoÂÂÂ¥const\³ExpressionStatementÍGÍ{Z®CallExpressionÍGÍzU°MemberExpressionÍGÍRMªIdentifierÍGÍN§consoleMªIdentifierÍOÍR£logÂÂ’V§LiteralÍSÍ\¯  è®¾å¤‡ç±»å‹:±'  è®¾å¤‡ç±»å‹:'U°MemberExpressionÍ^ÍyMªIdentifierÍ^Ín°deviceInfoResultMªIdentifierÍoÍyªdeviceTypeÂÂÂ\³ExpressionStatementÍ…Í´Z®CallExpressionÍ…Í³U°MemberExpressionÍ…ÍMªIdentifierÍ…ÍŒ§consoleMªIdentifierÍÍ£logÂÂ’V§LiteralÍ‘Íš¯  è®¾å¤‡å“ç‰Œ:±'  è®¾å¤‡å“ç‰Œ:'U°MemberExpressionÍœÍ²MªIdentifierÍœÍ¬°deviceInfoResultMªIdentifierÍ­Í²¥brandÂÂÂ\³ExpressionStatementÍ¾ÍòZ®CallExpressionÍ¾ÍñU°MemberExpressionÍ¾ÍÉMªIdentifierÍ¾ÍÅ§consoleMªIdentifierÍÆÍÉ£logÂÂ’V§LiteralÍÊÍÓ¯  è®¾å¤‡å‹å·:±'  è®¾å¤‡å‹å·:'U°MemberExpressionÍÕÍğMªIdentifierÍÕÍå°deviceInfoResultMªIdentifierÍæÍğªmarketNameÂÂÂ\³ExpressionStatementÍüÍ0Z®CallExpressionÍüÍ/U°MemberExpressionÍüÍMªIdentifierÍüÍ§consoleMªIdentifierÍÍ£logÂÂ’V§LiteralÍÍ¯  ç³»ç»Ÿç‰ˆæœ¬:±'  ç³»ç»Ÿç‰ˆæœ¬:'U°MemberExpressionÍÍ.MªIdentifierÍÍ#°deviceInfoResultMªIdentifierÍ$Í.ªosFullNameÂÂÂ\³ExpressionStatementÍ:ÍsZ®CallExpressionÍ:ÍrU°MemberExpressionÍ:ÍEMªIdentifierÍ:ÍA§consoleMªIdentifierÍBÍE£logÂÂ’V§LiteralÍFÍQ­  API ç‰ˆæœ¬:¯'  API ç‰ˆæœ¬:'U°MemberExpressionÍSÍqMªIdentifierÍSÍc°deviceInfoResultMªIdentifierÍdÍq­sdkApiVersionÂÂÂ\³ExpressionStatementÍ}Í°Z®CallExpressionÍ}Í¯U°MemberExpressionÍ}ÍˆMªIdentifierÍ}Í„§consoleMªIdentifierÍ…Íˆ£logÂÂ’V§LiteralÍ‰Í”­  CPU æ¶æ„:¯'  CPU æ¶æ„:'U°MemberExpressionÍ–Í®MªIdentifierÍ–Í¦°deviceInfoResultMªIdentifierÍ§Í®§abiListÂÂÂ\³ExpressionStatementÍºÍâZ®CallExpressionÍºÍáU°MemberExpressionÍºÍÅMªIdentifierÍºÍÁ§consoleMªIdentifierÍÂÍÅ£logÂÂ‘V§LiteralÍÆÍà·
-[Test 2] Battery Info:º'\n[Test 2] Battery Info:'ÂX³VariableDeclarationÍìÍ&‘Y²VariableDeclaratorÍòÍ%MªIdentifierÍòÍ±batteryInfoResultZ®CallExpressionÍÍ%U°MemberExpressionÍÍ#MªIdentifierÍÍ®SystemInfoCoreMªIdentifierÍÍ#®getBatteryInfoÂÂÂ¥const\³ExpressionStatementÍ0ÍkZ®CallExpressionÍ0ÍjU°MemberExpressionÍ0Í;MªIdentifierÍ0Í7§consoleMªIdentifierÍ8Í;£logÂÂ’V§LiteralÍ<ÍE¯  ç”µæ± ç”µé‡:±'  ç”µæ± ç”µé‡:'T°BinaryExpressionÍGÍiU°MemberExpressionÍGÍcMªIdentifierÍGÍX±batteryInfoResultMªIdentifierÍYÍcªbatterySOCÂÂ¡+V§LiteralÍfÍi¡%£'%'Â\³ExpressionStatementÍuÍ®Z®CallExpressionÍuÍ­U°MemberExpressionÍuÍ€MªIdentifierÍuÍ|§consoleMªIdentifierÍ}Í€£logÂÂ’V§LiteralÍÍŠ¯  å……ç”µçŠ¶æ€:±'  å……ç”µçŠ¶æ€:'U°MemberExpressionÍŒÍ¬MªIdentifierÍŒÍ±batteryInfoResultMªIdentifierÍÍ¬®chargingStatusÂÂÂ\³ExpressionStatementÍ¸ÍïZ®CallExpressionÍ¸ÍîU°MemberExpressionÍ¸ÍÃMªIdentifierÍ¸Í¿§consoleMªIdentifierÍÀÍÃ£logÂÂ’V§LiteralÍÄÍÍ¯  å¥åº·çŠ¶æ€:±'  å¥åº·çŠ¶æ€:'U°MemberExpressionÍÏÍíMªIdentifierÍÏÍà±batteryInfoResultMªIdentifierÍáÍí¬healthStatusÂÂÂ\³ExpressionStatementÍùÍOZ®CallExpressionÍùÍNU°MemberExpressionÍùÍMªIdentifierÍùÍ §consoleMªIdentifierÍÍ£logÂÂ’V§LiteralÍÍ¯  ç”µæ± æ¸©åº¦:±'  ç”µæ± æ¸©åº¦:'T°BinaryExpressionÍÍMZ®CallExpressionÍÍFU°MemberExpressionÍÍCT°BinaryExpressionÍÍ:U°MemberExpressionÍÍ5MªIdentifierÍÍ"±batteryInfoResultMªIdentifierÍ#Í5²batteryTemperatureÂÂ¡/V§LiteralÍ8Í:
-¢10MªIdentifierÍ<ÍC§toFixedÂÂ‘V§LiteralÍDÍE¡1Â¡+V§LiteralÍIÍM£Â°C¥'Â°C'Â\³ExpressionStatementÍYÍZ®CallExpressionÍYÍ€U°MemberExpressionÍYÍdMªIdentifierÍYÍ`§consoleMªIdentifierÍaÍd£logÂÂ‘V§LiteralÍeÍ·
-[Test 3] Display Info:º'\n[Test 3] Display Info:'ÂX³VariableDeclarationÍ‹ÍË‘Y²VariableDeclaratorÍ‘ÍÊMªIdentifierÍ‘Í¢±displayInfoResultQ¯AwaitExpressionÍ¥ÍÊZ®CallExpressionÍ«ÍÊU°MemberExpressionÍ«ÍÈMªIdentifierÍ«Í¹®SystemInfoCoreMªIdentifierÍºÍÈ®getDisplayInfoÂÂÂ¥constÔr^–¤type¥start£end¤testªconsequent©alternate«IfStatementÍÕÍMªIdentifierÍÙÍê±displayInfoResultN®BlockStatementÍìÍ”\³ExpressionStatementÍûÍ2Z®CallExpressionÍûÍ1U°MemberExpressionÍûÍMªIdentifierÍûÍ§consoleMªIdentifierÍÍ£logÂÂ’V§LiteralÍÍ¯  å±å¹•å®½åº¦:±'  å±å¹•å®½åº¦:'T°BinaryExpressionÍÍ0U°MemberExpressionÍÍ)MªIdentifierÍÍ#±displayInfoResultMªIdentifierÍ$Í)¥widthÂÂ¡+V§LiteralÍ,Í0¢px¤'px'Â\³ExpressionStatementÍ@ÍxZ®CallExpressionÍ@ÍwU°MemberExpressionÍ@ÍKMªIdentifierÍ@ÍG§consoleMªIdentifierÍHÍK£logÂÂ’V§LiteralÍLÍU¯  å±å¹•é«˜åº¦:±'  å±å¹•é«˜åº¦:'T°BinaryExpressionÍWÍvU°MemberExpressionÍWÍoMªIdentifierÍWÍh±displayInfoResultMªIdentifierÍiÍo¦heightÂÂ¡+V§LiteralÍrÍv¢px¤'px'Â\³ExpressionStatementÍ†ÍÄZ®CallExpressionÍ†ÍÃU°MemberExpressionÍ†Í‘MªIdentifierÍ†Í§consoleMªIdentifierÍÍ‘£logÂÂ’V§LiteralÍ’Í›¯  åƒç´ å¯†åº¦:±'  åƒç´ å¯†åº¦:'T°BinaryExpressionÍÍÂU°MemberExpressionÍÍ¹MªIdentifierÍÍ®±displayInfoResultMªIdentifierÍ¯Í¹ªdensityDPIÂÂ¡+V§LiteralÍ¼ÍÂ¤ DPI¦' DPI'Â\³ExpressionStatementÍÒÍZ®CallExpressionÍÒÍU°MemberExpressionÍÒÍİMªIdentifierÍÒÍÙ§consoleMªIdentifierÍÚÍİ£logÂÂ’V§LiteralÍŞÍæ¬  åˆ·æ–°ç‡:®'  åˆ·æ–°ç‡:'T°BinaryExpressionÍèÍU°MemberExpressionÍèÍMªIdentifierÍèÍù±displayInfoResultMªIdentifierÍúÍ«refreshRateÂÂ¡+V§LiteralÍÍ£ Hz¥' Hz'ÂÀ\³ExpressionStatementÍ$ÍLZ®CallExpressionÍ$ÍKU°MemberExpressionÍ$Í/MªIdentifierÍ$Í+§consoleMªIdentifierÍ,Í/£logÂÂ‘V§LiteralÍ0ÍJ·
-[Test 4] Storage Info:º'\n[Test 4] Storage Info:'ÂX³VariableDeclarationÍVÍ‘Y²VariableDeclaratorÍ\ÍMªIdentifierÍ\Ím±storageInfoResultZ®CallExpressionÍpÍU°MemberExpressionÍpÍMªIdentifierÍpÍ~®SystemInfoCoreMªIdentifierÍÍ®getStorageInfoÂÂÂ¥const^«IfStatementÍšÍşMªIdentifierÍÍ¯±storageInfoResultN®BlockStatementÍ±Íş“\³ExpressionStatementÍÀÍZ®CallExpressionÍÀÍU°MemberExpressionÍÀÍËMªIdentifierÍÀÍÇ§consoleMªIdentifierÍÈÍË£logÂÂ’V§LiteralÍÌÍÔ¬  æ€»å­˜å‚¨:®'  æ€»å­˜å‚¨:'T°BinaryExpressionÍÖÍZ®CallExpressionÍÖÍU°MemberExpressionÍÖÍT°BinaryExpressionÍ×ÍT°BinaryExpressionÍ×Í T°BinaryExpressionÍ×ÍùU°MemberExpressionÍ×ÍòMªIdentifierÍ×Íè±storageInfoResultMªIdentifierÍéÍò©totalSizeÂÂ¡/V§LiteralÍõÍùÍ ¤1024¡/V§LiteralÍüÍ Í ¤1024¡/V§LiteralÍÍÍ ¤1024MªIdentifierÍ	Í§toFixedÂÂ‘V§LiteralÍÍ¡2Â¡+V§LiteralÍÍ£ GB¥' GB'Â\³ExpressionStatementÍ+ÍˆZ®CallExpressionÍ+Í‡U°MemberExpressionÍ+Í6MªIdentifierÍ+Í2§consoleMªIdentifierÍ3Í6£logÂÂ’V§LiteralÍ7Í@¯  å¯ç”¨å­˜å‚¨:±'  å¯ç”¨å­˜å‚¨:'T°BinaryExpressionÍBÍ†Z®CallExpressionÍBÍ~U°MemberExpressionÍBÍ{T°BinaryExpressionÍCÍrT°BinaryExpressionÍCÍkT°BinaryExpressionÍCÍdU°MemberExpressionÍCÍ]MªIdentifierÍCÍT±storageInfoResultMªIdentifierÍUÍ]¨freeSizeÂÂ¡/V§LiteralÍ`ÍdÍ ¤1024¡/V§LiteralÍgÍkÍ ¤1024¡/V§LiteralÍnÍrÍ ¤1024MªIdentifierÍtÍ{§toFixedÂÂ‘V§LiteralÍ|Í}¡2Â¡+V§LiteralÍÍ†£ GB¥' GB'Â\³ExpressionStatementÍ–ÍóZ®CallExpressionÍ–ÍòU°MemberExpressionÍ–Í¡MªIdentifierÍ–Í§consoleMªIdentifierÍÍ¡£logÂÂ’V§LiteralÍ¢Í«¯  å·²ç”¨å­˜å‚¨:±'  å·²ç”¨å­˜å‚¨:'T°BinaryExpressionÍ­ÍñZ®CallExpressionÍ­ÍéU°MemberExpressionÍ­ÍæT°BinaryExpressionÍ®ÍİT°BinaryExpressionÍ®ÍÖT°BinaryExpressionÍ®ÍÏU°MemberExpressionÍ®ÍÈMªIdentifierÍ®Í¿±storageInfoResultMªIdentifierÍÀÍÈ¨usedSizeÂÂ¡/V§LiteralÍËÍÏÍ ¤1024¡/V§LiteralÍÒÍÖÍ ¤1024¡/V§LiteralÍÙÍİÍ ¤1024MªIdentifierÍßÍæ§toFixedÂÂ‘V§LiteralÍçÍè¡2Â¡+V§LiteralÍìÍñ£ GB¥' GB'ÂÀ\³ExpressionStatementÍÍ0Z®CallExpressionÍÍ/U°MemberExpressionÍÍMªIdentifierÍÍ§consoleMªIdentifierÍÍ£logÂÂ‘V§LiteralÍÍ.·
-[Test 5] Network Info:º'\n[Test 5] Network Info:'ÂX³VariableDeclarationÍ:Íz‘Y²VariableDeclaratorÍ@ÍyMªIdentifierÍ@ÍQ±networkInfoResultQ¯AwaitExpressionÍTÍyZ®CallExpressionÍZÍyU°MemberExpressionÍZÍwMªIdentifierÍZÍh®SystemInfoCoreMªIdentifierÍiÍw®getNetworkInfoÂÂÂ¥const^«IfStatementÍ„ÍçMªIdentifierÍˆÍ™±networkInfoResultN®BlockStatementÍ›Íç‘\³ExpressionStatementÍªÍÜZ®CallExpressionÍªÍÛU°MemberExpressionÍªÍµMªIdentifierÍªÍ±§consoleMªIdentifierÍ²Íµ£logÂÂ’V§LiteralÍ¶Í¿¯  ç½‘ç»œç±»å‹:±'  ç½‘ç»œç±»å‹:'U°MemberExpressionÍÁÍÚMªIdentifierÍÁÍÒ±networkInfoResultMªIdentifierÍÓÍÚ§netTypeÂÂÂÀ\³ExpressionStatementÍñÍ5Z®CallExpressionÍñÍ4U°MemberExpressionÍñÍüMªIdentifierÍñÍø§consoleMªIdentifierÍùÍü£logÂÂ‘V§LiteralÍıÍ3Ù3
-========== SystemInfoCore Test Complete ==========Ù6'\n========== SystemInfoCore Test Complete =========='ÂÀ•Ôr_•¤type¥start£endªspecifiers¦source±ImportDeclaration *‘Ôr`”¤type¥start£end¥local¶ImportDefaultSpecifierMªIdentifierªdeviceInfoV§Literal)°@ohos.deviceInfo²'@ohos.deviceInfo'_±ImportDeclaration,ÌX‘`¶ImportDefaultSpecifier3>MªIdentifier3>«batteryInfoV§LiteralÌDÌW±@ohos.batteryInfo³'@ohos.batteryInfo'_±ImportDeclarationÌZÌ~‘`¶ImportDefaultSpecifierÌaÌhMªIdentifierÌaÌh§displayV§LiteralÌnÌ}­@ohos.display¯'@ohos.display'_±ImportDeclarationÌ€Ì©‘`¶ImportDefaultSpecifierÌ‡ÌMªIdentifierÌ‡Ì§statvfsV§LiteralÌ”Ì¨²@ohos.file.statvfs´'@ohos.file.statvfs'_±ImportDeclarationÌ«ÌÙ‘`¶ImportDefaultSpecifierÌ²Ì¼MªIdentifierÌ²Ì¼ªconnectionV§LiteralÌÂÌØ´@ohos.net.connection¶'@ohos.net.connection'

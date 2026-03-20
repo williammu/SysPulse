@@ -102,24 +102,32 @@ struct GpuPage {
               subtitle: '通过 OpenGL ES API 获取的 GPU 硬件信息'
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'GPU 厂商',
-              value: this.gpuInfo.vendor || '未知'
+              value: this.gpuInfo.vendor || '未知',
+              conceptId: 'gpu_vendor',
+              onInfoClick: () => this.navigateToConcept('gpu_vendor')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'GPU 型号',
-              value: this.gpuInfo.renderer || '未知'
+              value: this.gpuInfo.renderer || '未知',
+              conceptId: 'gpu_renderer',
+              onInfoClick: () => this.navigateToConcept('gpu_renderer')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'OpenGL ES 版本',
-              value: this.gpuInfo.version || '未知'
+              value: this.gpuInfo.version || '未知',
+              conceptId: 'gpu_opengl_version',
+              onInfoClick: () => this.navigateToConcept('gpu_opengl_version')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: 'GLSL 版本',
-              value: this.gpuInfo.shadingLanguageVersion || '未知'
+              value: this.gpuInfo.shadingLanguageVersion || '未知',
+              conceptId: 'gpu_glsl_version',
+              onInfoClick: () => this.navigateToConcept('gpu_glsl_version')
             })
 
             // 纹理限制
@@ -284,14 +292,18 @@ struct GpuPage {
               onInfoClick: () => this.navigateToConcept('gpu_multisample')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '最大元素索引',
-              value: this.formatValue(this.gpuInfo.maxElementIndex)
+              value: this.formatValue(this.gpuInfo.maxElementIndex),
+              conceptId: 'gpu_info',
+              onInfoClick: () => this.navigateToConcept('gpu_info')
             })
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '扩展数量',
-              value: this.formatValue(this.gpuInfo.numExtensions)
+              value: this.formatValue(this.gpuInfo.numExtensions),
+              conceptId: 'gpu_extensions',
+              onInfoClick: () => this.navigateToConcept('gpu_extensions')
             })
 
             // 扩展支持

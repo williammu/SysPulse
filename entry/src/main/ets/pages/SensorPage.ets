@@ -1,5 +1,6 @@
 import router from '@ohos.router';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { SectionHeader } from '../components/SectionHeader';
 import { SensorUtil, AccelerometerData, GyroscopeData, LightData, ProximityData, MagneticFieldData, OrientationData } from '../utils/SensorUtil';
 import sensor from '@ohos.sensor';
@@ -145,7 +146,27 @@ struct SensorPage {
         Column() {
           // 加速度传感器
           if (this.hasAccelerometer) {
-            SectionHeader({ title: '加速度传感器' });
+            Row() {
+              SectionHeader({ title: '加速度传感器' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_accelerometer' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量设备在 X/Y/Z 三个轴上的加速度，单位 m/s²。用于检测设备的运动状态、倾斜角度等。');
 
             if (this.accelerometerData) {
@@ -168,7 +189,27 @@ struct SensorPage {
 
           // 陀螺仪
           if (this.hasGyroscope) {
-            SectionHeader({ title: '陀螺仪' });
+            Row() {
+              SectionHeader({ title: '陀螺仪' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_gyroscope' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量设备在 X/Y/Z 三个轴上的角速度，单位 rad/s。用于检测设备的旋转、转向等动作。');
 
             if (this.gyroscopeData) {
@@ -191,7 +232,27 @@ struct SensorPage {
 
           // 光线传感器
           if (this.hasLight) {
-            SectionHeader({ title: '光线传感器' });
+            Row() {
+              SectionHeader({ title: '光线传感器' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_light' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量环境光强度，单位 lux。用于自动调节屏幕亮度、切换暗黑模式等。');
 
             if (this.lightData) {
@@ -204,7 +265,27 @@ struct SensorPage {
 
           // 距离传感器
           if (this.hasProximity) {
-            SectionHeader({ title: '距离传感器' });
+            Row() {
+              SectionHeader({ title: '距离传感器' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_proximity' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量设备与遮挡物之间的距离，单位 cm。用于通话时自动息屏、接近检测等。');
 
             if (this.proximityData) {
@@ -217,7 +298,27 @@ struct SensorPage {
 
           // 磁场传感器
           if (this.hasMagneticField) {
-            SectionHeader({ title: '磁场传感器' });
+            Row() {
+              SectionHeader({ title: '磁场传感器' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_magnetic' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量设备周围的磁场强度，单位 μT。用于电子罗盘、方向检测等。');
 
             if (this.magneticFieldData) {
@@ -240,7 +341,27 @@ struct SensorPage {
 
           // 方向传感器
           if (this.hasOrientation) {
-            SectionHeader({ title: '方向传感器' });
+            Row() {
+              SectionHeader({ title: '方向传感器' });
+              Button() {
+                Text('ⓘ')
+                  .fontSize(16)
+                  .fontColor($r('app.color.text_secondary'))
+              }
+              .width(28)
+              .height(28)
+              .type(ButtonType.Circle)
+              .backgroundColor(Color.Transparent)
+              .margin({ left: 8 })
+              .onClick(() => {
+                router.pushUrl({
+                  url: 'pages/ConceptDetailPage',
+                  params: { conceptId: 'sensor_orientation' }
+                });
+              })
+              Blank()
+            }
+            .width('100%')
             this.DataDescription('测量设备的方位角度。Alpha: 方位角(0-360°)，Beta: 俯仰角(-180-180°)，Gamma: 翻滚角(-90-90°)。');
 
             if (this.orientationData) {

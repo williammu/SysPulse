@@ -1,6 +1,7 @@
 import router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { SectionHeader } from '../components/SectionHeader';
 import type { DisplayInfoModel } from '../model/DeviceInfo';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
@@ -27,29 +28,64 @@ struct DisplayPage {
         Column() {
           SectionHeader({ title: '屏幕信息' })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '分辨率',
-            value: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height}` : '--'
+            value: this.displayInfo ? `${this.displayInfo.width} × ${this.displayInfo.height}` : '--',
+            conceptId: 'screen_resolution',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'screen_resolution' }
+              });
+            }
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '像素密度',
-            value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--'
+            value: this.displayInfo ? `${this.displayInfo.densityDPI} DPI` : '--',
+            conceptId: 'screen_density',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'screen_density' }
+              });
+            }
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: '刷新率',
-            value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--'
+            value: this.displayInfo ? `${this.displayInfo.refreshRate} Hz` : '--',
+            conceptId: 'screen_refresh_rate',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'screen_refresh_rate' }
+              });
+            }
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: 'X轴DPI',
-            value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--'
+            value: this.displayInfo ? `${this.displayInfo.xDPI}` : '--',
+            conceptId: 'screen_dpi',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'screen_dpi' }
+              });
+            }
           })
 
-          InfoCard({
+          InfoCardWithDesc({
             title: 'Y轴DPI',
-            value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--'
+            value: this.displayInfo ? `${this.displayInfo.yDPI}` : '--',
+            conceptId: 'screen_dpi',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'screen_dpi' }
+              });
+            }
           })
 
           InfoCard({

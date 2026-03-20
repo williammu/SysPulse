@@ -398,6 +398,27 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
     ]
   },
 
+  'sensor_orientation': {
+    id: 'sensor_orientation',
+    title: '方向传感器',
+    subtitle: 'Orientation Sensor',
+    description: '测量设备相对于地球坐标系的方位角度。',
+    details: [
+      {
+        title: '三个角度含义',
+        content: 'Alpha（方位角）：设备绕 Z 轴旋转的角度，0-360°，0° 表示正北；Beta（俯仰角）：设备绕 X 轴旋转的角度，-180° 到 180°；Gamma（翻滚角）：设备绕 Y 轴旋转的角度，-90° 到 90°。'
+      },
+      {
+        title: '如何计算方向',
+        content: '方向传感器通过融合加速度计（检测重力方向）和磁力计（检测北方）的数据计算得出。它提供了设备在三维空间中的完整姿态信息。'
+      },
+      {
+        title: '应用场景',
+        content: '指南针应用、地图导航（确定用户朝向）、VR/AR 头显追踪、游戏控制（如体感游戏）、屏幕自动旋转等。'
+      }
+    ]
+  },
+
   'sensor_light': {
     id: 'sensor_light',
     title: '光线传感器',
@@ -494,6 +515,83 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
       {
         title: '应用数据分类',
         content: '应用数据包括：代码（App 本身）、数据（用户数据、数据库）、缓存（临时文件、图片缓存）。缓存可以安全清理，数据清理会导致应用重置。'
+      }
+    ]
+  },
+
+  // 相机相关
+  'camera_zoom_range': {
+    id: 'camera_zoom_range',
+    title: '变焦范围',
+    subtitle: 'Camera Zoom Range',
+    description: '相机支持的变焦倍数范围，包含光学变焦、数字变焦和混合变焦能力。',
+    details: [
+      {
+        title: '什么是变焦范围？',
+        content: '变焦范围表示相机可以实现的放大倍数区间，通常以最小倍数和最大倍数表示（如 0.5x - 100.0x）。小于 1x 表示广角（缩小），大于 1x 表示长焦（放大）。'
+      },
+      {
+        title: '光学变焦 vs 数字变焦',
+        content: '光学变焦：通过调整镜头焦距实现，画质无损，是真正的物理变焦。数字变焦：通过裁剪和放大图像实现，画质会下降。混合变焦：结合光学和数字变焦，在光学变焦范围内保持画质，超出后使用数字变焦。'
+      },
+      {
+        title: '多摄像头系统',
+        content: '现代手机通常配备多个摄像头（超广角、主摄、长焦），每个摄像头有不同的固定焦距。系统会根据变焦倍数自动切换摄像头，实现无缝变焦体验。例如：0.5x 使用超广角，1x 使用主摄，3x/5x 使用长焦镜头。'
+      },
+      {
+        title: '如何获取？',
+        content: '点击"获取变焦"按钮后，应用会启动相机预览，通过 HarmonyOS Camera API 查询当前相机支持的变焦范围。获取完成后会自动释放相机资源。'
+      }
+    ]
+  },
+
+  'camera_preview_resolution': {
+    id: 'camera_preview_resolution',
+    title: '预览分辨率',
+    subtitle: 'Preview Resolution',
+    description: '相机预览时支持的最大图像分辨率。',
+    details: [
+      {
+        title: '什么是预览分辨率？',
+        content: '预览分辨率是相机实时取景时显示的图像尺寸，以宽×高像素表示（如 2560×1440）。分辨率越高，预览画面越清晰，但功耗也越高。'
+      },
+      {
+        title: '与拍照分辨率的区别',
+        content: '预览分辨率通常低于拍照分辨率。预览用于实时取景，需要高帧率（30-60fps）；拍照用于保存最终图像，追求最高画质。例如：预览可能是 2K，但拍照可达 4K 或更高。'
+      }
+    ]
+  },
+
+  'camera_photo_resolution': {
+    id: 'camera_photo_resolution',
+    title: '拍照分辨率',
+    subtitle: 'Photo Resolution',
+    description: '相机拍照时支持的最大图像分辨率。',
+    details: [
+      {
+        title: '什么是拍照分辨率？',
+        content: '拍照分辨率是相机拍摄静态照片时的最大图像尺寸，以宽×高像素表示（如 6800×5104）。分辨率越高，照片细节越丰富，文件也越大。'
+      },
+      {
+        title: '像素与画质',
+        content: '高像素意味着可以打印更大尺寸的照片或进行更多后期裁剪。但像素高不等于画质好，传感器尺寸、镜头质量、图像处理算法同样重要。'
+      }
+    ]
+  },
+
+  'camera_video_resolution': {
+    id: 'camera_video_resolution',
+    title: '视频分辨率',
+    subtitle: 'Video Resolution',
+    description: '相机录制视频时支持的最大分辨率。',
+    details: [
+      {
+        title: '什么是视频分辨率？',
+        content: '视频分辨率是录制视频时的图像尺寸，常见有 720p、1080p、4K 等。与照片不同，视频还需要考虑帧率（fps）和编码格式。'
+      },
+      {
+        title: '常见视频规格',
+        content: '720p (1280×720)：高清，文件小；1080p (1920×1080)：全高清，主流选择；4K (3840×2160)：超高清，细节丰富但文件大；8K：极致清晰，目前较少使用。'
       }
     ]
   },
@@ -819,6 +917,782 @@ export const ConceptConfig: Record<string, ConceptInfo> = {
       {
         title: '如何使用扩展？',
         content: '使用 glGetString(GL_EXTENSIONS) 查询支持的扩展。在着色器中使用 #extension 指令启用。注意：扩展是可选的，不同 GPU 支持不同，使用前必须检查。'
+      }
+    ]
+  },
+
+  // 网络相关
+  'network_ip_address': {
+    id: 'network_ip_address',
+    title: 'IP 地址',
+    subtitle: 'IP Address',
+    description: '设备在网络中的唯一标识，用于网络通信。',
+    details: [
+      {
+        title: '什么是 IP 地址？',
+        content: 'IP 地址是互联网协议地址（Internet Protocol Address）的缩写，是分配给网络设备的数字标签，用于识别和定位设备，实现网络通信。'
+      },
+      {
+        title: 'IPv4 vs IPv6',
+        content: 'IPv4 使用 32 位地址，格式如 192.168.1.1，约 43 亿个地址。IPv6 使用 128 位地址，格式如 2001:0db8:85a3::8a2e:0370:7334，地址数量几乎无限，是 IPv4 的继任者。'
+      },
+      {
+        title: '内网 vs 公网 IP',
+        content: '内网 IP（如 192.168.x.x、10.x.x.x）只在局域网内有效，不同局域网可以重复使用。公网 IP 是全球唯一的，可以直接访问互联网。'
+      }
+    ]
+  },
+
+  'network_subnet_mask': {
+    id: 'network_subnet_mask',
+    title: '子网掩码',
+    subtitle: 'Subnet Mask',
+    description: '用于划分 IP 地址的网络部分和主机部分。',
+    details: [
+      {
+        title: '什么是子网掩码？',
+        content: '子网掩码是一个 32 位的数字，用于将 IP 地址分为网络地址和主机地址两部分。它决定了哪些 IP 地址在同一个局域网内。'
+      },
+      {
+        title: '常见子网掩码',
+        content: '255.255.255.0（/24）：最常见，支持 254 台设备；255.255.0.0（/16）：大型网络，支持 6.5 万台设备；255.0.0.0（/8）：超大型网络。'
+      },
+      {
+        title: '如何计算？',
+        content: '子网掩码中的 255 表示网络部分，0 表示主机部分。例如 255.255.255.0 表示前 24 位是网络地址，后 8 位是主机地址，可以容纳 2^8-2=254 台设备。'
+      }
+    ]
+  },
+
+  'network_gateway': {
+    id: 'network_gateway',
+    title: '默认网关',
+    subtitle: 'Default Gateway',
+    description: '连接本地网络和外部网络的桥梁。',
+    details: [
+      {
+        title: '什么是网关？',
+        content: '网关（Gateway）是连接不同网络的设备，通常是路由器。当设备要访问外部网络（如互联网）时，数据包会先发送到网关，由网关转发。'
+      },
+      {
+        title: '默认网关的作用',
+        content: '当目标 IP 不在本地网络时，设备会将数据包发送给默认网关。网关根据路由表决定如何转发数据，是设备访问互联网的必经之路。'
+      },
+      {
+        title: '常见网关地址',
+        content: '家用路由器通常使用 192.168.1.1 或 192.168.0.1 作为网关地址。这个地址通常是路由器的管理界面地址。'
+      }
+    ]
+  },
+
+  'network_dns': {
+    id: 'network_dns',
+    title: 'DNS 服务器',
+    subtitle: 'DNS Server',
+    description: '将域名转换为 IP 地址的服务。',
+    details: [
+      {
+        title: '什么是 DNS？',
+        content: 'DNS（Domain Name System，域名系统）是互联网的"电话簿"，将人类易记的域名（如 www.baidu.com）转换为机器识别的 IP 地址（如 14.215.177.38）。'
+      },
+      {
+        title: '为什么需要 DNS？',
+        content: '人们更容易记住域名而不是数字 IP 地址。DNS 让我们可以用浏览器访问网站时输入域名，而不需要记住复杂的 IP 地址。'
+      },
+      {
+        title: '常见 DNS 服务器',
+        content: '运营商 DNS：自动分配，速度较快；公共 DNS：114.114.114.114（国内）、8.8.8.8（Google）、1.1.1.1（Cloudflare），可能更稳定。'
+      }
+    ]
+  },
+
+  'network_mtu': {
+    id: 'network_mtu',
+    title: 'MTU',
+    subtitle: 'Maximum Transmission Unit',
+    description: '网络传输的最大数据包大小。',
+    details: [
+      {
+        title: '什么是 MTU？',
+        content: 'MTU（最大传输单元）是指网络接口一次能传输的最大数据包大小，单位是字节。超过 MTU 的数据包需要分片传输。'
+      },
+      {
+        title: '常见 MTU 值',
+        content: '以太网默认 MTU 是 1500 字节；PPPoE 拨号通常是 1492 字节；某些网络可能使用 9000 字节（巨型帧）提高传输效率。'
+      },
+      {
+        title: 'MTU 的影响',
+        content: 'MTU 太大可能导致丢包，太小会降低传输效率。合适的 MTU 可以优化网络性能。移动端通常使用 1500 字节。'
+      }
+    ]
+  },
+
+  'network_mac': {
+    id: 'network_mac',
+    title: 'MAC 地址',
+    subtitle: 'MAC Address',
+    description: '网络设备的物理地址，全球唯一。',
+    details: [
+      {
+        title: '什么是 MAC 地址？',
+        content: 'MAC（Media Access Control）地址是网络设备的物理地址，由 6 组十六进制数组成（如 AA:BB:CC:DD:EE:FF），出厂时固化在网卡中，全球唯一。'
+      },
+      {
+        title: 'MAC vs IP',
+        content: 'MAC 地址是物理地址，不变，用于局域网内设备识别；IP 地址是逻辑地址，会变化，用于网络间路由。数据在局域网内靠 MAC 地址传输，跨网络靠 IP 地址路由。'
+      },
+      {
+        title: '隐私保护',
+        content: '由于 MAC 地址唯一，可能被用于追踪设备。现代移动设备支持 MAC 地址随机化，在连接不同 WiFi 时使用随机 MAC 地址，保护用户隐私。'
+      }
+    ]
+  },
+
+  // 存储相关
+  'storage_total': {
+    id: 'storage_total',
+    title: '存储空间',
+    subtitle: 'Storage Space',
+    description: '设备的总存储容量和可用空间。',
+    details: [
+      {
+        title: '存储类型',
+        content: '手机存储通常是闪存（Flash Memory），包括 eMMC 和 UFS 两种类型。UFS 速度更快，是高端手机的标配。'
+      },
+      {
+        title: '为什么可用空间小于标称容量？',
+        content: '标称 128GB 实际可用约 119GB，原因：1）厂商按 1000 进制计算，系统按 1024 进制；2）系统分区占用；3）预装应用占用。'
+      },
+      {
+        title: '如何管理存储？',
+        content: '定期清理缓存、删除不用的应用、备份照片到云端、使用存储分析工具找出大文件。保持至少 10% 的可用空间以保证系统流畅运行。'
+      }
+    ]
+  },
+
+  // 屏幕相关
+  'screen_resolution': {
+    id: 'screen_resolution',
+    title: '屏幕分辨率',
+    subtitle: 'Screen Resolution',
+    description: '屏幕显示的像素数量，决定画面清晰度。',
+    details: [
+      {
+        title: '什么是分辨率？',
+        content: '屏幕分辨率表示屏幕水平和垂直方向的像素数量，如 2560×1440 表示水平 2560 像素，垂直 1440 像素。像素越多，画面越细腻。'
+      },
+      {
+        title: '常见分辨率',
+        content: '720p (1280×720)：高清；1080p (1920×1080)：全高清；2K (2560×1440)：四倍高清；4K (3840×2160)：超高清。手机主流是 1080p 到 2K。'
+      },
+      {
+        title: '分辨率与耗电',
+        content: '分辨率越高，GPU 渲染负担越重，耗电越快。高端手机使用高分辨率屏幕配合大电池，中端手机可能选择 1080p 平衡性能和续航。'
+      }
+    ]
+  },
+
+  'screen_density': {
+    id: 'screen_density',
+    title: '屏幕密度',
+    subtitle: 'Screen Density',
+    description: '每英寸屏幕上的像素数量，单位 PPI。',
+    details: [
+      {
+        title: '什么是 PPI？',
+        content: 'PPI（Pixels Per Inch）表示每英寸屏幕上的像素数量。PPI 越高，屏幕显示越精细，文字和图像边缘越平滑。'
+      },
+      {
+        title: '视网膜屏幕',
+        content: '苹果提出"视网膜屏幕"概念，指 PPI 高到人眼在正常观看距离无法分辨单个像素。手机通常需要 300+ PPI，平板 200+ PPI。'
+      },
+      {
+        title: '密度无关像素 (dp)',
+        content: '为在不同 PPI 屏幕上保持一致的视觉大小，使用 dp（density-independent pixels）。1dp 在 160 PPI 屏幕上等于 1 像素，在高 PPI 屏幕上等于更多像素。'
+      }
+    ]
+  },
+
+  // 传感器相关
+  'sensor_proximity': {
+    id: 'sensor_proximity',
+    title: '距离传感器',
+    subtitle: 'Proximity Sensor',
+    description: '检测物体距离屏幕的远近。',
+    details: [
+      {
+        title: '什么是距离传感器？',
+        content: '距离传感器通常位于手机顶部听筒附近，使用红外线检测物体（如人脸）与屏幕的距离。一般在 0-10cm 范围内有效。'
+      },
+      {
+        title: '主要用途',
+        content: '通话时自动熄屏：当手机靠近耳朵时自动关闭屏幕，防止误触和节省电量；离开耳朵时自动点亮屏幕。'
+      },
+      {
+        title: '距离值说明',
+        content: '通常显示为 0（近距离，有物体遮挡）或 5（远距离，无遮挡）。不同设备的数值范围可能不同。'
+      }
+    ]
+  },
+
+  'sensor_humidity': {
+    id: 'sensor_humidity',
+    title: '湿度传感器',
+    subtitle: 'Humidity Sensor',
+    description: '测量环境相对湿度。',
+    details: [
+      {
+        title: '什么是相对湿度？',
+        content: '相对湿度表示空气中实际水蒸气含量与饱和水蒸气含量的百分比。0% 表示完全干燥，100% 表示饱和（可能结露）。'
+      },
+      {
+        title: '适宜湿度范围',
+        content: '人体舒适的相对湿度是 40%-60%。低于 30% 会感到干燥，高于 70% 会感到闷热，且容易滋生霉菌。'
+      },
+      {
+        title: '手机上的应用',
+        content: '大多数手机没有独立的湿度传感器，部分高端机型可能配备。应用可以通过湿度数据提供环境舒适度建议。'
+      }
+    ]
+  },
+
+  'sensor_temperature': {
+    id: 'sensor_temperature',
+    title: '温度传感器',
+    subtitle: 'Temperature Sensor',
+    description: '测量环境温度或设备温度。',
+    details: [
+      {
+        title: '温度传感器类型',
+        content: '环境温度传感器测量周围空气温度；设备温度传感器监测 CPU、电池等组件的温度，用于过热保护。'
+      },
+      {
+        title: '为什么温度读数偏高？',
+        content: '手机使用时会产生热量，温度传感器可能受到设备发热影响，读数高于实际环境温度。静置一段时间后读数会更准确。'
+      },
+      {
+        title: '温度对设备的影响',
+        content: '高温会加速电池老化，触发降频保护，甚至自动关机。低温会降低电池容量，导致设备自动关机。最佳使用温度是 0°C-35°C。'
+      }
+    ]
+  },
+
+  'sensor_barometer': {
+    id: 'sensor_barometer',
+    title: '气压传感器',
+    subtitle: 'Barometer',
+    description: '测量大气压力，可辅助计算海拔高度。',
+    details: [
+      {
+        title: '什么是气压传感器？',
+        content: '气压传感器测量大气压力，单位通常是 hPa（百帕）或 mbar（毫巴）。标准大气压约为 1013.25 hPa。'
+      },
+      {
+        title: '如何计算海拔？',
+        content: '气压随海拔升高而降低。通过气压变化可以估算海拔高度变化，精度比 GPS 更高，常用于登山、楼层检测等场景。'
+      },
+      {
+        title: '天气预测',
+        content: '气压变化可以预测天气变化：气压快速下降可能预示降雨；气压上升通常表示天气转好。专业户外设备常用此功能。'
+      }
+    ]
+  },
+
+  // 操作系统相关
+  'os_name': {
+    id: 'os_name',
+    title: '操作系统',
+    subtitle: 'Operating System',
+    description: '设备运行的系统软件。',
+    details: [
+      {
+        title: 'HarmonyOS 是什么？',
+        content: 'HarmonyOS（鸿蒙）是华为开发的分布式操作系统，支持手机、平板、智能穿戴、智慧屏、车机等多种设备，实现跨设备协同。'
+      },
+      {
+        title: 'OpenHarmony vs HarmonyOS',
+        content: 'OpenHarmony 是开源项目，提供基础能力；HarmonyOS 是华为基于 OpenHarmony 开发的商业版本，包含华为服务和生态。'
+      },
+      {
+        title: '版本号含义',
+        content: '版本号如 4.0.0 表示：4 是主版本（重大更新），0 是次版本（功能更新），0 是修订号（问题修复）。'
+      }
+    ]
+  },
+
+  // 电池相关 - 具体概念
+  'battery_soc': {
+    id: 'battery_soc',
+    title: '电池电量 (SOC)',
+    subtitle: 'State of Charge',
+    description: '电池当前剩余电量百分比，是衡量电池剩余能量的直接指标。',
+    details: [
+      {
+        title: '什么是 SOC？',
+        content: 'SOC（State of Charge，荷电状态）表示电池当前剩余电量占总容量的百分比。100% 表示充满，0% 表示耗尽。这是最直接反映电池剩余能量的指标。'
+      },
+      {
+        title: '为什么电量会跳变？',
+        content: '电量显示基于电压估算，受温度、电池老化、使用状态影响。低温时电量可能突然下降，温度回升后可能恢复。这是正常现象，不代表电池故障。'
+      },
+      {
+        title: '最佳使用范围',
+        content: '为延长锂电池寿命，建议保持电量在 20%-80% 之间。长期满电或完全耗尽都会加速电池老化。偶尔充满或耗尽影响不大，但应避免长期保持极端状态。'
+      }
+    ]
+  },
+
+  'battery_temperature': {
+    id: 'battery_temperature',
+    title: '电池温度',
+    subtitle: 'Battery Temperature',
+    description: '电池当前的温度，过高或过低都会影响电池性能和寿命。',
+    details: [
+      {
+        title: '正常工作温度',
+        content: '电池正常工作温度范围是 0°C 到 45°C。20°C 到 30°C 是最佳工作温度，此时电池性能最好、寿命最长。'
+      },
+      {
+        title: '高温的影响',
+        content: '温度超过 45°C 会加速电池化学反应，导致容量永久损失。超过 60°C 可能触发保护机制停止充电。高温是电池老化的主要原因之一。'
+      },
+      {
+        title: '低温的影响',
+        content: '温度低于 0°C 时，电池内阻增大，可用容量下降，可能导致设备自动关机。低温下充电可能造成锂金属析出，损坏电池，因此低温时通常禁止充电。'
+      },
+      {
+        title: '充电时发热',
+        content: '充电时电池发热是正常现象，特别是快充时。如果感觉烫手（>45°C），建议暂停充电或移除手机壳散热。避免边充边玩大型游戏。'
+      }
+    ]
+  },
+
+  'battery_voltage': {
+    id: 'battery_voltage',
+    title: '电池电压',
+    subtitle: 'Battery Voltage',
+    description: '电池当前的电压值，反映电池的充电状态和健康程度。',
+    details: [
+      {
+        title: '锂电池电压范围',
+        content: '锂离子电池正常工作电压范围是 3.0V 到 4.4V。3.0V 以下为过放，可能损坏电池；4.4V 以上为过充，有安全风险。满电时约 4.2V-4.4V，空电时约 3.2V-3.5V。'
+      },
+      {
+        title: '电压与电量关系',
+        content: '电压与电量并非线性关系。3.5V 对应约 0-10% 电量，3.7V 对应约 20-30%，4.0V 对应约 60-70%，4.2V 对应约 90-100%。系统通过电压结合其他参数估算电量。'
+      },
+      {
+        title: '电压异常意味着什么？',
+        content: '电压异常高（>4.5V）可能是充电器故障；电压异常低（<3.0V）可能是电池老化或损坏；电压波动大可能是接触不良。遇到异常情况应停止使用并检查。'
+      }
+    ]
+  },
+
+  'battery_technology': {
+    id: 'battery_technology',
+    title: '电池技术',
+    subtitle: 'Battery Technology',
+    description: '电池采用的化学技术类型，决定了电池的性能特性。',
+    details: [
+      {
+        title: '锂离子电池 (Li-ion)',
+        content: '目前最常见的手机电池技术。能量密度高（200-250 Wh/kg）、无记忆效应、自放电率低。但会随时间自然老化，充放电 500 次后容量通常降至 80%。'
+      },
+      {
+        title: '锂聚合物电池 (Li-Po)',
+        content: '锂离子电池的改进版，使用固态/胶态电解质而非液态。可以做成更薄的形状，安全性略高，能量密度与 Li-ion 相近。现代手机大多使用 Li-Po。'
+      },
+      {
+        title: '为什么不用其他电池？',
+        content: '镍氢电池有记忆效应且能量密度低；镍镉电池有毒且容量小；固态电池更安全但成本太高。锂电池在能量密度、成本、安全性之间取得了最佳平衡。'
+      }
+    ]
+  },
+
+  'charging_power': {
+    id: 'charging_power',
+    title: '充电功率',
+    subtitle: 'Charging Power',
+    description: '当前充电的功率大小，功率越大充电越快。',
+    details: [
+      {
+        title: '功率计算公式',
+        content: '充电功率（W）= 充电电压（V）× 充电电流（A）。例如 9V/2A 的充电器功率为 18W。功率越大，单位时间内充入的电量越多。'
+      },
+      {
+        title: '充电功率的变化',
+        content: '充电过程分为三个阶段：1）恒流快充（功率最大，电量快速上升）；2）恒压充电（功率逐渐下降，保护电池）；3）涓流充电（功率很小，充满最后 10%）。'
+      },
+      {
+        title: '为什么功率会波动？',
+        content: '温度高时系统会降低功率保护电池；电量超过 80% 后功率会自动降低；使用非原装充电器可能无法达到最大功率；边充边用会分散功率。'
+      }
+    ]
+  },
+
+  'charging_current': {
+    id: 'charging_current',
+    title: '充电电流',
+    subtitle: 'Charging Current',
+    description: '当前流入电池的电流大小，单位为毫安(mA)。',
+    details: [
+      {
+        title: '电流与充电速度',
+        content: '电流越大，充电速度越快。普通充电约 2000mA (2A)，快充可达 4000-6000mA (4-6A)。但大电流会产生更多热量，需要更好的散热设计。'
+      },
+      {
+        title: '电流的限制因素',
+        content: '充电器最大输出电流、数据线承载能力、电池承受能力、设备温度都会限制实际电流。使用劣质数据线可能导致电流无法提升，充电变慢。'
+      },
+      {
+        title: '负电流是什么意思？',
+        content: '负电流表示电池在放电而非充电。这发生在：未连接充电器、边充边用且用电量大于充电量、系统显示误差。正常情况下充电时应为正数。'
+      }
+    ]
+  },
+
+  'charger_type': {
+    id: 'charger_type',
+    title: '充电器类型',
+    subtitle: 'Charger Type',
+    description: '当前使用的充电设备类型，影响充电速度和功率。',
+    details: [
+      {
+        title: '交流充电器',
+        content: '标准墙壁充电器，功率最高，通常支持快充协议。显示为"交流充电器"或具体功率（如"40W充电器"）。这是最快的充电方式。'
+      },
+      {
+        title: 'USB（电脑）',
+        content: '通过 USB 线连接电脑充电。USB 2.0 最大 2.5W (5V/0.5A)，USB 3.0 最大 4.5W (5V/0.9A)。速度很慢，适合紧急情况或传输数据时顺便充电。'
+      },
+      {
+        title: '无线充电',
+        content: '通过无线充电板充电，通常功率 5-15W，高端设备支持 50W+。效率略低于有线充电（约 70-80%），发热更大，但 convenience 高。'
+      }
+    ]
+  },
+
+  // 内存相关 - 具体概念
+  'memory_usage_percent': {
+    id: 'memory_usage_percent',
+    title: '内存使用率',
+    subtitle: 'Memory Usage Percentage',
+    description: '系统内存已被使用的百分比，反映系统当前的内存压力。',
+    details: [
+      {
+        title: '什么是内存使用率？',
+        content: '内存使用率 = 已用内存 / 总内存 × 100%。它反映了系统当前的内存压力。使用率越高，系统越可能变慢，因为需要频繁交换数据。'
+      },
+      {
+        title: '多少使用率算正常？',
+        content: '60% 以下：充足，系统运行流畅；60-80%：正常，大部分设备的日常状态；80-90%：紧张，可能开始杀后台应用；90% 以上：严重不足，系统明显卡顿。'
+      },
+      {
+        title: '为什么内存总是满的？',
+        content: '现代操作系统会尽量利用空闲内存做缓存（文件缓存、应用缓存），所以内存使用率通常较高。这是正常优化，不代表内存不足。关键是看是否有足够的可用内存应对突发需求。'
+      }
+    ]
+  },
+
+  'available_memory': {
+    id: 'available_memory',
+    title: '可用内存',
+    subtitle: 'Available Memory',
+    description: '系统当前可以立即分配给应用使用的内存大小。',
+    details: [
+      {
+        title: '什么是可用内存？',
+        content: '可用内存 = 空闲内存 + 可回收缓存。它表示系统当前可以立即分配给新应用或任务的内存。与"空闲内存"不同，可用内存包含了可以被清空的缓存。'
+      },
+      {
+        title: '可用内存 vs 空闲内存',
+        content: '空闲内存是完全未被使用的内存；可用内存还包括文件缓存、应用缓存等，这些在需要时可以被清空。所以可用内存通常大于空闲内存，更能反映系统实际可用资源。'
+      },
+      {
+        title: '多少可用内存算安全？',
+        content: '建议保持至少 10% 总内存的可用内存。例如 8GB 内存的设备，保持 800MB 以上可用内存可以确保系统流畅运行，避免频繁杀后台。'
+      }
+    ]
+  },
+
+  'used_memory': {
+    id: 'used_memory',
+    title: '已用内存',
+    subtitle: 'Used Memory',
+    description: '系统当前已被占用的内存总量，包括应用和系统使用。',
+    details: [
+      {
+        title: '已用内存包含什么？',
+        content: '已用内存包括：系统内核和进程、正在运行的应用、后台服务、文件缓存、图形缓冲区等。它是总内存减去空闲内存的部分。'
+      },
+      {
+        title: '为什么刚开机就用了很多内存？',
+        content: '系统启动后会加载内核、系统服务、预加载常用应用，这些都会占用内存。现代手机开机后通常占用 3-5GB 内存是正常的，不代表有问题。'
+      },
+      {
+        title: '如何减少内存使用？',
+        content: '关闭不用的应用、限制后台进程数量、清理缓存、卸载不用的应用、使用轻量级替代应用。但不必过度追求低内存使用，系统会自主管理。'
+      }
+    ]
+  },
+
+  // 操作系统 - 具体概念
+  'os_display_version': {
+    id: 'os_display_version',
+    title: '显示版本',
+    subtitle: 'Display Version',
+    description: '系统对外显示的版本号，是用户最常见的版本标识。',
+    details: [
+      {
+        title: '显示版本的作用',
+        content: '显示版本是面向用户的友好版本号，如"HarmonyOS 4.0"。它简化了复杂的内部版本号，方便用户识别和讨论。'
+      },
+      {
+        title: '与内部版本的区别',
+        content: '显示版本是简化的、稳定的标识；内部版本号包含更多技术细节（构建号、分支信息），用于开发和故障排查。同一显示版本可能有多个内部版本。'
+      }
+    ]
+  },
+
+  'os_incremental_version': {
+    id: 'os_incremental_version',
+    title: '内部版本',
+    subtitle: 'Incremental Version',
+    description: '系统的内部构建版本号，包含详细的构建信息。',
+    details: [
+      {
+        title: '内部版本包含什么？',
+        content: '内部版本通常包含：主版本号、构建日期、代码分支、提交哈希等。例如"4.0.0.108(C00E100R1P1)"包含了版本、构建号和区域信息。'
+      },
+      {
+        title: '什么时候需要内部版本？',
+        content: '反馈系统 bug、查询更新日志、确认是否安装了特定补丁时，需要提供内部版本号。它精确标识了系统的代码状态。'
+      }
+    ]
+  },
+
+  'os_version_id': {
+    id: 'os_version_id',
+    title: '版本号',
+    subtitle: 'Version ID',
+    description: '系统的唯一版本标识符，用于精确识别系统版本。',
+    details: [
+      {
+        title: '版本号的构成',
+        content: '版本号通常是数字或字母数字组合，唯一标识一个系统版本。它与显示版本对应，但更精确。例如显示版本"4.0"可能对应版本号"40"或"4.0.0"。'
+      },
+      {
+        title: '版本号的用途',
+        content: '应用开发时检查系统兼容性、系统更新时确认当前版本、故障排查时确认系统状态。开发者常用版本号判断 API 可用性。'
+      }
+    ]
+  },
+
+  'os_sdk_api': {
+    id: 'os_sdk_api',
+    title: 'SDK API 版本',
+    subtitle: 'SDK API Version',
+    description: '系统支持的软件开发接口级别，决定应用可用的功能。',
+    details: [
+      {
+        title: '什么是 SDK API 版本？',
+        content: 'SDK API 版本表示系统提供的应用开发接口级别。版本号越高，支持的功能越多。例如 API 12 支持的功能比 API 11 多。'
+      },
+      {
+        title: '对用户的意义',
+        content: '高 API 版本意味着系统更现代、功能更丰富。新应用通常需要较高 API 版本，旧设备可能无法运行最新应用。'
+      },
+      {
+        title: '与 Android API 的区别',
+        content: 'HarmonyOS API 版本独立于 Android。API 12 不代表对应 Android 12，而是 HarmonyOS 自身的接口级别。'
+      }
+    ]
+  },
+
+  'os_first_api': {
+    id: 'os_first_api',
+    title: '首次 API 版本',
+    subtitle: 'First API Version',
+    description: '设备出厂时搭载的 API 版本，反映设备的硬件代数。',
+    details: [
+      {
+        title: '首次 API 版本的意义',
+        content: '首次 API 版本表示设备出厂时的系统版本。它反映了设备的硬件代数和初始系统版本，不会因后续升级而改变。'
+      },
+      {
+        title: '为什么重要？',
+        content: '首次 API 版本可以帮助判断设备的硬件支持能力。例如，首次 API 9 的设备可能不支持 API 12 引入的某些硬件特性，即使系统已升级到 API 12。'
+      }
+    ]
+  },
+
+  'os_software_version': {
+    id: 'os_software_version',
+    title: '软件版本',
+    subtitle: 'Software Version',
+    description: '系统软件的完整版本标识，包含详细的技术信息。',
+    details: [
+      {
+        title: '软件版本包含什么？',
+        content: '软件版本是系统固件的完整标识，通常包含：系统版本、设备型号、区域代码、运营商信息等。它是系统最详细的版本描述。'
+      },
+      {
+        title: '与显示版本的区别',
+        content: '显示版本是简化的用户友好版本；软件版本是完整的技术版本，包含更多细节，用于精确识别系统状态。'
+      }
+    ]
+  },
+
+  'os_build_time': {
+    id: 'os_build_time',
+    title: '构建时间',
+    subtitle: 'Build Time',
+    description: '系统固件的编译打包时间，反映系统版本的新旧程度。',
+    details: [
+      {
+        title: '构建时间的意义',
+        content: '构建时间表示该系统固件的编译日期和时间。通过构建时间可以了解系统的更新频率和版本新旧。较新的构建通常包含更多 bug 修复。'
+      },
+      {
+        title: '为什么构建时间比显示版本重要？',
+        content: '同一显示版本可能有多个构建（修复补丁）。构建时间新的版本通常更稳定、更安全。检查更新时应关注构建时间而非仅仅是显示版本。'
+      }
+    ]
+  },
+
+  'os_security_patch': {
+    id: 'os_security_patch',
+    title: '安全补丁级别',
+    subtitle: 'Security Patch Level',
+    description: '系统安全补丁的日期，反映系统的安全更新状态。',
+    details: [
+      {
+        title: '什么是安全补丁？',
+        content: '安全补丁是修复系统安全漏洞的更新。Google 和华为每月发布安全公告，修复已知漏洞。安全补丁日期表示系统包含的补丁截止到哪个月份。'
+      },
+      {
+        title: '为什么安全补丁重要？',
+        content: '过期的安全补丁意味着设备可能存在已知漏洞，面临被攻击的风险。建议保持安全补丁在 3 个月内，最好是最新的。'
+      },
+      {
+        title: '如何更新安全补丁？',
+        content: '安全补丁通常随系统更新一起推送。进入 设置 > 系统和更新 > 软件更新 检查更新。建议开启自动更新以获得及时保护。'
+      }
+    ]
+  },
+
+  // CPU 相关 - 具体概念
+  'cpu_architecture': {
+    id: 'cpu_architecture',
+    title: 'CPU 架构',
+    subtitle: 'CPU Architecture',
+    description: 'CPU 的指令集架构，决定 CPU 能执行什么类型的指令。',
+    details: [
+      {
+        title: 'ARM 架构',
+        content: '目前移动设备的主流架构。ARM64（或 AArch64）是 64 位架构，支持更大内存和更高性能。现代手机都使用 ARM64 架构。'
+      },
+      {
+        title: 'ARM vs x86',
+        content: 'ARM 是精简指令集（RISC），功耗低、发热小，适合移动设备；x86 是复杂指令集（CISC），性能强但功耗高，主要用于电脑。'
+      },
+      {
+        title: 'abiList 是什么？',
+        content: 'abiList（Application Binary Interface List）列出了设备支持的架构类型。例如"arm64-v8a,armeabi-v7a"表示支持 64 位和 32 位 ARM 应用。'
+      }
+    ]
+  },
+
+  'cpu_model': {
+    id: 'cpu_model',
+    title: 'CPU 型号',
+    subtitle: 'CPU Model',
+    description: '处理器的具体型号名称，反映 CPU 的性能等级。',
+    details: [
+      {
+        title: '为什么型号显示"未知"？',
+        content: 'HarmonyOS 出于安全和隐私考虑，限制了对详细 CPU 信息的访问。应用通常只能获取架构信息，无法获取具体型号（如骁龙 8 Gen 2、麒麟 9000 等）。'
+      },
+      {
+        title: '如何推测 CPU 型号？',
+        content: '可以通过核心数、架构、GPU 信息、设备型号等推测 CPU 型号。例如高端华为手机通常使用麒麟芯片，高端小米手机通常使用骁龙芯片。'
+      }
+    ]
+  },
+
+  // GPU 相关 - 具体概念
+  'gpu_vendor': {
+    id: 'gpu_vendor',
+    title: 'GPU 厂商',
+    subtitle: 'GPU Vendor',
+    description: '图形处理器的制造商，不同厂商的 GPU 有不同的特性。',
+    details: [
+      {
+        title: '常见 GPU 厂商',
+        content: 'ARM（Mali 系列）：最常见的移动 GPU，广泛用于联发科、三星、华为芯片；Qualcomm（Adreno 系列）：骁龙芯片专用，游戏性能优秀；Imagination（PowerVR 系列）：苹果曾长期使用。'
+      },
+      {
+        title: '厂商对性能的影响',
+        content: '不同厂商的 GPU 架构不同，性能特点各异。Mali 注重能效比，Adreno 注重游戏性能，PowerVR 注重图像质量。同一厂商不同代产品性能也有差异。'
+      }
+    ]
+  },
+
+  'gpu_renderer': {
+    id: 'gpu_renderer',
+    title: 'GPU 型号',
+    subtitle: 'GPU Renderer',
+    description: '图形处理器的具体型号，决定图形处理能力。',
+    details: [
+      {
+        title: 'GPU 型号命名',
+        content: 'Mali 系列：G57、G68、G710 等，数字越大越新；Adreno 系列：610、650、740 等，数字越大性能越强。新型号支持更多特性和更高性能。'
+      },
+      {
+        title: '型号与性能',
+        content: 'GPU 型号直接决定图形处理能力。高端型号（如 Mali-G710、Adreno 740）可以流畅运行大型 3D 游戏；低端型号（如 Mali-G57）只能运行简单游戏。'
+      }
+    ]
+  },
+
+  'gpu_opengl_version': {
+    id: 'gpu_opengl_version',
+    title: 'OpenGL ES 版本',
+    subtitle: 'OpenGL ES Version',
+    description: '支持的移动图形 API 版本，决定可用的图形特性。',
+    details: [
+      {
+        title: 'OpenGL ES 是什么？',
+        content: 'OpenGL ES（Embedded Systems）是移动设备的标准图形 API。应用通过它调用 GPU 渲染 2D/3D 图形。版本越高支持的功能越多。'
+      },
+      {
+        title: '版本演进',
+        content: '2.0：基础 3D 功能；3.0：增加计算着色器、多目标渲染；3.1：增加几何着色器、曲面细分；3.2：增加 ASTC 纹理压缩、高级混合。现代设备通常支持 3.2。'
+      },
+      {
+        title: '版本对应用的影响',
+        content: '新游戏通常需要较高 OpenGL ES 版本。如果设备版本过低，可能无法运行某些游戏或无法开启高级特效。'
+      }
+    ]
+  },
+
+  'gpu_glsl_version': {
+    id: 'gpu_glsl_version',
+    title: 'GLSL 版本',
+    subtitle: 'GLSL Version',
+    description: '着色器编程语言版本，用于编写 GPU 渲染程序。',
+    details: [
+      {
+        title: '什么是 GLSL？',
+        content: 'GLSL（OpenGL Shading Language）是编写 GPU 着色器的编程语言。着色器是运行在 GPU 上的小程序，负责顶点处理、光照计算、像素着色等。'
+      },
+      {
+        title: 'GLSL 版本对应关系',
+        content: 'GLSL ES 3.0 对应 OpenGL ES 3.0，GLSL ES 3.1 对应 OpenGL ES 3.1，以此类推。着色器版本必须与 OpenGL ES 版本匹配。'
+      },
+      {
+        title: '为什么重要？',
+        content: '高级图形效果（如物理渲染、全局光照）需要高版本 GLSL 支持。游戏开发者需要根据目标设备的 GLSL 版本选择合适的渲染技术。'
       }
     ]
   }

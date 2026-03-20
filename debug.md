@@ -244,6 +244,61 @@ hdc shell hilog -x -T SysInfo -z 100
 | E (ERROR) | 错误信息 | 错误和异常 |
 | F (FATAL) | 致命错误 | 严重错误导致崩溃 |
 
+## 重要经验：ArkTS hilog Domain 设置
+
+### 问题现象
+在 ArkTS 中使用 `hilog.info(0x0000, TAG, message)` 时，日志无法正常输出到 hilog 缓冲区。
+
+### 根本原因
+**domain 0x0000 在 ArkTS hilog 中被系统过滤**，即使使用 `hilog -b I -D 0x0000` 设置日志级别也无法输出。
+
+### 解决方案
+**使用非零 domain（推荐 0x1234）**：
+
+```typescript
+import hilog from '@ohos.hilog';
+
+// ❌ 错误：domain 0x0000 会被过滤
+hilog.info(0x0000, 'MyTag', '这条日志不会显示');
+
+// ✅ 正确：使用非零 domain
+const LOG_DOMAIN = 0x1234;
+const TAG = 'MyTag';
+hilog.info(LOG_DOMAIN, TAG, '这条日志可以正常显示');
+```
+
+### 验证方法
+
+```bash
+# 1. 设置 domain 日志级别
+hdc shell hilog -b I -D 0x1234
+
+# 2. 查看日志
+hdc shell hilog -x | grep "MyTag"
+```
+
+### 对比：C++ 与 ArkTS
+
+| 场景 | domain 0x0000 | 非零 domain |
+|------|--------------|-------------|
+| C++ (OH_LOG_Print) | ✅ 可用 | ✅ 可用 |
+| ArkTS (hilog) | ❌ 被过滤 | ✅ 可用 |
+
+### 项目规范
+
+建议在项目中统一使用非零 domain：
+
+```typescript
+// constants.ts
+export const LOG_DOMAIN = 0x1234;
+
+// 在各页面中使用
+import { LOG_DOMAIN } from '../constants';
+const TAG = 'CameraPage';
+
+hilog.info(LOG_DOMAIN, TAG, 'CameraPage appeared');
+```
+
 ## 注意事项
 
 1. **日志缓冲区有限**：默认 512KB-16MB，超出后会滚动覆盖
@@ -251,6 +306,7 @@ hdc shell hilog -x -T SysInfo -z 100
 3. **性能影响**：大量日志会影响性能，正式发布时建议关闭 DEBUG 级别
 4. **真机调试**：需要开启 USB 调试模式
 5. **权限**：某些日志需要系统权限才能查看
+6. **ArkTS hilog domain**：避免使用 0x0000，使用非零 domain（如 0x1234）
 
 ## 参考链接
 

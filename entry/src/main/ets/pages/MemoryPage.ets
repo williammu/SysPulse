@@ -1,8 +1,9 @@
 import router from '@ohos.router';
 import { FormatUtil } from '../utils/FormatUtil';
 import { InfoCard } from '../components/InfoCard';
-import { InfoHeader, InfoCardWithDesc } from '../components/InfoButton';
-import { nativeApi, SystemMemInfo, AppMemInfo, MemoryLimit } from '../utils/NativeApi';
+import { InfoCardWithDesc } from '../components/InfoButton';
+import { InfoHeader } from '../components/InfoButton';
+import { nativeApi, SystemMemInfo } from '../utils/NativeApi';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { NavigationBarWithArrow } from '../components/NavigationBar';
 
@@ -13,8 +14,6 @@ const REFRESH_INTERVAL = 200;
 @Component
 struct MemoryPage {
   @State systemMemInfo: SystemMemInfo | null = null;
-  @State appMemInfo: AppMemInfo | null = null;
-  @State memoryLimit: MemoryLimit | null = null;
   @State isNativeAvailable: boolean = false;
   @State isLoading: boolean = true;
   private refreshTimer: number | null = null;
@@ -46,8 +45,6 @@ struct MemoryPage {
 
   loadMemoryInfo() {
     this.systemMemInfo = nativeApi.getSystemMemInfo();
-    this.appMemInfo = nativeApi.getAppMemInfo();
-    this.memoryLimit = nativeApi.getMemoryLimit();
   }
 
   getTotalMemory(): string {
@@ -78,39 +75,6 @@ struct MemoryPage {
       return Math.round((used / this.systemMemInfo.total) * 100);
     }
     return 0;
-  }
-
-  getAppPss(): string {
-    if (this.appMemInfo?.success && this.appMemInfo.pss > 0) {
-      return FormatUtil.formatBytes(this.appMemInfo.pss);
-    }
-    return '未获取';
-  }
-
-  getAppRss(): string {
-    if (this.appMemInfo?.success && this.appMemInfo.rss > 0) {
-      return FormatUtil.formatBytes(this.appMemInfo.rss);
-    }
-    return '未获取';
-  }
-
-  getAppVss(): string {
-    if (this.appMemInfo?.success && this.appMemInfo.vss > 0) {
-      return FormatUtil.formatBytes(this.appMemInfo.vss);
-    }
-    return '未获取';
-  }
-
-  getMemoryLimit(): string {
-    if (this.memoryLimit?.success) {
-      if (this.memoryLimit.rssLimit === -1) {
-        return '无限制';
-      }
-      if (this.memoryLimit.rssLimit > 0) {
-        return FormatUtil.formatBytes(this.memoryLimit.rssLimit);
-      }
-    }
-    return '未获取';
   }
 
   // 跳转到概念详情页
@@ -180,116 +144,27 @@ struct MemoryPage {
             .alignItems(HorizontalAlign.Center);
 
             if (this.getMemoryUsagePercent() > 0) {
-              InfoCard({
+              InfoCardWithDesc({
                 title: '内存使用率',
-                value: `${this.getMemoryUsagePercent()}%`
+                value: `${this.getMemoryUsagePercent()}%`,
+                conceptId: 'memory_usage_percent',
+                onInfoClick: () => this.navigateToConcept('memory_usage_percent')
               })
               .margin({ top: 16 });
             }
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '可用内存',
-              value: this.getAvailableMemory()
+              value: this.getAvailableMemory(),
+              conceptId: 'available_memory',
+              onInfoClick: () => this.navigateToConcept('available_memory')
             });
 
-            InfoCard({
+            InfoCardWithDesc({
               title: '已用内存',
-              value: this.getUsedMemory()
-            });
-
-            // 应用内存
-            InfoHeader({
-              title: '应用内存',
-              subtitle: 'PSS、RSS、VSS 内存指标',
-              conceptId: 'memory_pss',
-              onInfoClick: () => this.navigateToConcept('memory_pss')
-            });
-
-            if (this.appMemInfo?.success) {
-              Column() {
-                Text(this.getAppPss())
-                  .fontSize(36)
-                  .fontWeight(FontWeight.Bold)
-                  .fontColor($r('app.color.primary_color'));
-
-                Text('PSS (实际使用内存)')
-                  .fontSize(14)
-                  .fontColor($r('app.color.text_secondary'))
-                  .margin({ top: 8 });
-              }
-              .width('100%')
-              .padding(20)
-              .borderRadius(12)
-              .backgroundColor($r('app.color.background_card'))
-              .alignItems(HorizontalAlign.Center)
-              .margin({ bottom: 12 });
-            }
-
-            InfoCardWithDesc({
-              title: 'RSS (驻留内存)',
-              value: this.getAppRss(),
-              conceptId: 'memory_rss',
-              onInfoClick: () => this.navigateToConcept('memory_rss')
-            });
-
-            InfoCardWithDesc({
-              title: 'VSS (虚拟内存)',
-              value: this.getAppVss(),
-              conceptId: 'memory_vss',
-              onInfoClick: () => this.navigateToConcept('memory_vss')
-            });
-
-            // 内存分类
-            if (this.appMemInfo?.success) {
-              InfoHeader({
-                title: '内存分类',
-                subtitle: 'Shared/Private Clean/Dirty',
-                conceptId: 'memory_shared',
-                onInfoClick: () => this.navigateToConcept('memory_shared')
-              });
-
-              InfoCardWithDesc({
-                title: 'Shared Clean',
-                value: FormatUtil.formatBytes(this.appMemInfo.sharedClean),
-                conceptId: 'memory_shared',
-                onInfoClick: () => this.navigateToConcept('memory_shared')
-              });
-
-              InfoCardWithDesc({
-                title: 'Shared Dirty',
-                value: FormatUtil.formatBytes(this.appMemInfo.sharedDirty),
-                conceptId: 'memory_shared',
-                onInfoClick: () => this.navigateToConcept('memory_shared')
-              });
-
-              InfoCardWithDesc({
-                title: 'Private Clean',
-                value: FormatUtil.formatBytes(this.appMemInfo.privateClean),
-                conceptId: 'memory_shared',
-                onInfoClick: () => this.navigateToConcept('memory_shared')
-              });
-
-              InfoCardWithDesc({
-                title: 'Private Dirty',
-                value: FormatUtil.formatBytes(this.appMemInfo.privateDirty),
-                conceptId: 'memory_shared',
-                onInfoClick: () => this.navigateToConcept('memory_shared')
-              });
-            }
-
-            // 内存限制
-            InfoHeader({
-              title: '内存限制',
-              subtitle: '系统为应用设置的内存上限',
-              conceptId: 'memory_limit',
-              onInfoClick: () => this.navigateToConcept('memory_limit')
-            });
-
-            InfoCardWithDesc({
-              title: 'RSS 限制',
-              value: this.getMemoryLimit(),
-              conceptId: 'memory_limit',
-              onInfoClick: () => this.navigateToConcept('memory_limit')
+              value: this.getUsedMemory(),
+              conceptId: 'used_memory',
+              onInfoClick: () => this.navigateToConcept('used_memory')
             });
           }
         }

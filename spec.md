@@ -3,10 +3,10 @@
 ## 1. 项目概述
 
 ### 1.1 项目名称
-SysInfo - 鸿蒙硬件配置查看器
+SysInfo - 鸿蒙系统信息工具
 
 ### 1.2 项目目标
-开发一款基于纯血鸿蒙 (HarmonyOS NEXT) 系统的原生应用，用于全面、清晰地展示设备的所有硬件配置信息。
+开发一款基于纯血鸿蒙 (HarmonyOS NEXT) 系统的原生应用，用于全面、真实地展示设备的硬件配置和系统信息。
 
 ### 1.3 目标用户
 - 技术爱好者
@@ -14,135 +14,224 @@ SysInfo - 鸿蒙硬件配置查看器
 - 需要了解设备配置的普通用户
 - 开发者调试设备
 
+### 1.4 项目原则
+1. **真实性原则** - 所有显示的信息必须来自真实系统 API，禁止硬编码 MOCK 数据
+2. **透明性原则** - 无法获取的信息明确标记为"未获取"，并说明原因
+3. **教育性原则** - 为每个技术概念提供小白友好的解释说明
+
 ---
 
 ## 2. 功能需求
 
-### 2.1 核心功能模块
+### 2.1 已实现功能模块
 
-#### 2.1.1 设备概览
-- **设备型号**：显示完整设备型号名称
-- **系统版本**：HarmonyOS 版本号、API 版本
-- **设备名称**：用户自定义设备名称
-- **SN/IMEI**：设备序列号 (需权限)
-- **运行时间**：设备累计运行时长
+#### 2.1.1 设备概览 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 设备型号 | ✅ 已实现 | `@ohos.deviceInfo.marketName` |
+| 系统版本 | ✅ 已实现 | `@ohos.deviceInfo.osFullName` |
+| API 版本 | ✅ 已实现 | `@ohos.deviceInfo.sdkApiVersion` |
+| 设备名称 | 🚫 无法实现 | 无公开 API |
+| SN/IMEI | 🚫 无法实现 | 需要系统权限 |
+| 运行时间 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.2 CPU 信息
-- **处理器型号**：完整的 SoC 型号名称
-- **核心架构**：CPU 架构 (ARM64 等)
-- **核心数**：总核心数、大核/小核配置
-- **主频信息**：各核心的最大/当前频率
-- **工艺制程**：芯片制造工艺 (如 7nm)
-- **缓存信息**：L1/L2/L3 缓存大小
+#### 2.1.2 CPU 信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 处理器型号 | ⚠️ 部分实现 | Native API / `deviceInfo.hardwareModel` |
+| 核心架构 | ✅ 已实现 | `@ohos.deviceInfo.abiList` |
+| 核心数 | ✅ 已实现 | Native API |
+| 系统 CPU 使用率 | ✅ 已实现 | Native HiDebug API |
+| 线程 CPU 使用率 | ✅ 已实现 | Native HiDebug API |
+| 主频信息 | 🚫 无法实现 | 无公开 API |
+| 工艺制程 | 🚫 无法实现 | 无公开 API |
+| 缓存信息 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.3 GPU 信息
-- **GPU 型号**：图形处理器型号
-- **GPU 厂商**：芯片厂商 (如 Mali、Adreno)
-- **GPU 频率**：运行频率
-- **API 支持**：Vulkan、OpenGL ES 版本
+#### 2.1.3 GPU 信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| GPU 厂商 | ✅ 已实现 | Native OpenGL ES API |
+| GPU 型号 | ✅ 已实现 | Native OpenGL ES API |
+| OpenGL ES 版本 | ✅ 已实现 | Native OpenGL ES API |
+| GLSL 版本 | ✅ 已实现 | Native OpenGL ES API |
+| 纹理限制 | ✅ 已实现 | Native OpenGL ES API |
+| 视口限制 | ✅ 已实现 | Native OpenGL ES API |
+| 着色器限制 | ✅ 已实现 | Native OpenGL ES API |
+| GPU 显存 | ✅ 已实现 | Native HiDebug API |
+| GPU 频率 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.4 内存信息
-- **总 RAM**：设备总运行内存
-- **可用 RAM**：当前可用内存
-- **已用 RAM**：已占用内存
-- **内存类型**：LPDDR 版本
-- **内存带宽**：理论带宽
+#### 2.1.4 内存信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 系统总内存 | ✅ 已实现 | Native HiDebug API |
+| 系统可用内存 | ✅ 已实现 | Native HiDebug API |
+| 系统已用内存 | ✅ 已实现 | Native HiDebug API |
+| 应用 PSS 内存 | ✅ 已实现 | Native HiDebug API |
+| 应用 RSS 内存 | ✅ 已实现 | Native HiDebug API |
+| 应用 VSS 内存 | ✅ 已实现 | Native HiDebug API |
+| 应用内存限制 | ✅ 已实现 | Native HiDebug API |
+| VM 堆内存 | ✅ 已实现 | Native HiDebug API |
+| 内存类型 | 🚫 无法实现 | 无公开 API |
+| 内存带宽 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.5 存储信息
-- **总存储**：内置存储总容量
-- **可用存储**：当前可用空间
-- **存储类型**：UFS/EMMC 版本
-- **分区信息**：系统分区、数据分区详情
+#### 2.1.5 存储信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 总存储 | ⚠️ 部分实现 | `@ohos.file.statvfs` (部分设备返回 0) |
+| 可用存储 | ⚠️ 部分实现 | `@ohos.file.statvfs` (部分设备返回 0) |
+| 已用存储 | ⚠️ 部分实现 | 计算得出 |
+| 存储类型 | 🚫 无法实现 | 无公开 API |
+| 分区信息 | 🚫 无法实现 | 需要系统权限 |
 
-#### 2.1.6 屏幕信息
-- **分辨率**：屏幕像素分辨率
-- **屏幕尺寸**：对角线尺寸
-- **像素密度**：PPI 值
-- **刷新率**：屏幕刷新率 (60/90/120/144Hz)
-- **触控采样率**：触摸采样率
-- **屏幕类型**：OLED/LCD/AMOLED
-- **HDR 支持**：HDR10/Dolby Vision 等
-- **亮度**：典型/峰值亮度
+#### 2.1.6 屏幕信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 分辨率 | ✅ 已实现 | `@ohos.display` |
+| 像素密度 | ✅ 已实现 | `@ohos.display.densityDPI` |
+| 刷新率 | ✅ 已实现 | `@ohos.display.refreshRate` |
+| X/Y 轴 DPI | ✅ 已实现 | `@ohos.display` |
+| 屏幕尺寸 | 🚫 无法实现 | 无公开 API |
+| 屏幕类型 | 🚫 无法实现 | 无公开 API |
+| HDR 支持 | 🚫 无法实现 | 无公开 API |
+| 亮度 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.7 电池信息
-- **电池容量**：设计容量
-- **当前电量**：实时百分比
-- **充电状态**：充电中/未充电
-- **充电功率**：当前充电功率
-- **电池健康度**：电池健康状态
-- **温度**：电池温度
+#### 2.1.7 电池信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 当前电量 | ✅ 已实现 | `@ohos.batteryInfo.batterySOC` |
+| 充电状态 | ✅ 已实现 | `@ohos.batteryInfo.chargingStatus` |
+| 充电器类型 | ✅ 已实现 | `@ohos.batteryInfo.pluggedType` |
+| 充电功率 | ✅ 已实现 | 计算得出 (电压 × 电流) |
+| 电池温度 | ✅ 已实现 | `@ohos.batteryInfo.batteryTemperature` |
+| 电池电压 | ✅ 已实现 | `@ohos.batteryInfo.voltage` |
+| 电池技术 | ✅ 已实现 | `@ohos.batteryInfo.technology` |
+| 电池健康度 | ⚠️ 部分实现 | `@ohos.batteryInfo.healthStatus` |
+| 电池容量 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.8 网络信息
-- **蜂窝网络**：基带型号、网络制式 (5G/4G/3G)
-- **Wi-Fi**：Wi-Fi 标准 (Wi-Fi 6/7)、MAC 地址
-- **蓝牙**：蓝牙版本、MAC 地址
-- **NFC**：是否支持 NFC
+#### 2.1.8 网络信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 网络类型 | ✅ 已实现 | `@ohos.net.connection` |
+| 连接状态 | ✅ 已实现 | `@ohos.net.connection` |
+| IP 地址 | ✅ 已实现 | `@ohos.net.connection` |
+| 子网掩码 | ✅ 已实现 | `@ohos.net.connection` |
+| 默认网关 | ✅ 已实现 | `@ohos.net.connection` |
+| DNS 服务器 | ✅ 已实现 | `@ohos.net.connection` |
+| MAC 地址 | ✅ 已实现 | `@ohos.net.connection` |
+| MTU | ✅ 已实现 | `@ohos.net.connection` |
+| WiFi SSID | ✅ 已实现 | `@ohos.wifiManager` |
+| WiFi 信号强度 | ✅ 已实现 | `@ohos.wifiManager` |
+| WiFi 频段 | ✅ 已实现 | `@ohos.wifiManager` |
+| WiFi 连接速度 | ✅ 已实现 | `@ohos.wifiManager` |
+| 上行/下行带宽 | ✅ 已实现 | `@ohos.net.connection` / WiFi |
+| 蜂窝网络详情 | 🚫 无法实现 | 需要系统权限 |
+| 蓝牙信息 | 🚫 无法实现 | 无公开 API |
+| NFC 支持 | 🚫 无法实现 | 无公开 API |
 
-#### 2.1.9 摄像头信息
-- **后置摄像头**：主摄像素、超广角、长焦等配置
-- **前置摄像头**：像素、光圈
-- **视频录制**：最高支持的分辨率和帧率
+#### 2.1.9 摄像头信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 变焦范围 | ✅ 已实现 | Camera Kit API (需预览) |
+| 预览分辨率 | ✅ 已实现 | Camera Kit API |
+| 拍照分辨率 | ✅ 已实现 | Camera Kit API |
+| 视频分辨率 | ✅ 已实现 | Camera Kit API |
+| 后置摄像头详情 | 🚫 无法实现 | 需要 CameraKit 权限 |
+| 前置摄像头详情 | 🚫 无法实现 | 需要 CameraKit 权限 |
 
-#### 2.1.10 传感器信息
-- **加速度计**：支持状态
-- **陀螺仪**：支持状态
-- **磁力计**：支持状态
-- **光线传感器**：支持状态
-- **距离传感器**：支持状态
-- **气压计**：支持状态
-- **指纹传感器**：支持状态
-- **面部识别**：支持状态
+#### 2.1.10 传感器信息 ✅
+| 功能项 | 实现状态 | 数据来源 |
+|--------|---------|----------|
+| 加速度计 | ✅ 已实现 | `@ohos.sensor` |
+| 陀螺仪 | ✅ 已实现 | `@ohos.sensor` |
+| 光线传感器 | ✅ 已实现 | `@ohos.sensor` |
+| 距离传感器 | ✅ 已实现 | `@ohos.sensor` |
+| 磁场传感器 | ✅ 已实现 | `@ohos.sensor` |
+| 方向传感器 | ✅ 已实现 | `@ohos.sensor` |
+| 气压计 | ⚠️ 部分实现 | 设备依赖 |
+| 湿度传感器 | ⚠️ 部分实现 | 设备依赖 |
+| 温度传感器 | ⚠️ 部分实现 | 设备依赖 |
+| 传感器列表 | ✅ 已实现 | Native Sensor NDK |
+| 传感器详细信息 | ✅ 已实现 | Native Sensor NDK |
 
-#### 2.1.11 接口信息
-- **USB 接口**：USB 版本、Type-C/Type-A
-- **耳机接口**：3.5mm 接口支持
-- **扩展存储**：MicroSD 支持
+#### 2.1.11 知识科普 ✅
+| 功能项 | 实现状态 | 说明 |
+|--------|---------|------|
+| 信息按钮 | ✅ 已实现 | 每个技术参数旁显示 ⓘ 按钮 |
+| 概念解释 | ✅ 已实现 | 点击按钮查看详细解释 |
+| 概念配置 | ✅ 已实现 | ConceptConfig.ets 配置所有概念 |
+| 概念详情页 | ✅ 已实现 | ConceptDetailPage.ets |
 
 ---
 
 ## 3. 技术架构
 
 ### 3.1 技术栈
-- **开发语言**：ArkTS
+- **开发语言**：ArkTS / C++
 - **UI 框架**：ArkUI
-- **最低系统版本**：HarmonyOS NEXT (API 12+)
+- **最低系统版本**：HarmonyOS NEXT API 12+
 - **包管理**：OHPM
 
 ### 3.2 系统 API 依赖
-- `@ohos.deviceInfo` - 设备基础信息
-- `@ohos.batteryInfo` - 电池信息
-- `@ohos.network` - 网络信息
-- `@ohos.display` - 屏幕信息
-- `@ohos.thermal` - 温度信息
-- `@ohos.multimedia.camera` - 摄像头信息
+| 模块 | API | 用途 |
+|------|-----|------|
+| 设备信息 | `@ohos.deviceInfo` | 设备型号、系统版本 |
+| 电池 | `@ohos.batteryInfo` | 电量、充电状态、温度 |
+| 屏幕 | `@ohos.display` | 分辨率、DPI、刷新率 |
+| 网络 | `@ohos.net.connection` | 网络类型、IP 配置 |
+| WiFi | `@ohos.wifiManager` | WiFi SSID、信号强度 |
+| 传感器 | `@ohos.sensor` | 加速度、陀螺仪等 |
+| 存储 | `@ohos.file.statvfs` | 存储容量 |
+| 相机 | `@ohos.multimedia.camera` | 相机信息 |
 
-### 3.3 项目结构
+### 3.3 Native API 依赖
+| 模块 | API | 用途 |
+|------|-----|------|
+| HiDebug | `libohhidebug.so` | CPU、内存、GPU 信息 |
+| Sensor NDK | `libohsensor.so` | 传感器列表和实时数据 |
+| OpenGL ES | `libGLESv2.so` | GPU 详细信息 |
+
+### 3.4 项目结构
 ```
 huawei_sysinfo/
 ├── entry/
-│   ├── src/main/ets/
-│   │   ├── pages/
-│   │   │   ├── Index.ets           # 首页/概览
-│   │   │   ├── CpuPage.ets         # CPU 详情页
-│   │   │   ├── MemoryPage.ets      # 内存详情页
-│   │   │   ├── StoragePage.ets     # 存储详情页
-│   │   │   ├── DisplayPage.ets     # 屏幕详情页
-│   │   │   ├── BatteryPage.ets     # 电池详情页
-│   │   │   ├── NetworkPage.ets     # 网络详情页
-│   │   │   ├── CameraPage.ets      # 摄像头详情页
-│   │   │   ├── SensorPage.ets      # 传感器详情页
-│   │   │   └── AboutPage.ets       # 关于页
-│   │   ├── components/
-│   │   │   ├── InfoCard.ets         # 信息卡片组件
-│   │   │   ├── ProgressBar.ets      # 进度条组件
-│   │   │   └── SectionHeader.ets    # 分区标题组件
-│   │   ├── utils/
-│   │   │   ├── DeviceUtil.ets       # 设备信息工具类
-│   │   │   └── FormatUtil.ets       # 格式化工具
-│   │   └── model/
-│   │       └── DeviceInfo.ets       # 数据模型
-└── AppScope/
-    └── app.json5
+│   └── src/main/
+│       ├── ets/
+│       │   ├── pages/              # 14 个功能页面
+│       │   │   ├── Index.ets       # 首页
+│       │   │   ├── CpuPage.ets     # CPU 信息
+│       │   │   ├── MemoryPage.ets  # 内存信息
+│       │   │   ├── StoragePage.ets # 存储信息
+│       │   │   ├── DisplayPage.ets # 屏幕信息
+│       │   │   ├── BatteryPage.ets # 电池信息
+│       │   │   ├── NetworkPage.ets # 网络信息
+│       │   │   ├── GpuPage.ets     # GPU 信息
+│       │   │   ├── SensorPage.ets  # 传感器信息
+│       │   │   ├── CameraPage.ets  # 相机信息
+│       │   │   ├── OSPage.ets      # 操作系统信息
+│       │   │   ├── ConceptDetailPage.ets # 概念详情
+│       │   │   └── ...
+│       │   ├── components/         # 可复用组件
+│       │   │   ├── InfoCard.ets    # 信息卡片
+│       │   │   ├── InfoButton.ets  # 信息按钮
+│       │   │   ├── SectionHeader.ets
+│       │   │   └── NavigationBar.ets
+│       │   ├── utils/              # 工具类
+│       │   │   ├── DeviceUtil.ets
+│       │   │   ├── SensorUtil.ets
+│       │   │   ├── NativeApi.ets
+│       │   │   └── FormatUtil.ets
+│       │   └── config/
+│       │       └── ConceptConfig.ets
+│       ├── cpp/                    # Native C++ 模块
+│       │   ├── hidebug_module.cpp  # HiDebug API 封装
+│       │   ├── sensor_module.cpp   # Sensor NDK 封装
+│       │   └── camera_module.cpp   # 相机 Native 封装
+│       └── resources/
+├── build_and_run.sh
+├── build.md
+├── issues.md
+├── FUNCTION_CHECKLIST.md
+└── README.md
 ```
 
 ---
@@ -150,47 +239,57 @@ huawei_sysinfo/
 ## 4. UI 设计规范
 
 ### 4.1 设计风格
-- 遵循 HarmonyOS Design 设计规范
-- 简洁、现代的卡片式布局
-- 深色/浅色主题自动切换
+- 科技感深色主题
+- 霓虹蓝 (#00D4FF) + 深蓝紫渐变背景
+- 卡片式布局
 - 流畅的动画效果
 
-### 4.2 页面布局
-#### 首页 (Index.ets)
-- 顶部：设备型号 + 设备图片
-- 中部：快捷信息卡片网格 (CPU、内存、存储、电池)
-- 底部：功能菜单列表 (进入各详情页)
-
-#### 详情页
-- 顶部：返回按钮 + 页面标题
-- 中部：信息卡片列表
-- 每个卡片包含：图标 + 标题 + 详细信息
+### 4.2 特色组件
+- **InfoCard** - 信息展示卡片
+- **InfoCardWithDesc** - 带信息按钮的卡片
+- **InfoButton** - 概念解释按钮 (ⓘ)
+- **TechCard** - 科技感动态卡片（呼吸灯效果）
+- **SimpleChart** - 实时趋势图表
 
 ### 4.3 颜色规范
-- 主色调：#007DFF (HarmonyOS 蓝)
+- 主色调：#007DFF (霓虹蓝)
 - 成功色：#00B578
 - 警告色：#FF7D00
 - 错误色：#F53F3F
-- 中性色：#182431、#4E5969、#86909C
+- 背景色：深色渐变
 
 ---
 
 ## 5. 权限需求
 
-| 权限名称 | 权限类型 | 用途 |
-|---------|---------|------|
-| ohos.permission.GET_NETWORK_INFO | normal | 获取网络信息 |
-| ohos.permission.ACCESS_BLUETOOTH | normal | 获取蓝牙信息 |
-| ohos.permission.GET_BUNDLE_INFO | normal | 获取应用信息 |
-| ohos.permission.READ_MEDIA | normal | 读取存储信息 |
+### 5.1 已申请权限
+```json
+{
+  "requestPermissions": [
+    { "name": "ohos.permission.GET_WIFI_INFO" },
+    { "name": "ohos.permission.GET_NETWORK_INFO" },
+    { "name": "ohos.permission.INTERNET" },
+    { "name": "ohos.permission.CAMERA" },
+    { "name": "ohos.permission.ACCELEROMETER" },
+    { "name": "ohos.permission.GYROSCOPE" },
+    { "name": "ohos.permission.READ_MEDIA" }
+  ]
+}
+```
+
+### 5.2 无法申请的权限（系统权限）
+- `ohos.permission.DUMP` - 系统调试信息
+- 设备序列号/IMEI 读取权限
+- 详细网络信息权限
 
 ---
 
 ## 6. 非功能性需求
 
 ### 6.1 性能要求
-- 冷启动时间 < 1.5s
+- 冷启动时间 < 2s
 - 页面切换动画流畅 (60fps)
+- 实时监控刷新率 200ms
 - 内存占用 < 100MB
 
 ### 6.2 兼容性要求
@@ -205,323 +304,100 @@ huawei_sysinfo/
 
 ---
 
-## 7. 开发里程碑
+## 7. 实现统计
 
-| 阶段 | 任务 | 交付物 |
-|-----|------|-------|
-| 阶段一 | 项目初始化 + 首页框架 | 可运行的基础项目 |
-| 阶段二 | 设备概览、CPU、内存模块 | 核心信息展示 |
-| 阶段三 | 屏幕、电池、网络模块 | 主要功能完成 |
-| 阶段四 | 摄像头、传感器、接口模块 | 全部功能完成 |
-| 阶段五 | UI 优化 + 测试 + 打包 | 发布版本 |
+### 7.1 功能实现汇总
+
+| 功能模块 | 已实现 | 部分实现 | 无法实现 | 总计 | 实现率 |
+|---------|-------|---------|---------|------|-------|
+| 设备概览 | 3 | 0 | 3 | 6 | 50% |
+| CPU 信息 | 5 | 0 | 3 | 8 | 62.5% |
+| GPU 信息 | 8 | 0 | 1 | 9 | 88.9% |
+| 内存信息 | 8 | 0 | 2 | 10 | 80% |
+| 存储信息 | 1 | 2 | 2 | 5 | 20% |
+| 屏幕信息 | 4 | 0 | 4 | 8 | 50% |
+| 电池信息 | 8 | 1 | 1 | 10 | 80% |
+| 网络信息 | 12 | 0 | 3 | 15 | 80% |
+| 摄像头信息 | 4 | 0 | 2 | 6 | 66.7% |
+| 传感器信息 | 9 | 3 | 0 | 12 | 75% |
+| 知识科普 | 4 | 0 | 0 | 4 | 100% |
+| **总计** | **66** | **6** | **21** | **93** | **71%** |
+
+### 7.2 Native API 实现状态
+
+| API 模块 | 功能 | 状态 |
+|---------|------|------|
+| HiDebug | 系统 CPU 使用率 | ✅ 已实现 |
+| HiDebug | 系统内存信息 | ✅ 已实现 |
+| HiDebug | 应用内存详情 (PSS/RSS/VSS) | ✅ 已实现 |
+| HiDebug | 应用内存限制 | ✅ 已实现 |
+| HiDebug | GPU 显存 | ✅ 已实现 |
+| HiDebug | VM 堆内存 | ✅ 已实现 |
+| HiDebug | 线程 CPU 使用率 | ✅ 已实现 |
+| Sensor NDK | 传感器列表 | ✅ 已实现 |
+| Sensor NDK | 传感器实时数据 | ✅ 已实现 |
+| OpenGL ES | GPU 详细信息 | ✅ 已实现 |
 
 ---
 
-## 8. Native API 扩展规划
+## 8. 已知限制
 
-### 8.1 概述
-通过 HarmonyOS NEXT NDK (Native Development Kit)，可以使用 C/C++ 访问 TypeScript/ArkTS 无法直接获取的系统级信息。
+### 8.1 API 限制（无法获取）
+- 设备序列号 / IMEI
+- 详细 CPU 信息（型号、频率、缓存）
+- 详细 GPU 信息（频率、带宽）
+- WiFi / 蓝牙版本
+- NFC 支持状态
+- 电池设计容量
+- 屏幕尺寸、类型、HDR 支持
 
-### 8.2 HiDebug 模块（高优先级）
-
-#### 8.2.1 系统级 CPU 信息
-**TypeScript 限制**: 只能获取进程级 CPU 使用率  
-**Native API 补充**:
-
-| API | 功能 | 返回值 |
-|-----|------|--------|
-| `OH_HiDebug_GetSystemCpuUsage()` | 获取系统整体 CPU 使用率 | double (0.0-1.0) |
-| `OH_HiDebug_GetAppCpuUsage()` | 获取应用进程 CPU 使用率 | double (0.0-1.0) |
-| `OH_HiDebug_GetAppThreadCpuUsage()` | 获取应用各线程 CPU 使用情况 | ThreadCpuUsage[] |
-
-**可补充功能**:
-- ✅ 系统整体 CPU 使用率
-- ✅ 应用各线程的 CPU 使用率详情
-- ✅ 线程级别的性能分析数据
-
-#### 8.2.2 系统级内存信息
-**TypeScript 限制**: 无法获取系统内存信息  
-**Native API 补充**:
-
-| API | 功能 | 返回值 |
-|-----|------|--------|
-| `OH_HiDebug_GetSystemMemInfo()` | 获取系统内存信息 | SystemMemInfo |
-| `OH_HiDebug_GetAppNativeMemInfo()` | 获取应用 Native 内存信息 | NativeMemInfo |
-| `OH_HiDebug_GetAppMemoryLimit()` | 获取应用内存限制 | MemoryLimit |
-| `OH_HiDebug_GetGraphicsMemory()` | 获取应用显存大小 | uint64_t |
-
-**数据结构**:
-```c
-// 系统内存信息
-typedef struct {
-    uint64_t totalMem;      // 系统总内存 (KB)
-    uint64_t freeMem;       // 系统空闲内存 (KB)
-    uint64_t availableMem;  // 系统可用内存 (KB)
-} SystemMemInfo;
-
-// 应用 Native 内存信息
-typedef struct {
-    uint64_t pss;           // 实际物理内存 (KB)
-    uint64_t vss;           // 虚拟内存 (KB)
-    uint64_t rss;           // 物理内存含共享库 (KB)
-    uint64_t sharedDirty;   // 共享脏内存 (KB)
-    uint64_t privateDirty;  // 私有脏内存 (KB)
-    uint64_t sharedClean;   // 共享干净内存 (KB)
-    uint64_t privateClean;  // 私有干净内存 (KB)
-} NativeMemInfo;
-
-// 应用内存限制
-typedef struct {
-    uint64_t rssLimit;        // RSS 限制 (KB)
-    uint64_t vssLimit;        // VSS 限制 (KB)
-    uint64_t vmHeapLimit;     // JS VM 堆限制 (KB)
-    uint64_t vmTotalHeapSize; // JS 堆总限制 (KB)
-} MemoryLimit;
-```
-
-**可补充功能**:
-- ✅ 系统总内存、空闲内存、可用内存
-- ✅ 应用进程的详细内存分布（PSS/VSS/RSS）
-- ✅ 应用内存限制（防止 OOM）
-- ✅ GPU 显存使用情况
-
-#### 8.2.3 虚拟机内存信息
-**TypeScript 限制**: 无法获取 ArkTS 虚拟机内部内存信息  
-**Native API 补充**:
-
-| API | 功能 | 返回值 |
-|-----|------|--------|
-| `OH_HiDebug_GetAppVMMemoryInfo()` | 获取 VM 内存信息 | VMMemoryInfo |
-| `OH_HiDebug_GetVMRuntimeStats()` | 获取 GC 统计信息 | GcStats |
-| `OH_HiDebug_GetVMRuntimeStat()` | 获取指定 GC 统计项 | number |
-
-**数据结构**:
-```c
-typedef struct {
-    uint64_t totalHeap;    // VM 堆总大小 (KB)
-    uint64_t heapUsed;     // VM 堆已使用 (KB)
-    uint64_t allArraySize; // 所有数组对象大小 (KB)
-} VMMemoryInfo;
-```
-
-**可补充功能**:
-- ✅ ArkTS 虚拟机堆内存使用情况
-- ✅ GC 次数、GC 耗时
-- ✅ 内存分配和回收统计
-
-#### 8.2.4 Trace 和调试信息
-**TypeScript 限制**: 无法获取系统 Trace 信息  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `OH_HiDebug_StartAppTraceCapture()` | 启动应用 Trace 采集 | 自动化性能分析 |
-| `OH_HiDebug_StopAppTraceCapture()` | 停止 Trace 采集 | - |
-| `OH_HiDebug_CreateBacktraceObject()` | 创建栈回溯对象 | API 20+ |
-| `OH_HiDebug_BacktraceFromFp()` | 栈回溯（异步信号安全） | API 20+ |
-| `OH_HiDebug_SymbolicAddress()` | 解析符号信息 | API 20+ |
-
-**可补充功能**:
-- ✅ 应用性能 Trace 数据
-- ✅ 调用栈回溯信息
-- ✅ Native 层符号解析
-
-### 8.3 Sensor 模块（中优先级）
-
-#### 8.3.1 传感器列表和信息
-**TypeScript 限制**: 无法获取传感器列表和详细信息  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `OH_Sensor_GetInfos()` | 获取设备上所有传感器信息 | Sensor_Info[] |
-| `OH_SensorInfo_GetName()` | 获取传感器名称 | - |
-| `OH_SensorInfo_GetVendorName()` | 获取传感器厂商 | - |
-| `OH_SensorInfo_GetType()` | 获取传感器类型 | - |
-| `OH_SensorInfo_GetResolution()` | 获取传感器分辨率 | - |
-| `OH_SensorInfo_GetMinSamplingInterval()` | 获取最小采样间隔 | - |
-| `OH_SensorInfo_GetMaxSamplingInterval()` | 获取最大采样间隔 | - |
-
-**支持的传感器类型**:
-- SENSOR_TYPE_ACCELEROMETER (加速度计)
-- SENSOR_TYPE_GYROSCOPE (陀螺仪)
-- SENSOR_TYPE_AMBIENT_LIGHT (环境光)
-- SENSOR_TYPE_MAGNETIC_FIELD (地磁)
-- SENSOR_TYPE_BAROMETER (气压计)
-- SENSOR_TYPE_HALL (霍尔传感器)
-- SENSOR_TYPE_PROXIMITY (接近传感器)
-- SENSOR_TYPE_ORIENTATION (方向传感器)
-- SENSOR_TYPE_GRAVITY (重力传感器)
-- SENSOR_TYPE_ROTATION_VECTOR (旋转矢量)
-- SENSOR_TYPE_PEDOMETER_DETECTION (计步检测)
-- SENSOR_TYPE_PEDOMETER (计步器)
-- SENSOR_TYPE_HEART_RATE (心率传感器)
-
-**可补充功能**:
-- ✅ 设备上所有传感器的列表
-- ✅ 传感器厂商、型号、分辨率等详细信息
-- ✅ 传感器数据实时采集
-
-#### 8.3.2 传感器实时数据
-**TypeScript 限制**: 无法直接订阅传感器数据  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `OH_Sensor_Subscribe()` | 订阅传感器数据 | 实时数据流 |
-| `OH_Sensor_Unsubscribe()` | 取消订阅 | - |
-| `OH_SensorEvent_GetData()` | 获取传感器数据 | float[] |
-
-**数据格式示例**:
-- 加速度计: data[0]=x轴, data[1]=y轴, data[2]=z轴 (m/s²)
-- 陀螺仪: data[0]=x轴, data[1]=y轴, data[2]=z轴 (rad/s)
-- 环境光: data[0]=光照强度 (lux), data[1]=色温 (kelvin), data[2]=红外亮度
-
-**可补充功能**:
-- ✅ 实时传感器数据流
-- ✅ 设备运动状态检测
-- ✅ 环境参数监测
-
-### 8.4 其他 Native API（低优先级）
-
-#### 8.4.1 文件系统和存储
-**TypeScript 限制**: statvfs 在部分设备上返回 0  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `statfs()` | 获取文件系统统计信息 | POSIX 标准 |
-| `getmntent()` | 获取挂载点信息 | 需要 root |
-
-#### 8.4.2 进程和线程信息
-**TypeScript 限制**: 无法获取系统进程信息  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `/proc/[pid]/stat` | 读取进程状态 | Linux 标准 |
-| `/proc/[pid]/status` | 读取进程详细信息 | Linux 标准 |
-| `/proc/[pid]/task/` | 读取线程信息 | Linux 标准 |
-
-#### 8.4.3 网络信息
-**TypeScript 限制**: 只能获取基础网络类型  
-**Native API 补充**:
-
-| API | 功能 | 说明 |
-|-----|------|------|
-| `getifaddrs()` | 获取网络接口地址 | POSIX 标准 |
-| `ioctl(SIOCGIFHWADDR)` | 获取 MAC 地址 | 需要权限 |
-| `/proc/net/dev` | 读取网络流量统计 | Linux 标准 |
-
-### 8.5 Native API 权限要求
-
-#### 8.5.1 普通权限（应用可申请）
-```json
-{
-  "requestPermissions": [
-    { "name": "ohos.permission.ACCELEROMETER" },
-    { "name": "ohos.permission.GYROSCOPE" },
-    { "name": "ohos.permission.ACTIVITY_MOTION" }
-  ]
-}
-```
-
-#### 8.5.2 系统权限（仅系统应用可申请）
-```json
-{
-  "requestPermissions": [
-    { "name": "ohos.permission.DUMP" },
-    { "name": "ohos.permission.READ_HEALTH_DATA" }
-  ]
-}
-```
-
-### 8.6 Native API 实现建议
-
-#### 阶段一：HiDebug 模块（高价值、低难度）
-建议优先实现 HiDebug 相关功能：
-1. ✅ 不需要额外权限
-2. ✅ API 简单易用
-3. ✅ 信息价值高（内存、CPU、GC）
-4. ✅ 官方文档完善
-
-**实现步骤**:
-1. 创建 Native C++ 模块
-2. 链接 `libohhidebug.so`
-3. 封装 HiDebug API 为 ArkTS 接口
-4. 在应用中调用
-
-#### 阶段二：Sensor 模块（高价值、中等难度）
-建议第二阶段实现 Sensor 功能：
-1. ✅ 信息价值高（设备传感器列表）
-2. ⚠️ 需要申请权限
-3. ⚠️ 需要处理异步数据流
-4. ⚠️ 需要管理订阅生命周期
-
-**实现步骤**:
-1. 申请传感器权限
-2. 创建 Native C++ 模块
-3. 链接 `libohsensor.so`
-4. 封装 Sensor API
-5. 实现数据回调机制
-
-#### 阶段三：其他模块（可选）
-根据需求决定是否实现：
-- 网络流量统计
-- 进程详细信息
-- 其他系统级信息
-
-### 8.7 可补充的信息总结
-
-#### 高价值信息（建议优先实现）
-
-| 信息类型 | 当前状态 | Native API 补充 | 实现难度 |
-|---------|---------|----------------|---------|
-| **系统总内存** | ❌ 无法获取 | ✅ HiDebug SystemMemInfo | ⭐ 简单 |
-| **系统 CPU 使用率** | ❌ 无法获取 | ✅ HiDebug SystemCpuUsage | ⭐ 简单 |
-| **应用详细内存** | ❌ 无法获取 | ✅ HiDebug NativeMemInfo | ⭐ 简单 |
-| **传感器列表** | ❌ 无法获取 | ✅ Sensor GetInfos | ⭐⭐ 中等 |
-| **传感器实时数据** | ❌ 无法获取 | ✅ Sensor Subscribe | ⭐⭐ 中等 |
-| **虚拟机内存** | ❌ 无法获取 | ✅ HiDebug VMMemoryInfo | ⭐ 简单 |
-| **GC 统计信息** | ❌ 无法获取 | ✅ HiDebug GcStats | ⭐ 简单 |
-| **应用内存限制** | ❌ 无法获取 | ✅ HiDebug MemoryLimit | ⭐ 简单 |
-| **GPU 显存** | ❌ 无法获取 | ✅ HiDebug GraphicsMemory | ⭐ 简单 |
-
-#### 中等价值信息（可选实现）
-
-| 信息类型 | 当前状态 | Native API 补充 | 实现难度 |
-|---------|---------|----------------|---------|
-| **线程 CPU 使用** | ❌ 无法获取 | ✅ HiDebug ThreadCpuUsage | ⭐⭐ 中等 |
-| **网络流量统计** | ❌ 无法获取 | ⚠️ /proc/net/dev | ⭐⭐⭐ 复杂 |
-| **进程详细信息** | ❌ 无法获取 | ⚠️ /proc/[pid]/ | ⭐⭐⭐ 复杂 |
-
-#### 低价值/高难度信息（暂不建议）
-
-| 信息类型 | 当前状态 | Native API 补充 | 实现难度 |
-|---------|---------|----------------|---------|
-| **MAC 地址** | ❌ 无法获取 | ⚠️ 需要系统权限 | ⭐⭐⭐⭐ 困难 |
-| **摄像头详细信息** | ❌ 无法获取 | ⚠️ 需要 CameraKit | ⭐⭐⭐⭐ 困难 |
-| **系统级 Trace** | ❌ 无法获取 | ⚠️ 需要系统权限 | ⭐⭐⭐⭐ 困难 |
-
-### 8.8 参考文档
-
-- [HiDebug NDK API](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/js-apis-hidebug-V5)
-- [Sensor NDK API](https://developer.huawei.com/consumer/cn/doc/harmonyos-references-V5/_sensor-V5)
-- [HarmonyOS NDK 开发指南](https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V5/ndk-guidelines-V5)
+### 8.2 设备差异
+- 部分设备存储 API 返回 0
+- 部分传感器（气压计、湿度计）并非所有设备都有
 
 ---
 
 ## 9. 后续扩展方向
 
-1. **性能监控**：实时 CPU、内存使用率曲线
-2. **跑分功能**：集成基础性能测试
-3. **设备对比**：多设备配置对比
-4. **导出报告**：导出硬件信息报告 (PDF/文本)
-5. **硬件健康**：电池健康度深度检测
-6. **Native 模块**：实现 HiDebug 和 Sensor 功能
+### 9.1 短期计划
+- [ ] 优化存储信息获取（寻找替代方案）
+- [ ] 添加更多概念解释
+- [ ] 优化 UI 动画效果
+
+### 9.2 长期计划
+- [ ] 性能跑分功能
+- [ ] 设备对比功能
+- [ ] 导出硬件报告
+- [ ] 支持更多传感器类型
 
 ---
 
-*文档版本：v1.1*  
-*最后更新：2026-03-12*  
-*更新内容：添加 Native API 扩展规划章节*
+## 10. 版本历史
+
+### v1.2.0 (2026-03-20)
+- ✅ 为所有详情页添加信息按钮
+- ✅ 实现概念解释功能
+- ✅ 添加 ConceptConfig 配置
+- ✅ 实现 ConceptDetailPage
+- ✅ 优化相机变焦范围获取
+
+### v1.1.0 (2026-03-18)
+- ✅ 集成 Native HiDebug API
+- ✅ 实现 CPU 使用率监控
+- ✅ 实现内存信息获取
+- ✅ 实现 GPU 信息获取
+- ✅ 添加传感器实时数据
+- ✅ 修复所有硬编码数据问题
+
+### v1.0.0 (2026-03-12)
+- ✅ 基础设备信息展示
+- ✅ 电池信息监控
+- ✅ 屏幕信息显示
+- ✅ 网络状态显示
+- ✅ 存储信息获取
+
+---
+
+*文档版本：v2.0*  
+*最后更新：2026-03-20*  
+*更新内容：更新为实际已实现功能，添加实现统计和版本历史*

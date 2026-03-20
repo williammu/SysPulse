@@ -1,1 +1,0 @@
-{"dataProcess":[],"specialAPIs":[],"dependencies":[{"author":"huawei","name":"@ohos/hypium","description":"A unit test framework for OpenHarmony application","version":"1.0.16"},{"author":"","name":"libsysinfo.so","description":"Native API for SysInfo - HiDebug and Sensor modules","version":"1.0.0"}]}

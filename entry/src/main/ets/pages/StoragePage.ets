@@ -2,6 +2,7 @@ import router from '@ohos.router';
 import { DeviceUtil } from '../utils/DeviceUtil';
 import { FormatUtil } from '../utils/FormatUtil';
 import { InfoCard } from '../components/InfoCard';
+import { InfoCardWithDesc } from '../components/InfoButton';
 import { ProgressBar } from '../components/ProgressBar';
 import { SectionHeader } from '../components/SectionHeader';
 import type { StorageInfoModel } from '../model/DeviceInfo';
@@ -81,14 +82,28 @@ struct StoragePage {
 
           SectionHeader({ title: '存储信息' })
 
-          InfoCard({
-            title: '状态',
-            value: this.storageInfo ? '已获取' : '未获取'
+          InfoCardWithDesc({
+            title: '存储空间',
+            value: this.storageInfo ? FormatUtil.formatBytes(this.storageInfo.totalSize) : '未获取',
+            conceptId: 'storage_total',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'storage_total' }
+              });
+            }
           })
 
-          InfoCard({
-            title: '说明',
-            value: this.storageInfo ? '存储信息来自系统 API' : '部分设备可能无法获取存储信息'
+          InfoCardWithDesc({
+            title: '存储类型',
+            value: '内部存储',
+            conceptId: 'storage_types',
+            onInfoClick: () => {
+              router.pushUrl({
+                url: 'pages/ConceptDetailPage',
+                params: { conceptId: 'storage_types' }
+              });
+            }
           })
         }
         .width('100%')

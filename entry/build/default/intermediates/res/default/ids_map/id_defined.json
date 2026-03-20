@@ -12,108 +12,120 @@
 			"name":	"icon",
 			"id":	"0x01000002"
 		}, {
-			"type":	"string",
-			"name":	"EntryAbility_desc",
+			"type":	"media",
+			"name":	"syspulse_icon",
 			"id":	"0x01000003"
 		}, {
 			"type":	"string",
-			"name":	"EntryAbility_label",
+			"name":	"EntryAbility_desc",
 			"id":	"0x01000004"
 		}, {
 			"type":	"string",
-			"name":	"module_desc",
+			"name":	"EntryAbility_label",
 			"id":	"0x01000005"
 		}, {
 			"type":	"string",
-			"name":	"permission_reason_bluetooth",
+			"name":	"module_desc",
 			"id":	"0x01000006"
 		}, {
 			"type":	"string",
-			"name":	"permission_reason_network",
+			"name":	"permission_reason_bluetooth",
 			"id":	"0x01000007"
 		}, {
-			"type":	"media",
-			"name":	"syspulse_icon",
+			"type":	"string",
+			"name":	"permission_reason_camera",
 			"id":	"0x01000008"
 		}, {
-			"type":	"color",
-			"name":	"primary_color",
+			"type":	"string",
+			"name":	"permission_reason_cpu",
 			"id":	"0x01000009"
 		}, {
-			"type":	"color",
-			"name":	"start_window_background",
+			"type":	"string",
+			"name":	"permission_reason_network",
 			"id":	"0x0100000A"
 		}, {
-			"type":	"color",
-			"name":	"text_primary",
+			"type":	"string",
+			"name":	"permission_reason_wifi",
 			"id":	"0x0100000B"
 		}, {
 			"type":	"color",
-			"name":	"text_secondary",
-			"id":	"0x0100000C"
-		}, {
-			"type":	"media",
-			"name":	"startIcon",
-			"id":	"0x0100000D"
-		}, {
-			"type":	"profile",
-			"name":	"main_pages",
-			"id":	"0x0100000E"
-		}, {
-			"type":	"color",
 			"name":	"accent_color",
-			"id":	"0x0100000F"
+			"id":	"0x0100000C"
 		}, {
 			"type":	"color",
 			"name":	"background_card",
-			"id":	"0x01000010"
+			"id":	"0x0100000D"
 		}, {
 			"type":	"color",
 			"name":	"background_dark",
-			"id":	"0x01000011"
+			"id":	"0x0100000E"
 		}, {
 			"type":	"color",
 			"name":	"background_gradient_end",
-			"id":	"0x01000012"
+			"id":	"0x0100000F"
 		}, {
 			"type":	"color",
 			"name":	"background_gradient_start",
-			"id":	"0x01000013"
+			"id":	"0x01000010"
 		}, {
 			"type":	"color",
 			"name":	"border_color",
-			"id":	"0x01000014"
+			"id":	"0x01000011"
 		}, {
 			"type":	"color",
 			"name":	"error_color",
-			"id":	"0x01000015"
+			"id":	"0x01000012"
 		}, {
 			"type":	"color",
 			"name":	"glow_color",
-			"id":	"0x01000016"
+			"id":	"0x01000013"
 		}, {
 			"type":	"color",
 			"name":	"info_color",
-			"id":	"0x01000017"
+			"id":	"0x01000014"
+		}, {
+			"type":	"color",
+			"name":	"primary_color",
+			"id":	"0x01000015"
 		}, {
 			"type":	"color",
 			"name":	"primary_dark",
-			"id":	"0x01000018"
+			"id":	"0x01000016"
 		}, {
 			"type":	"color",
 			"name":	"secondary_color",
-			"id":	"0x01000019"
+			"id":	"0x01000017"
+		}, {
+			"type":	"color",
+			"name":	"start_window_background",
+			"id":	"0x01000018"
 		}, {
 			"type":	"color",
 			"name":	"success_color",
+			"id":	"0x01000019"
+		}, {
+			"type":	"color",
+			"name":	"text_primary",
 			"id":	"0x0100001A"
 		}, {
 			"type":	"color",
-			"name":	"text_tertiary",
+			"name":	"text_secondary",
 			"id":	"0x0100001B"
 		}, {
 			"type":	"color",
-			"name":	"warning_color",
+			"name":	"text_tertiary",
 			"id":	"0x0100001C"
+		}, {
+			"type":	"color",
+			"name":	"warning_color",
+			"id":	"0x0100001D"
+		}, {
+			"type":	"media",
+			"name":	"startIcon",
+			"id":	"0x0100001E"
+		}, {
+			"type":	"profile",
+			"name":	"main_pages",
+			"id":	"0x0100001F"
 		}]
 }
