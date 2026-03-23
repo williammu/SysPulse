@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SysPulse.iml" filepath="$PROJECT_DIR$/.idea/modules/SysPulse.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/entry.iml" filepath="$PROJECT_DIR$/.idea/modules/entry.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/huawei_sysinfo.iml" filepath="$PROJECT_DIR$/.idea/modules/huawei_sysinfo.iml" />
     </modules>
   </component>
 </project>
